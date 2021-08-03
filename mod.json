@@ -1,0 +1,10 @@
+{
+	"name": "scheme-size",
+	"displayName": "Scheme Size",
+	"description": "",
+	"author": "xzxADIxzx",
+	"version": "1",
+	"minGameVersion": "105",
+	"hidden": true,
+	"main": "example.ExampleJavaMod"
+}
