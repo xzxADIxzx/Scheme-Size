@@ -15,8 +15,9 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 14
-    - name: Build mod jar
+    - name: Change premissions
       run: chmod +x ./gradlew
+    - name: Build mod jar
       run: ./gradlew deploy
     - name: Upload built jar file
       uses: actions/upload-artifact@v2
