@@ -63,11 +63,13 @@ public class Schematics512 extends Schematics{
                 // idk why... but it won`t compile
                 // Block realBlock = linked == null ? null : linked instanceof ConstructBuild cons ? cons.current : linked.block;
                 Block realBlock = null;
-                if (linked.getClass() == ConstructBuild.class){
-                    realBlock = linked.block;
-                    // realBlock = linked.current;
-                }else{
-                    realBlock = linked.block;
+                if(linked == null){
+                    if(linked.getClass() == ConstructBuild.class){
+                        realBlock = linked.block;
+                        // realBlock = linked.current;
+                    }else{
+                        realBlock = linked.block;
+                    }
                 }
 
                 if(linked != null && realBlock != null && (realBlock.isVisible() || realBlock instanceof CoreBlock)){
@@ -100,11 +102,13 @@ public class Schematics512 extends Schematics{
                 // idk why... but it won`t compile
                 // Block realBlock = tile == null ? null : tile instanceof ConstructBuild cons ? cons.current : tile.block;
                 Block realBlock = null;
-                if (tile.getClass() == ConstructBuild.class){
-                    realBlock = tile.block;
-                    // realBlock = tile.current;
-                }else{
-                    realBlock = tile.block;
+                if(tile == null){
+                    if (tile.getClass() == ConstructBuild.class){
+                        realBlock = tile.block;
+                        // realBlock = tile.current;
+                    }else{
+                        realBlock = tile.block;
+                    }
                 }
 
                 if(tile != null && !counted.contains(tile.pos()) && realBlock != null
