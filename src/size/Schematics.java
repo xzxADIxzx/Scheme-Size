@@ -1,5 +1,5 @@
 // package mindustry.game;
-package size
+package size;
 
 import arc.*;
 import arc.assets.*;
