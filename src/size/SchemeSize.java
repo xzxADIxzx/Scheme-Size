@@ -2,17 +2,31 @@ package size;
 
 import mindustry.mod.*;
 
-import arc.*;
-import arc.util.*;
+// import arc.*;
+// import arc.util.*;
+import mindustry.ui.dialogs.*;
 // import mindustry.*;
 // import mindustry.content.*;
 // import mindustry.game.EventType.*;
 // import mindustry.gen.*;
-import mindustry.ui.dialogs.*;
 // import mindustry.input.*;
 // import mindustry.game.schematic.*;
 // import mindustry.world.*;
 
+import arc.*;
+import arc.assets.*;
+import arc.files.*;
+import arc.graphics.*;
+import arc.graphics.g2d.*;
+import arc.graphics.gl.*;
+import arc.math.*;
+import arc.math.geom.*;
+import arc.struct.*;
+import arc.util.*;
+import arc.util.io.*;
+import arc.util.io.Streams.*;
+import arc.util.pooling.*;
+import arc.util.serialization.*;
 import mindustry.*;
 import mindustry.content.*;
 import mindustry.core.*;
@@ -33,6 +47,11 @@ import mindustry.world.blocks.production.*;
 import mindustry.world.blocks.sandbox.*;
 import mindustry.world.blocks.storage.*;
 import mindustry.world.meta.*;
+
+import java.io.*;
+import java.util.zip.*;
+
+import static mindustry.Vars.*;
 
 public class SchemeSize extends Mod{
 
@@ -109,7 +128,7 @@ public class SchemeSize extends Mod{
 
     @Override
     public void loadContent(){
-        Vars.schematics.create = create64();
+        schematics.create = create64();
     }
 
 }
