@@ -19,7 +19,7 @@ public class SchemeSize extends Mod{
 
     @Override
     public void loadContent(){
-        Vars.schematics = new Schematics64();
+        Vars.schematics = new Schematics();
     }
 
 }
