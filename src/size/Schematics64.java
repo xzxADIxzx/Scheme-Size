@@ -46,7 +46,7 @@ public class Schematics64 extends Schematics{
 
     @Override
     public Schematic create(int x, int y, int x2, int y2){
-        NormalizeResult result = Placement.normalizeArea(x, y, x2, y2, 0, false, 64);
+        NormalizeResult result = Placement.normalizeArea(x, y, x2, y2, 0, false, 512);
         x = result.x;
         y = result.y;
         x2 = result.x2;
@@ -66,6 +66,10 @@ public class Schematics64 extends Schematics{
                 if (linked != null){
                     realBlock = linked.block;
                 }
+                try{
+                    realBlock = linked.current;
+                }
+                catch{}
 
                 if(linked != null && realBlock != null && (realBlock.isVisible() || realBlock instanceof CoreBlock)){
                     int top = realBlock.size/2;
@@ -99,6 +103,10 @@ public class Schematics64 extends Schematics{
                 if (tile != null){
                     realBlock = tile.block;
                 }
+                try{
+                    realBlock = tile.current;
+                }
+                catch{}
 
                 if(tile != null && !counted.contains(tile.pos()) && realBlock != null
                     && (realBlock.isVisible() || realBlock instanceof CoreBlock)){
