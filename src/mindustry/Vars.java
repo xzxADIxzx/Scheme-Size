@@ -25,7 +25,6 @@ import mindustry.maps.Map;
 import mindustry.maps.*;
 import mindustry.mod.*;
 import mindustry.net.*;
-import mindustry.service.*;
 
 import java.io.*;
 import java.nio.charset.*;
