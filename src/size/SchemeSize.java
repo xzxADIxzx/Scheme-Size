@@ -4,6 +4,14 @@ import mindustry.mod.*;
 import mindustry.Vars;
 import size.Schematics;
 
+import arc.*;
+import arc.util.*;
+import mindustry.*;
+import mindustry.content.*;
+import mindustry.game.EventType.*;
+import mindustry.gen.*;
+import mindustry.ui.dialogs.*;
+
 public class SchemeSize extends Mod{
 
     public SchemeSize(){
