@@ -28,6 +28,7 @@ import mindustry.input.Placement.*;
 import mindustry.io.*;
 import mindustry.world.*;
 import mindustry.world.blocks.ConstructBlock.*;
+import mindustry.world.blocks.ConstructBlock.ConstructBuild.*;
 import mindustry.world.blocks.distribution.*;
 import mindustry.world.blocks.legacy.*;
 import mindustry.world.blocks.power.*;
@@ -64,7 +65,7 @@ public class Schematics64 extends Schematics{
                 // idk why... but it won`t compile
                 // Block realBlock = linked == null ? null : linked instanceof ConstructBuild cons ? cons.current : linked.block;
                 Block realBlock = null;
-                if (linked.getClass() == ConstructBlock){
+                if (linked.getClass() == ConstructBuild.getClass()){
                     realBlock = linked.current;
                 }else{
                     realBlock = linked.block;
@@ -100,7 +101,7 @@ public class Schematics64 extends Schematics{
                 // idk why... but it won`t compile
                 // Block realBlock = tile == null ? null : tile instanceof ConstructBuild cons ? cons.current : tile.block;
                 Block realBlock = null;
-                if (linked.getClass() == ConstructBlock){
+                if (linked.getClass() == ConstructBuild.getClass()){
                     realBlock = tile.current;
                 }else{
                     realBlock = tile.block;
