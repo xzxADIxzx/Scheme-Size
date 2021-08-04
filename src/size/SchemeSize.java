@@ -2,7 +2,6 @@ package mindustry.game;
 
 import mindustry.mod.*;
 import mindustry.Vars;
-// import Schematics;
 
 import arc.*;
 import arc.util.*;
@@ -20,7 +19,7 @@ public class SchemeSize extends Mod{
 
     @Override
     public void loadContent(){
-        Vars.schematics = new Schematics();
+        Vars.schematics = new Schematics64();
     }
 
 }

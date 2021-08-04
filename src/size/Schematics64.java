@@ -42,7 +42,9 @@ import java.util.zip.*;
 import static mindustry.Vars.*;
 
 /** Handles schematics.*/
-public class Schematics implements Loadable{
+public class Schematics64 implements Loadable{
+    public static final boolean isItWork = true;
+
     private static final Schematic tmpSchem = new Schematic(new Seq<>(), new StringMap(), 0, 0);
     private static final Schematic tmpSchem2 = new Schematic(new Seq<>(), new StringMap(), 0, 0);
 
