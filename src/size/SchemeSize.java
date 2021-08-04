@@ -1,6 +1,7 @@
 package size;
 
 import mindustry.mod.*;
+import mindustry.Vars;
 
 // import arc.*;
 // import arc.util.*;
@@ -51,7 +52,7 @@ import mindustry.world.meta.*;
 import java.io.*;
 import java.util.zip.*;
 
-import static mindustry.Vars.*;
+// import static mindustry.Vars.*;
 
 public class SchemeSize extends Mod{
 
@@ -132,7 +133,7 @@ public class SchemeSize extends Mod{
 
     @Override
     public void loadContent(){
-        schematics.create = createTEST();
+        Vars.schematics.create = createTEST;
     }
 
 }
