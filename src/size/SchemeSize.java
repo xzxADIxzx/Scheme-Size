@@ -1,4 +1,4 @@
-package example;
+package size;
 
 import arc.*;
 import arc.util.*;
@@ -86,7 +86,7 @@ public class ExampleJavaMod extends Mod{
 
     @Override
     public void loadContent(){
-        Vars.schematics.create = create64()
+        Vars.schematics.create = create64();
     }
 
 }
