@@ -1,11 +1,11 @@
 package mindustry.game;
 
+import arc.*;
+import arc.util.*;
 import mindustry.mod.*;
 import mindustry.Vars;
 import mindustry.game.EventType.*;
 
-// import arc.*;
-// import arc.util.*;
 // import mindustry.*;
 // import mindustry.content.*;
 // import mindustry.gen.*;

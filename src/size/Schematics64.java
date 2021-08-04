@@ -129,7 +129,8 @@ public class Schematics64 extends Schematics{
         for(int cx = x; cx <= x2; cx++){
             for(int cy = y; cy <= y2; cy++){
                 Building linked = world.build(cx, cy);
-                Block realBlock = linked == null ? null : linked instanceof ConstructBuild cons ? cons.current : linked.block;
+                // Block realBlock = linked == null ? null : linked instanceof ConstructBuild cons ? cons.current : linked.block;
+                Block realBlock = linked.block;
 
                 if(linked != null && realBlock != null && (realBlock.isVisible() || realBlock instanceof CoreBlock)){
                     int top = realBlock.size/2;
@@ -158,7 +159,8 @@ public class Schematics64 extends Schematics{
         for(int cx = ox; cx <= ox2; cx++){
             for(int cy = oy; cy <= oy2; cy++){
                 Building tile = world.build(cx, cy);
-                Block realBlock = tile == null ? null : tile instanceof ConstructBuild cons ? cons.current : tile.block;
+                // Block realBlock = tile == null ? null : tile instanceof ConstructBuild cons ? cons.current : tile.block;
+                Block realBlock = tile.block;
 
                 if(tile != null && !counted.contains(tile.pos()) && realBlock != null
                     && (realBlock.isVisible() || realBlock instanceof CoreBlock)){
