@@ -164,7 +164,8 @@ public class Schematics64 extends Schematics{
 
                 if(tile != null && !counted.contains(tile.pos()) && realBlock != null
                     && (realBlock.isVisible() || realBlock instanceof CoreBlock)){
-                    Object config = tile instanceof ConstructBuild cons ? cons.lastConfig : tile.config();
+                    // Object config = tile instanceof ConstructBuild cons ? cons.lastConfig : tile.config();
+                    Object config = tile.config();
 
                     tiles.add(new Stile(realBlock, tile.tileX() + offsetX, tile.tileY() + offsetY, config, (byte)tile.rotation));
                     counted.add(tile.pos());
