@@ -36,7 +36,7 @@ import mindustry.world.meta.*;
 
 public class SchemeSize extends Mod{
 
-    public ExampleJavaMod(){
+    public SchemeSize(){
         Events.on(ClientLoadEvent.class, e -> {
             Time.runTask(10f, () -> {
                 BaseDialog dialog = new BaseDialog("frog");
