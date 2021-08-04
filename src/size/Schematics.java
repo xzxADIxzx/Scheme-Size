@@ -538,6 +538,7 @@ public class Schematics implements Loadable{
         //     if(labels != null) out.labels.addAll(labels);
         //     return out;
         // }
+        return null;
     }
 
     public static void write(Schematic schematic, Fi file) throws IOException{
