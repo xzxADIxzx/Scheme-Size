@@ -22,6 +22,8 @@ import mindustry.entities.units.*;
 import mindustry.game.*;
 import mindustry.game.EventType.*;
 import mindustry.game.Schematic.*;
+import mindustry.game.Schematic.labels;
+
 import mindustry.gen.*;
 import mindustry.input.*;
 import mindustry.input.Placement.*;
