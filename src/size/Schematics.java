@@ -347,7 +347,7 @@ public class Schematics implements Loadable{
         for(int cx = x; cx <= x2; cx++){
             for(int cy = y; cy <= y2; cy++){
                 Building linked = world.build(cx, cy);
-                Block realBlock = linked == null ? null : linked instanceof ConstructBuild cons ? cons.current : linked.block;
+                Block realBlock = null;
 
                 if(linked != null && realBlock != null && (realBlock.isVisible() || realBlock instanceof CoreBlock)){
                     int top = realBlock.size/2;
@@ -376,7 +376,7 @@ public class Schematics implements Loadable{
         for(int cx = ox; cx <= ox2; cx++){
             for(int cy = oy; cy <= oy2; cy++){
                 Building tile = world.build(cx, cy);
-                Block realBlock = tile == null ? null : tile instanceof ConstructBuild cons ? cons.current : tile.block;
+                Block realBlock = null;
 
                 if(tile != null && !counted.contains(tile.pos()) && realBlock != null
                     && (realBlock.isVisible() || realBlock instanceof CoreBlock)){
