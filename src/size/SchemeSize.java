@@ -3,6 +3,7 @@ package size;
 import mindustry.mod.*;
 import mindustry.Vars;
 import mindustry.game.*;
+import mindustry.game.Schematics.*;
 
 // import arc.*;
 // import arc.util.*;
@@ -134,7 +135,7 @@ public class SchemeSize extends Mod{
 
     @Override
     public void loadContent(){
-        Vars.schematics.create = createTEST;
+        Vars.schematics.create = createTESTNEW(int x, int y, int x2, int y2) => {return null;};
     }
 
 }
