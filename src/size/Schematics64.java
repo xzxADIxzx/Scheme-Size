@@ -29,7 +29,7 @@ import mindustry.io.*;
 import mindustry.world.*;
 import mindustry.world.blocks.ConstructBlock.*;
 import mindustry.world.blocks.ConstructBlock.ConstructBuild.*;
-import mindustry.world.blocks.ConstructBuild.*;
+import mindustry.world.blocks.ConstructBlock.ConstructBuild.current;
 import mindustry.world.blocks.distribution.*;
 import mindustry.world.blocks.legacy.*;
 import mindustry.world.blocks.power.*;
