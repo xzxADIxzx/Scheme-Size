@@ -1,16 +1,38 @@
 package size;
 
+import mindustry.mod.*;
+
 import arc.*;
 import arc.util.*;
+// import mindustry.*;
+// import mindustry.content.*;
+// import mindustry.game.EventType.*;
+// import mindustry.gen.*;
+import mindustry.ui.dialogs.*;
+// import mindustry.input.*;
+// import mindustry.game.schematic.*;
+// import mindustry.world.*;
+
 import mindustry.*;
 import mindustry.content.*;
+import mindustry.core.*;
+import mindustry.ctype.*;
+import mindustry.entities.units.*;
 import mindustry.game.EventType.*;
+import mindustry.game.Schematic.*;
 import mindustry.gen.*;
-import mindustry.mod.*;
-import mindustry.ui.dialogs.*;
 import mindustry.input.*;
-import mindustry.game.schematic.*;
+import mindustry.input.Placement.*;
+import mindustry.io.*;
 import mindustry.world.*;
+import mindustry.world.blocks.ConstructBlock.*;
+import mindustry.world.blocks.distribution.*;
+import mindustry.world.blocks.legacy.*;
+import mindustry.world.blocks.power.*;
+import mindustry.world.blocks.production.*;
+import mindustry.world.blocks.sandbox.*;
+import mindustry.world.blocks.storage.*;
+import mindustry.world.meta.*;
 
 public class ExampleJavaMod extends Mod{
 
