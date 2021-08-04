@@ -42,7 +42,7 @@ import java.util.zip.*;
 import static mindustry.Vars.*;
 
 /** Handles schematics.*/
-public class Schematics64 implements Loadable{
+public class Schematics implements Loadable{
     public static final boolean isItWork = true;
 
     private static final Schematic tmpSchem = new Schematic(new Seq<>(), new StringMap(), 0, 0);
@@ -64,7 +64,7 @@ public class Schematics64 implements Loadable{
     private Texture errorTexture;
     private long lastClearTime;
 
-    public Schematics64(){
+    public Schematics(){
 
         Events.on(ClientLoadEvent.class, event -> {
             errorTexture = new Texture("sprites/error.png");
