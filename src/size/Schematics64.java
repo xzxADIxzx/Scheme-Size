@@ -63,10 +63,11 @@ public class Schematics64 extends Schematics{
                 Building linked = world.build(cx, cy);
                 // idk why... but it won`t compile
                 // Block realBlock = linked == null ? null : linked instanceof ConstructBuild cons ? cons.current : linked.block;
+                Block realBlock = null;
                 if (linked.getClass() == ConstructBlock){
-                    Block realBlock = linked.current;
+                    realBlock = linked.current;
                 }else{
-                    Block realBlock = linked.block;
+                    realBlock = linked.block;
                 }
 
                 if(linked != null && realBlock != null && (realBlock.isVisible() || realBlock instanceof CoreBlock)){
@@ -98,10 +99,11 @@ public class Schematics64 extends Schematics{
                 Building tile = world.build(cx, cy);
                 // idk why... but it won`t compile
                 // Block realBlock = tile == null ? null : tile instanceof ConstructBuild cons ? cons.current : tile.block;
+                Block realBlock = null;
                 if (linked.getClass() == ConstructBlock){
-                    Block realBlock = tile.current;
+                    realBlock = tile.current;
                 }else{
-                    Block realBlock = tile.block;
+                    realBlock = tile.block;
                 }
 
                 if(tile != null && !counted.contains(tile.pos()) && realBlock != null
