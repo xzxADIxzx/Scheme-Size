@@ -69,7 +69,7 @@ public class Schematics64 extends Schematics{
                 try{
                     realBlock = linked.current;
                 }
-                catch{}
+                catch(){}
 
                 if(linked != null && realBlock != null && (realBlock.isVisible() || realBlock instanceof CoreBlock)){
                     int top = realBlock.size/2;
@@ -106,7 +106,7 @@ public class Schematics64 extends Schematics{
                 try{
                     realBlock = tile.current;
                 }
-                catch{}
+                catch(){}
 
                 if(tile != null && !counted.contains(tile.pos()) && realBlock != null
                     && (realBlock.isVisible() || realBlock instanceof CoreBlock)){
