@@ -10,6 +10,7 @@ import mindustry.mod.*;
 import mindustry.ui.dialogs.*;
 import mindustry.input.*;
 import mindustry.game.schematic.*;
+import mindustry.world.*;
 
 public class ExampleJavaMod extends Mod{
 
