@@ -28,7 +28,6 @@ import mindustry.input.Placement.*;
 import mindustry.io.*;
 import mindustry.world.*;
 import mindustry.world.blocks.ConstructBlock.*;
-import mindustry.world.blocks.ConstructBlock.ConstructBuild.*;
 import mindustry.world.blocks.distribution.*;
 import mindustry.world.blocks.legacy.*;
 import mindustry.world.blocks.power.*;
@@ -168,12 +167,12 @@ public class Schematics implements Loadable{
     }
 
     public void savePreview(Schematic schematic, Fi file){
-        FrameBuffer buffer = getBuffer(schematic);
-        Draw.flush();
-        buffer.begin();
-        Pixmap pixmap = ScreenUtils.getFrameBufferPixmap(0, 0, buffer.getWidth(), buffer.getHeight());
-        file.writePng(pixmap);
-        buffer.end();
+        // FrameBuffer buffer = getBuffer(schematic);
+        // Draw.flush();
+        // buffer.begin();
+        // Pixmap pixmap = ScreenUtils.getFrameBufferPixmap(0, 0, buffer.getWidth(), buffer.getHeight());
+        // file.writePng(pixmap);
+        // buffer.end();
     }
 
     public Texture getPreview(Schematic schematic){
@@ -490,55 +489,55 @@ public class Schematics implements Loadable{
     }
 
     public static Schematic read(InputStream input) throws IOException{
-        for(byte b : header){
-            if(input.read() != b){
-                throw new IOException("Not a schematic file (missing header).");
-            }
-        }
+        // for(byte b : header){
+        //     if(input.read() != b){
+        //         throw new IOException("Not a schematic file (missing header).");
+        //     }
+        // }
 
-        int ver = input.read();
+        // int ver = input.read();
 
-        try(DataInputStream stream = new DataInputStream(new InflaterInputStream(input))){
-            short width = stream.readShort(), height = stream.readShort();
+        // try(DataInputStream stream = new DataInputStream(new InflaterInputStream(input))){
+        //     short width = stream.readShort(), height = stream.readShort();
 
-            StringMap map = new StringMap();
-            int tags = stream.readUnsignedByte();
-            for(int i = 0; i < tags; i++){
-                map.put(stream.readUTF(), stream.readUTF());
-            }
+        //     StringMap map = new StringMap();
+        //     int tags = stream.readUnsignedByte();
+        //     for(int i = 0; i < tags; i++){
+        //         map.put(stream.readUTF(), stream.readUTF());
+        //     }
 
-            String[] labels = null;
+        //     String[] labels = null;
 
-            //try to read the categories, but skip if it fails
-            try{
-                labels = JsonIO.read(String[].class, map.get("labels", "[]"));
-            }catch(Exception ignored){
-            }
+        //     //try to read the categories, but skip if it fails
+        //     try{
+        //         labels = JsonIO.read(String[].class, map.get("labels", "[]"));
+        //     }catch(Exception ignored){
+        //     }
 
-            IntMap<Block> blocks = new IntMap<>();
-            byte length = stream.readByte();
-            for(int i = 0; i < length; i++){
-                String name = stream.readUTF();
-                Block block = Vars.content.getByName(ContentType.block, SaveFileReader.fallback.get(name, name));
-                blocks.put(i, block == null || block instanceof LegacyBlock ? Blocks.air : block);
-            }
+        //     IntMap<Block> blocks = new IntMap<>();
+        //     byte length = stream.readByte();
+        //     for(int i = 0; i < length; i++){
+        //         String name = stream.readUTF();
+        //         Block block = Vars.content.getByName(ContentType.block, SaveFileReader.fallback.get(name, name));
+        //         blocks.put(i, block == null || block instanceof LegacyBlock ? Blocks.air : block);
+        //     }
 
-            int total = stream.readInt();
-            Seq<Stile> tiles = new Seq<>(total);
-            for(int i = 0; i < total; i++){
-                Block block = blocks.get(stream.readByte());
-                int position = stream.readInt();
-                Object config = ver == 0 ? mapConfig(block, stream.readInt(), position) : TypeIO.readObject(Reads.get(stream));
-                byte rotation = stream.readByte();
-                if(block != Blocks.air){
-                    tiles.add(new Stile(block, Point2.x(position), Point2.y(position), config, rotation));
-                }
-            }
+        //     int total = stream.readInt();
+        //     Seq<Stile> tiles = new Seq<>(total);
+        //     for(int i = 0; i < total; i++){
+        //         Block block = blocks.get(stream.readByte());
+        //         int position = stream.readInt();
+        //         Object config = ver == 0 ? mapConfig(block, stream.readInt(), position) : TypeIO.readObject(Reads.get(stream));
+        //         byte rotation = stream.readByte();
+        //         if(block != Blocks.air){
+        //             tiles.add(new Stile(block, Point2.x(position), Point2.y(position), config, rotation));
+        //         }
+        //     }
 
-            Schematic out = new Schematic(tiles, map, width, height);
-            if(labels != null) out.labels.addAll(labels);
-            return out;
-        }
+        //     Schematic out = new Schematic(tiles, map, width, height);
+        //     if(labels != null) out.labels.addAll(labels);
+        //     return out;
+        // }
     }
 
     public static void write(Schematic schematic, Fi file) throws IOException{
@@ -546,40 +545,40 @@ public class Schematics implements Loadable{
     }
 
     public static void write(Schematic schematic, OutputStream output) throws IOException{
-        output.write(header);
-        output.write(version);
+        // output.write(header);
+        // output.write(version);
 
-        try(DataOutputStream stream = new DataOutputStream(new DeflaterOutputStream(output))){
+        // try(DataOutputStream stream = new DataOutputStream(new DeflaterOutputStream(output))){
 
-            stream.writeShort(schematic.width);
-            stream.writeShort(schematic.height);
+        //     stream.writeShort(schematic.width);
+        //     stream.writeShort(schematic.height);
 
-            schematic.tags.put("labels", JsonIO.write(schematic.labels.toArray(String.class)));
+        //     schematic.tags.put("labels", JsonIO.write(schematic.labels.toArray(String.class)));
 
-            stream.writeByte(schematic.tags.size);
-            for(ObjectMap.Entry<String, String> e : schematic.tags.entries()){
-                stream.writeUTF(e.key);
-                stream.writeUTF(e.value);
-            }
+        //     stream.writeByte(schematic.tags.size);
+        //     for(ObjectMap.Entry<String, String> e : schematic.tags.entries()){
+        //         stream.writeUTF(e.key);
+        //         stream.writeUTF(e.value);
+        //     }
 
-            OrderedSet<Block> blocks = new OrderedSet<>();
-            schematic.tiles.each(t -> blocks.add(t.block));
+        //     OrderedSet<Block> blocks = new OrderedSet<>();
+        //     schematic.tiles.each(t -> blocks.add(t.block));
 
-            //create dictionary
-            stream.writeByte(blocks.size);
-            for(int i = 0; i < blocks.size; i++){
-                stream.writeUTF(blocks.orderedItems().get(i).name);
-            }
+        //     //create dictionary
+        //     stream.writeByte(blocks.size);
+        //     for(int i = 0; i < blocks.size; i++){
+        //         stream.writeUTF(blocks.orderedItems().get(i).name);
+        //     }
 
-            stream.writeInt(schematic.tiles.size);
-            //write each tile
-            for(Stile tile : schematic.tiles){
-                stream.writeByte(blocks.orderedItems().indexOf(tile.block));
-                stream.writeInt(Point2.pack(tile.x, tile.y));
-                TypeIO.writeObject(Writes.get(stream), tile.config);
-                stream.writeByte(tile.rotation);
-            }
-        }
+        //     stream.writeInt(schematic.tiles.size);
+        //     //write each tile
+        //     for(Stile tile : schematic.tiles){
+        //         stream.writeByte(blocks.orderedItems().indexOf(tile.block));
+        //         stream.writeInt(Point2.pack(tile.x, tile.y));
+        //         TypeIO.writeObject(Writes.get(stream), tile.config);
+        //         stream.writeByte(tile.rotation);
+        //     }
+        // }
     }
 
     /** Maps legacy int configs to new config objects. */
