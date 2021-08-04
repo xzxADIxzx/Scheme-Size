@@ -205,7 +205,7 @@ public class Vars implements Loadable{
     public static Locale[] locales;
 
     public static FileTree tree = new FileTree();
-    public static Net net;
+    public static mindustry.net.Net net;
     public static ContentLoader content;
     public static GameState state;
     public static EntityCollisions collisions;
