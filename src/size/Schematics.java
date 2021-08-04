@@ -19,6 +19,7 @@ import mindustry.content.*;
 import mindustry.core.*;
 import mindustry.ctype.*;
 import mindustry.entities.units.*;
+import mindustry.game.*;
 import mindustry.game.EventType.*;
 import mindustry.game.Schematic.*;
 import mindustry.gen.*;
