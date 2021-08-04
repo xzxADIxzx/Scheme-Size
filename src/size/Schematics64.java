@@ -64,7 +64,7 @@ public class Schematics64 extends Schematics{
                 // Block realBlock = linked == null ? null : linked instanceof ConstructBuild cons ? cons.current : linked.block;
                 Block realBlock = null;
                 if (linked != null){
-                    Block realBlock = linked.block;
+                    realBlock = linked.block;
                 }
 
                 if(linked != null && realBlock != null && (realBlock.isVisible() || realBlock instanceof CoreBlock)){
@@ -97,7 +97,7 @@ public class Schematics64 extends Schematics{
                 // Block realBlock = tile == null ? null : tile instanceof ConstructBuild cons ? cons.current : tile.block;
                 Block realBlock = null;
                 if (tile != null){
-                    Block realBlock = tile.block;
+                    realBlock = tile.block;
                 }
 
                 if(tile != null && !counted.contains(tile.pos()) && realBlock != null
