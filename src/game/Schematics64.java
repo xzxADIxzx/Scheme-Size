@@ -28,8 +28,6 @@ import mindustry.input.Placement.*;
 import mindustry.io.*;
 import mindustry.world.*;
 import mindustry.world.blocks.ConstructBlock.*;
-import mindustry.world.blocks.ConstructBlock.ConstructBuild.*;
-import mindustry.world.blocks.ConstructBlock.ConstructBuild.current;
 import mindustry.world.blocks.distribution.*;
 import mindustry.world.blocks.legacy.*;
 import mindustry.world.blocks.power.*;
@@ -43,8 +41,7 @@ import java.util.zip.*;
 
 import static mindustry.Vars.*;
 
-/** Handles schematics.*/
-public class Schematics64 extends Schematics{
+public class Schematics512 extends Schematics{
 
     @Override
     public Schematic create(int x, int y, int x2, int y2){
@@ -67,7 +64,8 @@ public class Schematics64 extends Schematics{
                 // Block realBlock = linked == null ? null : linked instanceof ConstructBuild cons ? cons.current : linked.block;
                 Block realBlock = null;
                 if (linked.getClass() == ConstructBuild.class){
-                    realBlock = linked.current;
+                    realBlock = linked.block;
+                    // realBlock = linked.current;
                 }else{
                     realBlock = linked.block;
                 }
@@ -103,7 +101,8 @@ public class Schematics64 extends Schematics{
                 // Block realBlock = tile == null ? null : tile instanceof ConstructBuild cons ? cons.current : tile.block;
                 Block realBlock = null;
                 if (tile.getClass() == ConstructBuild.class){
-                    realBlock = tile.current;
+                    realBlock = tile.block;
+                    // realBlock = tile.current;
                 }else{
                     realBlock = tile.block;
                 }
@@ -114,7 +113,8 @@ public class Schematics64 extends Schematics{
                     // Object config = tile instanceof ConstructBuild cons ? cons.lastConfig : tile.config();
                     Object config = null;
                     if (tile.getClass() == ConstructBuild.class){
-                        config = tile.lastConfig;
+                        config = tile.config();
+                        // config = tile.lastConfig;
                     }else{
                         config = tile.config();
                     }
