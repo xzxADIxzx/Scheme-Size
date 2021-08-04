@@ -22,8 +22,6 @@ import mindustry.entities.units.*;
 import mindustry.game.*;
 import mindustry.game.EventType.*;
 import mindustry.game.Schematic.*;
-import mindustry.game.Schematic.labels;
-
 import mindustry.gen.*;
 import mindustry.input.*;
 import mindustry.input.Placement.*;
@@ -39,6 +37,7 @@ import mindustry.world.blocks.storage.*;
 import mindustry.world.meta.*;
 
 import java.io.*;
+import java.io.File.*;
 import java.util.zip.*;
 
 import static mindustry.Vars.*;
