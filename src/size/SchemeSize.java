@@ -34,7 +34,7 @@ import mindustry.world.blocks.sandbox.*;
 import mindustry.world.blocks.storage.*;
 import mindustry.world.meta.*;
 
-public class ExampleJavaMod extends Mod{
+public class SchemeSize extends Mod{
 
     public ExampleJavaMod(){
         Events.on(ClientLoadEvent.class, e -> {
