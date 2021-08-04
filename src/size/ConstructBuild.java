@@ -1,5 +1,31 @@
 package mindustry.world.blocks.ConstructBlock;
 
+import arc.*;
+import arc.Graphics.*;
+import arc.Graphics.Cursor.*;
+import arc.graphics.g2d.*;
+import arc.math.*;
+import arc.struct.*;
+import arc.util.*;
+import arc.util.io.*;
+import mindustry.annotations.Annotations.*;
+import mindustry.content.*;
+import mindustry.entities.*;
+import mindustry.entities.units.*;
+import mindustry.game.EventType.*;
+import mindustry.game.*;
+import mindustry.gen.*;
+import mindustry.graphics.*;
+import mindustry.logic.*;
+import mindustry.type.*;
+import mindustry.world.*;
+import mindustry.world.blocks.storage.CoreBlock.*;
+import mindustry.world.modules.*;
+
+import java.util.*;
+
+import static mindustry.Vars.*;
+
 public class ConstructBuild extends Building{
     /** The recipe of the block that is being (de)constructed. Never null. */
     public Block current = Blocks.air;
