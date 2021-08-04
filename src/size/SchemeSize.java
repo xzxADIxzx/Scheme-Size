@@ -2,7 +2,7 @@ package size;
 
 import mindustry.mod.*;
 import mindustry.Vars;
-import size.Schematics;
+import mindustry.game.Schematics;
 
 import arc.*;
 import arc.util.*;
