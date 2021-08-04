@@ -1,5 +1,16 @@
-// package mindustry.game;
-package size
+package mindustry.game;
+
+import mindustry.mod.*;
+import mindustry.Vars;
+// import Schematics;
+
+// import arc.*;
+// import arc.util.*;
+// import mindustry.*;
+// import mindustry.content.*;
+// import mindustry.game.EventType.*;
+// import mindustry.gen.*;
+// import mindustry.ui.dialogs.*;
 
 import arc.*;
 import arc.assets.*;
@@ -41,6 +52,19 @@ import java.io.*;
 import java.util.zip.*;
 
 import static mindustry.Vars.*;
+
+public class SchemeSize extends Mod{
+
+    public SchemeSize(){
+        
+    }
+
+    @Override
+    public void loadContent(){
+        Vars.schematics = new Schematics();
+    }
+
+}
 
 /** Handles schematics.*/
 public class Schematics implements Loadable{

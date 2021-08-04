@@ -1,4 +1,4 @@
-package mindustry.game;
+package size;
 
 import mindustry.mod.*;
 import mindustry.Vars;
