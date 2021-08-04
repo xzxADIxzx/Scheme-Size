@@ -64,7 +64,7 @@ public class Schematics64 implements Loadable{
     private Texture errorTexture;
     private long lastClearTime;
 
-    public Schematics(){
+    public Schematics64(){
 
         Events.on(ClientLoadEvent.class, event -> {
             errorTexture = new Texture("sprites/error.png");
