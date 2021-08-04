@@ -1,4 +1,4 @@
-package mindustry.world.blocks.ConstructBlock
+package mindustry.world.blocks.ConstructBlock;
 
 public class ConstructBuild extends Building{
     /** The recipe of the block that is being (de)constructed. Never null. */
