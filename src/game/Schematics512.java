@@ -43,7 +43,18 @@ import static mindustry.Vars.*;
 
 public class Schematics512 extends Schematics{
 
-    public static int schemeSize = 512;
+    public static final int schemeSize = 512;
+
+    private static final int padding = 2;
+    private Seq<Schematic> all = new Seq<>();
+    private FrameBuffer shadowBuffer;
+    private Texture errorTexture;
+
+    public Schematics(){
+        Events.on(ClientLoadEvent.class, event -> {
+            errorTexture = new Texture("sprites/error.png");
+        });
+    }
 
     @Override
     public void load(){
