@@ -50,7 +50,7 @@ public class DesktopInput512 extends DesktopInput{
             int sizeX = normalized.x - normalized.x2;
             int sizeY = normalized.y - normalized.y2;
             String info = Integer.toString(sizeX) + ", " + Integer.toString(sizeY);
-            ui.showLabel("just text", 0, cursorX * 8, cursorY * 8);
+            ui.showLabel("just text", 0.02, cursorX * 8, cursorY * 8);
         }
 
         Draw.reset();
