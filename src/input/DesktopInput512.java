@@ -45,7 +45,8 @@ public class DesktopInput512 extends DesktopInput{
         Draw.reset();
     }
 
-    private int tileX(float cursorX){
+    @Override
+    public int tileX(float cursorX){
         Vec2 vec = Core.input.mouseWorld(cursorX, 0);
         if(selectedBlock()){
             vec.sub(block.offset, block.offset);
@@ -53,7 +54,8 @@ public class DesktopInput512 extends DesktopInput{
         return World.toTile(vec.x);
     }
 
-    private int tileY(float cursorY){
+    @Override
+    public int tileY(float cursorY){
         Vec2 vec = Core.input.mouseWorld(0, cursorY);
         if(selectedBlock()){
             vec.sub(block.offset, block.offset);
