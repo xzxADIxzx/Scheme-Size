@@ -45,11 +45,24 @@ public class Schematics512 extends Schematics{
 
     public static final int schemeSize = 512;
 
+    // private static final Schematic tmpSchem = new Schematic(new Seq<>(), new StringMap(), 0, 0);
+    // private static final Schematic tmpSchem2 = new Schematic(new Seq<>(), new StringMap(), 0, 0);
+
+    // private static final byte[] header = {'m', 's', 'c', 'h'};
+    // private static final byte version = 1;
+
     private static final int padding = 2;
+    private static final int maxPreviewsMobile = 32;
+    private static final int resolution = 32;
+
+    // private OptimizedByteArrayOutputStream out = new OptimizedByteArrayOutputStream(1024);
     private Seq<Schematic> all = new Seq<>();
+    private OrderedMap<Schematic, FrameBuffer> previews = new OrderedMap<>();
+    private ObjectSet<Schematic> errored = new ObjectSet<>();
+    // private ObjectMap<CoreBlock, Seq<Schematic>> loadouts = new ObjectMap<>();
     private FrameBuffer shadowBuffer;
     private Texture errorTexture;
-    private ObjectSet<Schematic> errored = new ObjectSet<>();
+    private long lastClearTime;
 
     public Schematics512(){
         Events.on(ClientLoadEvent.class, event -> {
