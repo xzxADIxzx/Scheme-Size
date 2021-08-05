@@ -43,9 +43,38 @@ import static mindustry.Vars.*;
 
 public class Schematics512 extends Schematics{
 
+    public static int schemeSize = 512;
+
+    @Override
+    public void load(){
+        all.clear();
+
+        loadLoadouts();
+
+        for(Fi file : schematicDirectory.list()){
+            loadFile(file);
+        }
+
+        platform.getWorkshopContent(Schematic.class).each(this::loadFile);
+
+        //mod-specific schematics, cannot be removed
+        mods.listFiles("schematics", (mod, file) -> {
+            Schematic s = loadFile(file);
+            if(s != null){
+                s.mod = mod;
+            }
+        });
+
+        all.sort();
+
+        if(shadowBuffer == null){
+            Core.app.post(() -> shadowBuffer = new FrameBuffer(schemeSize + padding + 8, schemeSize + padding + 8));
+        }
+    }
+
     @Override
     public Schematic create(int x, int y, int x2, int y2){
-        NormalizeResult result = Placement.normalizeArea(x, y, x2, y2, 0, false, 512);
+        NormalizeResult result = Placement.normalizeArea(x, y, x2, y2, 0, false, schemeSize);
         x = result.x;
         y = result.y;
         x2 = result.x2;
