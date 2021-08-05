@@ -13,7 +13,7 @@ public class SchemeSize extends Mod{
             //wait 10 secs, because... idk
             Time.runTask(10f, () -> {
                 Vars.schematics = new Schematics512();
-                Vars.schematics.loadSync()
+                Vars.schematics.loadSync();
             });
         });
     }
