@@ -46,8 +46,8 @@ public class DesktopInput512 extends DesktopInput{
             NormalizeDrawResult normalized = Placement.NormalizeDrawResult(block, schemX, schemY, cursorX, cursorY, false, 512, 1);
             int sizeX = normalized.x = normalized.x2;
             int sizeY = normalized.y = normalized.y2;
-            String info = sizeX.toString() + ", " + sizeY.toString()
-            ui.showLabel(info, 1, cursorX * 10, cursorY * 10)
+            String info = sizeX.toString() + ", " + sizeY.toString();
+            ui.showLabel(info, 1, cursorX * 10, cursorY * 10);
         }
 
         Draw.reset();
