@@ -217,4 +217,79 @@ public class Schematics512 extends Schematics{
             return errorTexture;
         }
     }
+
+    @Override
+    public FrameBuffer getBuffer(Schematic schematic){
+        if(mobile && Time.timeSinceMillis(lastClearTime) > 1000 * 2 && previews.size > maxPreviewsMobile){
+            Seq<Schematic> keys = previews.orderedKeys().copy();
+            for(int i = 0; i < previews.size - maxPreviewsMobile; i++){
+                previews.get(keys.get(i)).dispose();
+                previews.remove(keys.get(i));
+            }
+            lastClearTime = Time.millis();
+        }
+
+        if(!previews.containsKey(schematic)){
+            Draw.blend();
+            Draw.reset();
+            Tmp.m1.set(Draw.proj());
+            Tmp.m2.set(Draw.trans());
+            FrameBuffer buffer = new FrameBuffer((schematic.width + padding) * resolution, (schematic.height + padding) * resolution);
+
+            shadowBuffer.begin(Color.clear);
+
+            Draw.trans().idt();
+            Draw.proj().setOrtho(0, 0, shadowBuffer.getWidth(), shadowBuffer.getHeight());
+
+            Draw.color();
+            schematic.tiles.each(t -> {
+                int size = t.block.size;
+                int offsetx = -(size - 1) / 2;
+                int offsety = -(size - 1) / 2;
+                for(int dx = 0; dx < size; dx++){
+                    for(int dy = 0; dy < size; dy++){
+                        int wx = t.x + dx + offsetx;
+                        int wy = t.y + dy + offsety;
+                        Fill.square(padding/2f + wx + 0.5f, padding/2f + wy + 0.5f, 0.5f);
+                    }
+                }
+            });
+
+            shadowBuffer.end();
+
+            buffer.begin(Color.clear);
+
+            Draw.proj().setOrtho(0, buffer.getHeight(), buffer.getWidth(), -buffer.getHeight());
+
+            Tmp.tr1.set(shadowBuffer.getTexture(), 0, 0, schematic.width + padding, schematic.height + padding);
+            Draw.color(0f, 0f, 0f, 1f);
+            Draw.rect(Tmp.tr1, buffer.getWidth()/2f, buffer.getHeight()/2f, buffer.getWidth(), -buffer.getHeight());
+            Draw.color();
+
+            Seq<BuildPlan> requests = schematic.tiles.map(t -> new BuildPlan(t.x, t.y, t.rotation, t.block, t.config));
+
+            Draw.flush();
+            Draw.trans().scale(resolution / tilesize, resolution / tilesize).translate(tilesize*1.5f, tilesize*1.5f);
+
+            requests.each(req -> {
+                req.animScale = 1f;
+                req.worldContext = false;
+                req.block.drawRequestRegion(req, requests);
+            });
+
+            requests.each(req -> req.block.drawRequestConfigTop(req, requests));
+
+            Draw.flush();
+            Draw.trans().idt();
+
+            buffer.end();
+
+            Draw.proj(Tmp.m1);
+            Draw.trans(Tmp.m2);
+
+            previews.put(schematic, buffer);
+        }
+
+        return previews.get(schematic);
+    }
 }
