@@ -139,19 +139,11 @@ public class Schematics512 extends Schematics{
         for(int cx = x; cx <= x2; cx++){
             for(int cy = y; cy <= y2; cy++){
                 Building linked = world.build(cx, cy);
+                Block realBlock = null;
+                if(linked != null)
+                    realBlock = linked.block;
                 // idk why... but it won`t compile
                 // Block realBlock = linked == null ? null : linked instanceof ConstructBuild cons ? cons.current : linked.block;
-                Block realBlock = null;
-                if(linked != null){
-                    if(linked.getClass() == ConstructBuild.class){
-                        try{
-                            realBlock = linked.current;
-                        }
-                        catch(Exception e){}
-                    }else{
-                        realBlock = linked.block;
-                    }
-                }
 
                 if(linked != null && realBlock != null && (realBlock.isVisible() || realBlock instanceof CoreBlock)){
                     int top = realBlock.size/2;
@@ -180,33 +172,17 @@ public class Schematics512 extends Schematics{
         for(int cx = ox; cx <= ox2; cx++){
             for(int cy = oy; cy <= oy2; cy++){
                 Building tile = world.build(cx, cy);
+                Block realBlock = null;
+                if(linked != null)
+                    realBlock = tile.block;
                 // idk why... but it won`t compile
                 // Block realBlock = tile == null ? null : tile instanceof ConstructBuild cons ? cons.current : tile.block;
-                Block realBlock = null;
-                if(tile != null){
-                    if (tile.getClass() == ConstructBuild.class){
-                        try{
-                            realBlock = tile.current;
-                        }
-                        catch(Exception e){}
-                    }else{
-                        realBlock = tile.block;
-                    }
-                }
 
                 if(tile != null && !counted.contains(tile.pos()) && realBlock != null
                     && (realBlock.isVisible() || realBlock instanceof CoreBlock)){
                     // idk why... but it won`t compile
                     // Object config = tile instanceof ConstructBuild cons ? cons.lastConfig : tile.config();
-                    Object config = null;
-                    if (tile.getClass() == ConstructBuild.class){
-                        try{
-                            config = tile.lastConfig;
-                        }
-                        catch(Exception e){}
-                    }else{
-                        config = tile.config();
-                    }
+                    Object config = tile.config();
 
                     tiles.add(new Stile(realBlock, tile.tileX() + offsetX, tile.tileY() + offsetY, config, (byte)tile.rotation));
                     counted.add(tile.pos());
