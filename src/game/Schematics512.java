@@ -202,4 +202,18 @@ public class Schematics512 extends Schematics{
         // need to return this.all
         return all;
     }
+
+    @Override
+    public Texture getPreview(Schematic schematic){
+        if(errored.contains(schematic)) return errorTexture;
+
+        try{
+            return getBuffer(schematic).getTexture();
+        }catch(Throwable t){
+            Log.err("Failed to get preview for schematic '@' (@)", schematic.name(), schematic.file);
+            Log.err(t);
+            errored.add(schematic);
+            return errorTexture;
+        }
+    }
 }
