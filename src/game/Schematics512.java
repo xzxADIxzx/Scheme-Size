@@ -50,7 +50,7 @@ public class Schematics512 extends Schematics{
     private FrameBuffer shadowBuffer;
     private Texture errorTexture;
 
-    public Schematics(){
+    public Schematics512(){
         Events.on(ClientLoadEvent.class, event -> {
             errorTexture = new Texture("sprites/error.png");
         });
