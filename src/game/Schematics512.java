@@ -57,6 +57,12 @@ public class Schematics512 extends Schematics{
     }
 
     @Override
+    public void loadSync(){
+        // why?
+        load();
+    }
+
+    @Override
     public void load(){
         all.clear();
 
