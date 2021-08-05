@@ -22,7 +22,6 @@ import mindustry.entities.units.*;
 import mindustry.game.*;
 import mindustry.game.EventType.*;
 import mindustry.game.Schematic.*;
-import mindustry.game.Schematics.*;
 import mindustry.gen.*;
 import mindustry.input.*;
 import mindustry.input.Placement.*;
@@ -67,8 +66,7 @@ public class Schematics512 extends Schematics{
             loadFile(file);
         }
 
-        // platform.getWorkshopContent(Schematic.class).each(this::loadFile);
-        platform.getWorkshopContent(Schematic.class).each(loadFile);
+        platform.getWorkshopContent(Schematic.class).each(this::loadFile);
 
         //mod-specific schematics, cannot be removed
         mods.listFiles("schematics", (mod, file) -> {
@@ -83,6 +81,28 @@ public class Schematics512 extends Schematics{
         if(shadowBuffer == null){
             Core.app.post(() -> shadowBuffer = new FrameBuffer(schemeSize + padding + 8, schemeSize + padding + 8));
         }
+    }
+
+    @Override
+    private @Nullable Schematic loadFile(Fi file){
+        if(!file.extension().equals(schematicExtension)) return null;
+
+        try{
+            Schematic s = read(file);
+            all.add(s);
+            checkLoadout(s, true);
+
+            //external file from workshop
+            if(!s.file.parent().equals(schematicDirectory)){
+                s.tags.put("steamid", s.file.parent().name());
+            }
+
+            return s;
+        }catch(Throwable e){
+            Log.err("Failed to read schematic from file '@'", file);
+            Log.err(e);
+        }
+        return null;
     }
 
     @Override
