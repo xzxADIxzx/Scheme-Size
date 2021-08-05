@@ -173,7 +173,7 @@ public class Schematics512 extends Schematics{
             for(int cy = oy; cy <= oy2; cy++){
                 Building tile = world.build(cx, cy);
                 Block realBlock = null;
-                if(linked != null)
+                if(tile != null)
                     realBlock = tile.block;
                 // idk why... but it won`t compile
                 // Block realBlock = tile == null ? null : tile instanceof ConstructBuild cons ? cons.current : tile.block;
