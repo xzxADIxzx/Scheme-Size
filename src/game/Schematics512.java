@@ -22,6 +22,7 @@ import mindustry.entities.units.*;
 import mindustry.game.*;
 import mindustry.game.EventType.*;
 import mindustry.game.Schematic.*;
+import mindustry.game.Schematics.*;
 import mindustry.gen.*;
 import mindustry.input.*;
 import mindustry.input.Placement.*;
@@ -60,13 +61,14 @@ public class Schematics512 extends Schematics{
     public void load(){
         all.clear();
 
-        loadLoadouts();
+        // loadLoadouts();
 
         for(Fi file : schematicDirectory.list()){
             loadFile(file);
         }
 
-        platform.getWorkshopContent(Schematic.class).each(this::loadFile);
+        // platform.getWorkshopContent(Schematic.class).each(this::loadFile);
+        platform.getWorkshopContent(Schematic.class).each(loadFile);
 
         //mod-specific schematics, cannot be removed
         mods.listFiles("schematics", (mod, file) -> {
