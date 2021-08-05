@@ -49,6 +49,7 @@ public class Schematics512 extends Schematics{
     private Seq<Schematic> all = new Seq<>();
     private FrameBuffer shadowBuffer;
     private Texture errorTexture;
+    private ObjectSet<Schematic> errored = new ObjectSet<>();
 
     public Schematics512(){
         Events.on(ClientLoadEvent.class, event -> {
