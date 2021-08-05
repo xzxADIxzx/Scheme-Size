@@ -212,6 +212,37 @@ public class Schematics512 extends Schematics{
     }
 
     @Override
+    public void add(Schematic schematic){
+        all.add(schematic);
+        try{
+            Fi file = schematicDirectory.child(Time.millis() + "." + schematicExtension);
+            write(schematic, file);
+            schematic.file = file;
+        }catch(Exception e){
+            ui.showException(e);
+            Log.err(e);
+        }
+
+        checkLoadout(schematic, true);
+        all.sort();
+    }
+
+    @Override
+    public void remove(Schematic schematic){
+        all.remove(schematic);
+        loadouts.each((block, seq) -> seq.remove(schematic));
+        if(schematic.file != null){
+            schematic.file.delete();
+        }
+
+        if(previews.containsKey(schematic)){
+            previews.get(schematic).dispose();
+            previews.remove(schematic);
+        }
+        all.sort();
+    }
+
+    @Override
     public Seq<Schematic> all(){
         // need to return this.all
         return all;
