@@ -196,4 +196,10 @@ public class Schematics512 extends Schematics{
 
         return new Schematic(tiles, new StringMap(), width, height);
     }
+
+    @Override
+    public Seq<Schematic> all(){
+        // need to return this.all
+        return all;
+    }
 }
