@@ -28,7 +28,7 @@ ext{
 allprojects{
     tasks.withType(JavaCompile){
         if(JavaVersion.current() != JavaVersion.VERSION_1_8){
-            options.compilerArgs.addAll(['--release', '16'])
+            options.compilerArgs.addAll(['--release', '14'])
         }
     }
 }
