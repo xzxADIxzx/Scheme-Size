@@ -243,6 +243,33 @@ public class Schematics512 extends Schematics{
     }
 
     @Override
+    public void overwrite(Schematic target, Schematic newSchematic){
+        if(previews.containsKey(target)){
+            previews.get(target).dispose();
+            previews.remove(target);
+        }
+
+        target.tiles.clear();
+        target.tiles.addAll(newSchematic.tiles);
+        target.width = newSchematic.width;
+        target.height = newSchematic.height;
+        newSchematic.labels = target.labels;
+        newSchematic.tags.putAll(target.tags);
+        newSchematic.file = target.file;
+
+        loadouts.each((block, list) -> list.remove(target));
+        // checkLoadout(target, true);
+
+        try{
+            write(newSchematic, target.file);
+        }catch(Exception e){
+            Log.err("Failed to overwrite schematic '@' (@)", newSchematic.name(), target.file);
+            Log.err(e);
+            ui.showException(e);
+        }
+    }
+
+    @Override
     public Seq<Schematic> all(){
         // need to return this.all
         return all;
