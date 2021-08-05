@@ -144,8 +144,7 @@ public class Schematics512 extends Schematics{
                 Block realBlock = null;
                 if(linked != null){
                     if(linked.getClass() == ConstructBuild.class){
-                        realBlock = linked.block;
-                        // realBlock = linked.current;
+                        realBlock = linked.current;
                     }else{
                         realBlock = linked.block;
                     }
@@ -183,8 +182,7 @@ public class Schematics512 extends Schematics{
                 Block realBlock = null;
                 if(tile != null){
                     if (tile.getClass() == ConstructBuild.class){
-                        realBlock = tile.block;
-                        // realBlock = tile.current;
+                        realBlock = tile.current;
                     }else{
                         realBlock = tile.block;
                     }
@@ -196,8 +194,7 @@ public class Schematics512 extends Schematics{
                     // Object config = tile instanceof ConstructBuild cons ? cons.lastConfig : tile.config();
                     Object config = null;
                     if (tile.getClass() == ConstructBuild.class){
-                        config = tile.config();
-                        // config = tile.lastConfig;
+                        config = tile.lastConfig;
                     }else{
                         config = tile.config();
                     }
