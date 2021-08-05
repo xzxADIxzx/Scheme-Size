@@ -59,7 +59,7 @@ public class Schematics512 extends Schematics{
     private Seq<Schematic> all = new Seq<>();
     private OrderedMap<Schematic, FrameBuffer> previews = new OrderedMap<>();
     private ObjectSet<Schematic> errored = new ObjectSet<>();
-    // private ObjectMap<CoreBlock, Seq<Schematic>> loadouts = new ObjectMap<>();
+    private ObjectMap<CoreBlock, Seq<Schematic>> loadouts = new ObjectMap<>();
     private FrameBuffer shadowBuffer;
     private Texture errorTexture;
     private long lastClearTime;
@@ -223,7 +223,7 @@ public class Schematics512 extends Schematics{
             Log.err(e);
         }
 
-        checkLoadout(schematic, true);
+        // checkLoadout(schematic, true);
         all.sort();
     }
 
