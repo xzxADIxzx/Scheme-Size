@@ -68,7 +68,6 @@ public class Schematics512 extends Schematics{
 
         platform.getWorkshopContent(Schematic.class).each(this::loadFile);
 
-        //mod-specific schematics, cannot be removed
         mods.listFiles("schematics", (mod, file) -> {
             Schematic s = loadFile(file);
             if(s != null){
@@ -83,16 +82,14 @@ public class Schematics512 extends Schematics{
         }
     }
 
-    @Override
     private @Nullable Schematic loadFile(Fi file){
         if(!file.extension().equals(schematicExtension)) return null;
 
         try{
             Schematic s = read(file);
             all.add(s);
-            checkLoadout(s, true);
+            // checkLoadout(s, true);
 
-            //external file from workshop
             if(!s.file.parent().equals(schematicDirectory)){
                 s.tags.put("steamid", s.file.parent().name());
             }
