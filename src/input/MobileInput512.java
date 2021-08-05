@@ -25,6 +25,7 @@ import mindustry.type.*;
 import mindustry.ui.*;
 import mindustry.world.*;
 import mindustry.world.blocks.*;
+import mindustry.input.*;
 
 import static mindustry.Vars.*;
 import static mindustry.input.PlaceMode.*;
