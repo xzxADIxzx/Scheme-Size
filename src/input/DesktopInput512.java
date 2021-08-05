@@ -46,11 +46,11 @@ public class DesktopInput512 extends DesktopInput{
             drawSelection(schemX, schemY, cursorX, cursorY, 512);
 
             // Show Size
-            NormalizeResult normalized = normalizeArea(schemX, schemY, cursorX, cursorY, 0, false, 512);
+            NormalizeResult normalized = Placement.normalizeArea(schemX, schemY, cursorX, cursorY, 0, false, 512);
             int sizeX = normalized.x - normalized.x2;
             int sizeY = normalized.y - normalized.y2;
             String info = Integer.toString(sizeX) + ", " + Integer.toString(sizeY);
-            ui.showLabel("just text", 1, cursorX * 8, cursorY * 8);
+            ui.showLabel("just text", 0, cursorX * 8, cursorY * 8);
         }
 
         Draw.reset();
