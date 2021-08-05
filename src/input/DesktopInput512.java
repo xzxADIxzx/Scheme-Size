@@ -34,15 +34,30 @@ public class DesktopInput512 extends DesktopInput{
         int cursorX = tileX(Core.input.mouseX());
         int cursorY = tileY(Core.input.mouseY());
 
-        //draw break selection
         if(mode == breaking){
-            drawBreakSelection(selectX, selectY, cursorX, cursorY, !Core.input.keyDown(Binding.schematic_select) ? maxLength : 512);
+            drawBreakSelection(selectX, selectY, cursorX, cursorY, !Core.input.keyDown(Binding.schematic_select) ? maxLength : Vars.maxSchematicSize);
         }
 
         if(Core.input.keyDown(Binding.schematic_select) && !Core.scene.hasKeyboard() && mode != breaking){
-            drawSelection(schemX, schemY, cursorX, cursorY, Vars.maxSchematicSize);
+            drawSelection(schemX, schemY, cursorX, cursorY, 512);
         }
 
         Draw.reset();
+    }
+
+    private int tileX(float cursorX){
+        Vec2 vec = Core.input.mouseWorld(cursorX, 0);
+        if(selectedBlock()){
+            vec.sub(block.offset, block.offset);
+        }
+        return World.toTile(vec.x);
+    }
+
+    private int tileY(float cursorY){
+        Vec2 vec = Core.input.mouseWorld(0, cursorY);
+        if(selectedBlock()){
+            vec.sub(block.offset, block.offset);
+        }
+        return World.toTile(vec.y);
     }
 }
