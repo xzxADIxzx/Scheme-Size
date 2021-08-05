@@ -28,36 +28,36 @@ import static mindustry.input.PlaceMode.*;
 
 public class DesktopInput512 extends DesktopInput{
 
-    @Override
-    public void drawTop(){
-        Lines.stroke(1f);
-        int cursorX = tileX512(Core.input.mouseX());
-        int cursorY = tileY512(Core.input.mouseY());
+    // @Override
+    // public void drawTop(){
+    //     Lines.stroke(1f);
+    //     int cursorX = tileX512(Core.input.mouseX());
+    //     int cursorY = tileY512(Core.input.mouseY());
 
-        if(mode == breaking){
-            drawBreakSelection(selectX, selectY, cursorX, cursorY, !Core.input.keyDown(Binding.schematic_select) ? maxLength : Vars.maxSchematicSize);
-        }
+    //     if(mode == breaking){
+    //         drawBreakSelection(selectX, selectY, cursorX, cursorY, !Core.input.keyDown(Binding.schematic_select) ? maxLength : Vars.maxSchematicSize);
+    //     }
 
-        if(Core.input.keyDown(Binding.schematic_select) && !Core.scene.hasKeyboard() && mode != breaking){
-            drawSelection(schemX, schemY, cursorX, cursorY, 512);
-        }
+    //     if(Core.input.keyDown(Binding.schematic_select) && !Core.scene.hasKeyboard() && mode != breaking){
+    //         drawSelection(schemX, schemY, cursorX, cursorY, 512);
+    //     }
 
-        Draw.reset();
-    }
+    //     Draw.reset();
+    // }
 
-    public int tileX512(float cursorX){
-        Vec2 vec = Core.input.mouseWorld(cursorX, 0);
-        if(selectedBlock()){
-            vec.sub(block.offset, block.offset);
-        }
-        return World.toTile(vec.x);
-    }
+    // public int tileX512(float cursorX){
+    //     Vec2 vec = Core.input.mouseWorld(cursorX, 0);
+    //     if(selectedBlock()){
+    //         vec.sub(block.offset, block.offset);
+    //     }
+    //     return World.toTile(vec.x);
+    // }
 
-    public int tileY512(float cursorY){
-        Vec2 vec = Core.input.mouseWorld(0, cursorY);
-        if(selectedBlock()){
-            vec.sub(block.offset, block.offset);
-        }
-        return World.toTile(vec.y);
-    }
+    // public int tileY512(float cursorY){
+    //     Vec2 vec = Core.input.mouseWorld(0, cursorY);
+    //     if(selectedBlock()){
+    //         vec.sub(block.offset, block.offset);
+    //     }
+    //     return World.toTile(vec.y);
+    // }
 }
