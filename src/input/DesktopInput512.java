@@ -21,6 +21,7 @@ import mindustry.graphics.*;
 import mindustry.ui.*;
 import mindustry.world.*;
 import mindustry.input.*;
+import mindustry.input.Placement.*;
 
 import static arc.Core.*;
 import static mindustry.Vars.net;
@@ -45,11 +46,11 @@ public class DesktopInput512 extends DesktopInput{
             drawSelection(schemX, schemY, cursorX, cursorY, 512);
 
             // Show Size
-            // Placement.NormalizeDrawResult normalized = Placement.normalizeDrawArea(block, schemX, schemY, cursorX, cursorY, false, 512, 1);
-            // int sizeX = Math.round(normalized.x - normalized.x2);
-            // int sizeY = Math.round(normalized.y - normalized.y2);
-            // String info = Integer.toString(sizeX) + ", " + Integer.toString(sizeY);
-            ui.showLabel("just text", 1, cursorX * 10, cursorY * 10);
+            NormalizeResult normalized = normalizeArea(schemX, schemY, cursorX, cursorY, 0, false, 512);
+            int sizeX = normalized.x - normalized.x2;
+            int sizeY = normalized.y - normalized.y2;
+            String info = Integer.toString(sizeX) + ", " + Integer.toString(sizeY);
+            ui.showLabel("just text", 1, cursorX * 8, cursorY * 8);
         }
 
         Draw.reset();
