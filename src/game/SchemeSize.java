@@ -17,11 +17,11 @@ public class SchemeSize extends Mod{
                 Vars.schematics.loadSync();
 
                 // Change Input
-                // if(Vars.mobile){
-                //     Vars.control.input = new MobileInput512();
-                // }else{
-                //     Vars.control.input = new DesktopInput512();
-                // }
+                if(Vars.mobile){
+                    Vars.control.setInput(new MobileInput512());
+                }else{
+                    Vars.control.setInput(new DesktopInput512());
+                }
             });
         });
     }
