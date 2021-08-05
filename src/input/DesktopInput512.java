@@ -31,8 +31,8 @@ public class DesktopInput512 extends DesktopInput{
     @Override
     public void drawTop(){
         Lines.stroke(1f);
-        int cursorX = tileX(Core.input.mouseX());
-        int cursorY = tileY(Core.input.mouseY());
+        int cursorX = tileX512(Core.input.mouseX());
+        int cursorY = tileY512(Core.input.mouseY());
 
         if(mode == breaking){
             drawBreakSelection(selectX, selectY, cursorX, cursorY, !Core.input.keyDown(Binding.schematic_select) ? maxLength : Vars.maxSchematicSize);
@@ -45,8 +45,7 @@ public class DesktopInput512 extends DesktopInput{
         Draw.reset();
     }
 
-    @Override
-    public int tileX(float cursorX){
+    public int tileX512(float cursorX){
         Vec2 vec = Core.input.mouseWorld(cursorX, 0);
         if(selectedBlock()){
             vec.sub(block.offset, block.offset);
@@ -54,8 +53,7 @@ public class DesktopInput512 extends DesktopInput{
         return World.toTile(vec.x);
     }
 
-    @Override
-    public int tileY(float cursorY){
+    public int tileY512(float cursorY){
         Vec2 vec = Core.input.mouseWorld(0, cursorY);
         if(selectedBlock()){
             vec.sub(block.offset, block.offset);
