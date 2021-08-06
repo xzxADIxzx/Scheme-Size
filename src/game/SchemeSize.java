@@ -23,9 +23,9 @@ public class SchemeSize extends Mod{
                     Vars.control.setInput(new DesktopInput512());
                 }
 
-                Log.info(Vars.schematics)
-                Log.info(Vars.mobile)
-                Log.info(Vars.control.input)
+                Log.info(Vars.schematics);
+                Log.info(Vars.mobile);
+                Log.info(Vars.control.input);
             });
         });
     }
