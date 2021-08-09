@@ -33,6 +33,8 @@ import java.lang.Math;
 
 public class DesktopInput512 extends DesktopInput, InputHandler{
 
+    private InputHandler ih = new InputHandler;
+
     @Override
     public void drawTop(){
         Lines.stroke(1f);
@@ -198,7 +200,7 @@ public class DesktopInput512 extends DesktopInput, InputHandler{
             }
         }
 
-        Tile cursor = tileAt512(Core.input.mouseX(), Core.input.mouseY());
+        Tile cursor = ih.tileAt(Core.input.mouseX(), Core.input.mouseY()); //
 
         if(cursor != null){
             if(cursor.build != null){
@@ -209,7 +211,7 @@ public class DesktopInput512 extends DesktopInput, InputHandler{
                 cursorType = SystemCursor.hand;
             }
 
-            if(!isPlacing() && canMine512(cursor)){
+            if(!isPlacing() && ih.canMine(cursor)){ //
                 cursorType = ui.drillCursor;
             }
 
@@ -217,7 +219,7 @@ public class DesktopInput512 extends DesktopInput, InputHandler{
                 cursorType = SystemCursor.hand;
             }
 
-            if(canTapPlayer512(Core.input.mouseWorld().x, Core.input.mouseWorld().y)){
+            if(ih.canTapPlayer(Core.input.mouseWorld().x, Core.input.mouseWorld().y)){ //
                 cursorType = ui.unloadCursor;
             }
 
@@ -238,9 +240,9 @@ public class DesktopInput512 extends DesktopInput, InputHandler{
         var focus = scene.getKeyboardFocus();
         if(focus != null && focus.getClass() == TextField.class) return;
 
-        Tile selected = tileAt512(Core.input.mouseX(), Core.input.mouseY());
-        int cursorX = tileX512(Core.input.mouseX());
-        int cursorY = tileY512(Core.input.mouseY());
+        Tile selected = ih.tileAt(Core.input.mouseX(), Core.input.mouseY());
+        int cursorX = ih.tileX(Core.input.mouseX());
+        int cursorY = ih.tileY(Core.input.mouseY());
         int rawCursorX = World.toTile(Core.input.mouseWorld().x), rawCursorY = World.toTile(Core.input.mouseWorld().y);
 
         //automatically pause building if the current build queue is empty
@@ -354,7 +356,7 @@ public class DesktopInput512 extends DesktopInput, InputHandler{
                 deleting = true;
             }else if(selected != null){
                 //only begin shooting if there's no cursor event
-                if(!tryTapPlayer512(Core.input.mouseWorld().x, Core.input.mouseWorld().y) && !tileTapped(selected.build) && !player.unit().activelyBuilding() && !droppingItem
+                if(!ih.tryTapPlayer(Core.input.mouseWorld().x, Core.input.mouseWorld().y) && !tileTapped(selected.build) && !player.unit().activelyBuilding() && !droppingItem
                     && !(tryStopMine(selected) || (!settings.getBool("doubletapmine") || selected == prevSelected && Time.timeSinceMillis(selectMillis) < 500) && tryBeginMine(selected)) && !Core.scene.hasKeyboard()){
                     player.shooting = shouldShoot;
                 }
@@ -373,8 +375,8 @@ public class DesktopInput512 extends DesktopInput, InputHandler{
             //is recalculated because setting the mode to breaking removes potential multiblock cursor offset
             deleting = false;
             mode = breaking;
-            selectX = tileX512(Core.input.mouseX());
-            selectY = tileY512(Core.input.mouseY());
+            selectX = ih.tileX(Core.input.mouseX());
+            selectY = ih.tileY(Core.input.mouseY());
             schemX = rawCursorX;
             schemY = rawCursorY;
         }
