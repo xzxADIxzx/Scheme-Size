@@ -166,7 +166,7 @@ public class DesktopInput512 extends DesktopInput{
             return;
         }
 
-        pollInput();
+        pollInput512();
 
         //deselect if not placing
         if(!isPlacing() && mode == placing){
@@ -233,8 +233,7 @@ public class DesktopInput512 extends DesktopInput{
         cursorType = SystemCursor.arrow;
     }
 
-    @Override
-    public void pollInput(){
+    public void pollInput512(){
         var focus = scene.getKeyboardFocus();
         if(focus != null && focus.getClass() == TextField.class) return;
 
