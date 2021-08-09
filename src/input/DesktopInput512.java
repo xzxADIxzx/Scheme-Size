@@ -74,6 +74,165 @@ public class DesktopInput512 extends DesktopInput{
     }
 
     @Override
+    public void update(){
+        super.update();
+
+        if(net.active() && Core.input.keyTap(Binding.player_list) && (scene.getKeyboardFocus() == null || scene.getKeyboardFocus().isDescendantOf(ui.listfrag.content) || scene.getKeyboardFocus().isDescendantOf(ui.minimapfrag.elem))){
+            ui.listfrag.toggle();
+        }
+
+        boolean panCam = false;
+        float camSpeed = (!Core.input.keyDown(Binding.boost) ? panSpeed : panBoostSpeed) * Time.delta;
+
+        if(input.keyDown(Binding.pan) && !scene.hasField() && !scene.hasDialog()){
+            panCam = true;
+            panning = true;
+        }
+
+        if((Math.abs(Core.input.axis(Binding.move_x)) > 0 || Math.abs(Core.input.axis(Binding.move_y)) > 0 || input.keyDown(Binding.mouse_move)) && (!scene.hasField())){
+            panning = false;
+        }
+
+        if(((player.dead() || state.isPaused()) && !ui.chatfrag.shown()) && !scene.hasField() && !scene.hasDialog()){
+            if(input.keyDown(Binding.mouse_move)){
+                panCam = true;
+            }
+
+            Core.camera.position.add(Tmp.v1.setZero().add(Core.input.axis(Binding.move_x), Core.input.axis(Binding.move_y)).nor().scl(camSpeed));
+        }else if(!player.dead() && !panning){
+            Core.camera.position.lerpDelta(player, Core.settings.getBool("smoothcamera") ? 0.08f : 1f);
+        }
+
+        if(panCam){
+            Core.camera.position.x += Mathf.clamp((Core.input.mouseX() - Core.graphics.getWidth() / 2f) * panScale, -1, 1) * camSpeed;
+            Core.camera.position.y += Mathf.clamp((Core.input.mouseY() - Core.graphics.getHeight() / 2f) * panScale, -1, 1) * camSpeed;
+        }
+
+        shouldShoot = !scene.hasMouse();
+
+        if(!scene.hasMouse()){
+            if(Core.input.keyDown(Binding.control) && Core.input.keyTap(Binding.select)){
+                Unit on = selectedUnit();
+                var build = selectedControlBuild();
+                if(on != null){
+                    Call.unitControl(player, on);
+                    shouldShoot = false;
+                    recentRespawnTimer = 1f;
+                }else if(build != null){
+                    Call.buildingControlSelect(player, build);
+                    recentRespawnTimer = 1f;
+                }
+            }
+        }
+
+        if(!player.dead() && !state.isPaused() && !scene.hasField() && !renderer.isCutscene()){
+            updateMovement(player.unit());
+
+            if(Core.input.keyTap(Binding.respawn)){
+                controlledType = null;
+                recentRespawnTimer = 1f;
+                Call.unitClear(player);
+            }
+        }
+
+        if(Core.input.keyRelease(Binding.select)){
+            player.shooting = false;
+        }
+
+        if(state.isGame() && !scene.hasDialog() && !(scene.getKeyboardFocus() instanceof TextField)){
+            if(Core.input.keyTap(Binding.minimap)) ui.minimapfrag.toggle();
+            if(Core.input.keyTap(Binding.planet_map) && state.isCampaign()) ui.planet.toggle();
+            if(Core.input.keyTap(Binding.research) && state.isCampaign()) ui.research.toggle();
+        }
+
+        if(state.isMenu() || Core.scene.hasDialog()) return;
+
+        //zoom camera
+        if((!Core.scene.hasScroll() || Core.input.keyDown(Binding.diagonal_placement)) && !ui.chatfrag.shown() && Math.abs(Core.input.axisTap(Binding.zoom)) > 0
+            && !Core.input.keyDown(Binding.rotateplaced) && (Core.input.keyDown(Binding.diagonal_placement) || ((!player.isBuilder() || !isPlacing() || !block.rotate) && selectRequests.isEmpty()))){
+            renderer.scaleCamera(Core.input.axisTap(Binding.zoom));
+        }
+
+        if(Core.input.keyTap(Binding.select) && !Core.scene.hasMouse()){
+            Tile selected = world.tileWorld(input.mouseWorldX(), input.mouseWorldY());
+            if(selected != null){
+                Call.tileTap(player, selected);
+            }
+        }
+
+        if(player.dead()){
+            cursorType = SystemCursor.arrow;
+            return;
+        }
+
+        pollInput();
+
+        //deselect if not placing
+        if(!isPlacing() && mode == placing){
+            mode = none;
+        }
+
+        if(player.shooting && !canShoot()){
+            player.shooting = false;
+        }
+
+        if(isPlacing() && player.isBuilder()){
+            cursorType = SystemCursor.hand;
+            selectScale = Mathf.lerpDelta(selectScale, 1f, 0.2f);
+        }else{
+            selectScale = 0f;
+        }
+
+        if(!Core.input.keyDown(Binding.diagonal_placement) && Math.abs((int)Core.input.axisTap(Binding.rotate)) > 0){
+            rotation = Mathf.mod(rotation + (int)Core.input.axisTap(Binding.rotate), 4);
+
+            if(sreq != null){
+                sreq.rotation = Mathf.mod(sreq.rotation + (int)Core.input.axisTap(Binding.rotate), 4);
+            }
+
+            if(isPlacing() && mode == placing){
+                updateLine(selectX, selectY);
+            }else if(!selectRequests.isEmpty() && !ui.chatfrag.shown()){
+                rotateRequests(selectRequests, Mathf.sign(Core.input.axisTap(Binding.rotate)));
+            }
+        }
+
+        Tile cursor = tileAt(Core.input.mouseX(), Core.input.mouseY());
+
+        if(cursor != null){
+            if(cursor.build != null){
+                cursorType = cursor.build.getCursor();
+            }
+
+            if((isPlacing() && player.isBuilder()) || !selectRequests.isEmpty()){
+                cursorType = SystemCursor.hand;
+            }
+
+            if(!isPlacing() && canMine(cursor)){
+                cursorType = ui.drillCursor;
+            }
+
+            if(getRequest(cursor.x, cursor.y) != null && mode == none){
+                cursorType = SystemCursor.hand;
+            }
+
+            if(canTapPlayer(Core.input.mouseWorld().x, Core.input.mouseWorld().y)){
+                cursorType = ui.unloadCursor;
+            }
+
+            if(cursor.build != null && cursor.interactable(player.team()) && !isPlacing() && Math.abs(Core.input.axisTap(Binding.rotate)) > 0 && Core.input.keyDown(Binding.rotateplaced) && cursor.block().rotate && cursor.block().quickRotate){
+                Call.rotateBlock(player, cursor.build, Core.input.axisTap(Binding.rotate) > 0);
+            }
+        }
+
+        if(!Core.scene.hasMouse()){
+            Core.graphics.cursor(cursorType);
+        }
+
+        cursorType = SystemCursor.arrow;
+    }
+
+    @Override
     void pollInput(){
         if(scene.getKeyboardFocus().getClass() == TextField.class) return;
 
