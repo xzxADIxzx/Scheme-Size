@@ -124,7 +124,7 @@ public class Schematics512 extends Schematics{
 
     @Override
     public Schematic create(int x, int y, int x2, int y2){
-        NormalizeResult result = Placement.normalizeArea(x, y, x2, y2, 0, false, settings.getInt("copysize"));
+        NormalizeResult result = Placement.normalizeArea(x, y, x2, y2, 0, false, settings.getInt("copysize") - 1);
         x = result.x;
         y = result.y;
         x2 = result.x2;

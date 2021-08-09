@@ -25,8 +25,8 @@ public class SchemeSize extends Mod{
                 // Add Settings
                 var game = Vars.ui.settings.game;
                 game.marginTop(16);
-                game.sliderPref("copysize", 512, 32, 512, 32, i -> Core.bundle.format("unit.blocks", i));
-                game.sliderPref("breaksize", 512, 32, 512, 32, i -> Core.bundle.format("unit.blocks", i));
+                game.sliderPref("copysize", 512, 32, 512, 32, i -> Core.bundle.format("setting.blocks", i));
+                game.sliderPref("breaksize", 512, 32, 512, 32, i -> Core.bundle.format("setting.blocks", i));
                 game.checkPref("copyshow", true);
                 game.checkPref("breakshow", true);
 
