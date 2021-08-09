@@ -467,7 +467,8 @@ public class DesktopInput512 extends InputHandler{
     }
 
     void pollInput(){
-        if(scene.getKeyboardFocus() instanceof TextField) return;
+        var focus = scene.getKeyboardFocus();
+        if(focus != null && focus.getClass() == TextField.class) return;
 
         Tile selected = tileAt(Core.input.mouseX(), Core.input.mouseY());
         int cursorX = tileX(Core.input.mouseX());
@@ -641,7 +642,7 @@ public class DesktopInput512 extends InputHandler{
                 lineRequests.clear();
                 Events.fire(new LineConfirmEvent());
             }else if(mode == breaking){ //touch up while breaking, break everything in selection
-                removeSelection(selectX, selectY, cursorX, cursorY, Core.input.keyDown(Binding.schematic_select) ? settings.getInt("copysize") - 1 : settings.getInt("breaksize") - 1));
+                removeSelection(selectX, selectY, cursorX, cursorY, Core.input.keyDown(Binding.schematic_select) ? settings.getInt("copysize") - 1 : settings.getInt("breaksize") - 1);
                 if(lastSchematic != null){
                     useSchematic(lastSchematic);
                     lastSchematic = null;
