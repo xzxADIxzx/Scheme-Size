@@ -234,7 +234,8 @@ public class DesktopInput512 extends DesktopInput{
 
     @Override
     void pollInput(){
-        if(scene.getKeyboardFocus().getClass() == TextField.class) return;
+        var focus = scene.getKeyboardFocus();
+        if(focus != null && focus.getClass() == TextField.class) return;
 
         Tile selected = tileAt(Core.input.mouseX(), Core.input.mouseY());
         int cursorX = tileX(Core.input.mouseX());
