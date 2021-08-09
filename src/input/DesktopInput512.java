@@ -39,7 +39,16 @@ public class DesktopInput512 extends DesktopInput{
         int cursorY = tileY512(Core.input.mouseY());
 
         if(mode == breaking){
-            drawBreakSelection(selectX, selectY, cursorX, cursorY, !Core.input.keyDown(Binding.schematic_select) ? maxLength : Vars.maxSchematicSize);
+            drawBreakSelection(selectX, selectY, cursorX, cursorY, !Core.input.keyDown(Binding.schematic_select) ? maxLength : settings.getInt("breaksize"));
+
+            // Show Size
+            if(settings.getBool("destshow")){
+                NormalizeResult normalized = Placement.normalizeArea(selectX, selectY, cursorX, cursorY, 0, false, 512);
+                int sizeX = normalized.x2 - normalized.x + 1;
+                int sizeY = normalized.y2 - normalized.y + 1;
+                String info = Integer.toString(sizeX) + ", " + Integer.toString(sizeY);
+                ui.showLabel(info, 0.02f, cursorX * 8 + 16, cursorY * 8 - 16);
+            }
         }
 
         if(Core.input.keyDown(Binding.schematic_select) && !Core.scene.hasKeyboard() && mode != breaking){
@@ -47,7 +56,7 @@ public class DesktopInput512 extends DesktopInput{
 
             // Show Size
             if(settings.getBool("copyshow")){
-                NormalizeResult normalized = Placement.normalizeArea(schemX, schemY, cursorX, cursorY, 0, false, 512);
+                NormalizeResult normalized = Placement.normalizeArea(schemX, schemY, cursorX, cursorY, 0, false, settings.getInt("copysize"));
                 int sizeX = normalized.x2 - normalized.x + 1;
                 int sizeY = normalized.y2 - normalized.y + 1;
                 String info = Integer.toString(sizeX) + ", " + Integer.toString(sizeY);

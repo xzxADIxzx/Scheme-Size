@@ -25,10 +25,10 @@ public class SchemeSize extends Mod{
                 // Add Settings
                 var game = Vars.ui.settings.game;
                 game.labelWrap("");
-                game.sliderPref("copysize", 512, 32, 512, 32, i -> i + " blocks");
-                game.sliderPref("breaksize", 512, 32, 512, 32, i -> i + " blocks");
+                game.sliderPref("copysize", 512, 32, 512, 32, i -> i + " @unit.blocks");
+                game.sliderPref("breaksize", 512, 32, 512, 32, i -> i + " @unit.blocks");
                 game.checkPref("copyshow", true);
-                game.checkPref("destshow", true);
+                game.checkPref("breakshow", true);
 
                 // Add Logs
                 // Log.info(Vars.schematics);
