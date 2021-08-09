@@ -46,7 +46,7 @@ public class DesktopInput512 extends DesktopInput{
             drawSelection(schemX, schemY, cursorX, cursorY, 512);
 
             // Show Size
-            if(setting.getBool("copyshow")){
+            if(settings.getBool("copyshow")){
                 NormalizeResult normalized = Placement.normalizeArea(schemX, schemY, cursorX, cursorY, 0, false, 512);
                 int sizeX = normalized.x2 - normalized.x + 1;
                 int sizeY = normalized.y2 - normalized.y + 1;
