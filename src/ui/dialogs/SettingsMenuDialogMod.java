@@ -145,7 +145,7 @@ public class SettingsMenuDialogMod extends SettingsMenuDialog{
                     }
                     content.each(c -> {
                         if(c.getClass() == UnlockableContent.class){
-                            u.clearUnlock();
+                            c.clearUnlock();
                         }
                     });
                     settings.remove("unlocks");
