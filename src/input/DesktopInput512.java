@@ -208,7 +208,7 @@ public class DesktopInput512 extends DesktopInput{
                 cursorType = SystemCursor.hand;
             }
 
-            if(!isPlacing() && canMine(cursor)){
+            if(!isPlacing() && canMine512(cursor)){
                 cursorType = ui.drillCursor;
             }
 
@@ -233,7 +233,7 @@ public class DesktopInput512 extends DesktopInput{
     }
 
     @Override
-    void pollInput(){
+    public void pollInput(){
         var focus = scene.getKeyboardFocus();
         if(focus != null && focus.getClass() == TextField.class) return;
 
@@ -444,7 +444,7 @@ public class DesktopInput512 extends DesktopInput{
         }
     }
 
-    Tile tileAt512(float x, float y){
+    public Tile tileAt512(float x, float y){
         // ._.
         return world.tile(tileX512(x), tileY512(y));
     }
@@ -463,5 +463,14 @@ public class DesktopInput512 extends DesktopInput{
             vec.sub(block.offset, block.offset);
         }
         return World.toTile(vec.y);
+    }
+
+    public boolean canMine512(Tile tile){
+        return !Core.scene.hasMouse()
+            && tile.drop() != null
+            && player.unit().validMine(tile)
+            && !((!Core.settings.getBool("doubletapmine") && tile.floor().playerUnmineable) && tile.overlay().itemDrop == null)
+            && player.unit().acceptsItem(tile.drop())
+            && tile.block() == Blocks.air;
     }
 }
