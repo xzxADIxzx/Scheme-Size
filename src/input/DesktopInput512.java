@@ -29,8 +29,6 @@ import static mindustry.Vars.net;
 import static mindustry.Vars.*;
 import static mindustry.input.PlaceMode.*;
 
-import java.lang.Math;
-
 public class DesktopInput512 extends DesktopInput{
 
     final static float playerSelectRange = mobile ? 17f : 11f;
@@ -413,6 +411,8 @@ public class DesktopInput512 extends DesktopInput{
                 Events.fire(new LineConfirmEvent());
             }else if(mode == breaking){ //touch up while breaking, break everything in selection
                 removeSelection(selectX, selectY, cursorX, cursorY, Core.input.keyDown(Binding.schematic_select) ? settings.getInt("copysize") - 1 : settings.getInt("breaksize") - 1);
+                Log.info("Work?");
+                Log.info(Core.input.keyDown(Binding.schematic_select) ? settings.getInt("copysize") - 1 : settings.getInt("breaksize") - 1);
                 if(lastSchematic != null){
                     useSchematic(lastSchematic);
                     lastSchematic = null;
