@@ -354,7 +354,7 @@ public class DesktopInput512 extends DesktopInput{
                 deleting = true;
             }else if(selected != null){
                 //only begin shooting if there's no cursor event
-                if(!tryTapPlayer(Core.input.mouseWorld().x, Core.input.mouseWorld().y) && !tileTapped(selected.build) && !player.unit().activelyBuilding() && !droppingItem
+                if(!tryTapPlayer512(Core.input.mouseWorld().x, Core.input.mouseWorld().y) && !tileTapped(selected.build) && !player.unit().activelyBuilding() && !droppingItem
                     && !(tryStopMine(selected) || (!settings.getBool("doubletapmine") || selected == prevSelected && Time.timeSinceMillis(selectMillis) < 500) && tryBeginMine(selected)) && !Core.scene.hasKeyboard()){
                     player.shooting = shouldShoot;
                 }
@@ -473,5 +473,13 @@ public class DesktopInput512 extends DesktopInput{
             && !((!Core.settings.getBool("doubletapmine") && tile.floor().playerUnmineable) && tile.overlay().itemDrop == null)
             && player.unit().acceptsItem(tile.drop())
             && tile.block() == Blocks.air;
+    }
+
+    public boolean tryTapPlayer512(float x, float y){
+        if(canTapPlayer(x, y)){
+            droppingItem = true;
+            return true;
+        }
+        return false;
     }
 }
