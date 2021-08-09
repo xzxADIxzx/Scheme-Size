@@ -42,8 +42,8 @@ public class DesktopInput512 extends DesktopInput{
             drawBreakSelection(selectX, selectY, cursorX, cursorY, !Core.input.keyDown(Binding.schematic_select) ? maxLength : settings.getInt("breaksize"));
 
             // Show Size
-            if(settings.getBool("destshow")){
-                NormalizeResult normalized = Placement.normalizeArea(selectX, selectY, cursorX, cursorY, 0, false, 512);
+            if(settings.getBool("breakshow")){
+                NormalizeResult normalized = Placement.normalizeArea(selectX, selectY, cursorX, cursorY, 0, false, settings.getInt("breaksize"));
                 int sizeX = normalized.x2 - normalized.x + 1;
                 int sizeY = normalized.y2 - normalized.y + 1;
                 String info = Integer.toString(sizeX) + ", " + Integer.toString(sizeY);
@@ -52,7 +52,7 @@ public class DesktopInput512 extends DesktopInput{
         }
 
         if(Core.input.keyDown(Binding.schematic_select) && !Core.scene.hasKeyboard() && mode != breaking){
-            drawSelection(schemX, schemY, cursorX, cursorY, 512);
+            drawSelection(schemX, schemY, cursorX, cursorY, settings.getInt("copysize"));
 
             // Show Size
             if(settings.getBool("copyshow")){
