@@ -142,7 +142,7 @@ public class SettingsMenuDialogMod extends SettingsMenuDialog{
                         node.reset();
                     }
                     content.each(c -> {
-                        if(c instanceof UnlockableContent u){
+                        if(c.getClass() == UnlockableContent.class){
                             u.clearUnlock();
                         }
                     });
