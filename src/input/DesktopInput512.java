@@ -238,8 +238,8 @@ public class DesktopInput512 extends DesktopInput{
         if(focus != null && focus.getClass() == TextField.class) return;
 
         Tile selected = tileAt512(Core.input.mouseX(), Core.input.mouseY());
-        int cursorX = tileX(Core.input.mouseX());
-        int cursorY = tileY(Core.input.mouseY());
+        int cursorX = tileX512(Core.input.mouseX());
+        int cursorY = tileY512(Core.input.mouseY());
         int rawCursorX = World.toTile(Core.input.mouseWorld().x), rawCursorY = World.toTile(Core.input.mouseWorld().y);
 
         //automatically pause building if the current build queue is empty
@@ -372,8 +372,8 @@ public class DesktopInput512 extends DesktopInput{
             //is recalculated because setting the mode to breaking removes potential multiblock cursor offset
             deleting = false;
             mode = breaking;
-            selectX = tileX(Core.input.mouseX());
-            selectY = tileY(Core.input.mouseY());
+            selectX = tileX512(Core.input.mouseX());
+            selectY = tileY512(Core.input.mouseY());
             schemX = rawCursorX;
             schemY = rawCursorY;
         }
