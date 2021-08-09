@@ -22,6 +22,7 @@ import mindustry.ui.*;
 import mindustry.world.*;
 import mindustry.input.*;
 import mindustry.input.Placement.*;
+import mindustry.content.*;
 
 import static arc.Core.*;
 import static mindustry.Vars.net;
