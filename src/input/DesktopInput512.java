@@ -375,7 +375,7 @@ public class DesktopInput512 extends DesktopInput{
             //is recalculated because setting the mode to breaking removes potential multiblock cursor offset
             deleting = false;
             mode = breaking;
-            selectX = tileX521(Core.input.mouseX());
+            selectX = tileX512(Core.input.mouseX());
             selectY = tileY512(Core.input.mouseY());
             schemX = rawCursorX;
             schemY = rawCursorY;
