@@ -41,6 +41,8 @@ public class SettingsMenuDialogMod extends SettingsMenuDialog{
 
     private Table prefs;
     private Table menu;
+    private BaseDialog dataDialog;
+    private boolean wasPaused;
 
     public SettingsMenuDialogMod(){
         super(bundle.get("settings", "Settings"));
