@@ -31,9 +31,9 @@ import static mindustry.input.PlaceMode.*;
 
 import java.lang.Math;
 
-public class DesktopInput512 extends DesktopInput, InputHandler{
+public class DesktopInput512 extends DesktopInput{
 
-    private InputHandler ih = new InputHandler;
+    private InputHandler ih = new InputHandler();
 
     @Override
     public void drawTop(){
