@@ -197,7 +197,7 @@ public class DesktopInput512 extends DesktopInput{
             }
         }
 
-        Tile cursor = tileAt(Core.input.mouseX(), Core.input.mouseY());
+        Tile cursor = tileAt512(Core.input.mouseX(), Core.input.mouseY());
 
         if(cursor != null){
             if(cursor.build != null){
@@ -237,7 +237,7 @@ public class DesktopInput512 extends DesktopInput{
         var focus = scene.getKeyboardFocus();
         if(focus != null && focus.getClass() == TextField.class) return;
 
-        Tile selected = tileAt(Core.input.mouseX(), Core.input.mouseY());
+        Tile selected = tileAt512(Core.input.mouseX(), Core.input.mouseY());
         int cursorX = tileX(Core.input.mouseX());
         int cursorY = tileY(Core.input.mouseY());
         int rawCursorX = World.toTile(Core.input.mouseWorld().x), rawCursorY = World.toTile(Core.input.mouseWorld().y);
@@ -442,6 +442,11 @@ public class DesktopInput512 extends DesktopInput{
                 Core.settings.put("lasersopacity", 0);
             }
         }
+    }
+
+    Tile tileAt512(float x, float y){
+        // ._.
+        return world.tile(tileX512(x), tileY512(y));
     }
 
     public int tileX512(float cursorX){
