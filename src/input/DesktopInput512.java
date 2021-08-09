@@ -31,7 +31,7 @@ import static mindustry.input.PlaceMode.*;
 
 import java.lang.Math;
 
-public class DesktopInput512 extends DesktopInput{
+public class DesktopInput512 extends DesktopInput, InputHandler{
 
     @Override
     public void drawTop(){
@@ -445,10 +445,10 @@ public class DesktopInput512 extends DesktopInput{
         }
     }
 
-    public Tile tileAt512(float x, float y){
-        // ._.
-        return world.tile(tileX512(x), tileY512(y));
-    }
+    // public Tile tileAt512(float x, float y){
+    //     // ._.
+    //     return world.tile(tileX512(x), tileY512(y));
+    // }
 
     public int tileX512(float cursorX){
         Vec2 vec = Core.input.mouseWorld(cursorX, 0);
@@ -466,25 +466,25 @@ public class DesktopInput512 extends DesktopInput{
         return World.toTile(vec.y);
     }
 
-    public boolean canMine512(Tile tile){
-        return !Core.scene.hasMouse()
-            && tile.drop() != null
-            && player.unit().validMine(tile)
-            && !((!Core.settings.getBool("doubletapmine") && tile.floor().playerUnmineable) && tile.overlay().itemDrop == null)
-            && player.unit().acceptsItem(tile.drop())
-            && tile.block() == Blocks.air;
-    }
+    // public boolean canMine512(Tile tile){
+    //     return !Core.scene.hasMouse()
+    //         && tile.drop() != null
+    //         && player.unit().validMine(tile)
+    //         && !((!Core.settings.getBool("doubletapmine") && tile.floor().playerUnmineable) && tile.overlay().itemDrop == null)
+    //         && player.unit().acceptsItem(tile.drop())
+    //         && tile.block() == Blocks.air;
+    // }
 
-    public boolean tryTapPlayer512(float x, float y){
-        if(canTapPlayer512(x, y)){
-            droppingItem = true;
-            return true;
-        }
-        return false;
-    }
+    // public boolean tryTapPlayer512(float x, float y){
+    //     if(canTapPlayer512(x, y)){
+    //         droppingItem = true;
+    //         return true;
+    //     }
+    //     return false;
+    // }
 
-    public boolean canTapPlayer512(float x, float y){
-        // no comments
-        return player.within(x, y, playerSelectRange) && player.unit().stack.amount > 0;
-    }
+    // public boolean canTapPlayer512(float x, float y){
+    //     // no comments
+    //     return player.within(x, y, playerSelectRange) && player.unit().stack.amount > 0;
+    // }
 }
