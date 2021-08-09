@@ -730,7 +730,10 @@ public class DesktopInput512 extends InputHandler{
         if(omni){
             unit.moveAt(movement);
         }else{
-            unit.rotateMove(movement);
+            unit.moveAt(Tmp.v2.trns(unit.rotation, movement.len()));
+            if(!movement.isZero()){
+                unit.rotation = Angles.moveToward(unit.rotation, movement.angle(), unit.type.rotateSpeed * Math.max(Time.delta, 1));
+            }
 
             unit.moveAt(Tmp.v2.trns(unit.rotation, movement.len()));
 
