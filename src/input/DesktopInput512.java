@@ -476,10 +476,15 @@ public class DesktopInput512 extends DesktopInput{
     }
 
     public boolean tryTapPlayer512(float x, float y){
-        if(canTapPlayer(x, y)){
+        if(canTapPlayer512(x, y)){
             droppingItem = true;
             return true;
         }
         return false;
+    }
+
+    public boolean canTapPlayer512(float x, float y){
+        // no comments
+        return player.within(x, y, playerSelectRange) && player.unit().stack.amount > 0;
     }
 }
