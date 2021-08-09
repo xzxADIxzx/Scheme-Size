@@ -39,6 +39,7 @@ import mindustry.world.meta.*;
 import java.io.*;
 import java.util.zip.*;
 
+import static arc.Core.*;
 import static mindustry.Vars.*;
 
 public class Schematics512 extends Schematics{
