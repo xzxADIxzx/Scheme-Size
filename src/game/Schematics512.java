@@ -43,8 +43,6 @@ import static mindustry.Vars.*;
 
 public class Schematics512 extends Schematics{
 
-    public static final int schemeSize = 512;
-
     // private static final Schematic tmpSchem = new Schematic(new Seq<>(), new StringMap(), 0, 0);
     // private static final Schematic tmpSchem2 = new Schematic(new Seq<>(), new StringMap(), 0, 0);
 
@@ -98,7 +96,8 @@ public class Schematics512 extends Schematics{
         all.sort();
 
         if(shadowBuffer == null){
-            Core.app.post(() -> shadowBuffer = new FrameBuffer(schemeSize + padding + 8, schemeSize + padding + 8));
+            // 512 because it's safer
+            Core.app.post(() -> shadowBuffer = new FrameBuffer(512 + padding + 8, 512 + padding + 8));
         }
     }
 
@@ -124,7 +123,7 @@ public class Schematics512 extends Schematics{
 
     @Override
     public Schematic create(int x, int y, int x2, int y2){
-        NormalizeResult result = Placement.normalizeArea(x, y, x2, y2, 0, false, schemeSize);
+        NormalizeResult result = Placement.normalizeArea(x, y, x2, y2, 0, false, settings.getInt("copysize"));
         x = result.x;
         y = result.y;
         x2 = result.x2;
