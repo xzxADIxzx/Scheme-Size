@@ -6,7 +6,7 @@ import mindustry.mod.*;
 import mindustry.Vars;
 import mindustry.game.EventType.*;
 import mindustry.input.*;
-import mindustry.ui.dialogs.*;
+// import mindustry.ui.dialogs.*;
 
 public class SchemeSize extends Mod{
 
@@ -23,8 +23,15 @@ public class SchemeSize extends Mod{
                     Vars.control.setInput(new DesktopInput512());
                 }
 
+                // Add Settings
+                Var game = Vars.ui.settings.game
+                game.sliderPref("copysize", 512, 32, 512, 32, i -> i + " blocks");
+                game.sliderPref("breaksize", 512, 32, 512, 32, i -> i + " blocks");
+                game.checkPref("copyshow", true);
+                game.checkPref("destshow", true);
+
                 // Change Menu
-                Vars.ui.settings = new SettingsMenuDialogMod();
+                // Vars.ui.settings = new SettingsMenuDialogMod();
 
                 // Logs
                 // Log.info(Vars.schematics);
