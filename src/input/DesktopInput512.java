@@ -33,7 +33,7 @@ import java.lang.Math;
 
 public class DesktopInput512 extends DesktopInput{
 
-    private InputHandler ih = new InputHandler();
+    final static float playerSelectRange = mobile ? 17f : 11f;
 
     @Override
     public void drawTop(){
@@ -200,7 +200,7 @@ public class DesktopInput512 extends DesktopInput{
             }
         }
 
-        Tile cursor = ih.tileAt(Core.input.mouseX(), Core.input.mouseY()); //
+        Tile cursor = tileAt512(Core.input.mouseX(), Core.input.mouseY());
 
         if(cursor != null){
             if(cursor.build != null){
@@ -211,7 +211,7 @@ public class DesktopInput512 extends DesktopInput{
                 cursorType = SystemCursor.hand;
             }
 
-            if(!isPlacing() && ih.canMine(cursor)){ //
+            if(!isPlacing() && canMine512(cursor)){
                 cursorType = ui.drillCursor;
             }
 
@@ -219,7 +219,7 @@ public class DesktopInput512 extends DesktopInput{
                 cursorType = SystemCursor.hand;
             }
 
-            if(ih.canTapPlayer(Core.input.mouseWorld().x, Core.input.mouseWorld().y)){ //
+            if(canTapPlayer512(Core.input.mouseWorld().x, Core.input.mouseWorld().y)){
                 cursorType = ui.unloadCursor;
             }
 
@@ -240,9 +240,9 @@ public class DesktopInput512 extends DesktopInput{
         var focus = scene.getKeyboardFocus();
         if(focus != null && focus.getClass() == TextField.class) return;
 
-        Tile selected = ih.tileAt(Core.input.mouseX(), Core.input.mouseY());
-        int cursorX = ih.tileX(Core.input.mouseX());
-        int cursorY = ih.tileY(Core.input.mouseY());
+        Tile selected = tileAt512(Core.input.mouseX(), Core.input.mouseY());
+        int cursorX = tileX512(Core.input.mouseX());
+        int cursorY = tileY512(Core.input.mouseY());
         int rawCursorX = World.toTile(Core.input.mouseWorld().x), rawCursorY = World.toTile(Core.input.mouseWorld().y);
 
         //automatically pause building if the current build queue is empty
@@ -356,7 +356,7 @@ public class DesktopInput512 extends DesktopInput{
                 deleting = true;
             }else if(selected != null){
                 //only begin shooting if there's no cursor event
-                if(!ih.tryTapPlayer(Core.input.mouseWorld().x, Core.input.mouseWorld().y) && !tileTapped(selected.build) && !player.unit().activelyBuilding() && !droppingItem
+                if(!tryTapPlayer512(Core.input.mouseWorld().x, Core.input.mouseWorld().y) && !tileTapped(selected.build) && !player.unit().activelyBuilding() && !droppingItem
                     && !(tryStopMine(selected) || (!settings.getBool("doubletapmine") || selected == prevSelected && Time.timeSinceMillis(selectMillis) < 500) && tryBeginMine(selected)) && !Core.scene.hasKeyboard()){
                     player.shooting = shouldShoot;
                 }
@@ -375,8 +375,8 @@ public class DesktopInput512 extends DesktopInput{
             //is recalculated because setting the mode to breaking removes potential multiblock cursor offset
             deleting = false;
             mode = breaking;
-            selectX = ih.tileX(Core.input.mouseX());
-            selectY = ih.tileY(Core.input.mouseY());
+            selectX = tileX521(Core.input.mouseX());
+            selectY = tileY512(Core.input.mouseY());
             schemX = rawCursorX;
             schemY = rawCursorY;
         }
@@ -447,10 +447,10 @@ public class DesktopInput512 extends DesktopInput{
         }
     }
 
-    // public Tile tileAt512(float x, float y){
-    //     // ._.
-    //     return world.tile(tileX512(x), tileY512(y));
-    // }
+    public Tile tileAt512(float x, float y){
+        // ._.
+        return world.tile(tileX512(x), tileY512(y));
+    }
 
     public int tileX512(float cursorX){
         Vec2 vec = Core.input.mouseWorld(cursorX, 0);
@@ -468,25 +468,25 @@ public class DesktopInput512 extends DesktopInput{
         return World.toTile(vec.y);
     }
 
-    // public boolean canMine512(Tile tile){
-    //     return !Core.scene.hasMouse()
-    //         && tile.drop() != null
-    //         && player.unit().validMine(tile)
-    //         && !((!Core.settings.getBool("doubletapmine") && tile.floor().playerUnmineable) && tile.overlay().itemDrop == null)
-    //         && player.unit().acceptsItem(tile.drop())
-    //         && tile.block() == Blocks.air;
-    // }
+    public boolean canMine512(Tile tile){
+        return !Core.scene.hasMouse()
+            && tile.drop() != null
+            && player.unit().validMine(tile)
+            && !((!Core.settings.getBool("doubletapmine") && tile.floor().playerUnmineable) && tile.overlay().itemDrop == null)
+            && player.unit().acceptsItem(tile.drop())
+            && tile.block() == Blocks.air;
+    }
 
-    // public boolean tryTapPlayer512(float x, float y){
-    //     if(canTapPlayer512(x, y)){
-    //         droppingItem = true;
-    //         return true;
-    //     }
-    //     return false;
-    // }
+    public boolean tryTapPlayer512(float x, float y){
+        if(canTapPlayer512(x, y)){
+            droppingItem = true;
+            return true;
+        }
+        return false;
+    }
 
-    // public boolean canTapPlayer512(float x, float y){
-    //     // no comments
-    //     return player.within(x, y, playerSelectRange) && player.unit().stack.amount > 0;
-    // }
+    public boolean canTapPlayer512(float x, float y){
+        // no comments
+        return player.within(x, y, playerSelectRange) && player.unit().stack.amount > 0;
+    }
 }
