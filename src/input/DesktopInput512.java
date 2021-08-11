@@ -577,8 +577,8 @@ public class DesktopInput512 extends InputHandler{
                 deleting = true;
             }else if(selected != null){
                 //only begin shooting if there's no cursor event
-                if(!tryTapPlayer512(Core.input.mouseWorld().x, Core.input.mouseWorld().y) && !tileTapped(selected.build) && !player.unit().activelyBuilding() && !droppingItem
-                    && !(tryStopMine(selected) || (!settings.getBool("doubletapmine") || selected == prevSelected && Time.timeSinceMillis(selectMillis) < 500) && tryBeginMine(selected)) && !Core.scene.hasKeyboard()){
+                if(!tryTapPlayer512(Core.input.mouseWorld().x, Core.input.mouseWorld().y) && !tileTapped512(selected.build) && !player.unit().activelyBuilding() && !droppingItem
+                    && !(tryStopMine512(selected) || (!settings.getBool("doubletapmine") || selected == prevSelected && Time.timeSinceMillis(selectMillis) < 500) && tryBeginMine512(selected)) && !Core.scene.hasKeyboard()){
                     player.shooting = shouldShoot;
                 }
             }else if(!Core.scene.hasKeyboard()){ //if it's out of bounds, shooting is just fine
@@ -782,6 +782,22 @@ public class DesktopInput512 extends InputHandler{
             && tile.block() == Blocks.air;
     }
 
+    public boolean tryBeginMine512(Tile tile){
+        if(canMine512(tile)){
+            player.unit().mineTile = tile;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean tryStopMine512(Tile tile){
+        if(player.unit().mineTile == tile){
+            player.unit().mineTile = null;
+            return true;
+        }
+        return false;
+    }
+
     public boolean canTapPlayer512(float x, float y){
         // ._.
         return player.within(x, y, playerSelectRange) && player.unit().stack.amount > 0;
@@ -793,5 +809,58 @@ public class DesktopInput512 extends InputHandler{
             return true;
         }
         return false;
+    }
+
+    public boolean tileTapped512(@Nullable Building build){
+        if(build == null){
+            frag.inv.hide();
+            frag.config.hideConfig();
+            return false;
+        }
+        boolean consumed = false, showedInventory = false;
+
+        //check if tapped block is configurable
+        if(build.block.configurable && build.interactable(player.team())){
+            consumed = true;
+            if((!frag.config.isShown() && build.shouldShowConfigure(player)) //if the config fragment is hidden, show
+            //alternatively, the current selected block can 'agree' to switch config tiles
+            || (frag.config.isShown() && frag.config.getSelectedTile().onConfigureTileTapped(build))){
+                Sounds.click.at(build);
+                frag.config.showConfig(build);
+            }
+            //otherwise...
+        }else if(!frag.config.hasConfigMouse()){ //make sure a configuration fragment isn't on the cursor
+            //then, if it's shown and the current block 'agrees' to hide, hide it.
+            if(frag.config.isShown() && frag.config.getSelectedTile().onConfigureTileTapped(build)){
+                consumed = true;
+                frag.config.hideConfig();
+            }
+
+            if(frag.config.isShown()){
+                consumed = true;
+            }
+        }
+
+        //call tapped event
+        if(!consumed && build.interactable(player.team())){
+            build.tapped();
+        }
+
+        //consume tap event if necessary
+        if(build.interactable(player.team()) && build.block.consumesTap){
+            consumed = true;
+        }else if(build.interactable(player.team()) && build.block.synthetic() && !consumed){
+            if(build.block.hasItems && build.items.total() > 0){
+                frag.inv.showFor(build);
+                consumed = true;
+                showedInventory = true;
+            }
+        }
+
+        if(!showedInventory){
+            frag.inv.hide();
+        }
+
+        return consumed;
     }
 }
