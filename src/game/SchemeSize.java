@@ -24,11 +24,12 @@ public class SchemeSize extends Mod{
 
                 // Add Settings
                 var game = Vars.ui.settings.game;
-                game.sliderPref("justspace", 0, 0, 0, 0, i -> i + "").visible = false;
+                game.sliderPref("justspace", 0, 0, 0, 0, i -> i + "");
                 game.sliderPref("copysize", 512, 32, 512, 32, i -> Core.bundle.format("setting.blocks", i));
                 game.sliderPref("breaksize", 512, 32, 512, 32, i -> Core.bundle.format("setting.blocks", i));
                 game.checkPref("copyshow", true);
                 game.checkPref("breakshow", true);
+                game.cells.get(11).visible = false; // Hide justspace
 
                 // Add Logs
                 // Log.info(Vars.schematics);
