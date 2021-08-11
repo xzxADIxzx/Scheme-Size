@@ -402,7 +402,7 @@ public class DesktopInput512 extends InputHandler{
                 cursorType = SystemCursor.hand;
             }
 
-            if(canTapPlayer(Core.input.mouseWorld().x, Core.input.mouseWorld().y)){
+            if(canTapPlayer512(Core.input.mouseWorld().x, Core.input.mouseWorld().y)){
                 cursorType = ui.unloadCursor;
             }
 
@@ -577,7 +577,7 @@ public class DesktopInput512 extends InputHandler{
                 deleting = true;
             }else if(selected != null){
                 //only begin shooting if there's no cursor event
-                if(!tryTapPlayer(Core.input.mouseWorld().x, Core.input.mouseWorld().y) && !tileTapped(selected.build) && !player.unit().activelyBuilding() && !droppingItem
+                if(!tryTapPlayer512(Core.input.mouseWorld().x, Core.input.mouseWorld().y) && !tileTapped(selected.build) && !player.unit().activelyBuilding() && !droppingItem
                     && !(tryStopMine(selected) || (!settings.getBool("doubletapmine") || selected == prevSelected && Time.timeSinceMillis(selectMillis) < 500) && tryBeginMine(selected)) && !Core.scene.hasKeyboard()){
                     player.shooting = shouldShoot;
                 }
@@ -780,5 +780,18 @@ public class DesktopInput512 extends InputHandler{
             && !((!Core.settings.getBool("doubletapmine") && tile.floor().playerUnmineable) && tile.overlay().itemDrop == null)
             && player.unit().acceptsItem(tile.drop())
             && tile.block() == Blocks.air;
+    }
+
+    public boolean canTapPlayer512(float x, float y){
+        // ._.
+        return player.within(x, y, playerSelectRange) && player.unit().stack.amount > 0;
+    }
+
+    public boolean tryTapPlayer512(float x, float y){
+        if(canTapPlayer512(x, y)){
+            droppingItem = true;
+            return true;
+        }
+        return false;
     }
 }
