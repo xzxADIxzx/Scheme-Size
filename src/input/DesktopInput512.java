@@ -394,7 +394,7 @@ public class DesktopInput512 extends InputHandler{
                 cursorType = SystemCursor.hand;
             }
 
-            if(!isPlacing() && canMine(cursor)){
+            if(!isPlacing() && canMine512(cursor)){
                 cursorType = ui.drillCursor;
             }
 
@@ -771,5 +771,14 @@ public class DesktopInput512 extends InputHandler{
     public Tile tileAt512(float x, float y){
         // ._.
         return world.tile(tileX512(x), tileY512(y));
+    }
+
+    public boolean canMine512(Tile tile){
+        return !Core.scene.hasMouse()
+            && tile.drop() != null
+            && player.unit().validMine(tile)
+            && !((!Core.settings.getBool("doubletapmine") && tile.floor().playerUnmineable) && tile.overlay().itemDrop == null)
+            && player.unit().acceptsItem(tile.drop())
+            && tile.block() == Blocks.air;
     }
 }
