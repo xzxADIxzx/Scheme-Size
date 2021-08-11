@@ -29,7 +29,7 @@ public class SchemeSize extends Mod{
                 game.sliderPref("breaksize", 512, 32, 512, 32, i -> Core.bundle.format("setting.blocks", i));
                 game.checkPref("copyshow", true);
                 game.checkPref("breakshow", true);
-                game.cells.get(11).visible(false); // Hide justspace
+                game.getCells().get(11).visible(false); // Hide justspace
 
                 // Add Logs
                 // Log.info(Vars.schematics);
