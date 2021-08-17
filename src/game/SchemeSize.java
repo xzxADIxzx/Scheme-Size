@@ -13,7 +13,7 @@ public class SchemeSize extends Mod{
 
     public SchemeSize(){
         Events.on(ClientLoadEvent.class, e -> {
-            //wait 10 secs, because... idk
+            // wait 10 secs, because... idk
             Time.runTask(10f, () -> {
                 // Change Schematics
                 Vars.schematics = new Schematics512();
@@ -29,8 +29,8 @@ public class SchemeSize extends Mod{
                 // Add Settings
                 var game = Vars.ui.settings.game;
                 game.sliderPref("justspace", 1, 1, 1, 1, i -> i + "");
-                game.sliderPref("maxzoommul", 4, 1, 8, 1, i -> i / 100 + "x");
-                game.sliderPref("minzoommul", 4, 1, 8, 1, i -> i / 100 + "x");
+                game.sliderPref("maxzoommul", 4, 1, 8, 1, i -> i / 4f + "x");
+                game.sliderPref("minzoommul", 4, 1, 8, 1, i -> i / 4f + "x");
                 game.sliderPref("copysize", 512, 32, 512, 32, i -> Core.bundle.format("setting.blocks", i));
                 game.sliderPref("breaksize", 512, 32, 512, 32, i -> Core.bundle.format("setting.blocks", i));
                 game.checkPref("copyshow", true);
@@ -44,6 +44,8 @@ public class SchemeSize extends Mod{
                 Slider sliderMin = (Slider)elementMin.getChildren().get(0);
                 sliderMax.changed(() -> { Vars.renderer.maxZoom = sliderMax.getValue() / 4f * 6f; });
                 sliderMin.changed(() -> { Vars.renderer.minZoom = sliderMin.getValue() / 4f * 1.5f; });
+                Vars.renderer.maxZoom = sliderMax.getValue() / 4f * 6f; // Apply zoom
+                Vars.renderer.minZoom = sliderMin.getValue() / 4f * 1.5f;
 
                 // Add Logs
                 // Log.info(Vars.schematics);

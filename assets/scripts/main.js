@@ -5,4 +5,4 @@ meta.description = "[orange]Mod[] that [accent]could[]... Increases the [accent]
 				   "[orange]\n\n   - Release!\n   - Show Size\n   - Settings\n   - Zoom";
 
 // why not
-Vars.enabledConsole = true;
+Vars.enableConsole = true;
