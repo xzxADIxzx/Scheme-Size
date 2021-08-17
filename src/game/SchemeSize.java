@@ -37,8 +37,8 @@ public class SchemeSize extends Mod{
                 // Add Zoom Scale
                 Slider sliderMax = game.getCells().get(12).get().getChildren().get(0);
                 Slider sliderMin = game.getCells().get(13).get().getChildren().get(0);
-                sliderMax.changed(() -> { Vars.renderer.maxZoom = sliderMax.GetValue() / 4f * 6f; });
-                sliderMin.changed(() -> { Vars.renderer.minZoom = sliderMin.GetValue() / 4f * 1.5f; });
+                sliderMax.changed(() -> { Vars.renderer.maxZoom = sliderMax.getValue() / 4f * 6f; });
+                sliderMin.changed(() -> { Vars.renderer.minZoom = sliderMin.getValue() / 4f * 1.5f; });
 
                 // Add Logs
                 // Log.info(Vars.schematics);
