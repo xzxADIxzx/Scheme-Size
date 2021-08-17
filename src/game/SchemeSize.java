@@ -15,39 +15,35 @@ public class SchemeSize extends Mod{
         Events.on(ClientLoadEvent.class, e -> {
             // wait 10 secs, because... idk
             Time.runTask(10f, () -> {
-                // Change Schematics
+                // Change schematics
                 Vars.schematics = new Schematics512();
                 Vars.schematics.loadSync();
 
-                // Change Input
+                // Change input
                 if(!Vars.mobile){
                     Vars.control.setInput(new DesktopInput512());
                 }
 
-                // Change Renderer
-
-                // Add Settings
+                // Add settings
                 var game = Vars.ui.settings.game;
-                game.sliderPref("justspace", 1, 1, 1, 1, i -> i + "");
-                game.sliderPref("maxzoommul", 4, 1, 8, 1, i -> i / 4f + "x");
-                game.sliderPref("minzoommul", 4, 1, 8, 1, i -> i / 4f + "x");
+                game.sliderPref("maxzoommul", 4, 4, 8, 1, i -> i / 4f + "x");
+                game.sliderPref("minzoommul", 4, 4, 8, 1, i -> i / 4f + "x");
                 game.sliderPref("copysize", 512, 32, 512, 32, i -> Core.bundle.format("setting.blocks", i));
                 game.sliderPref("breaksize", 512, 32, 512, 32, i -> Core.bundle.format("setting.blocks", i));
                 game.checkPref("copyshow", true);
                 game.checkPref("breakshow", true);
-                game.getCells().get(11).visible(false); // Hide justspace
 
-                // Add Zoom Scale
+                // Add zoom scale
                 Stack elementMax = (Stack)game.getCells().get(12).get();
                 Stack elementMin = (Stack)game.getCells().get(13).get();
                 Slider sliderMax = (Slider)elementMax.getChildren().get(0);
                 Slider sliderMin = (Slider)elementMin.getChildren().get(0);
                 sliderMax.changed(() -> { Vars.renderer.maxZoom = sliderMax.getValue() / 4f * 6f; });
-                sliderMin.changed(() -> { Vars.renderer.minZoom = sliderMin.getValue() / 4f * 1.5f; });
+                sliderMin.changed(() -> { Vars.renderer.minZoom = 1 / (sliderMin.getValue() / 4f) * 1.5f; });
                 Vars.renderer.maxZoom = sliderMax.getValue() / 4f * 6f; // Apply zoom
-                Vars.renderer.minZoom = sliderMin.getValue() / 4f * 1.5f;
+                Vars.renderer.minZoom = 1 / (sliderMin.getValue() / 4f) * 1.5f;
 
-                // Add Logs
+                // Add logs
                 // Log.info(Vars.schematics);
                 // Log.info(Vars.control.input);
             });
