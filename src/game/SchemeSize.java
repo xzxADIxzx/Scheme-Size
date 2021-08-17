@@ -26,7 +26,7 @@ public class SchemeSize extends Mod{
 
                 // Add settings
                 var game = Vars.ui.settings.game;
-                game.sliderPref("justspace", 1, 1, 1, 1, i -> i + "");
+                game.checkPref("justspace", false);
                 game.sliderPref("maxzoommul", 4, 4, 8, 1, i -> i / 4f + "x");
                 game.sliderPref("minzoommul", 4, 4, 8, 1, i -> i / 4f + "x");
                 game.sliderPref("copysize", 512, 32, 512, 32, i -> Core.bundle.format("setting.blocks", i));
