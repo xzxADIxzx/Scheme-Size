@@ -26,14 +26,14 @@ public class SchemeSize extends Mod{
 
                 // Add settings
                 var game = Vars.ui.settings.game;
-                game.checkPref("justspace", false);
+                game.checkPref("secret", false);
                 game.sliderPref("maxzoommul", 4, 4, 8, 1, i -> i / 4f + "x");
                 game.sliderPref("minzoommul", 4, 4, 8, 1, i -> i / 4f + "x");
                 game.sliderPref("copysize", 512, 32, 512, 32, i -> Core.bundle.format("setting.blocks", i));
                 game.sliderPref("breaksize", 512, 32, 512, 32, i -> Core.bundle.format("setting.blocks", i));
                 game.checkPref("copyshow", true);
                 game.checkPref("breakshow", true);
-                game.getCells().get(11).visible(false); // Hide justspace
+                game.getCells().get(11).visible(false); // Hide secret
 
                 // Add zoom scale
                 Stack elementMax = (Stack)game.getCells().get(12).get();
@@ -43,7 +43,7 @@ public class SchemeSize extends Mod{
                 sliderMax.changed(() -> { Vars.renderer.maxZoom = sliderMax.getValue() / 4f * 6f; });
                 sliderMin.changed(() -> { Vars.renderer.minZoom = 1 / (sliderMin.getValue() / 4f) * 1.5f; });
                 Vars.renderer.maxZoom = sliderMax.getValue() / 4f * 6f; // Apply zoom
-                Vars.renderer.minZoom = 1 / (sliderMin.getValue() / 4f) * 1.5f;
+                Vars.renderer.minZoom = 1f / (sliderMin.getValue() / 4f) * 1.5f;
 
                 // Add logs
                 // Log.info(Vars.schematics);
