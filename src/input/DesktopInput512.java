@@ -30,64 +30,7 @@ import static mindustry.Vars.*;
 import static mindustry.input.PlaceMode.*;
 
 public class DesktopInput512 extends InputHandler{
-
-    // @Override
-    // public void drawTop(){
-    //     Lines.stroke(1f);
-    //     int cursorX = tileX512(Core.input.mouseX());
-    //     int cursorY = tileY512(Core.input.mouseY());
-
-    //     if(mode == breaking){
-    //         int size = settings.getInt("breaksize") - 1;
-    //         drawBreakSelection(selectX, selectY, cursorX, cursorY, Core.input.keyDown(Binding.schematic_select) ? settings.getInt("copysize") - 1 : size);
-
-    //         // Show Size
-    //         if(settings.getBool("breakshow")){
-    //             NormalizeResult normalized = Placement.normalizeArea(selectX, selectY, cursorX, cursorY, 0, false, size);
-    //             int sizeX = normalized.x2 - normalized.x + 1;
-    //             int sizeY = normalized.y2 - normalized.y + 1;
-    //             String strSizeX = sizeX - 1 == size ? "[accent]" + Integer.toString(sizeX) + "[]" : Integer.toString(sizeX);
-    //             String strSizeY = sizeY - 1 == size ? "[accent]" + Integer.toString(sizeY) + "[]" : Integer.toString(sizeY);
-    //             String info = strSizeX + ", " + strSizeY;
-    //             ui.showLabel(info, 0.02f, cursorX * 8 + 16, cursorY * 8 - 16);
-    //         }
-    //     }
-
-    //     if(Core.input.keyDown(Binding.schematic_select) && !Core.scene.hasKeyboard() && mode != breaking){
-    //         int size = settings.getInt("copysize") - 1;
-    //         drawSelection(schemX, schemY, cursorX, cursorY, size);
-
-    //         // Show Size
-    //         if(settings.getBool("copyshow")){
-    //             NormalizeResult normalized = Placement.normalizeArea(schemX, schemY, cursorX, cursorY, 0, false, size);
-    //             int sizeX = normalized.x2 - normalized.x + 1;
-    //             int sizeY = normalized.y2 - normalized.y + 1;
-    //             String strSizeX = sizeX - 1 == size ? "[accent]" + Integer.toString(sizeX) + "[]" : Integer.toString(sizeX);
-    //             String strSizeY = sizeY - 1 == size ? "[accent]" + Integer.toString(sizeY) + "[]" : Integer.toString(sizeY);
-    //             String info = strSizeX + ", " + strSizeY;
-    //             ui.showLabel(info, 0.02f, cursorX * 8 + 16, cursorY * 8 - 16);
-    //         }
-    //     }
-
-    //     Draw.reset();
-    // }
     
-    // public int tileX512(float cursorX){
-    //     Vec2 vec = Core.input.mouseWorld(cursorX, 0);
-    //     if(selectedBlock()){
-    //         vec.sub(block.offset, block.offset);
-    //     }
-    //     return World.toTile(vec.x);
-    // }
-
-    // public int tileY512(float cursorY){
-    //     Vec2 vec = Core.input.mouseWorld(0, cursorY);
-    //     if(selectedBlock()){
-    //         vec.sub(block.offset, block.offset);
-    //     }
-    //     return World.toTile(vec.y);
-    // }
-
     final static float playerSelectRange = mobile ? 17f : 11f;
     public Vec2 movement = new Vec2();
     public Cursor cursorType = SystemCursor.arrow;

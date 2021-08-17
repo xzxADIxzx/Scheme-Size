@@ -23,6 +23,8 @@ public class SchemeSize extends Mod{
                     Vars.control.setInput(new DesktopInput512());
                 }
 
+                // Change Renderer
+
                 // Add Settings
                 var game = Vars.ui.settings.game;
                 game.sliderPref("justspace", 1, 1, 1, 1, i -> i + "");
@@ -35,10 +37,10 @@ public class SchemeSize extends Mod{
                 game.getCells().get(11).visible(false); // Hide justspace
 
                 // Add Zoom Scale
-                Var elementMax = game.getCells().get(12).get();
-                Var elementMin = game.getCells().get(13).get();
-                Slider sliderMax = (Stack)elementMax.getChildren().get(0);
-                Slider sliderMin = (Stack)elementMin.getChildren().get(0);
+                Stack elementMax = (Stack)game.getCells().get(12).get();
+                Stack elementMin = (Stack)game.getCells().get(13).get();
+                Slider sliderMax = elementMax.getChildren().get(0);
+                Slider sliderMin = elementMin.getChildren().get(0);
                 sliderMax.changed(() -> { Vars.renderer.maxZoom = sliderMax.getValue() / 4f * 6f; });
                 sliderMin.changed(() -> { Vars.renderer.minZoom = sliderMin.getValue() / 4f * 1.5f; });
 
