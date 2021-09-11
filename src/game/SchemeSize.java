@@ -2,7 +2,9 @@ package mindustry.game;
 
 import arc.*;
 import arc.util.*;
+import arc.math.*;
 import arc.input.*;
+import arc.input.InputDevice.*;
 import arc.scene.ui.*;
 import arc.scene.ui.layout.*;
 import mindustry.ui.dialogs.*;
@@ -49,16 +51,35 @@ public class SchemeSize extends Mod{
 
                 // Add keybinds
                 Core.keybinds.setDefaults(ExBinding.values());
+                loadKeybinds() // copy of Core.keybinds.load()
+                Vars.ui.controls = new KeybindDialog(); // Update dialog
+
                 // var axis = Core.keybinds.get(Core.keybinds.getKeybinds()[51]); // Load key
                 // var name = "keybind-default-keyboard-toggle_core_items";
                 // axis.key = KeyCode.byOrdinal(Core.settings.getInt(name + "-key", KeyCode.unset.ordinal()));
-                Core.keybinds.load();
-                Vars.ui.controls = new KeybindDialog(); // Update dialog
 
                 // Add logs
                 // Log.info(Vars.schematics);
                 // Log.info(Vars.control.input);
             });
         });
+    }
+
+    public void loadKeybinds(){
+        for(Section sec : Core.keybinds.getSections()){
+            for(DeviceType type : DeviceType.values()){
+                for(KeyBind def : Core.keybinds.getKeybinds()){
+                    String rname = "keybind-" + sec.name + "-" + type.name() + "-" + def.name();
+
+                    Axis loaded = Core.keybinds.load(rname);
+
+                    if(loaded != null){
+                        sec.binds.get(type, OrderedMap::new).put(def, loaded);
+                    }
+                }
+            }
+
+            sec.device = input.getDevices().get(Mathf.clamp(Core.settings.getInt(sec.name + "-last-device-type", 0), 0, input.getDevices().size - 1));
+        }
     }
 }
