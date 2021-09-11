@@ -5,6 +5,7 @@ import arc.util.*;
 import arc.input.*;
 import arc.scene.ui.*;
 import arc.scene.ui.layout.*;
+import mindustry.ui.dialogs.*;
 import mindustry.mod.*;
 import mindustry.Vars;
 import mindustry.game.EventType.*;

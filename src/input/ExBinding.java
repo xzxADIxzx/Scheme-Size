@@ -5,7 +5,7 @@ import arc.KeyBinds.*;
 import arc.input.InputDevice.*;
 import arc.input.*;
 
-public enum Binding implements KeyBind{
+public enum ExBinding implements KeyBind{
     move_x(new Axis(KeyCode.a, KeyCode.d), "general"),
     move_y(new Axis(KeyCode.s, KeyCode.w)),
     mouse_move(KeyCode.mouseBack),
