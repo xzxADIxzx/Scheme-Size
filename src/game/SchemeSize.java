@@ -45,10 +45,25 @@ public class SchemeSize extends Mod{
                 Vars.renderer.maxZoom = sliderMax.getValue() / 4f * 6f; // Apply zoom
                 Vars.renderer.minZoom = 1f / (sliderMin.getValue() / 4f) * 1.5f;
 
+                // Add keybind
+                var keybinds = new Array();
+                Binding.values().forEach(item -> keybinds.splice(0, 0, item));
+                keybinds.reverse();
+                keybinds.splice(3, 0, new Bind())
+                Core.keybinds.setDefaults(keybinds);
+
                 // Add logs
                 // Log.info(Vars.schematics);
                 // Log.info(Vars.control.input);
             });
         });
+    }
+
+    public class Bind implements KeyBind {
+        
+        @Override
+        public KeybindValue defaultValue(DeviceType type){
+            return (KeybindValue)KeyCode.backslash;
+        }
     }
 }
