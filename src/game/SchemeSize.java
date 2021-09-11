@@ -51,7 +51,7 @@ public class SchemeSize extends Mod{
 
                 // Add keybinds
                 Core.keybinds.setDefaults(ExBinding.values());
-                loadKeybinds() // copy of Core.keybinds.load()
+                loadKeybinds(); // copy of Core.keybinds.load()
                 Vars.ui.controls = new KeybindDialog(); // Update dialog
 
                 // var axis = Core.keybinds.get(Core.keybinds.getKeybinds()[51]); // Load key
