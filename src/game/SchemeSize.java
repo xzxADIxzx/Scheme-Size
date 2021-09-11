@@ -2,6 +2,7 @@ package mindustry.game;
 
 import arc.*;
 import arc.util.*;
+import arc.input.*;
 import arc.scene.ui.*;
 import arc.scene.ui.layout.*;
 import mindustry.mod.*;
