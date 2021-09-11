@@ -1,14 +1,17 @@
 package mindustry.input;
 
 import arc.*;
+import arc.KeyBinds.*;
 import arc.math.*;
-import arc.Core.*;
 import arc.input.*;
 import arc.input.InputDevice.*;
+import arc.struct.*;
+
+import static arc.Core.*;
 
 public class KeybindLoader{
 
-    public void load(){
+    public static void load(){
         for(Section sec : keybinds.getSections()){
             for(DeviceType type : DeviceType.values()){
                 for(KeyBind def : keybinds.getKeybinds()){
@@ -26,7 +29,7 @@ public class KeybindLoader{
         }
     }
 
-    public Axis loadAxis(String name){
+    public static Axis loadAxis(String name){
         if(settings.getBool(name + "-single", true)){
             KeyCode key = KeyCode.byOrdinal(settings.getInt(name + "-key", KeyCode.unset.ordinal()));
             return key == KeyCode.unset ? null : new Axis(key);
