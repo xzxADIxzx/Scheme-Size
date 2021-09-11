@@ -1,4 +1,4 @@
-package mindustry.input;
+Expackage mindustry.input;
 
 import arc.*;
 import arc.KeyBinds.*;
@@ -78,12 +78,12 @@ public enum ExBinding implements KeyBind{
     private final KeybindValue defaultValue;
     private final String category;
 
-    Binding(KeybindValue defaultValue, String category){
+    ExBinding(KeybindValue defaultValue, String category){
         this.defaultValue = defaultValue;
         this.category = category;
     }
 
-    Binding(KeybindValue defaultValue){
+    ExBinding(KeybindValue defaultValue){
         this(defaultValue, null);
     }
 
