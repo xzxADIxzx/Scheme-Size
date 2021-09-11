@@ -48,6 +48,7 @@ public class SchemeSize extends Mod{
 
                 // Add keybinds
                 Core.keybinds.setDefaults(ExBinding.values());
+                Vars.ui.controls = new KeybindDialog();
 
                 // Add logs
                 // Log.info(Vars.schematics);
