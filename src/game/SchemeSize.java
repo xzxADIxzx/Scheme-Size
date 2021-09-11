@@ -123,7 +123,7 @@ public class SchemeSize extends Mod{
         screenshot(KeyCode.p),
         toggle_power_lines(KeyCode.f5),
         toggle_block_status(KeyCode.f6),
-        toggle_display_items(KeyCode.f7),
+        toggle_core_items(KeyCode.f7),
         player_list(KeyCode.tab, "multiplayer"),
         chat(KeyCode.enter),
         chat_history_prev(KeyCode.up),
@@ -136,12 +136,12 @@ public class SchemeSize extends Mod{
         private final KeybindValue defaultValue;
         private final String category;
 
-        Binding(KeybindValue defaultValue, String category){
+        ExBinding(KeybindValue defaultValue, String category){
             this.defaultValue = defaultValue;
             this.category = category;
         }
 
-        Binding(KeybindValue defaultValue){
+        ExBinding(KeybindValue defaultValue){
             this(defaultValue, null);
         }
 
