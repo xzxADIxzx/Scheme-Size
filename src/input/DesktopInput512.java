@@ -63,14 +63,14 @@ public class DesktopInput512 extends InputHandler{
                     if(!showHint()) return str;
                     str.setLength(0);
                     if(!isBuilding && !Core.settings.getBool("buildautopause") && !player.unit().isBuilding()){
-                        str.append(Core.bundle.format("enablebuilding", Core.keybinds.get(Binding.pause_building).key.toString()));
+                        str.append(Core.bundle.format("enablebuilding", Core.keybinds.get(ExBinding.pause_building).key.toString()));
                     }else if(player.unit().isBuilding()){
-                        str.append(Core.bundle.format(isBuilding ? "pausebuilding" : "resumebuilding", Core.keybinds.get(Binding.pause_building).key.toString()))
-                            .append("\n").append(Core.bundle.format("cancelbuilding", Core.keybinds.get(Binding.clear_building).key.toString()))
-                            .append("\n").append(Core.bundle.format("selectschematic", Core.keybinds.get(Binding.schematic_select).key.toString()));
+                        str.append(Core.bundle.format(isBuilding ? "pausebuilding" : "resumebuilding", Core.keybinds.get(ExBinding.pause_building).key.toString()))
+                            .append("\n").append(Core.bundle.format("cancelbuilding", Core.keybinds.get(ExBinding.clear_building).key.toString()))
+                            .append("\n").append(Core.bundle.format("selectschematic", Core.keybinds.get(ExBinding.schematic_select).key.toString()));
                     }
                     if(!player.dead() && !player.unit().spawnedByCore()){
-                        str.append(str.length() != 0 ? "\n" : "").append(Core.bundle.format("respawn", Core.keybinds.get(Binding.respawn).key.toString()));
+                        str.append(str.length() != 0 ? "\n" : "").append(Core.bundle.format("respawn", Core.keybinds.get(ExBinding.respawn).key.toString()));
                     }
                     return str;
                 }).style(Styles.outlineLabel);
@@ -84,8 +84,8 @@ public class DesktopInput512 extends InputHandler{
             t.table(Styles.black6, b -> {
                 b.defaults().left();
                 b.label(() -> Core.bundle.format("schematic.flip",
-                    Core.keybinds.get(Binding.schematic_flip_x).key.toString(),
-                    Core.keybinds.get(Binding.schematic_flip_y).key.toString())).style(Styles.outlineLabel).visible(() -> Core.settings.getBool("hints"));
+                    Core.keybinds.get(ExBinding.schematic_flip_x).key.toString(),
+                    Core.keybinds.get(ExBinding.schematic_flip_y).key.toString())).style(Styles.outlineLabel).visible(() -> Core.settings.getBool("hints"));
                 b.row();
                 b.table(a -> {
                     a.button("@schematic.add", Icon.save, this::showSchematicSave).colspan(2).size(250f, 50f).disabled(f -> lastSchematic == null || lastSchematic.file != null);
@@ -102,7 +102,7 @@ public class DesktopInput512 extends InputHandler{
 
         if(mode == breaking){
             int size = settings.getInt("breaksize") - 1;
-            drawBreakSelection(selectX, selectY, cursorX, cursorY, Core.input.keyDown(Binding.schematic_select) ? settings.getInt("copysize") - 1 : size);
+            drawBreakSelection(selectX, selectY, cursorX, cursorY, Core.input.keyDown(ExBinding.schematic_select) ? settings.getInt("copysize") - 1 : size);
 
             // Show Size
             if(settings.getBool("breakshow")){
@@ -116,7 +116,7 @@ public class DesktopInput512 extends InputHandler{
             }
         }
 
-        if(Core.input.keyDown(Binding.schematic_select) && !Core.scene.hasKeyboard() && mode != breaking){
+        if(Core.input.keyDown(ExBinding.schematic_select) && !Core.scene.hasKeyboard() && mode != breaking){
             int size = settings.getInt("copysize") - 1;
             drawSelection(schemX, schemY, cursorX, cursorY, size);
 
@@ -206,33 +206,33 @@ public class DesktopInput512 extends InputHandler{
     public void update(){
         super.update();
 
-        if(net.active() && Core.input.keyTap(Binding.player_list) && (scene.getKeyboardFocus() == null || scene.getKeyboardFocus().isDescendantOf(ui.listfrag.content) || scene.getKeyboardFocus().isDescendantOf(ui.minimapfrag.elem))){
+        if(net.active() && Core.input.keyTap(ExBinding.player_list) && (scene.getKeyboardFocus() == null || scene.getKeyboardFocus().isDescendantOf(ui.listfrag.content) || scene.getKeyboardFocus().isDescendantOf(ui.minimapfrag.elem))){
             ui.listfrag.toggle();
         }
 
         boolean panCam = false;
-        float camSpeed = (!Core.input.keyDown(Binding.boost) ? panSpeed : panBoostSpeed) * Time.delta;
+        float camSpeed = (!Core.input.keyDown(ExBinding.boost) ? panSpeed : panBoostSpeed) * Time.delta;
 
         // Toggle Core Items
         if(input.keyTap(ExBinding.toggle_core_items)){
             Core.settings.put("coreitems", !Core.settings.getBool("coreitems"));
         }
 
-        if(input.keyDown(Binding.pan) && !scene.hasField() && !scene.hasDialog()){
+        if(input.keyDown(ExBinding.pan) && !scene.hasField() && !scene.hasDialog()){
             panCam = true;
             panning = true;
         }
 
-        if((Math.abs(Core.input.axis(Binding.move_x)) > 0 || Math.abs(Core.input.axis(Binding.move_y)) > 0 || input.keyDown(Binding.mouse_move)) && (!scene.hasField())){
+        if((Math.abs(Core.input.axis(ExBinding.move_x)) > 0 || Math.abs(Core.input.axis(ExBinding.move_y)) > 0 || input.keyDown(ExBinding.mouse_move)) && (!scene.hasField())){
             panning = false;
         }
 
         if(((player.dead() || state.isPaused()) && !ui.chatfrag.shown()) && !scene.hasField() && !scene.hasDialog()){
-            if(input.keyDown(Binding.mouse_move)){
+            if(input.keyDown(ExBinding.mouse_move)){
                 panCam = true;
             }
 
-            Core.camera.position.add(Tmp.v1.setZero().add(Core.input.axis(Binding.move_x), Core.input.axis(Binding.move_y)).nor().scl(camSpeed));
+            Core.camera.position.add(Tmp.v1.setZero().add(Core.input.axis(ExBinding.move_x), Core.input.axis(ExBinding.move_y)).nor().scl(camSpeed));
         }else if(!player.dead() && !panning){
             Core.camera.position.lerpDelta(player, Core.settings.getBool("smoothcamera") ? 0.08f : 1f);
         }
@@ -245,7 +245,7 @@ public class DesktopInput512 extends InputHandler{
         shouldShoot = !scene.hasMouse();
 
         if(!scene.hasMouse()){
-            if(Core.input.keyDown(Binding.control) && Core.input.keyTap(Binding.select)){
+            if(Core.input.keyDown(ExBinding.control) && Core.input.keyTap(ExBinding.select)){
                 Unit on = selectedUnit();
                 var build = selectedControlBuild();
                 if(on != null){
@@ -262,32 +262,32 @@ public class DesktopInput512 extends InputHandler{
         if(!player.dead() && !state.isPaused() && !scene.hasField() && !renderer.isCutscene()){
             updateMovement(player.unit());
 
-            if(Core.input.keyTap(Binding.respawn)){
+            if(Core.input.keyTap(ExBinding.respawn)){
                 controlledType = null;
                 recentRespawnTimer = 1f;
                 Call.unitClear(player);
             }
         }
 
-        if(Core.input.keyRelease(Binding.select)){
+        if(Core.input.keyRelease(ExBinding.select)){
             player.shooting = false;
         }
 
         if(state.isGame() && !scene.hasDialog() && !(scene.getKeyboardFocus() instanceof TextField)){
-            if(Core.input.keyTap(Binding.minimap)) ui.minimapfrag.toggle();
-            if(Core.input.keyTap(Binding.planet_map) && state.isCampaign()) ui.planet.toggle();
-            if(Core.input.keyTap(Binding.research) && state.isCampaign()) ui.research.toggle();
+            if(Core.input.keyTap(ExBinding.minimap)) ui.minimapfrag.toggle();
+            if(Core.input.keyTap(ExBinding.planet_map) && state.isCampaign()) ui.planet.toggle();
+            if(Core.input.keyTap(ExBinding.research) && state.isCampaign()) ui.research.toggle();
         }
 
         if(state.isMenu() || Core.scene.hasDialog()) return;
 
         //zoom camera
-        if((!Core.scene.hasScroll() || Core.input.keyDown(Binding.diagonal_placement)) && !ui.chatfrag.shown() && Math.abs(Core.input.axisTap(Binding.zoom)) > 0
-            && !Core.input.keyDown(Binding.rotateplaced) && (Core.input.keyDown(Binding.diagonal_placement) || ((!player.isBuilder() || !isPlacing() || !block.rotate) && selectRequests.isEmpty()))){
-            renderer.scaleCamera(Core.input.axisTap(Binding.zoom));
+        if((!Core.scene.hasScroll() || Core.input.keyDown(ExBinding.diagonal_placement)) && !ui.chatfrag.shown() && Math.abs(Core.input.axisTap(ExBinding.zoom)) > 0
+            && !Core.input.keyDown(ExBinding.rotateplaced) && (Core.input.keyDown(ExBinding.diagonal_placement) || ((!player.isBuilder() || !isPlacing() || !block.rotate) && selectRequests.isEmpty()))){
+            renderer.scaleCamera(Core.input.axisTap(ExBinding.zoom));
         }
 
-        if(Core.input.keyTap(Binding.select) && !Core.scene.hasMouse()){
+        if(Core.input.keyTap(ExBinding.select) && !Core.scene.hasMouse()){
             Tile selected = world.tileWorld(input.mouseWorldX(), input.mouseWorldY());
             if(selected != null){
                 Call.tileTap(player, selected);
@@ -317,17 +317,17 @@ public class DesktopInput512 extends InputHandler{
             selectScale = 0f;
         }
 
-        if(!Core.input.keyDown(Binding.diagonal_placement) && Math.abs((int)Core.input.axisTap(Binding.rotate)) > 0){
-            rotation = Mathf.mod(rotation + (int)Core.input.axisTap(Binding.rotate), 4);
+        if(!Core.input.keyDown(ExBinding.diagonal_placement) && Math.abs((int)Core.input.axisTap(ExBinding.rotate)) > 0){
+            rotation = Mathf.mod(rotation + (int)Core.input.axisTap(ExBinding.rotate), 4);
 
             if(sreq != null){
-                sreq.rotation = Mathf.mod(sreq.rotation + (int)Core.input.axisTap(Binding.rotate), 4);
+                sreq.rotation = Mathf.mod(sreq.rotation + (int)Core.input.axisTap(ExBinding.rotate), 4);
             }
 
             if(isPlacing() && mode == placing){
                 updateLine(selectX, selectY);
             }else if(!selectRequests.isEmpty() && !ui.chatfrag.shown()){
-                rotateRequests(selectRequests, Mathf.sign(Core.input.axisTap(Binding.rotate)));
+                rotateRequests(selectRequests, Mathf.sign(Core.input.axisTap(ExBinding.rotate)));
             }
         }
 
@@ -354,8 +354,8 @@ public class DesktopInput512 extends InputHandler{
                 cursorType = ui.unloadCursor;
             }
 
-            if(cursor.build != null && cursor.interactable(player.team()) && !isPlacing() && Math.abs(Core.input.axisTap(Binding.rotate)) > 0 && Core.input.keyDown(Binding.rotateplaced) && cursor.block().rotate && cursor.block().quickRotate){
-                Call.rotateBlock(player, cursor.build, Core.input.axisTap(Binding.rotate) > 0);
+            if(cursor.build != null && cursor.interactable(player.team()) && !isPlacing() && Math.abs(Core.input.axisTap(ExBinding.rotate)) > 0 && Core.input.keyDown(ExBinding.rotateplaced) && cursor.block().rotate && cursor.block().quickRotate){
+                Call.rotateBlock(player, cursor.build, Core.input.axisTap(ExBinding.rotate) > 0);
             }
         }
 
@@ -432,20 +432,20 @@ public class DesktopInput512 extends InputHandler{
             schematicY += shiftY;
         }
 
-        if(Core.input.keyTap(Binding.deselect) && !isPlacing()){
+        if(Core.input.keyTap(ExBinding.deselect) && !isPlacing()){
             player.unit().mineTile = null;
         }
 
-        if(Core.input.keyTap(Binding.clear_building)){
+        if(Core.input.keyTap(ExBinding.clear_building)){
             player.unit().clearBuilding();
         }
 
-        if(Core.input.keyTap(Binding.schematic_select) && !Core.scene.hasKeyboard() && mode != breaking){
+        if(Core.input.keyTap(ExBinding.schematic_select) && !Core.scene.hasKeyboard() && mode != breaking){
             schemX = rawCursorX;
             schemY = rawCursorY;
         }
 
-        if(Core.input.keyTap(Binding.schematic_menu) && !Core.scene.hasKeyboard()){
+        if(Core.input.keyTap(ExBinding.schematic_menu) && !Core.scene.hasKeyboard()){
             if(ui.schematics.isShown()){
                 ui.schematics.hide();
             }else{
@@ -453,12 +453,12 @@ public class DesktopInput512 extends InputHandler{
             }
         }
 
-        if(Core.input.keyTap(Binding.clear_building) || isPlacing()){
+        if(Core.input.keyTap(ExBinding.clear_building) || isPlacing()){
             lastSchematic = null;
             selectRequests.clear();
         }
 
-        if(Core.input.keyRelease(Binding.schematic_select) && !Core.scene.hasKeyboard() && selectX == -1 && selectY == -1 && schemX != -1 && schemY != -1){
+        if(Core.input.keyRelease(ExBinding.schematic_select) && !Core.scene.hasKeyboard() && selectX == -1 && selectY == -1 && schemX != -1 && schemY != -1){
             lastSchematic = schematics.create(schemX, schemY, rawCursorX, rawCursorY);
             useSchematic(lastSchematic);
             if(selectRequests.isEmpty()){
@@ -469,11 +469,11 @@ public class DesktopInput512 extends InputHandler{
         }
 
         if(!selectRequests.isEmpty()){
-            if(Core.input.keyTap(Binding.schematic_flip_x)){
+            if(Core.input.keyTap(ExBinding.schematic_flip_x)){
                 flipRequests(selectRequests, true);
             }
 
-            if(Core.input.keyTap(Binding.schematic_flip_y)){
+            if(Core.input.keyTap(ExBinding.schematic_flip_y)){
                 flipRequests(selectRequests, false);
             }
         }
@@ -490,7 +490,7 @@ public class DesktopInput512 extends InputHandler{
             lineRequests.clear();
         }
 
-        if(Core.input.keyTap(Binding.pause_building)){
+        if(Core.input.keyTap(ExBinding.pause_building)){
             isBuilding = !isBuilding;
             buildWasAutoPaused = false;
 
@@ -505,10 +505,10 @@ public class DesktopInput512 extends InputHandler{
             lastLineY = cursorY;
         }
 
-        if(Core.input.keyTap(Binding.select) && !Core.scene.hasMouse()){
+        if(Core.input.keyTap(ExBinding.select) && !Core.scene.hasMouse()){
             BuildPlan req = getRequest(cursorX, cursorY);
 
-            if(Core.input.keyDown(Binding.break_block)){
+            if(Core.input.keyDown(ExBinding.break_block)){
                 mode = none;
             }else if(!selectRequests.isEmpty()){
                 flushRequests(selectRequests);
@@ -534,13 +534,13 @@ public class DesktopInput512 extends InputHandler{
             }
             selectMillis = Time.millis();
             prevSelected = selected;
-        }else if(Core.input.keyTap(Binding.deselect) && isPlacing()){
+        }else if(Core.input.keyTap(ExBinding.deselect) && isPlacing()){
             block = null;
             mode = none;
-        }else if(Core.input.keyTap(Binding.deselect) && !selectRequests.isEmpty()){
+        }else if(Core.input.keyTap(ExBinding.deselect) && !selectRequests.isEmpty()){
             selectRequests.clear();
             lastSchematic = null;
-        }else if(Core.input.keyTap(Binding.break_block) && !Core.scene.hasMouse() && player.isBuilder()){
+        }else if(Core.input.keyTap(ExBinding.break_block) && !Core.scene.hasMouse() && player.isBuilder()){
             //is recalculated because setting the mode to breaking removes potential multiblock cursor offset
             deleting = false;
             mode = breaking;
@@ -550,7 +550,7 @@ public class DesktopInput512 extends InputHandler{
             schemY = rawCursorY;
         }
 
-        if(Core.input.keyDown(Binding.select) && mode == none && !isPlacing() && deleting){
+        if(Core.input.keyDown(ExBinding.select) && mode == none && !isPlacing() && deleting){
             BuildPlan req = getRequest(cursorX, cursorY);
             if(req != null && req.breaking){
                 player.unit().plans().remove(req);
@@ -560,7 +560,7 @@ public class DesktopInput512 extends InputHandler{
         }
 
         if(mode == placing && block != null){
-            if(!overrideLineRotation && !Core.input.keyDown(Binding.diagonal_placement) && (selectX != cursorX || selectY != cursorY) && ((int)Core.input.axisTap(Binding.rotate) != 0)){
+            if(!overrideLineRotation && !Core.input.keyDown(ExBinding.diagonal_placement) && (selectX != cursorX || selectY != cursorY) && ((int)Core.input.axisTap(ExBinding.rotate) != 0)){
                 rotation = ((int)((Angles.angle(selectX, selectY, cursorX, cursorY) + 45) / 90f)) % 4;
                 overrideLineRotation = true;
             }
@@ -568,20 +568,20 @@ public class DesktopInput512 extends InputHandler{
             overrideLineRotation = false;
         }
 
-        if(Core.input.keyRelease(Binding.break_block) && Core.input.keyDown(Binding.schematic_select) && mode == breaking){
+        if(Core.input.keyRelease(ExBinding.break_block) && Core.input.keyDown(ExBinding.schematic_select) && mode == breaking){
             lastSchematic = schematics.create(schemX, schemY, rawCursorX, rawCursorY);
             schemX = -1;
             schemY = -1;
         }
 
-        if(Core.input.keyRelease(Binding.break_block) || Core.input.keyRelease(Binding.select)){
+        if(Core.input.keyRelease(ExBinding.break_block) || Core.input.keyRelease(ExBinding.select)){
 
             if(mode == placing && block != null){ //touch up while placing, place everything in selection
                 flushRequests(lineRequests);
                 lineRequests.clear();
                 Events.fire(new LineConfirmEvent());
             }else if(mode == breaking){ //touch up while breaking, break everything in selection
-                removeSelection(selectX, selectY, cursorX, cursorY, Core.input.keyDown(Binding.schematic_select) ? settings.getInt("copysize") - 1 : settings.getInt("breaksize") - 1);
+                removeSelection(selectX, selectY, cursorX, cursorY, Core.input.keyDown(ExBinding.schematic_select) ? settings.getInt("copysize") - 1 : settings.getInt("breaksize") - 1);
                 if(lastSchematic != null){
                     useSchematic(lastSchematic);
                     lastSchematic = null;
@@ -602,11 +602,11 @@ public class DesktopInput512 extends InputHandler{
             mode = none;
         }
 
-        if(Core.input.keyTap(Binding.toggle_block_status)){
+        if(Core.input.keyTap(ExBinding.toggle_block_status)){
             Core.settings.put("blockstatus", !Core.settings.getBool("blockstatus"));
         }
 
-        if(Core.input.keyTap(Binding.toggle_power_lines)){
+        if(Core.input.keyTap(ExBinding.toggle_power_lines)){
             if(Core.settings.getInt("lasersopacity") == 0){
                 Core.settings.put("lasersopacity", Core.settings.getInt("preferredlaseropacity", 100));
             }else{
@@ -648,12 +648,12 @@ public class DesktopInput512 extends InputHandler{
         boolean omni = unit.type.omniMovement;
 
         float speed = unit.realSpeed();
-        float xa = Core.input.axis(Binding.move_x);
-        float ya = Core.input.axis(Binding.move_y);
+        float xa = Core.input.axis(ExBinding.move_x);
+        float ya = Core.input.axis(ExBinding.move_y);
         boolean boosted = (unit instanceof Mechc && unit.isFlying());
 
         movement.set(xa, ya).nor().scl(speed);
-        if(Core.input.keyDown(Binding.mouse_move)){
+        if(Core.input.keyDown(ExBinding.mouse_move)){
             movement.add(input.mouseWorld().sub(player).scl(1f / 25f * speed)).limit(speed);
         }
 
@@ -675,23 +675,23 @@ public class DesktopInput512 extends InputHandler{
         unit.aim(unit.type.faceTarget ? Core.input.mouseWorld() : Tmp.v1.trns(unit.rotation, Core.input.mouseWorld().dst(unit)).add(unit.x, unit.y));
         unit.controlWeapons(true, player.shooting && !boosted);
 
-        player.boosting = Core.input.keyDown(Binding.boost);
+        player.boosting = Core.input.keyDown(ExBinding.boost);
         player.mouseX = unit.aimX();
         player.mouseY = unit.aimY();
 
         //update payload input
         if(unit instanceof Payloadc){
-            if(Core.input.keyTap(Binding.pickupCargo)){
+            if(Core.input.keyTap(ExBinding.pickupCargo)){
                 tryPickupPayload();
             }
 
-            if(Core.input.keyTap(Binding.dropCargo)){
+            if(Core.input.keyTap(ExBinding.dropCargo)){
                 tryDropPayload();
             }
         }
 
         //update commander unit
-        if(Core.input.keyTap(Binding.command) && unit.type.commandLimit > 0){
+        if(Core.input.keyTap(ExBinding.command) && unit.type.commandLimit > 0){
             Call.unitCommand(player);
         }
     }
