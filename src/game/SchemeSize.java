@@ -49,9 +49,9 @@ public class SchemeSize extends Mod{
 
                 // Add keybinds
                 Core.keybinds.setDefaults(ExBinding.values());
-                var axis = Core.keybinds.get(Core.keybinds.getKeybinds()[51]); // Load key
-                var name = "keybind-default-keyboard-toggle_core_items";
-                axis.key = KeyCode.byOrdinal(Core.settings.getInt(name + "-key", KeyCode.unset.ordinal()));
+                // var axis = Core.keybinds.get(Core.keybinds.getKeybinds()[51]); // Load key
+                // var name = "keybind-default-keyboard-toggle_core_items";
+                // axis.key = KeyCode.byOrdinal(Core.settings.getInt(name + "-key", KeyCode.unset.ordinal()));
                 Vars.ui.controls = new KeybindDialog(); // Update dialog
 
                 // Add logs
