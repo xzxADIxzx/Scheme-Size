@@ -64,7 +64,7 @@ public class SchemeSize extends Mod{
         
         @Override
         public KeybindValue defaultValue(DeviceType type){
-            return (KeybindValue)KeyCode.backslash;
+            return KeyCode.backslash;
         }
     }
 }
