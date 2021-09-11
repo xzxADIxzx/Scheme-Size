@@ -213,6 +213,11 @@ public class DesktopInput512 extends InputHandler{
         boolean panCam = false;
         float camSpeed = (!Core.input.keyDown(Binding.boost) ? panSpeed : panBoostSpeed) * Time.delta;
 
+        // Toggle Core Items
+        if(input.keyDown(ExBinding.toggle_core_items)){
+            Core.settings.put("coreitems", !Core.settings.getBool("coreitems"))
+        }
+
         if(input.keyDown(Binding.pan) && !scene.hasField() && !scene.hasDialog()){
             panCam = true;
             panning = true;
