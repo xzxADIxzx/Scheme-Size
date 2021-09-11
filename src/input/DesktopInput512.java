@@ -214,7 +214,7 @@ public class DesktopInput512 extends InputHandler{
         float camSpeed = (!Core.input.keyDown(Binding.boost) ? panSpeed : panBoostSpeed) * Time.delta;
 
         // Toggle Core Items
-        if(input.keyDown(ExBinding.toggle_core_items)){
+        if(input.keyTap(ExBinding.toggle_core_items)){
             Core.settings.put("coreitems", !Core.settings.getBool("coreitems"));
         }
 
