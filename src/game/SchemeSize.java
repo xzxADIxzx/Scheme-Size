@@ -49,7 +49,7 @@ public class SchemeSize extends Mod{
                 var keybinds = new Array();
                 Binding.values().forEach(item -> keybinds.splice(0, 0, item));
                 keybinds.reverse();
-                keybinds.splice(3, 0, new Bind())
+                keybinds.splice(3, 0, new Bind());
                 Core.keybinds.setDefaults(keybinds);
 
                 // Add logs
