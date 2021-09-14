@@ -53,8 +53,8 @@ public class SchemeSize extends Mod{
                 Seq<KeyBind> binds = new Seq<KeyBind>();
                 Seq<KeyBind> moded = new Seq<KeyBind>();
 
-                Log.info(binds.items)
-                Log.info(moded.items)
+                Log.info(binds.items);
+                Log.info(moded.items);
 
                 for (KeyBind bind : Binding.values()) binds.add((KeyBind)bind);
 
