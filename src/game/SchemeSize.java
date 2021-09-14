@@ -53,7 +53,7 @@ public class SchemeSize extends Mod{
                 Seq binds = new Seq<KeyBinds.KeyBind>(Binding.values());
                 Seq moded = new Seq<KeyBinds.KeyBind>(ModBinding.values());
                 binds.insert(3, moded.get(0)); // toggle_core_items
-                Core.keybinds.setDefaults(binds.items);
+                Core.keybinds.setDefaults((KeyBinds.KeyBind[])binds.items);
                 Vars.ui.controls = new KeybindDialog(); // Update dialog
 
                 // KeyBind[] binds = (KeyBind[])Binding.values();
