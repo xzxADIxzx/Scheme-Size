@@ -13,8 +13,6 @@ import mindustry.game.EventType.*;
 import mindustry.input.*;
 import mindustry.Vars;
 
-import java.util.*;
-
 public class SchemeSize extends Mod{
 
     public SchemeSize(){
