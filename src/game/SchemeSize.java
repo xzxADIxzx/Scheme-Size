@@ -50,10 +50,12 @@ public class SchemeSize extends Mod{
                 Vars.renderer.minZoom = 1f / (sliderMin.getValue() / 4f) * 1.5f;
 
                 // Add keybinds
-                Seq<KeyBind> binds = new Seq<KeyBind>(); binds.addAll((KeyBind[])Binding.values());
-                Seq<KeyBind> moded = new Seq<KeyBind>(); moded.addAll((KeyBind[])ModBinding.values());
+                Seq<KeyBind> binds = new Seq();
+                Seq<KeyBind> moded = new Seq();
+                Binding.values().forEach(item -> binds.add((KeyBind)item))
+                ModBinding.values().forEach(item -> moded.add((KeyBind)item))
                 binds.insert(51, (KeyBind)moded.get(0));
-                Core.keybinds.setDefaults(binds.items);
+                Core.keybinds.setDefaults((KeyBind[])binds.items);
                 Vars.ui.controls = new KeybindDialog(); // Update dialog
 
                 // Seq<KeyBind> binds = new Seq((KeyBind[])Binding.values());
