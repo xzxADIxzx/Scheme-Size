@@ -59,7 +59,7 @@ public class SchemeSize extends Mod{
                 // binds.insert(51, (KeyBind)moded.get(0));
                 // binds.add((KeyBind)moded.get(0));
                 // binds.addAll(moded);
-                System.arraycopy(keymoded, 0, keybinds, 58, 1)
+                System.arraycopy(keymoded, 0, keybinds, 58, 1);
                 Core.keybinds.setDefaults(keybinds);
                 Vars.ui.controls = new KeybindDialog(); // Update dialog
 
