@@ -3,6 +3,7 @@ package mindustry.game;
 import arc.*;
 import arc.util.*;
 import arc.input.*;
+import arc.KeyBinds.*;
 import arc.scene.ui.*;
 import arc.scene.ui.layout.*;
 import mindustry.ui.dialogs.*;
@@ -48,8 +49,8 @@ public class SchemeSize extends Mod{
                 Vars.renderer.minZoom = 1f / (sliderMin.getValue() / 4f) * 1.5f;
 
                 // Add keybinds
-                var binds = (KeyBinds.KeyBind[])Binding.values();
-                var modBinds = (KeyBinds.KeyBind[])ModBinding.values();
+                var binds = (KeyBind[])Binding.values();
+                var modBinds = (KeyBind[])ModBinding.values();
                 Core.keybinds.setDefaults(binds.concat(modBinds));
                 Vars.ui.controls = new KeybindDialog(); // Update dialog
 
