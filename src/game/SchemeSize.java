@@ -3,7 +3,6 @@ package mindustry.game;
 import arc.*;
 import arc.util.*;
 import arc.input.*;
-import arc.struct.*;
 import arc.KeyBinds.*;
 import arc.scene.ui.*;
 import arc.scene.ui.layout.*;
@@ -56,23 +55,8 @@ public class SchemeSize extends Mod{
                 System.arraycopy(origi, 0, binds, 0, origi.length);
                 System.arraycopy(moded, 0, binds, origi.length, moded.length);
                 Core.keybinds.setDefaults(binds);
+                Core.settings.load(); // Update controls
                 Vars.ui.controls = new KeybindDialog(); // Update dialog
-
-                // Seq<KeyBind> binds = new Seq((KeyBind[])Binding.values());
-                // Seq<KeyBind> moded = new Seq((KeyBind[])ModBinding.values());
-                // binds.insert(51, (KeyBind)moded.get(0));
-                // Core.keybinds.setDefaults((KeyBind[])binds.items);
-                // Vars.ui.controls = new KeybindDialog(); // Update dialog
-
-                // KeyBind[] binds = (KeyBind[])Binding.values();
-                // KeyBind[] moded = (KeyBind[])ModBinding.values();
-                // binds.splice(3, 0, moded[0]); // Core Items
-                // Core.keybinds.setDefaults(binds.concat(moded));
-                // Vars.ui.controls = new KeybindDialog(); // Update dialog
-
-                // Core.keybinds.setDefaults(ExBinding.values());
-                // KeybindLoader.load(); // copy of Core.keybinds.load()
-                // Vars.ui.controls = new KeybindDialog(); // Update dialog
 
                 // Add logs
                 // Log.info(Vars.schematics);
