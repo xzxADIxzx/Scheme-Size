@@ -51,7 +51,7 @@ public class SchemeSize extends Mod{
                 // Add keybinds
                 var binds = Binding.values();
                 var modBinds = ModBinding.values();
-                binds.splice(3, 0, modBinds[0]); // Core Items
+                binds.splice(3, 0, binds[0]); // Core Items
                 Core.keybinds.setDefaults(binds);
                 Vars.ui.controls = new KeybindDialog(); // Update dialog
 
