@@ -4,6 +4,7 @@ import arc.*;
 import arc.util.*;
 import arc.input.*;
 import arc.struct.*;
+import arc.KeyBinds.*;
 import arc.scene.ui.*;
 import arc.scene.ui.layout.*;
 import mindustry.ui.dialogs.*;
@@ -49,10 +50,10 @@ public class SchemeSize extends Mod{
                 Vars.renderer.minZoom = 1f / (sliderMin.getValue() / 4f) * 1.5f;
 
                 // Add keybinds
-                Seq binds = new Seq(Binding.values());
-                Seq moded = new Seq(ModBinding.values());
-                binds.insert(51, (KeyBinds.KeyBind)moded.get(0));
-                Core.keybinds.setDefaults((KeyBinds.KeyBind[])binds.items);
+                Seq binds = new Seq((KeyBind[])Binding.values());
+                Seq moded = new Seq((KeyBind[])ModBinding.values());
+                binds.insert(51, (KeyBind)moded.get(0));
+                Core.keybinds.setDefaults((KeyBind[])binds.items);
                 Vars.ui.controls = new KeybindDialog(); // Update dialog
 
                 // KeyBind[] binds = (KeyBind[])Binding.values();
