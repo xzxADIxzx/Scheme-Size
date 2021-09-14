@@ -48,7 +48,7 @@ public class SchemeSize extends Mod{
                 Vars.renderer.minZoom = 1f / (sliderMin.getValue() / 4f) * 1.5f;
 
                 // Add keybinds
-                Core.keybinds.setDefaults(Binding.values() + ModBinding.values());
+                Core.keybinds.setDefaults((KeyBind)Binding.values() + (KeyBind)ModBinding.values());
                 Vars.ui.controls = new KeybindDialog(); // Update dialog
 
                 // Core.keybinds.setDefaults(ExBinding.values());
