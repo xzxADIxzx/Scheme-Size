@@ -2,14 +2,14 @@ package mindustry.game;
 
 import arc.*;
 import arc.util.*;
-// import arc.input.*;
+import arc.input.*;
 import arc.scene.ui.*;
 import arc.scene.ui.layout.*;
-// import mindustry.ui.dialogs.*;
+import mindustry.ui.dialogs.*;
 import mindustry.mod.*;
-import mindustry.Vars;
 import mindustry.game.EventType.*;
 import mindustry.input.*;
+import mindustry.Vars;
 
 public class SchemeSize extends Mod{
 
@@ -48,6 +48,9 @@ public class SchemeSize extends Mod{
                 Vars.renderer.minZoom = 1f / (sliderMin.getValue() / 4f) * 1.5f;
 
                 // Add keybinds
+                Core.keybinds.setDefaults(Binding.values() + ModBinding.values());
+                Vars.ui.controls = new KeybindDialog(); // Update dialog
+
                 // Core.keybinds.setDefaults(ExBinding.values());
                 // KeybindLoader.load(); // copy of Core.keybinds.load()
                 // Vars.ui.controls = new KeybindDialog(); // Update dialog
