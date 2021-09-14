@@ -3,7 +3,7 @@ package mindustry.game;
 import arc.*;
 import arc.util.*;
 import arc.input.*;
-import arc.KeyBinds.*;
+// import arc.KeyBinds.*;
 import arc.scene.ui.*;
 import arc.scene.ui.layout.*;
 import mindustry.ui.dialogs.*;
@@ -49,11 +49,17 @@ public class SchemeSize extends Mod{
                 Vars.renderer.minZoom = 1f / (sliderMin.getValue() / 4f) * 1.5f;
 
                 // Add keybinds
-                var binds = Binding.values();
-                var modBinds = ModBinding.values();
-                binds.splice(3, 0, binds[0]); // Core Items
-                Core.keybinds.setDefaults(binds);
+                Seq binds = new Seq((KeyBinds.KeyBind[])Binding.values());
+                Seq moded = new Seq((KeyBinds.KeyBind[])ModBinding.values());
+                binds.insert(3, moded.get(0)); // toggle_core_items
+                Core.keybinds.setDefaults(binds.items);
                 Vars.ui.controls = new KeybindDialog(); // Update dialog
+
+                // KeyBind[] binds = (KeyBind[])Binding.values();
+                // KeyBind[] moded = (KeyBind[])ModBinding.values();
+                // binds.splice(3, 0, moded[0]); // Core Items
+                // Core.keybinds.setDefaults(binds.concat(moded));
+                // Vars.ui.controls = new KeybindDialog(); // Update dialog
 
                 // Core.keybinds.setDefaults(ExBinding.values());
                 // KeybindLoader.load(); // copy of Core.keybinds.load()
