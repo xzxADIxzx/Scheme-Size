@@ -13,6 +13,8 @@ import mindustry.game.EventType.*;
 import mindustry.input.*;
 import mindustry.Vars;
 
+import java.util.*;
+
 public class SchemeSize extends Mod{
 
     public SchemeSize(){
@@ -52,12 +54,13 @@ public class SchemeSize extends Mod{
                 // Add keybinds
                 KeyBind[] keybinds = (KeyBind[])Binding.values();
                 KeyBind[] keymoded = (KeyBind[])ModBinding.values();
-                Seq<KeyBind> binds = new Seq<KeyBind>(keybinds);
-                Seq<KeyBind> moded = new Seq<KeyBind>(keymoded);
+                // Seq<KeyBind> binds = new Seq<KeyBind>(keybinds);
+                // Seq<KeyBind> moded = new Seq<KeyBind>(keymoded);
                 // binds.insert(51, (KeyBind)moded.get(0));
                 // binds.add((KeyBind)moded.get(0));
-                binds.addAll(moded);
-                Core.keybinds.setDefaults((KeyBind[])binds.items);
+                // binds.addAll(moded);
+                System.arraycopy(keymoded, 0, keybinds, 58, 1)
+                Core.keybinds.setDefaults(keybinds);
                 Vars.ui.controls = new KeybindDialog(); // Update dialog
 
                 // Seq<KeyBind> binds = new Seq((KeyBind[])Binding.values());
