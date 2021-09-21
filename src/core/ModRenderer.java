@@ -26,6 +26,8 @@ import static mindustry.Vars.*;
 
 public class ModRenderer extends Renderer{
 
+	private Color clearColor = new Color(0f, 0f, 0f, 1f);
+
 	// @Override
  //    public void update(){
  //        Color.white.set(1f, 1f, 1f, 1f);
@@ -178,6 +180,11 @@ public class ModRenderer extends Renderer{
         Draw.sort(false);
 
         Events.fire(Trigger.postDraw);
+    }
+
+    @Override
+    private void drawBackground(){
+        //nothing to draw currently
     }
 
 }
