@@ -171,7 +171,7 @@ public class ModRenderer extends Renderer{
         Draw.draw(Layer.space, this::drawLanding);
 
         // x-ray
-        blocks.drawBlocks();
+        // blocks.drawBlocks();
 
         Groups.draw.draw(Drawc::draw);
 
@@ -182,7 +182,6 @@ public class ModRenderer extends Renderer{
         Events.fire(Trigger.postDraw);
     }
 
-    @Override
     private void drawBackground(){
         //nothing to draw currently
     }
