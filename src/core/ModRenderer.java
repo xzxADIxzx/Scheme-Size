@@ -26,30 +26,12 @@ import static mindustry.Vars.*;
 
 // Last Update - Sep 17, 2021
 public class ModRenderer extends Renderer{
-    /** These are global variables, for headless access. Cached. */
-    public static float laserOpacity = 0.5f, bridgeOpacity = 0.75f;
 
     private static final float cloudScaling = 1700f, cfinScl = -2f, cfinOffset = 0.3f, calphaFinOffset = 0.25f;
     private static final float[] cloudAlphas = {0, 0.5f, 1f, 0.1f, 0, 0f};
     private static final float cloudAlpha = 0.81f;
     private static final float[] thrusterSizes = {0f, 0f, 0f, 0f, 0.3f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 0f};
     private static final Interp landInterp = Interp.pow3;
-
-    public final BlockRenderer blocks = new BlockRenderer();
-    public final MinimapRenderer minimap = new MinimapRenderer();
-    public final OverlayRenderer overlays = new OverlayRenderer();
-    public final LightRenderer lights = new LightRenderer();
-    public final Pixelator pixelator = new Pixelator();
-    public PlanetRenderer planets;
-
-    public @Nullable Bloom bloom;
-    public FrameBuffer effectBuffer = new FrameBuffer();
-    public boolean animateShields, drawWeather = true, drawStatus;
-    public float weatherAlpha;
-    /** minZoom = zooming out, maxZoom = zooming in */
-    public float minZoom = 1.5f, maxZoom = 6f;
-    public Seq<EnvRenderer> envRenderers = new Seq<>();
-    public TextureRegion[] bubbles = new TextureRegion[16], splashes = new TextureRegion[12];
 
     private @Nullable CoreBuild landCore;
     private @Nullable CoreBlock launchCoreType;
