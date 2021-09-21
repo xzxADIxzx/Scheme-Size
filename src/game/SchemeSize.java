@@ -3,7 +3,7 @@ package mindustry.game;
 import arc.*;
 import arc.util.*;
 import arc.input.*;
-import arc.assets.*;
+// import arc.assets.*;
 import arc.KeyBinds.*;
 import arc.scene.ui.*;
 import arc.scene.ui.layout.*;
@@ -32,8 +32,8 @@ public class SchemeSize extends Mod{
                 // Change renderer
                 Vars.renderer = new ModRenderer();
                 Vars.renderer.init();
-                Loadable load = (Loadable)Vars.renderer;
-                Core.assets.load(load);
+                // Loadable load = (Loadable)Vars.renderer;
+                // Core.assets.load(load);
 
                 // Add settings
                 var game = Vars.ui.settings.game;
