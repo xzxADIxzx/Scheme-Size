@@ -30,6 +30,7 @@ public class SchemeSize extends Mod{
 
                 // Change renderer
                 Vars.renderer = new ModRenderer();
+                Vars.renderer.init();
 
                 // Add settings
                 var game = Vars.ui.settings.game;
