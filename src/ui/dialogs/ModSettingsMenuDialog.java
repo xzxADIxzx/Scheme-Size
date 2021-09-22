@@ -36,10 +36,10 @@ import static mindustry.Vars.*;
 public class ModSettingsMenuDialog extends SettingsMenuDialog{
     public SettingsTable mod;
 
-    // private Table prefs;
-    // private Table menu;
-    // private BaseDialog dataDialog;
-    // private boolean wasPaused;
+    private Table prefs;
+    private Table menu;
+    private BaseDialog dataDialog;
+    private boolean wasPaused;
 
     public ModSettingsMenuDialog(){
         // super();
@@ -248,14 +248,6 @@ public class ModSettingsMenuDialog extends SettingsMenuDialog{
 
         addSettings();
     }
-
-    // public ModSettingsMenuDialog(){
-        super();
-        mod = new SettingsTable();
-
-        rebuildMenu();
-        addSettings();
-    // }
 
     String getLogs(){
         Fi log = settings.getDataDirectory().child("last_log.txt");
