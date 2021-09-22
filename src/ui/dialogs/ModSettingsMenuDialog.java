@@ -476,14 +476,12 @@ public class ModSettingsMenuDialog extends SettingsMenuDialog{
     //     }
     // }
 
-    @Override
     private void back(){
         rebuildMenu();
         prefs.clearChildren();
         prefs.add(menu);
     }
 
-    @Override
     private void visible(int index){
         prefs.clearChildren();
         prefs.add(new Table[]{game, graphics, sound, mod}[index]);
