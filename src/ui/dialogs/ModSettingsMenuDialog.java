@@ -511,7 +511,7 @@ public class ModSettingsMenuDialog extends SettingsMenuDialog{
                 if(prefs.getChildren().first() != menu){
                     back();
                 }else{
-                    hide();
+                    // hide();
                 }
             }
         });
