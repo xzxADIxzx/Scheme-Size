@@ -11,7 +11,6 @@ import mindustry.mod.*;
 import mindustry.core.*;
 import mindustry.game.EventType.*;
 import mindustry.input.*;
-import mindustry.desktop.*;
 import mindustry.Vars;
 
 public class SchemeSize extends Mod{
@@ -29,10 +28,8 @@ public class SchemeSize extends Mod{
                     Vars.control.setInput(new DesktopInput512());
                 }
 
-                // Change renderer
-                Vars.renderer = new ModRenderer();
-                Vars.renderer.init();
-                DesktopLauncher.add(Vars.renderer);
+                // Change dialog
+                Vars.ui.settings = new ModSettingsMenuDialog();
 
                 // Add settings
                 var game = Vars.ui.settings.game;
