@@ -93,7 +93,8 @@ public class ModSettingsMenuDialog extends SettingsMenuDialog{
 
         prefs = new Table();
         prefs.top();
-        prefs.margin(-12f); //14f
+        prefs.margin(14f);
+        prefs.marginBottom(10f);
 
         rebuildMenu();
 
@@ -265,7 +266,7 @@ public class ModSettingsMenuDialog extends SettingsMenuDialog{
         return out.toString();
     }
 
-    void rebuildMenu(){
+    public void rebuildMenu(){
         menu.clearChildren();
 
         TextButtonStyle style = Styles.cleart;
@@ -509,7 +510,7 @@ public class ModSettingsMenuDialog extends SettingsMenuDialog{
         keyDown(key -> {
             if(key == KeyCode.escape || key == KeyCode.back){
                 if(prefs.getChildren().first() != menu){
-                    // back();
+                    back();
                 }else{
                     hide();
                 }
