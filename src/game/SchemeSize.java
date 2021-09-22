@@ -29,7 +29,7 @@ public class SchemeSize extends Mod{
                 }
 
                 // Change dialog
-                var settings = new ModSettingsMenuDialog()
+                var settings = new ModSettingsMenuDialog();
                 Vars.ui.settings = settings;
 
                 // Add secret
