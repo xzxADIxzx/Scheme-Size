@@ -274,7 +274,7 @@ public class ModSettingsMenuDialog extends SettingsMenuDialog{
         menu.row();
         menu.button("@settings.graphics", style, () -> visible(1));
         menu.row();
-        menu.button("@settings.sound", style, () -> visible(2));w
+        menu.button("@settings.sound", style, () -> visible(2));
         menu.row();
         menu.button("@settings.mod", style, () -> visible(3));
         menu.row();
