@@ -93,7 +93,7 @@ public class ModSettingsMenuDialog extends SettingsMenuDialog{
 
         prefs = new Table();
         prefs.top();
-        prefs.margin(14f);
+        prefs.margin(12f); //14f
 
         rebuildMenu();
 
@@ -290,6 +290,15 @@ public class ModSettingsMenuDialog extends SettingsMenuDialog{
     }
 
     void addSettings(){
+        mod.sliderPref("maxzoommul", 4, 4, 8, 1, i -> i / 4f + "x").changed(() -> { renderer.maxZoom = sliderMax.getValue() / 4f * 6f; });;
+        mod.sliderPref("minzoommul", 4, 4, 8, 1, i -> i / 4f + "x").changed(() -> { renderer.minZoom = 1 / (sliderMin.getValue() / 4f) * 1.5f; });
+        mod.sliderPref("copysize", 512, 32, 512, 32, i -> Core.bundle.format("setting.blocks", i));
+        mod.sliderPref("breaksize", 512, 32, 512, 32, i -> Core.bundle.format("setting.blocks", i));
+        mod.checkPref("copyshow", true);
+        mod.checkPref("breakshow", true);
+        mod.checkPref("secret", false).visible(false);
+        // mod.getCells().get(11).visible(false); // Hide secret
+
         sound.sliderPref("musicvol", 100, 0, 100, 1, i -> i + "%");
         sound.sliderPref("sfxvol", 100, 0, 100, 1, i -> i + "%");
         sound.sliderPref("ambientvol", 100, 0, 100, 1, i -> i + "%");
