@@ -41,211 +41,219 @@ public class ModSettingsMenuDialog extends SettingsMenuDialog{
     private BaseDialog dataDialog;
     private boolean wasPaused;
 
+    // public ModSettingsMenuDialog(){
+    //     super();
+    //     addCloseButton();
+
+    //     cont.add(main = new SettingsTable());
+
+    //     hidden(() -> {
+    //         Sounds.back.play();
+    //         if(state.isGame()){
+    //             if(!wasPaused || net.active())
+    //                 state.set(State.playing);
+    //         }
+    //     });
+
+    //     shown(() -> {
+    //         back();
+    //         if(state.isGame()){
+    //             wasPaused = state.is(State.paused);
+    //             state.set(State.paused);
+    //         }
+
+    //         rebuildMenu();
+    //     });
+
+    //     Events.on(ResizeEvent.class, event -> {
+    //         if(isShown() && Core.scene.getDialog() == this){
+    //             graphics.rebuild();
+    //             sound.rebuild();
+    //             game.rebuild();
+    //             updateScrollFocus();
+    //         }
+    //     });
+
+    //     setFillParent(true);
+    //     title.setAlignment(Align.center);
+    //     titleTable.row();
+    //     titleTable.add(new Image()).growX().height(3f).pad(4f).get().setColor(Pal.accent);
+
+    //     cont.clearChildren();
+    //     cont.remove();
+    //     buttons.remove();
+
+    //     menu = new Table(Tex.button);
+
+    //     game = new SettingsTable();
+    //     graphics = new SettingsTable();
+    //     sound = new SettingsTable();
+    //     mod = new SettingsTable();
+
+    //     prefs = new Table();
+    //     prefs.top();
+    //     prefs.margin(14f);
+
+    //     rebuildMenu();
+
+    //     prefs.clearChildren();
+    //     prefs.add(menu);
+
+    //     dataDialog = new BaseDialog("@settings.data");
+    //     dataDialog.addCloseButton();
+
+    //     dataDialog.cont.table(Tex.button, t -> {
+    //         t.defaults().size(280f, 60f).left();
+    //         TextButtonStyle style = Styles.cleart;
+
+    //         t.button("@settings.cleardata", Icon.trash, style, () -> ui.showConfirm("@confirm", "@settings.clearall.confirm", () -> {
+    //             ObjectMap<String, Object> map = new ObjectMap<>();
+    //             for(String value : Core.settings.keys()){
+    //                 if(value.contains("usid") || value.contains("uuid")){
+    //                     map.put(value, Core.settings.get(value, null));
+    //                 }
+    //             }
+    //             Core.settings.clear();
+    //             Core.settings.putAll(map);
+
+    //             for(Fi file : dataDirectory.list()){
+    //                 file.deleteDirectory();
+    //             }
+
+    //             Core.app.exit();
+    //         })).marginLeft(4);
+
+    //         t.row();
+
+    //         t.button("@settings.clearsaves", Icon.trash, style, () -> {
+    //             ui.showConfirm("@confirm", "@settings.clearsaves.confirm", () -> {
+    //                 control.saves.deleteAll();
+    //             });
+    //         }).marginLeft(4);
+
+    //         t.row();
+
+    //         t.button("@settings.clearresearch", Icon.trash, style, () -> {
+    //             ui.showConfirm("@confirm", "@settings.clearresearch.confirm", () -> {
+    //                 universe.clearLoadoutInfo();
+    //                 for(TechNode node : TechTree.all){
+    //                     node.reset();
+    //                 }
+    //                 content.each(c -> {
+    //                     if(c instanceof UnlockableContent u){
+    //                         u.clearUnlock();
+    //                     }
+    //                 });
+    //                 settings.remove("unlocks");
+    //             });
+    //         }).marginLeft(4);
+
+    //         t.row();
+
+    //         t.button("@settings.clearcampaignsaves", Icon.trash, style, () -> {
+    //             ui.showConfirm("@confirm", "@settings.clearcampaignsaves.confirm", () -> {
+    //                 for(var planet : content.planets()){
+    //                     for(var sec : planet.sectors){
+    //                         sec.clearInfo();
+    //                         if(sec.save != null){
+    //                             sec.save.delete();
+    //                             sec.save = null;
+    //                         }
+    //                     }
+    //                 }
+
+    //                 for(var slot : control.saves.getSaveSlots().copy()){
+    //                     if(slot.isSector()){
+    //                         slot.delete();
+    //                     }
+    //                 }
+    //             });
+    //         }).marginLeft(4);
+
+    //         t.row();
+
+    //         t.button("@data.export", Icon.upload, style, () -> {
+    //             if(ios){
+    //                 Fi file = Core.files.local("mindustry-data-export.zip");
+    //                 try{
+    //                     exportData(file);
+    //                 }catch(Exception e){
+    //                     ui.showException(e);
+    //                 }
+    //                 platform.shareFile(file);
+    //             }else{
+    //                 platform.showFileChooser(false, "zip", file -> {
+    //                     try{
+    //                         exportData(file);
+    //                         ui.showInfo("@data.exported");
+    //                     }catch(Exception e){
+    //                         e.printStackTrace();
+    //                         ui.showException(e);
+    //                     }
+    //                 });
+    //             }
+    //         }).marginLeft(4);
+
+    //         t.row();
+
+    //         t.button("@data.import", Icon.download, style, () -> ui.showConfirm("@confirm", "@data.import.confirm", () -> platform.showFileChooser(true, "zip", file -> {
+    //             try{
+    //                 importData(file);
+    //                 Core.app.exit();
+    //             }catch(IllegalArgumentException e){
+    //                 ui.showErrorMessage("@data.invalid");
+    //             }catch(Exception e){
+    //                 e.printStackTrace();
+    //                 if(e.getMessage() == null || !e.getMessage().contains("too short")){
+    //                     ui.showException(e);
+    //                 }else{
+    //                     ui.showErrorMessage("@data.invalid");
+    //                 }
+    //             }
+    //         }))).marginLeft(4);
+
+    //         if(!mobile){
+    //             t.row();
+    //             t.button("@data.openfolder", Icon.folder, style, () -> Core.app.openFolder(Core.settings.getDataDirectory().absolutePath())).marginLeft(4);
+    //         }
+
+    //         t.row();
+
+    //         t.button("@crash.export", Icon.upload, style, () -> {
+    //             if(settings.getDataDirectory().child("crashes").list().length == 0 && !settings.getDataDirectory().child("last_log.txt").exists()){
+    //                 ui.showInfo("@crash.none");
+    //             }else{
+    //                 if(ios){
+    //                     Fi logs = tmpDirectory.child("logs.txt");
+    //                     logs.writeString(getLogs());
+    //                     platform.shareFile(logs);
+    //                 }else{
+    //                     platform.showFileChooser(false, "txt", file -> {
+    //                         try{
+    //                             file.writeBytes(getLogs().getBytes(Strings.utf8));
+    //                             app.post(() -> ui.showInfo("@crash.exported"));
+    //                         }catch(Throwable e){
+    //                             ui.showException(e);
+    //                         }
+    //                     });
+    //                 }
+    //             }
+    //         }).marginLeft(4);
+    //     });
+
+    //     row();
+    //     pane(prefs).grow().top();
+    //     row();
+    //     add(buttons).fillX();
+
+    //     addSettings();
+    // }
+
     public ModSettingsMenuDialog(){
-        super();
-        addCloseButton();
-
-        cont.add(main = new SettingsTable());
-
-        hidden(() -> {
-            Sounds.back.play();
-            if(state.isGame()){
-                if(!wasPaused || net.active())
-                    state.set(State.playing);
-            }
-        });
-
-        shown(() -> {
-            back();
-            if(state.isGame()){
-                wasPaused = state.is(State.paused);
-                state.set(State.paused);
-            }
-
-            rebuildMenu();
-        });
-
-        Events.on(ResizeEvent.class, event -> {
-            if(isShown() && Core.scene.getDialog() == this){
-                graphics.rebuild();
-                sound.rebuild();
-                game.rebuild();
-                updateScrollFocus();
-            }
-        });
-
-        setFillParent(true);
-        title.setAlignment(Align.center);
-        titleTable.row();
-        titleTable.add(new Image()).growX().height(3f).pad(4f).get().setColor(Pal.accent);
-
-        cont.clearChildren();
-        cont.remove();
-        buttons.remove();
-
-        menu = new Table(Tex.button);
-
-        game = new SettingsTable();
-        graphics = new SettingsTable();
-        sound = new SettingsTable();
+        super()
         mod = new SettingsTable();
 
-        prefs = new Table();
-        prefs.top();
-        prefs.margin(14f);
-
         rebuildMenu();
-
-        prefs.clearChildren();
-        prefs.add(menu);
-
-        dataDialog = new BaseDialog("@settings.data");
-        dataDialog.addCloseButton();
-
-        dataDialog.cont.table(Tex.button, t -> {
-            t.defaults().size(280f, 60f).left();
-            TextButtonStyle style = Styles.cleart;
-
-            t.button("@settings.cleardata", Icon.trash, style, () -> ui.showConfirm("@confirm", "@settings.clearall.confirm", () -> {
-                ObjectMap<String, Object> map = new ObjectMap<>();
-                for(String value : Core.settings.keys()){
-                    if(value.contains("usid") || value.contains("uuid")){
-                        map.put(value, Core.settings.get(value, null));
-                    }
-                }
-                Core.settings.clear();
-                Core.settings.putAll(map);
-
-                for(Fi file : dataDirectory.list()){
-                    file.deleteDirectory();
-                }
-
-                Core.app.exit();
-            })).marginLeft(4);
-
-            t.row();
-
-            t.button("@settings.clearsaves", Icon.trash, style, () -> {
-                ui.showConfirm("@confirm", "@settings.clearsaves.confirm", () -> {
-                    control.saves.deleteAll();
-                });
-            }).marginLeft(4);
-
-            t.row();
-
-            t.button("@settings.clearresearch", Icon.trash, style, () -> {
-                ui.showConfirm("@confirm", "@settings.clearresearch.confirm", () -> {
-                    universe.clearLoadoutInfo();
-                    for(TechNode node : TechTree.all){
-                        node.reset();
-                    }
-                    content.each(c -> {
-                        if(c instanceof UnlockableContent u){
-                            u.clearUnlock();
-                        }
-                    });
-                    settings.remove("unlocks");
-                });
-            }).marginLeft(4);
-
-            t.row();
-
-            t.button("@settings.clearcampaignsaves", Icon.trash, style, () -> {
-                ui.showConfirm("@confirm", "@settings.clearcampaignsaves.confirm", () -> {
-                    for(var planet : content.planets()){
-                        for(var sec : planet.sectors){
-                            sec.clearInfo();
-                            if(sec.save != null){
-                                sec.save.delete();
-                                sec.save = null;
-                            }
-                        }
-                    }
-
-                    for(var slot : control.saves.getSaveSlots().copy()){
-                        if(slot.isSector()){
-                            slot.delete();
-                        }
-                    }
-                });
-            }).marginLeft(4);
-
-            t.row();
-
-            t.button("@data.export", Icon.upload, style, () -> {
-                if(ios){
-                    Fi file = Core.files.local("mindustry-data-export.zip");
-                    try{
-                        exportData(file);
-                    }catch(Exception e){
-                        ui.showException(e);
-                    }
-                    platform.shareFile(file);
-                }else{
-                    platform.showFileChooser(false, "zip", file -> {
-                        try{
-                            exportData(file);
-                            ui.showInfo("@data.exported");
-                        }catch(Exception e){
-                            e.printStackTrace();
-                            ui.showException(e);
-                        }
-                    });
-                }
-            }).marginLeft(4);
-
-            t.row();
-
-            t.button("@data.import", Icon.download, style, () -> ui.showConfirm("@confirm", "@data.import.confirm", () -> platform.showFileChooser(true, "zip", file -> {
-                try{
-                    importData(file);
-                    Core.app.exit();
-                }catch(IllegalArgumentException e){
-                    ui.showErrorMessage("@data.invalid");
-                }catch(Exception e){
-                    e.printStackTrace();
-                    if(e.getMessage() == null || !e.getMessage().contains("too short")){
-                        ui.showException(e);
-                    }else{
-                        ui.showErrorMessage("@data.invalid");
-                    }
-                }
-            }))).marginLeft(4);
-
-            if(!mobile){
-                t.row();
-                t.button("@data.openfolder", Icon.folder, style, () -> Core.app.openFolder(Core.settings.getDataDirectory().absolutePath())).marginLeft(4);
-            }
-
-            t.row();
-
-            t.button("@crash.export", Icon.upload, style, () -> {
-                if(settings.getDataDirectory().child("crashes").list().length == 0 && !settings.getDataDirectory().child("last_log.txt").exists()){
-                    ui.showInfo("@crash.none");
-                }else{
-                    if(ios){
-                        Fi logs = tmpDirectory.child("logs.txt");
-                        logs.writeString(getLogs());
-                        platform.shareFile(logs);
-                    }else{
-                        platform.showFileChooser(false, "txt", file -> {
-                            try{
-                                file.writeBytes(getLogs().getBytes(Strings.utf8));
-                                app.post(() -> ui.showInfo("@crash.exported"));
-                            }catch(Throwable e){
-                                ui.showException(e);
-                            }
-                        });
-                    }
-                }
-            }).marginLeft(4);
-        });
-
-        row();
-        pane(prefs).grow().top();
-        row();
-        add(buttons).fillX();
-
         addSettings();
     }
 
