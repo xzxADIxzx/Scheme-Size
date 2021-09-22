@@ -42,7 +42,7 @@ public class ModSettingsMenuDialog extends SettingsMenuDialog{
     private boolean wasPaused;
 
     public ModSettingsMenuDialog(){
-        super(bundle.get("settings", "Settings"));
+        super();
         addCloseButton();
 
         cont.add(main = new SettingsTable());
