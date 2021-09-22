@@ -43,7 +43,7 @@ public class ModSettingsMenuDialog extends SettingsMenuDialog{
 
     public ModSettingsMenuDialog(){
         // super(bundle.get("settings", "Settings"));
-        getChildren().clear();
+        getChildren().get(1).clear();
         buttons.clear();
         addCloseButton();
 
