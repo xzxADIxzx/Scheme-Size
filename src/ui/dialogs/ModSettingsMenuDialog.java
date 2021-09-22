@@ -35,7 +35,6 @@ import static mindustry.Vars.*;
 // Last Update - Sep 11, 2021
 public class ModSettingsMenuDialog extends SettingsMenuDialog{
     public SettingsTable mod;
-    public boolean btn;
 
     private Table prefs;
     private Table menu;
@@ -95,6 +94,7 @@ public class ModSettingsMenuDialog extends SettingsMenuDialog{
         prefs = new Table();
         prefs.top();
         // prefs.margin(14f);
+        prefs.marginBottom(100f);
 
         rebuildMenu();
 
@@ -502,21 +502,17 @@ public class ModSettingsMenuDialog extends SettingsMenuDialog{
         buttons.button("@back", Icon.left, () -> {
             if(prefs.getChildren().first() != menu){
                 back();
-                btn = false;
             }else{
                 hide();
-                btn = true;
             }
         }).size(210f, 64f);
 
         keyDown(key -> {
             if(key == KeyCode.escape || key == KeyCode.back){
-                if(prefs.getChildren().first() != menu && btn){
+                if(prefs.getChildren().first() != menu){
                     back();
-                    btn = false;
                 }else{
                     hide();
-                    btn = true;
                 }
             }
         });
@@ -526,5 +522,6 @@ public class ModSettingsMenuDialog extends SettingsMenuDialog{
         getChildren().get(1).clear();
         getChildren().get(1).remove();
         buttons.clear();
+        buttons.remove();
     }
 }
