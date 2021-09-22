@@ -43,8 +43,7 @@ public class ModSettingsMenuDialog extends SettingsMenuDialog{
 
     public ModSettingsMenuDialog(){
         // super(bundle.get("settings", "Settings"));
-        getChildren().get(1).clear();
-        buttons.clear();
+        clearOld();
         addCloseButton();
 
         cont.add(main = new SettingsTable());
@@ -76,10 +75,10 @@ public class ModSettingsMenuDialog extends SettingsMenuDialog{
             }
         });
 
-        setFillParent(true);
-        title.setAlignment(Align.center);
-        titleTable.row();
-        titleTable.add(new Image()).growX().height(3f).pad(4f).get().setColor(Pal.accent);
+        // setFillParent(true);
+        // title.setAlignment(Align.center);
+        // titleTable.row();
+        // titleTable.add(new Image()).growX().height(3f).pad(4f).get().setColor(Pal.accent);
 
         cont.clearChildren();
         cont.remove();
@@ -508,5 +507,11 @@ public class ModSettingsMenuDialog extends SettingsMenuDialog{
                 }
             }
         });
+    }
+
+    private void clearOld(){
+        getChildren().get(1).clear();
+        getChildren().get(1).remove();
+        buttons.clear();
     }
 }
