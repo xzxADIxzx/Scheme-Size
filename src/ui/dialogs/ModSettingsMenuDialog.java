@@ -94,7 +94,7 @@ public class ModSettingsMenuDialog extends SettingsMenuDialog{
         prefs = new Table();
         prefs.top();
         // prefs.margin(14f);
-        prefs.marginBottom(100f);
+        prefs.marginBottom(80f);
 
         rebuildMenu();
 
@@ -519,6 +519,7 @@ public class ModSettingsMenuDialog extends SettingsMenuDialog{
     }
 
     private void clearOld(){
+        removeListener(getListeners().get(2));
         getChildren().get(1).clear();
         getChildren().get(1).remove();
         buttons.clear();
