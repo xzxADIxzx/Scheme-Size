@@ -6,13 +6,13 @@ import arc.input.*;
 import arc.KeyBinds.*;
 import arc.scene.ui.*;
 import arc.scene.ui.layout.*;
-import mindustry.*;
-import mindustry.Vars;
 import mindustry.ui.dialogs.*;
 import mindustry.mod.*;
 import mindustry.core.*;
 import mindustry.game.EventType.*;
 import mindustry.input.*;
+import mindustry.desktop.*;
+import mindustry.Vars;
 
 public class SchemeSize extends Mod{
 
@@ -32,7 +32,7 @@ public class SchemeSize extends Mod{
                 // Change renderer
                 Vars.renderer = new ModRenderer();
                 Vars.renderer.init();
-                ClientLauncher.add(Vars.renderer);
+                DesktopLauncher.add(Vars.renderer);
 
                 // Add settings
                 var game = Vars.ui.settings.game;
