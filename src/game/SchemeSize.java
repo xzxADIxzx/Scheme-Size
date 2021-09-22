@@ -29,9 +29,7 @@ public class SchemeSize extends Mod{
                 }
 
                 // Change dialog
-                var settings = Vars.ui.settings;
-                settings.cont.clearChildren();
-                settings.cont.remove();
+                Vars.ui.settings.clear();
                 Vars.ui.settings = new ModSettingsMenuDialog();
 
                 // Add settings
