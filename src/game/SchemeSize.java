@@ -29,10 +29,11 @@ public class SchemeSize extends Mod{
                 }
 
                 // Change dialog
-                Vars.ui.settings = new ModSettingsMenuDialog();
+                var settings = new ModSettingsMenuDialog()
+                Vars.ui.settings = settings;
 
                 // Add secret
-                var mod = Vars.ui.settings.mod;
+                var mod = settings.mod;
                 mod.getCells().get(11).visible(false); // Hide secret
 
                 // Add zoom scale
@@ -58,6 +59,7 @@ public class SchemeSize extends Mod{
                 // Add logs
                 // Log.info(Vars.schematics);
                 // Log.info(Vars.control.input);
+                // Log.info(Vars.ui.settings);
             });
         });
     }
