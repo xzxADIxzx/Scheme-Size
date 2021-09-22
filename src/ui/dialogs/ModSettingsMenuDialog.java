@@ -249,20 +249,20 @@ public class ModSettingsMenuDialog extends SettingsMenuDialog{
         addSettings();
     }
 
-    // String getLogs(){
-    //     Fi log = settings.getDataDirectory().child("last_log.txt");
+    String getLogs(){
+        Fi log = settings.getDataDirectory().child("last_log.txt");
 
-    //     StringBuilder out = new StringBuilder();
-    //     for(Fi fi : settings.getDataDirectory().child("crashes").list()){
-    //         out.append(fi.name()).append("\n\n").append(fi.readString()).append("\n");
-    //     }
+        StringBuilder out = new StringBuilder();
+        for(Fi fi : settings.getDataDirectory().child("crashes").list()){
+            out.append(fi.name()).append("\n\n").append(fi.readString()).append("\n");
+        }
 
-    //     if(log.exists()){
-    //         out.append("\nlast log:\n").append(log.readString());
-    //     }
+        if(log.exists()){
+            out.append("\nlast log:\n").append(log.readString());
+        }
 
-    //     return out.toString();
-    // }
+        return out.toString();
+    }
 
     void rebuildMenu(){
         menu.clearChildren();
@@ -288,193 +288,193 @@ public class ModSettingsMenuDialog extends SettingsMenuDialog{
         menu.button("@settings.data", style, () -> dataDialog.show());
     }
 
-    // void addSettings(){
-    //     sound.sliderPref("musicvol", 100, 0, 100, 1, i -> i + "%");
-    //     sound.sliderPref("sfxvol", 100, 0, 100, 1, i -> i + "%");
-    //     sound.sliderPref("ambientvol", 100, 0, 100, 1, i -> i + "%");
+    void addSettings(){
+        sound.sliderPref("musicvol", 100, 0, 100, 1, i -> i + "%");
+        sound.sliderPref("sfxvol", 100, 0, 100, 1, i -> i + "%");
+        sound.sliderPref("ambientvol", 100, 0, 100, 1, i -> i + "%");
 
-    //     game.sliderPref("saveinterval", 60, 10, 5 * 120, 10, i -> Core.bundle.format("setting.seconds", i));
+        game.sliderPref("saveinterval", 60, 10, 5 * 120, 10, i -> Core.bundle.format("setting.seconds", i));
 
-    //     if(mobile){
-    //         game.checkPref("autotarget", true);
-    //         if(!ios){
-    //             game.checkPref("keyboard", false, val -> {
-    //                 control.setInput(val ? new DesktopInput() : new MobileInput());
-    //                 input.setUseKeyboard(val);
-    //             });
-    //             if(Core.settings.getBool("keyboard")){
-    //                 control.setInput(new DesktopInput());
-    //                 input.setUseKeyboard(true);
-    //             }
-    //         }else{
-    //             Core.settings.put("keyboard", false);
-    //         }
-    //     }
-    //     //the issue with touchscreen support on desktop is that:
-    //     //1) I can't test it
-    //     //2) the SDL backend doesn't support multitouch
-    //     /*else{
-    //         game.checkPref("touchscreen", false, val -> control.setInput(!val ? new DesktopInput() : new MobileInput()));
-    //         if(Core.settings.getBool("touchscreen")){
-    //             control.setInput(new MobileInput());
-    //         }
-    //     }*/
+        if(mobile){
+            game.checkPref("autotarget", true);
+            if(!ios){
+                game.checkPref("keyboard", false, val -> {
+                    control.setInput(val ? new DesktopInput() : new MobileInput());
+                    input.setUseKeyboard(val);
+                });
+                if(Core.settings.getBool("keyboard")){
+                    control.setInput(new DesktopInput());
+                    input.setUseKeyboard(true);
+                }
+            }else{
+                Core.settings.put("keyboard", false);
+            }
+        }
+        //the issue with touchscreen support on desktop is that:
+        //1) I can't test it
+        //2) the SDL backend doesn't support multitouch
+        /*else{
+            game.checkPref("touchscreen", false, val -> control.setInput(!val ? new DesktopInput() : new MobileInput()));
+            if(Core.settings.getBool("touchscreen")){
+                control.setInput(new MobileInput());
+            }
+        }*/
 
-    //     if(!mobile){
-    //         game.checkPref("crashreport", true);
-    //     }
+        if(!mobile){
+            game.checkPref("crashreport", true);
+        }
 
-    //     game.checkPref("savecreate", true);
-    //     game.checkPref("blockreplace", true);
-    //     game.checkPref("conveyorpathfinding", true);
-    //     game.checkPref("hints", true);
-    //     game.checkPref("logichints", true);
+        game.checkPref("savecreate", true);
+        game.checkPref("blockreplace", true);
+        game.checkPref("conveyorpathfinding", true);
+        game.checkPref("hints", true);
+        game.checkPref("logichints", true);
 
-    //     if(!mobile){
-    //         game.checkPref("backgroundpause", true);
-    //         game.checkPref("buildautopause", false);
-    //     }
+        if(!mobile){
+            game.checkPref("backgroundpause", true);
+            game.checkPref("buildautopause", false);
+        }
 
-    //     game.checkPref("doubletapmine", false);
+        game.checkPref("doubletapmine", false);
       
-    //     if(!ios){
-    //         game.checkPref("modcrashdisable", true);
-    //     }
+        if(!ios){
+            game.checkPref("modcrashdisable", true);
+        }
 
-    //     if(steam){
-    //         game.sliderPref("playerlimit", 16, 2, 32, i -> {
-    //             platform.updateLobby();
-    //             return i + "";
-    //         });
+        if(steam){
+            game.sliderPref("playerlimit", 16, 2, 32, i -> {
+                platform.updateLobby();
+                return i + "";
+            });
 
-    //         if(!Version.modifier.contains("beta")){
-    //             game.checkPref("publichost", false, i -> {
-    //                 platform.updateLobby();
-    //             });
-    //         }
-    //     }
+            if(!Version.modifier.contains("beta")){
+                game.checkPref("publichost", false, i -> {
+                    platform.updateLobby();
+                });
+            }
+        }
 
-    //     int[] lastUiScale = {settings.getInt("uiscale", 100)};
+        int[] lastUiScale = {settings.getInt("uiscale", 100)};
 
-    //     graphics.sliderPref("uiscale", 100, 25, 300, 25, s -> {
-    //         //if the user changed their UI scale, but then put it back, don't consider it 'changed'
-    //         Core.settings.put("uiscalechanged", s != lastUiScale[0]);
-    //         return s + "%";
-    //     });
+        graphics.sliderPref("uiscale", 100, 25, 300, 25, s -> {
+            //if the user changed their UI scale, but then put it back, don't consider it 'changed'
+            Core.settings.put("uiscalechanged", s != lastUiScale[0]);
+            return s + "%";
+        });
 
-    //     graphics.sliderPref("screenshake", 4, 0, 8, i -> (i / 4f) + "x");
-    //     graphics.sliderPref("fpscap", 240, 10, 245, 5, s -> (s > 240 ? Core.bundle.get("setting.fpscap.none") : Core.bundle.format("setting.fpscap.text", s)));
-    //     graphics.sliderPref("chatopacity", 100, 0, 100, 5, s -> s + "%");
-    //     graphics.sliderPref("lasersopacity", 100, 0, 100, 5, s -> {
-    //         if(ui.settings != null){
-    //             Core.settings.put("preferredlaseropacity", s);
-    //         }
-    //         return s + "%";
-    //     });
-    //     graphics.sliderPref("bridgeopacity", 100, 0, 100, 5, s -> s + "%");
+        graphics.sliderPref("screenshake", 4, 0, 8, i -> (i / 4f) + "x");
+        graphics.sliderPref("fpscap", 240, 10, 245, 5, s -> (s > 240 ? Core.bundle.get("setting.fpscap.none") : Core.bundle.format("setting.fpscap.text", s)));
+        graphics.sliderPref("chatopacity", 100, 0, 100, 5, s -> s + "%");
+        graphics.sliderPref("lasersopacity", 100, 0, 100, 5, s -> {
+            if(ui.settings != null){
+                Core.settings.put("preferredlaseropacity", s);
+            }
+            return s + "%";
+        });
+        graphics.sliderPref("bridgeopacity", 100, 0, 100, 5, s -> s + "%");
 
-    //     if(!mobile){
-    //         graphics.checkPref("vsync", true, b -> Core.graphics.setVSync(b));
-    //         graphics.checkPref("fullscreen", false, b -> {
-    //             if(b && settings.getBool("borderlesswindow")){
-    //                 Core.graphics.setWindowedMode(Core.graphics.getWidth(), Core.graphics.getHeight());
-    //                 settings.put("borderlesswindow", false);
-    //                 graphics.rebuild();
-    //             }
+        if(!mobile){
+            graphics.checkPref("vsync", true, b -> Core.graphics.setVSync(b));
+            graphics.checkPref("fullscreen", false, b -> {
+                if(b && settings.getBool("borderlesswindow")){
+                    Core.graphics.setWindowedMode(Core.graphics.getWidth(), Core.graphics.getHeight());
+                    settings.put("borderlesswindow", false);
+                    graphics.rebuild();
+                }
 
-    //             if(b){
-    //                 Core.graphics.setFullscreenMode(Core.graphics.getDisplayMode());
-    //             }else{
-    //                 Core.graphics.setWindowedMode(Core.graphics.getWidth(), Core.graphics.getHeight());
-    //             }
-    //         });
+                if(b){
+                    Core.graphics.setFullscreenMode(Core.graphics.getDisplayMode());
+                }else{
+                    Core.graphics.setWindowedMode(Core.graphics.getWidth(), Core.graphics.getHeight());
+                }
+            });
 
-    //         graphics.checkPref("borderlesswindow", false, b -> {
-    //             if(b && settings.getBool("fullscreen")){
-    //                 Core.graphics.setWindowedMode(Core.graphics.getWidth(), Core.graphics.getHeight());
-    //                 settings.put("fullscreen", false);
-    //                 graphics.rebuild();
-    //             }
-    //             Core.graphics.setBorderless(b);
-    //         });
+            graphics.checkPref("borderlesswindow", false, b -> {
+                if(b && settings.getBool("fullscreen")){
+                    Core.graphics.setWindowedMode(Core.graphics.getWidth(), Core.graphics.getHeight());
+                    settings.put("fullscreen", false);
+                    graphics.rebuild();
+                }
+                Core.graphics.setBorderless(b);
+            });
 
-    //         Core.graphics.setVSync(Core.settings.getBool("vsync"));
+            Core.graphics.setVSync(Core.settings.getBool("vsync"));
 
-    //         if(Core.settings.getBool("fullscreen")){
-    //             Core.app.post(() -> Core.graphics.setFullscreenMode(Core.graphics.getDisplayMode()));
-    //         }
+            if(Core.settings.getBool("fullscreen")){
+                Core.app.post(() -> Core.graphics.setFullscreenMode(Core.graphics.getDisplayMode()));
+            }
 
-    //         if(Core.settings.getBool("borderlesswindow")){
-    //             Core.app.post(() -> Core.graphics.setBorderless(true));
-    //         }
-    //     }else if(!ios){
-    //         graphics.checkPref("landscape", false, b -> {
-    //             if(b){
-    //                 platform.beginForceLandscape();
-    //             }else{
-    //                 platform.endForceLandscape();
-    //             }
-    //         });
+            if(Core.settings.getBool("borderlesswindow")){
+                Core.app.post(() -> Core.graphics.setBorderless(true));
+            }
+        }else if(!ios){
+            graphics.checkPref("landscape", false, b -> {
+                if(b){
+                    platform.beginForceLandscape();
+                }else{
+                    platform.endForceLandscape();
+                }
+            });
 
-    //         if(Core.settings.getBool("landscape")){
-    //             platform.beginForceLandscape();
-    //         }
-    //     }
+            if(Core.settings.getBool("landscape")){
+                platform.beginForceLandscape();
+            }
+        }
 
-    //     graphics.checkPref("effects", true);
-    //     graphics.checkPref("atmosphere", !mobile);
-    //     graphics.checkPref("destroyedblocks", true);
-    //     graphics.checkPref("blockstatus", false);
-    //     graphics.checkPref("playerchat", true);
-    //     if(!mobile){
-    //         graphics.checkPref("coreitems", true);
-    //     }
-    //     graphics.checkPref("minimap", !mobile);
-    //     graphics.checkPref("smoothcamera", true);
-    //     graphics.checkPref("position", false);
-    //     graphics.checkPref("fps", false);
-    //     graphics.checkPref("playerindicators", true);
-    //     graphics.checkPref("indicators", true);
-    //     graphics.checkPref("showweather", true);
-    //     graphics.checkPref("animatedwater", true);
+        graphics.checkPref("effects", true);
+        graphics.checkPref("atmosphere", !mobile);
+        graphics.checkPref("destroyedblocks", true);
+        graphics.checkPref("blockstatus", false);
+        graphics.checkPref("playerchat", true);
+        if(!mobile){
+            graphics.checkPref("coreitems", true);
+        }
+        graphics.checkPref("minimap", !mobile);
+        graphics.checkPref("smoothcamera", true);
+        graphics.checkPref("position", false);
+        graphics.checkPref("fps", false);
+        graphics.checkPref("playerindicators", true);
+        graphics.checkPref("indicators", true);
+        graphics.checkPref("showweather", true);
+        graphics.checkPref("animatedwater", true);
 
-    //     if(Shaders.shield != null){
-    //         graphics.checkPref("animatedshields", !mobile);
-    //     }
+        if(Shaders.shield != null){
+            graphics.checkPref("animatedshields", !mobile);
+        }
 
-    //     graphics.checkPref("bloom", true, val -> renderer.toggleBloom(val));
+        graphics.checkPref("bloom", true, val -> renderer.toggleBloom(val));
 
-    //     graphics.checkPref("pixelate", false, val -> {
-    //         if(val){
-    //             Events.fire(Trigger.enablePixelation);
-    //         }
-    //     });
+        graphics.checkPref("pixelate", false, val -> {
+            if(val){
+                Events.fire(Trigger.enablePixelation);
+            }
+        });
 
-    //     //iOS (and possibly Android) devices do not support linear filtering well, so disable it
-    //     if(!ios){
-    //         graphics.checkPref("linear", !mobile, b -> {
-    //             for(Texture tex : Core.atlas.getTextures()){
-    //                 TextureFilter filter = b ? TextureFilter.linear : TextureFilter.nearest;
-    //                 tex.setFilter(filter, filter);
-    //             }
-    //         });
-    //     }else{
-    //         settings.put("linear", false);
-    //     }
+        //iOS (and possibly Android) devices do not support linear filtering well, so disable it
+        if(!ios){
+            graphics.checkPref("linear", !mobile, b -> {
+                for(Texture tex : Core.atlas.getTextures()){
+                    TextureFilter filter = b ? TextureFilter.linear : TextureFilter.nearest;
+                    tex.setFilter(filter, filter);
+                }
+            });
+        }else{
+            settings.put("linear", false);
+        }
 
-    //     if(Core.settings.getBool("linear")){
-    //         for(Texture tex : Core.atlas.getTextures()){
-    //             TextureFilter filter = TextureFilter.linear;
-    //             tex.setFilter(filter, filter);
-    //         }
-    //     }
+        if(Core.settings.getBool("linear")){
+            for(Texture tex : Core.atlas.getTextures()){
+                TextureFilter filter = TextureFilter.linear;
+                tex.setFilter(filter, filter);
+            }
+        }
 
-    //     graphics.checkPref("skipcoreanimation", false);
+        graphics.checkPref("skipcoreanimation", false);
 
-    //     if(!mobile){
-    //         Core.settings.put("swapdiagonal", false);
-    //     }
-    // }
+        if(!mobile){
+            Core.settings.put("swapdiagonal", false);
+        }
+    }
 
     private void back(){
         rebuildMenu();
