@@ -37,8 +37,8 @@ public class SchemeSize extends Mod{
                 mod.getCells().get(6).visible(false); // Hide secret
 
                 // Add zoom scale
-                Stack elementMax = (Stack)mod.getCells().get(12).get();
-                Stack elementMin = (Stack)mod.getCells().get(13).get();
+                Stack elementMax = (Stack)mod.getCells().get(0).get();
+                Stack elementMin = (Stack)mod.getCells().get(1).get();
                 Slider sliderMax = (Slider)elementMax.getChildren().get(0);
                 Slider sliderMin = (Slider)elementMin.getChildren().get(0);
                 sliderMax.changed(() -> { Vars.renderer.maxZoom = sliderMax.getValue() / 4f * 6f; });
