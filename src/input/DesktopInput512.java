@@ -221,10 +221,10 @@ public class DesktopInput512 extends InputHandler{
 
         // Switch Teams
         if(state.isGame()){
-            if(input.keyTap(ModBinding.switch_team_btw){
+            if(input.keyTap(ModBinding.switch_team_btw)){
                 player.team(player.team() != Team.sharded ? Team.sharded : Team.crux);
             }
-            if(input.keyTap(ModBinding.switch_team){
+            if(input.keyTap(ModBinding.switch_team)){
                 var team = Vars.player.team();
                 Team.baseTeams.find((t, i) -> { if(t == team){ Vars.player.team(Team.baseTeams[i % 5 + 1]); } });
             }
