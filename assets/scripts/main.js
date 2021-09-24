@@ -1,7 +1,7 @@
 require("mod");
 
 // don`t check for updates
-if(!Core.settings.getBool("checkmodupdate")) return;
+if(!Core.settings.getBool("checkupdate")) return;
 
 Events.on(EventType.ClientLoadEvent, e => {
 	var ver = Vars.mods.locateMod("scheme-size").meta.version;
@@ -10,10 +10,7 @@ Events.on(EventType.ClientLoadEvent, e => {
 		var json = JSON.parse(str);
 
 		if(json[0].name.slice(1) != ver){
-			var dialog = new BaseDialog("@updater.name");
-			dialog.labelWrap("@updater.info").row();
-			dialog.cont.button("@ok", () => dialog.hide()).size(100, 50);
-			dialog.show();
+			Vars.ui.showInfo("@updater.info")
 		}
 	});
 });
