@@ -226,7 +226,7 @@ public class DesktopInput512 extends InputHandler{
             }
             if(input.keyTap(ModBinding.switch_team){
                 var team = Vars.player.team();
-                Team.baseTeams.find((t, i) -> { if(t == team){ Vars.player.team(Team.baseTeams[i % 5 + 1]) } })
+                Team.baseTeams.find((t, i) -> { if(t == team){ Vars.player.team(Team.baseTeams[i % 5 + 1]); } });
             }
         }
 
