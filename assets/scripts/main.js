@@ -1,8 +1,19 @@
-var meta = Vars.mods.locateMod("scheme-size").meta;
-meta.author = "[#0096FF]xzxADIxzx";
-meta.displayName = "Scheme Size";
-meta.description = "[orange]Mod[] that [accent]could[]... Increases the [accent]maximum size[] of schemes to [green]512 blocks[]! \n[red]Desktop Only![]" +
-				   "[orange]\n\n   - Release!\n   - Show Size\n   - Settings\n   - Zoom\n   - Java 8\n   - Controls";
+require("mod");
 
-// why not
-Vars.enableConsole = true;
+// don`t check for updates
+if(!Core.settings.getBool("checkmodupdate")) return;
+
+Events.on(EventType.ClientLoadEvent, e => {
+	var ver = Vars.mods.locateMod("scheme-size").meta.version;
+	Http.get("https://api.github.com/repos/xzxADIxzx/Scheme-Size/tags", res => {
+		var str = res.getResultAsString();
+		var json = JSON.parse(str);
+
+		if(json[0].name.slice(1) != ver){
+			var dialog = new BaseDialog("@updater.name");
+			dialog.labelWrap("@updater.info").row();
+			dialog.cont.button("@ok", () => dialog.hide()).size(100, 50);
+			dialog.show();
+		}
+	});
+});
