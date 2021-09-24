@@ -11,6 +11,7 @@ import arc.scene.*;
 import arc.scene.ui.*;
 import arc.scene.ui.layout.*;
 import arc.util.*;
+import arc.struct.*;
 import mindustry.*;
 import mindustry.core.*;
 import mindustry.entities.units.*;
@@ -225,8 +226,9 @@ public class DesktopInput512 extends InputHandler{
                 player.team(player.team() != Team.sharded ? Team.sharded : Team.crux);
             }
             if(input.keyTap(ModBinding.switch_team)){
-                var team = Vars.player.team();
-                Team.baseTeams.find((t, i) -> { if(t == team){ Vars.player.team(Team.baseTeams[i % 5 + 1]); } });
+                Seq teams = new Seq(Team.baseTeams);
+                int team = teams.indexOf(Vars.player.team())++;
+                Vars.player.team(teams.get(team < 6 ? team : 0));
             }
         }
 
