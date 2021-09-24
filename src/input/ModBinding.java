@@ -7,8 +7,8 @@ import arc.input.*;
 
 public enum ModBinding implements KeyBind{
     toggle_core_items(KeyCode.f7, "mod"),
-    switch_team_btw(KeyCode.comma),
-    switch_team(KeyCode.period);
+    switch_team_btw(KeyCode.semicolon),
+    switch_team(KeyCode.apostrophe);
 
     private final KeybindValue defaultValue;
     private final String category;
