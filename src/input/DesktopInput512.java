@@ -214,14 +214,14 @@ public class DesktopInput512 extends InputHandler{
 
         boolean panCam = false;
         float camSpeed = (!Core.input.keyDown(Binding.boost) ? panSpeed : panBoostSpeed) * Time.delta;
+        
+        if(state.isGame() && !scene.hasField()){
+            // Toggle Core Items
+            if(input.keyTap(ModBinding.toggle_core_items){
+                Core.settings.put("coreitems", !Core.settings.getBool("coreitems"));
+            }
 
-        // Toggle Core Items
-        if(input.keyTap(ModBinding.toggle_core_items) && state.isGame()){
-            Core.settings.put("coreitems", !Core.settings.getBool("coreitems"));
-        }
-
-        // Switch Teams
-        if(state.isGame()){
+            // Switch Teams
             if(input.keyTap(ModBinding.switch_team_btw)){
                 player.team(player.team() != Team.sharded ? Team.sharded : Team.crux);
             }
