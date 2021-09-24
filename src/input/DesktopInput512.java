@@ -227,8 +227,8 @@ public class DesktopInput512 extends InputHandler{
             }
             if(input.keyTap(ModBinding.switch_team)){
                 Seq teams = new Seq(Team.baseTeams);
-                int team = teams.indexOf(Vars.player.team())++;
-                Vars.player.team(teams.get(team < 6 ? team : 0));
+                int team = teams.indexOf(player.team())++;
+                player.team(teams.get(team < 6 ? team : 0));
             }
         }
 
