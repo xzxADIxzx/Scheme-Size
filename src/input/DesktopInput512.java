@@ -226,8 +226,8 @@ public class DesktopInput512 extends InputHandler{
                 player.team(player.team() != Team.sharded ? Team.sharded : Team.crux);
             }
             if(input.keyTap(ModBinding.switch_team)){
-                var team = new Seq(Team.baseTeams).indexOf(player.team())++;
-                player.team(Team.baseTeams[team < 6 ? team : 0]);
+                var team = new Seq(Team.baseTeams).indexOf(player.team());
+                player.team(Team.baseTeams[++team < 6 ? team : 0]);
             }
         }
 
