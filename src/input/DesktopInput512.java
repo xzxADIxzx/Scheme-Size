@@ -403,8 +403,7 @@ public class DesktopInput512 extends InputHandler{
     }
 
     void pollInput(){
-        var focus = scene.getKeyboardFocus();
-        if(focus != null && focus.getClass() == TextField.class) return;
+        if(scene.getKeyboardFocus() instanceof TextField) return;
 
         // Toggle Core Items
         if(input.keyTap(ModBinding.toggle_core_items)){
