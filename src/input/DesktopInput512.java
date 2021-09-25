@@ -421,6 +421,11 @@ public class DesktopInput512 extends InputHandler{
             player.team(Team.baseTeams[++team < 6 ? team : 0]);
         }
 
+        // Look At
+        if(input.keyTap(ModBinding.look_at)){
+            player.lookAt(Core.input.mouse());
+        }
+
         Tile selected = tileAt512(Core.input.mouseX(), Core.input.mouseY());
         int cursorX = tileX512(Core.input.mouseX());
         int cursorY = tileY512(Core.input.mouseY());
