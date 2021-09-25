@@ -17,50 +17,47 @@ public class SchemeSize extends Mod{
 
     public SchemeSize(){
         Events.on(ClientLoadEvent.class, e -> {
-            // wait 10 secs, because... idk
-            Time.runTask(10f, () -> {
-                // Change schematics
-                Vars.schematics = new Schematics512();
-                Vars.schematics.loadSync();
+            // Change schematics
+            Vars.schematics = new Schematics512();
+            Vars.schematics.loadSync();
 
-                // Change input
-                if(!Vars.mobile){
-                    Vars.control.setInput(new DesktopInput512());
-                }
+            // Change input
+            if(!Vars.mobile){
+                Vars.control.setInput(new DesktopInput512());
+            }
 
-                // Change dialog
-                var settings = new ModSettingsMenuDialog();
-                Vars.ui.settings = settings;
+            // Change dialog
+            var settings = new ModSettingsMenuDialog();
+            Vars.ui.settings = settings;
 
-                // Add secret
-                var mod = settings.mod;
-                mod.getCells().get(7).visible(false); // Hide secret
+            // Add secret
+            var mod = settings.mod;
+            mod.getCells().get(7).visible(false); // Hide secret
 
-                // Add zoom scale
-                Stack elementMax = (Stack)mod.getCells().get(0).get();
-                Stack elementMin = (Stack)mod.getCells().get(1).get();
-                Slider sliderMax = (Slider)elementMax.getChildren().get(0);
-                Slider sliderMin = (Slider)elementMin.getChildren().get(0);
-                sliderMax.changed(() -> { Vars.renderer.maxZoom = sliderMax.getValue() / 4f * 6f; });
-                sliderMin.changed(() -> { Vars.renderer.minZoom = 1 / (sliderMin.getValue() / 4f) * 1.5f; });
-                Vars.renderer.maxZoom = sliderMax.getValue() / 4f * 6f; // Apply zoom
-                Vars.renderer.minZoom = 1f / (sliderMin.getValue() / 4f) * 1.5f;
+            // Add zoom scale
+            Stack elementMax = (Stack)mod.getCells().get(0).get();
+            Stack elementMin = (Stack)mod.getCells().get(1).get();
+            Slider sliderMax = (Slider)elementMax.getChildren().get(0);
+            Slider sliderMin = (Slider)elementMin.getChildren().get(0);
+            sliderMax.changed(() -> { Vars.renderer.maxZoom = sliderMax.getValue() / 4f * 6f; });
+            sliderMin.changed(() -> { Vars.renderer.minZoom = 1 / (sliderMin.getValue() / 4f) * 1.5f; });
+            Vars.renderer.maxZoom = sliderMax.getValue() / 4f * 6f; // Apply zoom
+            Vars.renderer.minZoom = 1f / (sliderMin.getValue() / 4f) * 1.5f;
 
-                // Add keybinds
-                KeyBind[] origi = (KeyBind[])Binding.values();
-                KeyBind[] moded = (KeyBind[])ModBinding.values();
-                KeyBind[] binds = new KeyBind[origi.length + moded.length];
-                System.arraycopy(origi, 0, binds, 0, origi.length);
-                System.arraycopy(moded, 0, binds, origi.length, moded.length);
-                Core.keybinds.setDefaults(binds);
-                Core.settings.load(); // Update controls
-                Vars.ui.controls = new KeybindDialog(); // Update dialog
+            // Add keybinds
+            KeyBind[] origi = (KeyBind[])Binding.values();
+            KeyBind[] moded = (KeyBind[])ModBinding.values();
+            KeyBind[] binds = new KeyBind[origi.length + moded.length];
+            System.arraycopy(origi, 0, binds, 0, origi.length);
+            System.arraycopy(moded, 0, binds, origi.length, moded.length);
+            Core.keybinds.setDefaults(binds);
+            Core.settings.load(); // Update controls
+            Vars.ui.controls = new KeybindDialog(); // Update dialog
 
-                // Add logs
-                // Log.info(Vars.schematics);
-                // Log.info(Vars.control.input);
-                // Log.info(Vars.ui.settings);
-            });
+            // Add logs
+            // Log.info(Vars.schematics);
+            // Log.info(Vars.control.input);
+            // Log.info(Vars.ui.settings);
         });
     }
 }
