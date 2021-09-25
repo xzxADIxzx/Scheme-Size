@@ -16,3 +16,6 @@ Events.on(EventType.ClientLoadEvent, e => {
 		});
 	});
 });
+
+// why not
+Vars.enableConsole = true;
