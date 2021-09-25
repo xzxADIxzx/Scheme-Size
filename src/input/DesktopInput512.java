@@ -422,7 +422,7 @@ public class DesktopInput512 extends InputHandler{
         }
 
         // Look At
-        if(input.keyTap(ModBinding.look_at)){
+        if(input.keyDown(ModBinding.look_at)){
             player.unit().lookAt(Core.input.mouse());
         }
 
