@@ -8,7 +8,7 @@ import arc.input.*;
 public enum ModBinding implements KeyBind{
     toggle_core_items(KeyCode.f7, "mod"),
     switch_team_btw(KeyCode.semicolon),
-    switch_team(KeyCode.apostrophe);
+    switch_team(KeyCode.apostrophe),
     look_at(KeyCode.altLeft);
 
     private final KeybindValue defaultValue;
