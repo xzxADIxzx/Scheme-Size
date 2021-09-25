@@ -1,10 +1,10 @@
 require("mod");
 
-// don`t check for updates
-if(!Core.settings.getBool("checkupdate")) return;
-
 Events.on(EventType.ClientLoadEvent, e => {
 	Time.runTask(10, () => {
+		// don`t check for updates
+		if(!Core.settings.getBool("checkupdate")) return;
+
 		var ver = Vars.mods.locateMod("scheme-size").meta.version;
 		Http.get("https://api.github.com/repos/xzxADIxzx/Scheme-Size/tags", res => {
 			var str = res.getResultAsString();
