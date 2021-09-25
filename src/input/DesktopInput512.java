@@ -217,7 +217,7 @@ public class DesktopInput512 extends InputHandler{
         
         if(state.isGame() && !scene.hasField()){
             // Toggle Core Items
-            if(input.keyTap(ModBinding.toggle_core_items){
+            if(input.keyTap(ModBinding.toggle_core_items)){
                 Core.settings.put("coreitems", !Core.settings.getBool("coreitems"));
             }
 
@@ -225,6 +225,8 @@ public class DesktopInput512 extends InputHandler{
             if(input.keyTap(ModBinding.switch_team_btw)){
                 player.team(player.team() != Team.sharded ? Team.sharded : Team.crux);
             }
+
+            // Switch Teams btw Sharded/Crux
             if(input.keyTap(ModBinding.switch_team)){
                 var team = new Seq(Team.baseTeams).indexOf(player.team());
                 player.team(Team.baseTeams[++team < 6 ? team : 0]);
