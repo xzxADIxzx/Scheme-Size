@@ -214,24 +214,6 @@ public class DesktopInput512 extends InputHandler{
 
         boolean panCam = false;
         float camSpeed = (!Core.input.keyDown(Binding.boost) ? panSpeed : panBoostSpeed) * Time.delta;
-        
-        if(state.isGame() && !scene.hasField()){
-            // Toggle Core Items
-            if(input.keyTap(ModBinding.toggle_core_items)){
-                Core.settings.put("coreitems", !Core.settings.getBool("coreitems"));
-            }
-
-            // Switch Teams
-            if(input.keyTap(ModBinding.switch_team_btw)){
-                player.team(player.team() != Team.sharded ? Team.sharded : Team.crux);
-            }
-
-            // Switch Teams btw Sharded/Crux
-            if(input.keyTap(ModBinding.switch_team)){
-                var team = new Seq(Team.baseTeams).indexOf(player.team());
-                player.team(Team.baseTeams[++team < 6 ? team : 0]);
-            }
-        }
 
         if(input.keyDown(Binding.pan) && !scene.hasField() && !scene.hasDialog()){
             panCam = true;
@@ -423,6 +405,22 @@ public class DesktopInput512 extends InputHandler{
     void pollInput(){
         var focus = scene.getKeyboardFocus();
         if(focus != null && focus.getClass() == TextField.class) return;
+
+        // Toggle Core Items
+        if(input.keyTap(ModBinding.toggle_core_items)){
+            Core.settings.put("coreitems", !Core.settings.getBool("coreitems"));
+        }
+
+        // Switch Teams
+        if(input.keyTap(ModBinding.switch_team_btw)){
+            player.team(player.team() != Team.sharded ? Team.sharded : Team.crux);
+        }
+
+        // Switch Teams btw Sharded/Crux
+        if(input.keyTap(ModBinding.switch_team)){
+            var team = new Seq(Team.baseTeams).indexOf(player.team());
+            player.team(Team.baseTeams[++team < 6 ? team : 0]);
+        }
 
         Tile selected = tileAt512(Core.input.mouseX(), Core.input.mouseY());
         int cursorX = tileX512(Core.input.mouseX());
