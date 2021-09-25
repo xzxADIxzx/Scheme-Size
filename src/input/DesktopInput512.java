@@ -423,7 +423,7 @@ public class DesktopInput512 extends InputHandler{
 
         // Look At
         if(input.keyTap(ModBinding.look_at)){
-            player.lookAt(Core.input.mouse());
+            player.unit().lookAt(Core.input.mouse());
         }
 
         Tile selected = tileAt512(Core.input.mouseX(), Core.input.mouseY());
