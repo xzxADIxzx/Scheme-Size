@@ -670,7 +670,7 @@ public class DesktopInput512 extends InputHandler{
         boolean boosted = (unit instanceof Mechc && unit.isFlying());
 
         movement.set(xa, ya).nor().scl(speed);
-        if(Core.input.keyDown(Binding.mouse_move)){
+        if(Core.input.keyDown(Binding.mouse_move) || Core.input.keyDown(ModBinding.look_at)){
             movement.add(input.mouseWorld().sub(player).scl(1f / 25f * speed)).limit(speed);
         }
 
