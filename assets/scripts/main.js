@@ -1,4 +1,4 @@
-require("mod");
+require("Scheme-Size/mod");
 
 Events.on(EventType.ClientLoadEvent, e => {
 	Time.runTask(10, () => {
