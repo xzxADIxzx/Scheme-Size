@@ -11,7 +11,7 @@ import arc.scene.*;
 import arc.scene.ui.*;
 import arc.scene.ui.layout.*;
 import arc.util.*;
-import arc.struct.*
+import arc.struct.*ж
 import mindustry.*;
 import mindustry.core.*;
 import mindustry.entities.units.*;
