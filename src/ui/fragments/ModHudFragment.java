@@ -32,17 +32,15 @@ import static mindustry.Vars.*;
 
 // Last Update - Sep 4, 2021
 public class ModHudFragment extends HudFragment{
+
     private static final float dsize = 65f, pauseHeight = 36f;
 
-    private ImageButton flip;
-
-    private Table lastUnlockTable;
-    private Table lastUnlockLayout;
+    private ImageButton flip;=
     private long lastToast;
 
     @Override
     public void build(Group parent){
-        parent.children.get(5).clear();
+        // parent.children.get(5).clear();
 
         //menu at top left
         parent.fill(cont -> {
@@ -196,292 +194,60 @@ public class ModHudFragment extends HudFragment{
         });
     }
 
-    /** Show unlock notification for a new recipe. */
-    public void showUnlock(UnlockableContent content){
-        //some content may not have icons... yet
-        //also don't play in the tutorial to prevent confusion
-        if(state.isMenu()) return;
-
-        Sounds.message.play();
-
-        //if there's currently no unlock notification...
-        if(lastUnlockTable == null){
-            scheduleToast(() -> {
-                Table table = new Table(Tex.button);
-                table.update(() -> {
-                    if(state.isMenu()){
-                        table.remove();
-                        lastUnlockLayout = null;
-                        lastUnlockTable = null;
-                    }
-                });
-                table.margin(12);
-
-                Table in = new Table();
-
-                //create texture stack for displaying
-                Image image = new Image(content.uiIcon);
-                image.setScaling(Scaling.fit);
-
-                in.add(image).size(8 * 6).pad(2);
-
-                //add to table
-                table.add(in).padRight(8);
-                table.add("@unlocked");
-                table.pack();
-
-                //create container table which will align and move
-                Table container = Core.scene.table();
-                container.top().add(table);
-                container.setTranslation(0, table.getPrefHeight());
-                container.actions(Actions.translateBy(0, -table.getPrefHeight(), 1f, Interp.fade), Actions.delay(2.5f),
-                //nesting actions() calls is necessary so the right prefHeight() is used
-                Actions.run(() -> container.actions(Actions.translateBy(0, table.getPrefHeight(), 1f, Interp.fade), Actions.run(() -> {
-                    lastUnlockTable = null;
-                    lastUnlockLayout = null;
-                }), Actions.remove())));
-
-                lastUnlockTable = container;
-                lastUnlockLayout = in;
-            });
+    private void scheduleToast(Runnable run){
+        long duration = (int)(3.5 * 1000);
+        long since = Time.timeSinceMillis(lastToast);
+        if(since > duration){
+            lastToast = Time.millis();
+            run.run();
         }else{
-            //max column size
-            int col = 3;
-            //max amount of elements minus extra 'plus'
-            int cap = col * col - 1;
-
-            //get old elements
-            Seq<Element> elements = new Seq<>(lastUnlockLayout.getChildren());
-            int esize = elements.size;
-
-            //...if it's already reached the cap, ignore everything
-            if(esize > cap) return;
-
-            //get size of each element
-            float size = 48f / Math.min(elements.size + 1, col);
-
-            lastUnlockLayout.clearChildren();
-            lastUnlockLayout.defaults().size(size).pad(2);
-
-            for(int i = 0; i < esize; i++){
-                lastUnlockLayout.add(elements.get(i));
-
-                if(i % col == col - 1){
-                    lastUnlockLayout.row();
-                }
-            }
-
-            //if there's space, add it
-            if(esize < cap){
-
-                Image image = new Image(content.uiIcon);
-                image.setScaling(Scaling.fit);
-
-                lastUnlockLayout.add(image);
-            }else{ //else, add a specific icon to denote no more space
-                lastUnlockLayout.image(Icon.add);
-            }
-
-            lastUnlockLayout.pack();
+            Time.runTask((duration - since) / 1000f * 60f, run);
+            lastToast += duration;
         }
     }
 
-    private void toggleMenus(){
-        if(flip != null){
-            flip.getStyle().imageUp = shown ? Icon.downOpen : Icon.upOpen;
-        }
+    private void addInfoTable(Table table){
+        table.left();
 
-        shown = !shown;
-    }
-
-    private Table makeStatusTable(){
-        Table table = new Table(Tex.wavepane);
-
-        StringBuilder ibuild = new StringBuilder();
-
-        IntFormat wavef = new IntFormat("wave");
-        IntFormat wavefc = new IntFormat("wave.cap");
-        IntFormat enemyf = new IntFormat("wave.enemy");
-        IntFormat enemiesf = new IntFormat("wave.enemies");
-        IntFormat enemycf = new IntFormat("wave.enemycore");
-        IntFormat enemycsf = new IntFormat("wave.enemycores");
-        IntFormat waitingf = new IntFormat("wave.waiting", i -> {
-            ibuild.setLength(0);
-            int m = i/60;
-            int s = i % 60;
-            if(m > 0){
-                ibuild.append(m);
-                ibuild.append(":");
-                if(s < 10){
-                    ibuild.append("0");
+        var count = new float[]{-1};
+        table.table().update(t -> {
+            if(player.unit() instanceof Payloadc payload){
+                if(count[0] != payload.payloadUsed()){
+                    payload.contentInfo(t, 8 * 2, 275f);
+                    count[0] = payload.payloadUsed();
                 }
-            }
-            ibuild.append(s);
-            return ibuild.toString();
-        });
-
-        table.touchable = Touchable.enabled;
-
-        StringBuilder builder = new StringBuilder();
-
-        table.name = "waves";
-
-        table.marginTop(0).marginBottom(4).marginLeft(4);
-
-        class SideBar extends Element{
-            public final Floatp amount;
-            public final boolean flip;
-            public final Boolp flash;
-
-            float last, blink, value;
-
-            public SideBar(Floatp amount, Boolp flash, boolean flip){
-                this.amount = amount;
-                this.flip = flip;
-                this.flash = flash;
-
-                setColor(Pal.health);
-            }
-
-            @Override
-            public void draw(){
-                float next = amount.get();
-
-                if(Float.isNaN(next) || Float.isInfinite(next)) next = 1f;
-
-                if(next < last && flash.get()){
-                    blink = 1f;
-                }
-
-                blink = Mathf.lerpDelta(blink, 0f, 0.2f);
-                value = Mathf.lerpDelta(value, next, 0.15f);
-                last = next;
-
-                if(Float.isNaN(value) || Float.isInfinite(value)) value = 1f;
-
-                drawInner(Pal.darkishGray, 1f);
-                drawInner(Tmp.c1.set(color).lerp(Color.white, blink), value);
-            }
-
-            void drawInner(Color color, float fract){
-                if(fract < 0) return;
-
-                fract = Mathf.clamp(fract);
-                if(flip){
-                    x += width;
-                    width = -width;
-                }
-
-                float stroke = width * 0.35f;
-                float bh = height/2f;
-                Draw.color(color);
-
-                float f1 = Math.min(fract * 2f, 1f), f2 = (fract - 0.5f) * 2f;
-
-                float bo = -(1f - f1) * (width - stroke);
-
-                Fill.quad(
-                x, y,
-                x + stroke, y,
-                x + width + bo, y + bh * f1,
-                x + width - stroke + bo, y + bh * f1
-                );
-
-                if(f2 > 0){
-                    float bx = x + (width - stroke) * (1f - f2);
-                    Fill.quad(
-                    x + width, y + bh,
-                    x + width - stroke, y + bh,
-                    bx, y + height * fract,
-                    bx + stroke, y + height * fract
-                    );
-                }
-
-                Draw.reset();
-
-                if(flip){
-                    width = -width;
-                    x -= width;
-                }
-            }
-        }
-
-        table.stack(
-        new Element(){
-            @Override
-            public void draw(){
-                Draw.color(Pal.darkerGray);
-                Fill.poly(x + width/2f, y + height/2f, 6, height / Mathf.sqrt3);
-                Draw.reset();
-                Drawf.shadow(x + width/2f, y + height/2f, height * 1.13f);
-            }
-        },
-        new Table(t -> {
-            float bw = 40f;
-            float pad = -20;
-            t.margin(0);
-            t.clicked(() -> {
-                if(!player.dead() && mobile){
-                    Call.unitClear(player);
-                    control.input.recentRespawnTimer = 1f;
-                    control.input.controlledType = null;
-                }
-            });
-
-            t.add(new SideBar(() -> player.unit().healthf(), () -> true, true)).width(bw).growY().padRight(pad);
-            t.image(() -> player.icon()).scaling(Scaling.bounded).grow().maxWidth(54f);
-            t.add(new SideBar(() -> player.dead() ? 0f : player.displayAmmo() ? player.unit().ammof() : player.unit().healthf(), () -> !player.displayAmmo(), false)).width(bw).growY().padLeft(pad).update(b -> {
-                b.color.set(player.displayAmmo() ? player.dead() || player.unit() instanceof BlockUnitc ? Pal.ammo : player.unit().type.ammoType.color() : Pal.health);
-            });
-            t.add(new SideBar(() -> player.unit().healthf(), () -> true, false)).width(bw).growY().padLeft(pad * 2);
-
-            t.getChildren().get(1).toFront();
-        })).size(120f, 80).padRight(4);
-
-        table.labelWrap(() -> {
-            builder.setLength(0);
-
-            if(!state.rules.waves && state.rules.attackMode){
-                int sum = Math.max(state.teams.present.sum(t -> t.team != player.team() ? t.cores.size : 0), 1);
-                builder.append(sum > 1 ? enemycsf.get(sum) : enemycf.get(sum));
-                return builder;
-            }
-
-            if(!state.rules.waves && state.isCampaign()){
-                builder.append("[lightgray]").append(Core.bundle.get("sector.curcapture"));
-            }
-
-            if(!state.rules.waves){
-                return builder;
-            }
-
-            if(state.rules.winWave > 1 && state.rules.winWave >= state.wave && state.isCampaign()){
-                builder.append(wavefc.get(state.wave, state.rules.winWave));
             }else{
-                builder.append(wavef.get(state.wave));
+                count[0] = -1;
+                t.clear();
             }
-            builder.append("\n");
-
-            if(state.enemies > 0){
-                if(state.enemies == 1){
-                    builder.append(enemyf.get(state.enemies));
-                }else{
-                    builder.append(enemiesf.get(state.enemies));
-                }
-                builder.append("\n");
-            }
-
-            if(state.rules.waveTimer){
-                builder.append((logic.isWaitingWave() ? Core.bundle.get("wave.waveInProgress") : (waitingf.get((int)(state.wavetime/60)))));
-            }else if(state.enemies == 0){
-                builder.append(Core.bundle.get("waiting"));
-            }
-
-            return builder;
-        }).growX().pad(8f);
-
+        }).growX().visible(() -> player.unit() instanceof Payloadc p && p.payloadUsed() > 0).colspan(2);
         table.row();
 
-        return table;
+        Bits statuses = new Bits();
+
+        table.table().update(t -> {
+            t.left();
+            Bits applied = player.unit().statusBits();
+            if(!statuses.equals(applied)){
+                t.clear();
+
+                if(applied != null){
+                    for(StatusEffect effect : content.statusEffects()){
+                        if(applied.get(effect.id) && !effect.isHidden()){
+                            t.image(effect.uiIcon).size(iconMed).get()
+                            .addListener(new Tooltip(l -> l.label(() ->
+                                effect.localizedName + " [lightgray]" + UI.formatTime(player.unit().getDuration(effect))).style(Styles.outlineLabel)));
+                        }
+                    }
+
+                    statuses.set(applied);
+                }
+            }
+        }).left();
     }
+
+    private boolean canSkipWave(){
+        return state.rules.waves && ((net.server() || player.admin) || !net.active()) && state.enemies == 0 && !spawner.isSpawning();
+    }
+
 }
