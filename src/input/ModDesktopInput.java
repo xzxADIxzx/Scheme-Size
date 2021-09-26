@@ -424,7 +424,7 @@ public class ModDesktopInput extends ModInputHandler{
         }
 
         // Teleport
-        if(input.keyDown(ModBinding.look_at) && input.keyTap(Binding.select)){
+        if(input.keyDown(ModBinding.teleport) && input.keyTap(Binding.select)){
             player.unit().set(input.mouseWorld());
         }
 
