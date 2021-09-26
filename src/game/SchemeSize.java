@@ -32,7 +32,7 @@ public class SchemeSize extends Mod{
 
             // Add secret
             var mod = settings.mod;
-            mod.getCells().get(7).visible(false); // Hide secret
+            mod.getCells().get(8).visible(false); // Hide secret
 
             // Add zoom scale
             Stack elementMax = (Stack)mod.getCells().get(0).get();

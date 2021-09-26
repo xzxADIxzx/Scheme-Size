@@ -404,7 +404,7 @@ public class ModDesktopInput extends ModInputHandler{
 
         // Toggle Core Items
         if(input.keyTap(ModBinding.toggle_core_items)){
-            Core.settings.put("coreitems", !Core.settings.getBool("coreitems"));
+            settings.put("coreitems", !settings.getBool("coreitems"));
         }
 
         // Switch Teams
@@ -420,7 +420,12 @@ public class ModDesktopInput extends ModInputHandler{
 
         // Look At
         if(input.keyDown(ModBinding.look_at)){
-            player.unit().lookAt(Core.input.mouseWorld());
+            player.unit().lookAt(input.mouseWorld());
+        }
+
+        // Teleport
+        if(input.keyDown(ModBinding.look_at) && input.keyTap(Binding.select)){
+            player.unit().set(input.mouseWorld());
         }
 
         Tile selected = tileAtMod(Core.input.mouseX(), Core.input.mouseY());
