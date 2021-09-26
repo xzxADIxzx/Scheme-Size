@@ -40,6 +40,7 @@ import java.util.*;
 
 import static mindustry.Vars.*;
 
+// Last Update - Sep 19, 2021
 public class ModInputHandler extends InputHandler{
 	
 	public int tileXMod(float cursorX){
@@ -59,7 +60,7 @@ public class ModInputHandler extends InputHandler{
     }
 
     public Tile tileAtMod(float x, float y){
-        return world.tile(ModtileX(x), ModtileY(y));
+        return world.tile(tileXMod(x), tileYMod(y));
     }
 
     public boolean canMineMod(Tile tile){
@@ -72,7 +73,7 @@ public class ModInputHandler extends InputHandler{
     }
 
     public boolean tryBeginMineMod(Tile tile){
-        if(ModcanMine(tile)){
+        if(canMineMod(tile)){
             player.unit().mineTile = tile;
             return true;
         }
@@ -92,7 +93,7 @@ public class ModInputHandler extends InputHandler{
     }
 
     public boolean tryTapPlayerMod(float x, float y){
-        if(ModcanTapPlayer(x, y)){
+        if(canTapPlayerMod(x, y)){
             droppingItem = true;
             return true;
         }
@@ -137,7 +138,7 @@ public class ModInputHandler extends InputHandler{
         //consume tap event if necessary
         if(build.interactable(player.team()) && build.block.consumesTap){
             consumed = true;
-        }else if(build.interactable(player.team()) && build.block.synthetic() && !consumed){
+        }else if(build.interactable(player.team()) && build.block.synthetic() && (!consumed || build.block.allowConfigInventory)){
             if(build.block.hasItems && build.items.total() > 0){
                 frag.inv.showFor(build);
                 consumed = true;
@@ -150,5 +151,4 @@ public class ModInputHandler extends InputHandler{
         }
 
         return consumed;
-    }
 }
