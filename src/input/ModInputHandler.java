@@ -42,6 +42,8 @@ import static mindustry.Vars.*;
 
 // Last Update - Sep 19, 2021
 public class ModInputHandler extends InputHandler{
+
+	final static float playerSelectRange = mobile ? 17f : 11f;
 	
 	public int tileXMod(float cursorX){
         Vec2 vec = Core.input.mouseWorld(cursorX, 0);
