@@ -11,7 +11,6 @@ import arc.scene.*;
 import arc.scene.ui.*;
 import arc.scene.ui.layout.*;
 import arc.util.*;
-import arc.struct.*;
 import mindustry.*;
 import mindustry.core.*;
 import mindustry.entities.units.*;
@@ -21,9 +20,6 @@ import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.ui.*;
 import mindustry.world.*;
-import mindustry.input.*;
-import mindustry.input.Placement.*;
-import mindustry.content.*;
 
 import static arc.Core.*;
 import static mindustry.Vars.net;
@@ -31,7 +27,7 @@ import static mindustry.Vars.*;
 import static mindustry.input.PlaceMode.*;
 
 // Last Update - Aug 22, 2021
-public class DesktopInput512 extends InputHandler{
+public class ModDesktopInput extends ModInputHandler{
     
     final static float playerSelectRange = mobile ? 17f : 11f;
     public Vec2 movement = new Vec2();
@@ -99,8 +95,8 @@ public class DesktopInput512 extends InputHandler{
     @Override
     public void drawTop(){
         Lines.stroke(1f);
-        int cursorX = tileX(Core.input.mouseX());
-        int cursorY = tileY(Core.input.mouseY());
+        int cursorX = tileXMod(Core.input.mouseX());
+        int cursorY = tileYMod(Core.input.mouseY());
 
         if(mode == breaking){
             int size = settings.getInt("breaksize") - 1;
@@ -139,8 +135,8 @@ public class DesktopInput512 extends InputHandler{
 
     @Override
     public void drawBottom(){
-        int cursorX = tileX512(Core.input.mouseX());
-        int cursorY = tileY512(Core.input.mouseY());
+        int cursorX = tileXMod(Core.input.mouseX());
+        int cursorY = tileYMod(Core.input.mouseY());
 
         //draw request being moved
         if(sreq != null){
@@ -328,7 +324,7 @@ public class DesktopInput512 extends InputHandler{
             }
         }
 
-        Tile cursor = tileAt512(Core.input.mouseX(), Core.input.mouseY());
+        Tile cursor = tileAtMod(Core.input.mouseX(), Core.input.mouseY());
 
         if(cursor != null){
             if(cursor.build != null){
@@ -339,7 +335,7 @@ public class DesktopInput512 extends InputHandler{
                 cursorType = SystemCursor.hand;
             }
 
-            if(!isPlacing() && canMine512(cursor)){
+            if(!isPlacing() && canMineMod(cursor)){
                 cursorType = ui.drillCursor;
             }
 
@@ -347,7 +343,7 @@ public class DesktopInput512 extends InputHandler{
                 cursorType = SystemCursor.hand;
             }
 
-            if(canTapPlayer512(Core.input.mouseWorld().x, Core.input.mouseWorld().y)){
+            if(canTapPlayerMod(Core.input.mouseWorld().x, Core.input.mouseWorld().y)){
                 cursorType = ui.unloadCursor;
             }
 
@@ -366,8 +362,8 @@ public class DesktopInput512 extends InputHandler{
     @Override
     public void useSchematic(Schematic schem){
         block = null;
-        schematicX = tileX512(getMouseX());
-        schematicY = tileY512(getMouseY());
+        schematicX = tileXMod(getMouseX());
+        schematicY = tileYMod(getMouseY());
 
         selectRequests.clear();
         selectRequests.addAll(schematics.toRequests(schem, schematicX, schematicY));
@@ -426,9 +422,9 @@ public class DesktopInput512 extends InputHandler{
             player.unit().lookAt(Core.input.mouseWorld());
         }
 
-        Tile selected = tileAt512(Core.input.mouseX(), Core.input.mouseY());
-        int cursorX = tileX512(Core.input.mouseX());
-        int cursorY = tileY512(Core.input.mouseY());
+        Tile selected = tileAtMod(Core.input.mouseX(), Core.input.mouseY());
+        int cursorX = tileXMod(Core.input.mouseX());
+        int cursorY = tileYMod(Core.input.mouseY());
         int rawCursorX = World.toTile(Core.input.mouseWorld().x), rawCursorY = World.toTile(Core.input.mouseWorld().y);
 
         //automatically pause building if the current build queue is empty
@@ -542,8 +538,8 @@ public class DesktopInput512 extends InputHandler{
                 deleting = true;
             }else if(selected != null){
                 //only begin shooting if there's no cursor event
-                if(!tryTapPlayer512(Core.input.mouseWorld().x, Core.input.mouseWorld().y) && !tileTapped512(selected.build) && !player.unit().activelyBuilding() && !droppingItem
-                    && !(tryStopMine512(selected) || (!settings.getBool("doubletapmine") || selected == prevSelected && Time.timeSinceMillis(selectMillis) < 500) && tryBeginMine512(selected)) && !Core.scene.hasKeyboard()){
+                if(!tryTapPlayerMod(Core.input.mouseWorld().x, Core.input.mouseWorld().y) && !tileTappedMod(selected.build) && !player.unit().activelyBuilding() && !droppingItem
+                    && !(tryStopMineMod(selected) || (!settings.getBool("doubletapmine") || selected == prevSelected && Time.timeSinceMillis(selectMillis) < 500) && tryBeginMineMod(selected)) && !Core.scene.hasKeyboard()){
                     player.shooting = shouldShoot;
                 }
             }else if(!Core.scene.hasKeyboard()){ //if it's out of bounds, shooting is just fine
@@ -561,8 +557,8 @@ public class DesktopInput512 extends InputHandler{
             //is recalculated because setting the mode to breaking removes potential multiblock cursor offset
             deleting = false;
             mode = breaking;
-            selectX = tileX512(Core.input.mouseX());
-            selectY = tileY512(Core.input.mouseY());
+            selectX = tileXMod(Core.input.mouseX());
+            selectY = tileYMod(Core.input.mouseY());
             schemX = rawCursorX;
             schemY = rawCursorY;
         }
@@ -707,117 +703,5 @@ public class DesktopInput512 extends InputHandler{
         if(Core.input.keyTap(Binding.command) && unit.type.commandLimit > 0){
             Call.unitCommand(player);
         }
-    }
-
-    public int tileX512(float cursorX){
-        Vec2 vec = Core.input.mouseWorld(cursorX, 0);
-        if(selectedBlock()){
-            vec.sub(block.offset, block.offset);
-        }
-        return World.toTile(vec.x);
-    }
-
-    public int tileY512(float cursorY){
-        Vec2 vec = Core.input.mouseWorld(0, cursorY);
-        if(selectedBlock()){
-            vec.sub(block.offset, block.offset);
-        }
-        return World.toTile(vec.y);
-    }
-
-    public Tile tileAt512(float x, float y){
-        // ._.
-        return world.tile(tileX512(x), tileY512(y));
-    }
-
-    public boolean canMine512(Tile tile){
-        return !Core.scene.hasMouse()
-            && tile.drop() != null
-            && player.unit().validMine(tile)
-            && !((!Core.settings.getBool("doubletapmine") && tile.floor().playerUnmineable) && tile.overlay().itemDrop == null)
-            && player.unit().acceptsItem(tile.drop())
-            && tile.block() == Blocks.air;
-    }
-
-    public boolean tryBeginMine512(Tile tile){
-        if(canMine512(tile)){
-            player.unit().mineTile = tile;
-            return true;
-        }
-        return false;
-    }
-
-    public boolean tryStopMine512(Tile tile){
-        if(player.unit().mineTile == tile){
-            player.unit().mineTile = null;
-            return true;
-        }
-        return false;
-    }
-
-    public boolean canTapPlayer512(float x, float y){
-        // ._.
-        return player.within(x, y, playerSelectRange) && player.unit().stack.amount > 0;
-    }
-
-    public boolean tryTapPlayer512(float x, float y){
-        if(canTapPlayer512(x, y)){
-            droppingItem = true;
-            return true;
-        }
-        return false;
-    }
-
-    public boolean tileTapped512(@Nullable Building build){
-        if(build == null){
-            frag.inv.hide();
-            frag.config.hideConfig();
-            return false;
-        }
-        boolean consumed = false, showedInventory = false;
-
-        //check if tapped block is configurable
-        if(build.block.configurable && build.interactable(player.team())){
-            consumed = true;
-            if((!frag.config.isShown() && build.shouldShowConfigure(player)) //if the config fragment is hidden, show
-            //alternatively, the current selected block can 'agree' to switch config tiles
-            || (frag.config.isShown() && frag.config.getSelectedTile().onConfigureTileTapped(build))){
-                Sounds.click.at(build);
-                frag.config.showConfig(build);
-            }
-            //otherwise...
-        }else if(!frag.config.hasConfigMouse()){ //make sure a configuration fragment isn't on the cursor
-            //then, if it's shown and the current block 'agrees' to hide, hide it.
-            if(frag.config.isShown() && frag.config.getSelectedTile().onConfigureTileTapped(build)){
-                consumed = true;
-                frag.config.hideConfig();
-            }
-
-            if(frag.config.isShown()){
-                consumed = true;
-            }
-        }
-
-        //call tapped event
-        if(!consumed && build.interactable(player.team())){
-            build.tapped();
-        }
-
-        //consume tap event if necessary
-        if(build.interactable(player.team()) && build.block.consumesTap){
-            consumed = true;
-        }else if(build.interactable(player.team()) && build.block.synthetic() && !consumed){
-            if(build.block.hasItems && build.items.total() > 0){
-                frag.inv.showFor(build);
-                consumed = true;
-                showedInventory = true;
-            }
-        }
-
-        if(!showedInventory){
-            frag.inv.hide();
-        }
-
-        return consumed;
     }
 }
