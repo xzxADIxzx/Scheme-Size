@@ -99,8 +99,8 @@ public class DesktopInput512 extends InputHandler{
     @Override
     public void drawTop(){
         Lines.stroke(1f);
-        int cursorX = tileX512(Core.input.mouseX());
-        int cursorY = tileY512(Core.input.mouseY());
+        int cursorX = tileX(Core.input.mouseX());
+        int cursorY = tileY(Core.input.mouseY());
 
         if(mode == breaking){
             int size = settings.getInt("breaksize") - 1;
