@@ -35,7 +35,7 @@ public class ModHudFragment extends HudFragment{
 
     private static final float dsize = 65f, pauseHeight = 36f;
 
-    private ImageButton flip;=
+    private ImageButton flip;
     private long lastToast;
 
     @Override
