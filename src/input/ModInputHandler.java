@@ -59,7 +59,7 @@ public class ModInputHandler extends InputHandler{
     }
 
     public Tile tileAtMod(float x, float y){
-        return world.tile(tileX512(x), tileY512(y));
+        return world.tile(ModtileX(x), ModtileY(y));
     }
 
     public boolean canMineMod(Tile tile){
@@ -72,7 +72,7 @@ public class ModInputHandler extends InputHandler{
     }
 
     public boolean tryBeginMineMod(Tile tile){
-        if(canMine512(tile)){
+        if(ModcanMine(tile)){
             player.unit().mineTile = tile;
             return true;
         }
@@ -92,7 +92,7 @@ public class ModInputHandler extends InputHandler{
     }
 
     public boolean tryTapPlayerMod(float x, float y){
-        if(canTapPlayer512(x, y)){
+        if(ModcanTapPlayer(x, y)){
             droppingItem = true;
             return true;
         }
