@@ -11,6 +11,7 @@ import arc.scene.*;
 import arc.scene.ui.*;
 import arc.scene.ui.layout.*;
 import arc.util.*;
+import arc.struct.*
 import mindustry.*;
 import mindustry.core.*;
 import mindustry.entities.units.*;
@@ -20,6 +21,7 @@ import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.ui.*;
 import mindustry.world.*;
+import mindustry.input.Placement.*;
 
 import static arc.Core.*;
 import static mindustry.Vars.net;

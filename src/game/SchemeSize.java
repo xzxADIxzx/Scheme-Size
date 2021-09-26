@@ -18,12 +18,12 @@ public class SchemeSize extends Mod{
     public SchemeSize(){
         Events.on(ClientLoadEvent.class, e -> {
             // Change schematics
-            Vars.schematics = new Schematics512();
+            Vars.schematics = new ModSchematics();
             Vars.schematics.loadSync();
 
             // Change input
             if(!Vars.mobile){
-                Vars.control.setInput(new DesktopInput512());
+                Vars.control.setInput(new ModDesktopInput());
             }
 
             // Change dialog

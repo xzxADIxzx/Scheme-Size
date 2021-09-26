@@ -44,7 +44,7 @@ import static arc.Core.*;
 import static mindustry.Vars.*;
 
 // Last Update - Sep 11, 2021
-public class Schematics512 extends Schematics{
+public class ModSchematics extends Schematics{
 
     // private static final Schematic tmpSchem = new Schematic(new Seq<>(), new StringMap(), 0, 0);
     // private static final Schematic tmpSchem2 = new Schematic(new Seq<>(), new StringMap(), 0, 0);
@@ -65,7 +65,7 @@ public class Schematics512 extends Schematics{
     private Texture errorTexture;
     private long lastClearTime;
 
-    public Schematics512(){
+    public ModSchematics(){
         Events.on(ClientLoadEvent.class, event -> {
             errorTexture = new Texture("sprites/error.png");
         });
