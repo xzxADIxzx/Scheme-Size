@@ -31,17 +31,17 @@ import static mindustry.input.PlaceMode.*;
 // Last Update - Aug 22, 2021
 public class ModDesktopInput extends ModInputHandler{
     
-    // public Vec2 movement = new Vec2();
-    // public Cursor cursorType = SystemCursor.arrow;
-    // public int selectX = -1, selectY = -1, schemX = -1, schemY = -1;
-    // public int lastLineX, lastLineY, schematicX, schematicY;
-    // public PlaceMode mode;
-    // public float selectScale;
-    // public @Nullable BuildPlan sreq;
-    // public boolean deleting = false, shouldShoot = false, panning = false;
-    // public float panScale = 0.005f, panSpeed = 4.5f, panBoostSpeed = 15f;
-    // public long selectMillis = 0;
-    // public Tile prevSelected;
+    public Vec2 movement = new Vec2();
+    public Cursor cursorType = SystemCursor.arrow;
+    public int selectX = -1, selectY = -1, schemX = -1, schemY = -1;
+    public int lastLineX, lastLineY, schematicX, schematicY;
+    public PlaceMode mode;
+    public float selectScale;
+    public @Nullable BuildPlan sreq;
+    public boolean deleting = false, shouldShoot = false, panning = false;
+    public float panScale = 0.005f, panSpeed = 4.5f, panBoostSpeed = 15f;
+    public long selectMillis = 0;
+    public Tile prevSelected;
 
     boolean showHint(){
         return ui.hudfrag.shown && Core.settings.getBool("hints") && selectRequests.isEmpty() &&
