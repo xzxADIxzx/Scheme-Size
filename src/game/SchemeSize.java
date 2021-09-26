@@ -7,6 +7,7 @@ import arc.KeyBinds.*;
 import arc.scene.ui.*;
 import arc.scene.ui.layout.*;
 import mindustry.ui.dialogs.*;
+import mindustry.ui.fragments.*;
 import mindustry.mod.*;
 import mindustry.core.*;
 import mindustry.game.EventType.*;
@@ -30,9 +31,13 @@ public class SchemeSize extends Mod{
             var settings = new ModSettingsMenuDialog();
             Vars.ui.settings = settings;
 
+            // Change fragment
+            Vars.ui.hudfrag = new ModHudFragment();
+            // Vars.ui.hudfrag.build(Vars.ui.hudgroup);
+
             // Add secret
             var mod = settings.mod;
-            mod.getCells().get(8).visible(false); // Hide secret
+            mod.getCells().get(7).visible(false); // Hide secret
 
             // Add zoom scale
             Stack elementMax = (Stack)mod.getCells().get(0).get();
