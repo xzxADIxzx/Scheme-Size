@@ -151,4 +151,5 @@ public class ModInputHandler extends InputHandler{
         }
 
         return consumed;
+    }
 }
