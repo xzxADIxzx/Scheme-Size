@@ -36,7 +36,7 @@ public class ModHudFragment extends HudFragment{
 
     private static final float dsize = 65f;
 
-    public final PlacementFragment blockfrag;
+    // public final PlacementFragment blockfrag = new PlacementFragment();
     // public boolean shown = true;
 
     private ImageButton flip;
@@ -204,7 +204,7 @@ public class ModHudFragment extends HudFragment{
             }).top().left();
         });
 
-        // blockfrag.build(parent);
+        blockfrag.build(parent);
     }
 
     private void toggleMenus(){
