@@ -45,7 +45,7 @@ public class ModHudFragment extends HudFragment{
     // private Table lastUnlockTable;
     // private Table lastUnlockLayout;
     // private long lastToast;
-    private int maxShield;
+    private float maxShield;
 
     @Override
     public void build(Group parent){
