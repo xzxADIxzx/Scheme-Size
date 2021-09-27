@@ -50,7 +50,7 @@ public class ModHudFragment extends HudFragment{
     @Override
     public void build(Group parent){
         Events.on(ResetEvent.class, e -> {
-            updateShield();
+            updateShield(player.unit());
         });
 
         //menu at top left
