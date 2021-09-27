@@ -347,11 +347,11 @@ public class ModHudFragment extends HudFragment{
 
             t.add(new SideBar(() -> player.unit().healthf(), () -> true, true)).width(bw).growY().padRight(pad);
             t.image(() -> player.icon()).scaling(Scaling.bounded).grow().maxWidth(54f);
+            t.add(new SideBar(() -> maxShield == -1 ? 0f : player.unit().shield / maxShield, () -> true, false)).width(bw).growY().update(b -> {
+                b.color.set(Pal.accent);
+            });
             t.add(new SideBar(() -> player.dead() ? 0f : player.displayAmmo() ? player.unit().ammof() : player.unit().healthf(), () -> !player.displayAmmo(), false)).width(bw).growY().padLeft(pad).update(b -> {
                 b.color.set(player.displayAmmo() ? player.dead() || player.unit() instanceof BlockUnitc ? Pal.ammo : player.unit().type.ammoType.color() : Pal.health);
-            });
-            t.add(new SideBar(() -> player.unit().shield / maxShield, () -> true, false)).width(bw).growY().update(b -> {
-                b.color.set(Pal.accent);
             });
 
             t.getChildren().get(1).toFront();
@@ -449,7 +449,7 @@ public class ModHudFragment extends HudFragment{
     }
 
     public void updateShield(Unit on){
-        maxShield = 0;
+        maxShield = -1;
         on.abilities.each((a) -> {
             maxShield = a instanceof ForceFieldAbility ffa ? ffa.max : maxShield;
         });
