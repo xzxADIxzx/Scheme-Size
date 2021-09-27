@@ -15,9 +15,9 @@ Events.on(EventType.ClientLoadEvent, e => {
 	});
 
 	// delete old interface... idk why but does work in java?
-	Time.runTask(20, () => {
+	Time.runTask(10, () => {
 		Vars.ui.hudGroup.children.get(5).clear();
-		Vars.ui.hudGroup.children.get(9).clear();
+		Vars.ui.hudGroup.children.get(8).clear();
 	});
 });
 

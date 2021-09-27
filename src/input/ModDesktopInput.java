@@ -20,6 +20,7 @@ import mindustry.game.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.ui.*;
+import mindustry.ui.fragments.*;
 import mindustry.world.*;
 import mindustry.input.Placement.*;
 
@@ -246,6 +247,9 @@ public class ModDesktopInput extends ModInputHandler{
                     Call.unitControl(player, on);
                     shouldShoot = false;
                     recentRespawnTimer = 1f;
+
+                    ModHudFragment hudfrag = (ModHudFragment)ui.hudfrag;
+                    hudfrag.UpdateShield(on);
                 }else if(build != null){
                     Call.buildingControlSelect(player, build);
                     recentRespawnTimer = 1f;
@@ -260,6 +264,9 @@ public class ModDesktopInput extends ModInputHandler{
                 controlledType = null;
                 recentRespawnTimer = 1f;
                 Call.unitClear(player);
+
+                ModHudFragment hudfrag = (ModHudFragment)ui.hudfrag;
+                hudfrag.updateShield(player.unit());
             }
         }
 
