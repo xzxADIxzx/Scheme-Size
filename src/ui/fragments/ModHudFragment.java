@@ -36,7 +36,7 @@ public class ModHudFragment extends HudFragment{
 
     private static final float dsize = 65f;
 
-    // public final PlacementFragment blockfrag = new PlacementFragment();
+    public final PlacementFragment blockfrag;
     // public boolean shown = true;
 
     private ImageButton flip;
@@ -204,7 +204,7 @@ public class ModHudFragment extends HudFragment{
             }).top().left();
         });
 
-        blockfrag.build(parent);
+        // blockfrag.build(parent);
     }
 
     private void toggleMenus(){
@@ -349,10 +349,10 @@ public class ModHudFragment extends HudFragment{
                 }
             });
 
-            t.add(new SideBar(() -> maxShield == -1 ? 0f : player.unit().shield / maxShield, () -> true, true)).width(bw).growY().padRight(-1).update(b -> {
+            t.add(new SideBar(() -> maxShield == -1 ? 0f : player.unit().shield / maxShield, () -> true, true)).width(bw).growY().padRight(pad).update(b -> {
                 b.color.set(Pal.accent);
             });
-            t.add(new SideBar(() -> player.unit().healthf(), () -> true, true)).width(bw).growY().padRight(pad);
+            t.add(new SideBar(() -> player.unit().healthf(), () -> true, true)).width(bw).growY();
             t.image(() -> player.icon()).scaling(Scaling.bounded).grow().maxWidth(54f);
             t.add(new SideBar(() -> player.dead() ? 0f : player.displayAmmo() ? player.unit().ammof() : player.unit().healthf(), () -> !player.displayAmmo(), false)).width(bw).growY().padLeft(pad).update(b -> {
                 b.color.set(player.displayAmmo() ? player.dead() || player.unit() instanceof BlockUnitc ? Pal.ammo : player.unit().type.ammoType.color() : Pal.health);
