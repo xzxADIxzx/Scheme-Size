@@ -450,7 +450,7 @@ public class ModHudFragment extends HudFragment{
     public void updateShield(Unit on){
         maxShield = 0;
         on.abilities.each((a) -> {
-            if(a instanceof ForceFieldAbility) maxShield = a.max;
+            maxShield = a instanceof ForceFieldAbility ffa ? ffa.max : maxShield;
         });
     }
 
