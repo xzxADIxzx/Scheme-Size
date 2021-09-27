@@ -447,7 +447,7 @@ public class ModHudFragment extends HudFragment{
         return state.rules.waves && ((net.server() || player.admin) || !net.active()) && state.enemies == 0 && !spawner.isSpawning();
     }
 
-    private void updateShield(Unit on){
+    public void updateShield(Unit on){
         maxShield = 0;
         on.abilities.each((a) -> {
             if(a instanceof ForceFieldAbility) maxShield = a.max;
