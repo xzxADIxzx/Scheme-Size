@@ -13,11 +13,11 @@ Events.on(EventType.ClientLoadEvent, e => {
 			Vars.ui.showInfo("@updater.info")
 		}
 	});
+
+	// delete old interface... idk why but does work in java?
+	Vars.ui.hudGroup.children.get(5).clear();
+	Vars.ui.hudGroup.children.get(9).clear();
 });
 
 // why not
 Vars.enableConsole = true;
-
-// delete old interface... idk why but does work in java?
-Vars.ui.hudGroup.children.get(5).clear();
-Vars.ui.hudGroup.children.get(5).clear();
