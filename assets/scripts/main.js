@@ -21,7 +21,15 @@ Events.on(EventType.ClientLoadEvent, e => {
 });
 
 Events.on(EventType.ResetEvent, e => {
-	Vars.ui.hudGroup.children.get(9).clear();
+	Time.runTask(10, () => {
+		Vars.ui.hudGroup.children.get(9).clear();
+	});
+});
+
+Events.on(EventType.WorldLoadEvent, e => {
+	Time.runTask(10, () => {
+		Vars.ui.hudGroup.children.get(9).clear();
+	});
 });
 
 // why not
