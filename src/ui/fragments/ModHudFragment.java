@@ -349,7 +349,7 @@ public class ModHudFragment extends HudFragment{
                 }
             });
 
-            t.add(new SideBar(() -> maxShield == -1 ? 0f : player.unit().shield / maxShield, () -> true, true)).width(bw).growY().padRight(pad).update(b -> {
+            t.add(new SideBar(() -> maxShield == -1 ? 0f : player.unit().shield / maxShield, () -> true, true)).width(bw).growY().update(b -> {
                 b.color.set(Pal.accent);
             });
             t.add(new SideBar(() -> player.unit().healthf(), () -> true, true)).width(bw).growY();
