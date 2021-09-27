@@ -17,3 +17,7 @@ Events.on(EventType.ClientLoadEvent, e => {
 
 // why not
 Vars.enableConsole = true;
+
+// delete old interface... idk why but does work in java?
+Vars.ui.hudGroup.children.get(5).clear();
+Vars.ui.hudGroup.children.get(5).clear();

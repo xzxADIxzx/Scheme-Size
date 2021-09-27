@@ -47,10 +47,6 @@ public class ModHudFragment extends HudFragment{
 
     @Override
     public void build(Group parent){
-        // delete old
-        ui.hudGroup.children.get(5).clear();
-        ui.hudGroup.children.get(5).clear();
-
         //menu at top left
         parent.fill(cont -> {
             cont.name = "overlaymarker";
