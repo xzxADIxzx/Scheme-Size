@@ -20,7 +20,7 @@ Events.on(EventType.ClientLoadEvent, e => {
 	});
 });
 
-Events.json(EventType.ResetEvent, e => {
+Events.on(EventType.ResetEvent, e => {
 	Vars.ui.hudGroup.children.get(9).clear();
 });
 
