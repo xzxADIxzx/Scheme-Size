@@ -15,6 +15,7 @@ import arc.scene.ui.layout.*;
 import arc.struct.*;
 import arc.util.*;
 // import mindustry.annotations.Annotations.*;
+import mindustry.entities.abilities.*;
 import mindustry.content.*;
 import mindustry.core.GameState.*;
 import mindustry.core.*;

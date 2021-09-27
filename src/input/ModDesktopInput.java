@@ -249,7 +249,7 @@ public class ModDesktopInput extends ModInputHandler{
                     recentRespawnTimer = 1f;
 
                     ModHudFragment hudfrag = (ModHudFragment)ui.hudfrag;
-                    hudfrag.UpdateShield(on);
+                    hudfrag.updateShield(on);
                 }else if(build != null){
                     Call.buildingControlSelect(player, build);
                     recentRespawnTimer = 1f;
