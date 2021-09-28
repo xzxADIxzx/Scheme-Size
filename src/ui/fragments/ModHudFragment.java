@@ -362,6 +362,7 @@ public class ModHudFragment extends HudFragment{
 
                 // drawInner(Pal.darkishGray, 1f);
                 drawInner(Tmp.c1.set(color).lerp(Color.white, blink), value);
+                super.draw();
             }
 
             void drawInner(Color color, float fract){
@@ -382,16 +383,16 @@ public class ModHudFragment extends HudFragment{
                 float bo = -(1f - f1) * (width - stroke);
 
                 Fill.quad(
-                x, y,
+                x - stroke, y,
                 x + stroke, y,
                 x + width + bo, y + bh * f1,
-                x - width - stroke + bo, y + bh * f1
+                x + width - stroke + bo, y + bh * f1
                 );
 
                 if(f2 > 0){
                     float bx = x + (width - stroke) * (1f - f2);
                     Fill.quad(
-                    x + width, y + bh,
+                    x - width, y + bh,
                     x + width - stroke, y + bh,
                     bx, y + height * fract,
                     bx + stroke, y + height * fract
@@ -429,7 +430,7 @@ public class ModHudFragment extends HudFragment{
                 }
             });
 
-            t.add(new SideBar(() -> player.unit().healthf(), () -> true, true)).width(bw).growY().padRight(pad);
+            t.add(new SideBar(() -> player.unit().healthf(), () -> true, false)).width(bw).growY().padRight(pad);
             t.add(new Bar(() -> maxShield == -1 ? 0f : player.unit().shield / maxShield, () -> true, true, b -> {
                 b.image(() -> player.icon());
             })).scaling(Scaling.bounded).grow().maxWidth(54f).update(b -> {
