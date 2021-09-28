@@ -32,5 +32,7 @@ Events.on(EventType.WorldLoadEvent, e => {
 	});
 });
 
+// TEMP: after comoplete interface delete this sh*t code...
+
 // why not
 Vars.enableConsole = true;
