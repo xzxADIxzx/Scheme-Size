@@ -376,6 +376,13 @@ public class ModHudFragment extends HudFragment{
                 float bo = -(1f - f1) * (widthm - stroke);
 
                 Fill.quad(
+                    x, y,
+                    x++, y,
+                    x++, y++,
+                    x, y++
+                );
+
+                Fill.quad(
                     100, 0,
                     200, 0,
                     250, 100,
@@ -384,7 +391,7 @@ public class ModHudFragment extends HudFragment{
 
                 Fill.quad(
                     250, 100,
-                    50, 100
+                    50, 100,
                     250, 100,
                     50, 100
                 );
