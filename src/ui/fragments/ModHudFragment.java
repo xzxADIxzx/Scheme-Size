@@ -335,7 +335,8 @@ public class ModHudFragment extends HudFragment{
 
             float last, blink, value;
 
-            public Bar(Floatp amount, Boolp flash, boolean flip){
+            public Bar(Floatp amount, Boolp flash, boolean flip, Cons<Table> cons){
+                super(cons);
                 this.amount = amount;
                 this.flip = flip;
                 this.flash = flash;
@@ -384,13 +385,13 @@ public class ModHudFragment extends HudFragment{
                 x, y,
                 x + stroke, y,
                 x + width + bo, y + bh * f1,
-                x + width - stroke + bo, y + bh * f1
+                x - width - stroke + bo, y + bh * f1
                 );
 
                 if(f2 > 0){
                     float bx = x + (width - stroke) * (1f - f2);
                     Fill.quad(
-                    x - width, y + bh,
+                    x + width, y + bh,
                     x + width - stroke, y + bh,
                     bx, y + height * fract,
                     bx + stroke, y + height * fract
@@ -428,11 +429,12 @@ public class ModHudFragment extends HudFragment{
                 }
             });
 
-            t.add(new Bar(() -> maxShield == -1 ? 0f : player.unit().shield / maxShield, () -> true, true)).grow().maxWidth(54f).update(b -> {
+            t.add(new Bar(() -> maxShield == -1 ? 0f : player.unit().shield / maxShield, () -> true, true), t -> {
+                t.image(() -> player.icon()).scaling(Scaling.bounded).grow().maxWidth(54f);
+            }).scaling(Scaling.bounded).grow().maxWidth(54f).update(b -> {
                 b.color.set(Pal.accent);
             });
             t.add(new SideBar(() -> player.unit().healthf(), () -> true, true)).width(bw).growY().padRight(pad);
-            t.image(() -> player.icon()).scaling(Scaling.bounded).grow().maxWidth(54f);
             t.add(new SideBar(() -> player.dead() ? 0f : player.displayAmmo() ? player.unit().ammof() : player.unit().healthf(), () -> !player.displayAmmo(), false)).width(bw).growY().padLeft(pad).update(b -> {
                 b.color.set(player.displayAmmo() ? player.dead() || player.unit() instanceof BlockUnitc ? Pal.ammo : player.unit().type.ammoType.color() : Pal.health);
             });
