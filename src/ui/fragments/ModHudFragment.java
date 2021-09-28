@@ -32,21 +32,12 @@ import mindustry.ui.*;
 import static mindustry.Vars.*;
 
 // Last Update - Sep 4, 2021
-// public class ModHudFragment extends HudFragment{
 public class ModHudFragment extends Fragment{
 
     private static final float dsize = 65f;
-
-    // public final PlacementFragment blockfrag = new PlacementFragment();
-    public boolean shown = true;
-
     private ImageButton flip;
-    // private CoreItemsDisplay coreItems = new CoreItemsDisplay();
-
-    // private Table lastUnlockTable;
-    // private Table lastUnlockLayout;
-    // private long lastToast;
     private float maxShield;
+    public boolean shown = true;
 
     @Override
     public void build(Group parent){
@@ -206,8 +197,6 @@ public class ModHudFragment extends Fragment{
 
             }).top().left();
         });
-
-        // blockfrag.build(parent);
     }
 
     private void toggleMenus(){
@@ -330,7 +319,6 @@ public class ModHudFragment extends Fragment{
             }
         }
 
-        // TODO: remove flip
         class Bar extends Table{
             public final Floatp amount;
             public final Boolp flash;

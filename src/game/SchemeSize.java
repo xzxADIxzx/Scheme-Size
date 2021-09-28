@@ -34,9 +34,7 @@ public class SchemeSize extends Mod{
             var settings = new ModSettingsMenuDialog();
             ui.settings = settings;
 
-            // change fragment
-            // ui.hudfrag = new ModHudFragment();
-            // ui.hudfrag.build(ui.hudGroup);
+            // add fragment
             hudfrag.build(ui.hudGroup);
 
             // add secret

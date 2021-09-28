@@ -15,24 +15,10 @@ Events.on(EventType.ClientLoadEvent, e => {
 	});
 
 	// delete old interface... idk why but does work in java?
-	Vars.ui.hudGroup.children.get(5).clear();
-	// Time.runTask(10, () => {
-	// });
+	Time.runTask(10, () => {
+		Vars.ui.hudGroup.children.get(5).clear();
+	});
 });
-
-// Events.on(EventType.ResetEvent, e => {
-// 	Time.runTask(10, () => {
-// 		Vars.ui.hudGroup.children.get(9).clear();
-// 	});
-// });
-
-// Events.on(EventType.WorldLoadEvent, e => {
-// 	Time.runTask(10, () => {
-// 		Vars.ui.hudGroup.children.get(9).clear();
-// 	});
-// });
-
-// TEMP: after comoplete interface delete this sh*t code...
 
 // why not
 Vars.enableConsole = true;
