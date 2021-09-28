@@ -358,7 +358,8 @@ public class ModHudFragment extends HudFragment{
 
                 if(Float.isNaN(value) || Float.isInfinite(value)) value = 1f;
 
-                // drawInner(Pal.darkishGray, 1f);
+                // bar draw over shadow... so it's look bad
+                Drawf.shadow(x + width/2f, y + height/2f, height * 1.13f);
                 drawInner(Tmp.c1.set(color).lerp(Color.white, blink), value);
                 super.draw();
             }
@@ -373,7 +374,8 @@ public class ModHudFragment extends HudFragment{
                 // float stroke = width * 0.35f;
                 // float bo = -(1f - f1) * (width - stroke);
                 float f1 = Math.min(fract * 2f, 1f), f2 = (fract - 0.5f) * 2f;
-                float dif = 32f * f1;
+                float stroke = width - (width * 0.35f);
+                float dif = stroke * f1;
 
                 Fill.quad(
                     x-1, y-1,
@@ -391,12 +393,12 @@ public class ModHudFragment extends HudFragment{
 
                 if(f2 > 0){
                     // float bx = (width - stroke) * (1f - f2);
-                    float diftop = 32f * f2;
+                    float diftop = stroke * f2;
                     Fill.quad(
                     x - dif, y + bh,
                     x + dif + width, y + bh,
-                    x - diftop + width, y + height * fract,
-                    x - (32f - diftop), y + height * fract
+                    x - diftop + width + stroke, y + height * fract,
+                    x - (stroke - diftop), y + height * fract
                     );
                 }
 
@@ -411,7 +413,7 @@ public class ModHudFragment extends HudFragment{
                 Draw.color(Pal.darkerGray);
                 Fill.poly(x + width/2f, y + height/2f, 6, height / Mathf.sqrt3);
                 Draw.reset();
-                Drawf.shadow(x + width/2f, y + height/2f, height * 1.13f);
+                // Drawf.shadow(x + width/2f, y + height/2f, height * 1.13f);
             }
         },
         new Table(t -> {
