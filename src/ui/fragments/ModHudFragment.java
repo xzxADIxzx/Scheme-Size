@@ -429,12 +429,12 @@ public class ModHudFragment extends HudFragment{
                 }
             });
 
-            t.add(new Bar(() -> maxShield == -1 ? 0f : player.unit().shield / maxShield, () -> true, true, t -> {
-                t.image(() -> player.icon()).scaling(Scaling.bounded).grow().maxWidth(54f);
+            t.add(new SideBar(() -> player.unit().healthf(), () -> true, true)).width(bw).growY().padRight(pad);
+            t.add(new Bar(() -> maxShield == -1 ? 0f : player.unit().shield / maxShield, () -> true, true, b -> {
+                b.image(() -> player.icon());
             })).scaling(Scaling.bounded).grow().maxWidth(54f).update(b -> {
                 b.color.set(Pal.accent);
             });
-            t.add(new SideBar(() -> player.unit().healthf(), () -> true, true)).width(bw).growY().padRight(pad);
             t.add(new SideBar(() -> player.dead() ? 0f : player.displayAmmo() ? player.unit().ammof() : player.unit().healthf(), () -> !player.displayAmmo(), false)).width(bw).growY().padLeft(pad).update(b -> {
                 b.color.set(player.displayAmmo() ? player.dead() || player.unit() instanceof BlockUnitc ? Pal.ammo : player.unit().type.ammoType.color() : Pal.health);
             });
