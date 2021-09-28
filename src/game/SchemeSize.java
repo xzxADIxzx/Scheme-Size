@@ -17,7 +17,7 @@ import static mindustry.Vars.*;
 
 public class SchemeSize extends Mod{
 
-    public ModHudFragment hudfrag;
+    public static ModHudFragment hudfrag = new ModHudFragment();
 
     public SchemeSize(){
         Events.on(ClientLoadEvent.class, e -> {
@@ -37,7 +37,7 @@ public class SchemeSize extends Mod{
             // change fragment
             // ui.hudfrag = new ModHudFragment();
             // ui.hudfrag.build(ui.hudGroup);
-            hudfrag = new ModHudFragment().build(ui.hudGroup);
+            hudfrag.build(ui.hudGroup);
 
             // add secret
             var mod = settings.mod;

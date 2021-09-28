@@ -248,8 +248,9 @@ public class ModDesktopInput extends ModInputHandler{
                     shouldShoot = false;
                     recentRespawnTimer = 1f;
 
-                    ModHudFragment hudfrag = (ModHudFragment)ui.hudfrag;
-                    hudfrag.updateShield(on);
+                    // ModHudFragment hudfrag = (ModHudFragment)ui.hudfrag;
+                    // hudfrag.updateShield(on);
+                    SchemeSize.hudfrag.updateShield(player.unit());
                 }else if(build != null){
                     Call.buildingControlSelect(player, build);
                     recentRespawnTimer = 1f;
@@ -265,8 +266,9 @@ public class ModDesktopInput extends ModInputHandler{
                 recentRespawnTimer = 1f;
                 Call.unitClear(player);
 
-                ModHudFragment hudfrag = (ModHudFragment)ui.hudfrag;
-                hudfrag.updateShield(player.unit());
+                // ModHudFragment hudfrag = (ModHudFragment)ui.hudfrag;
+                // hudfrag.updateShield(player.unit());
+                SchemeSize.hudfrag.updateShield(player.unit());
             }
         }
 

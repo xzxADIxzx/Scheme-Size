@@ -51,7 +51,7 @@ public class ModHudFragment extends Fragment{
     @Override
     public void build(Group parent){
         Events.on(WorldLoadEvent.class, e -> {
-            Time.runTask(() -> {
+            Time.runTask(10f, () -> {
                 updateShield(player.unit());
             });
         });
