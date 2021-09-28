@@ -32,12 +32,13 @@ import mindustry.ui.*;
 import static mindustry.Vars.*;
 
 // Last Update - Sep 4, 2021
-public class ModHudFragment extends HudFragment{
+// public class ModHudFragment extends HudFragment{
+public class ModHudFragment extends Fragment{
 
     private static final float dsize = 65f;
 
     // public final PlacementFragment blockfrag = new PlacementFragment();
-    // public boolean shown = true;
+    public boolean shown = true;
 
     private ImageButton flip;
     // private CoreItemsDisplay coreItems = new CoreItemsDisplay();
@@ -50,7 +51,9 @@ public class ModHudFragment extends HudFragment{
     @Override
     public void build(Group parent){
         Events.on(WorldLoadEvent.class, e -> {
-            updateShield(player.unit());
+            Time.runTask(() -> {
+                updateShield(player.unit());
+            });
         });
 
         //menu at top left
@@ -204,7 +207,7 @@ public class ModHudFragment extends HudFragment{
             }).top().left();
         });
 
-        blockfrag.build(parent);
+        // blockfrag.build(parent);
     }
 
     private void toggleMenus(){
@@ -370,18 +373,9 @@ public class ModHudFragment extends HudFragment{
                 float bh = height/2f;
                 Draw.color(color);
 
-                // float stroke = width * 0.35f;
-                // float bo = -(1f - f1) * (width - stroke);
                 float f1 = Math.min(fract * 2f, 1f), f2 = (fract - 0.5f) * 2f;
                 float stroke = width - (width * 0.35f);
                 float dif = stroke * f1;
-
-                Fill.quad(
-                    x-1, y-1,
-                    x+1, y-1,
-                    x+1, y+1,
-                    x-1, y+1
-                );
 
                 Fill.quad(
                 x, y,
@@ -391,7 +385,6 @@ public class ModHudFragment extends HudFragment{
                 );
 
                 if(f2 > 0){
-                    // float bx = (width - stroke) * (1f - f2);
                     float diftop = stroke * f2;
                     Fill.quad(
                     x - dif, y + bh,
