@@ -429,9 +429,9 @@ public class ModHudFragment extends HudFragment{
                 }
             });
 
-            t.add(new Bar(() -> maxShield == -1 ? 0f : player.unit().shield / maxShield, () -> true, true), t -> {
+            t.add(new Bar(() -> maxShield == -1 ? 0f : player.unit().shield / maxShield, () -> true, true, t -> {
                 t.image(() -> player.icon()).scaling(Scaling.bounded).grow().maxWidth(54f);
-            }).scaling(Scaling.bounded).grow().maxWidth(54f).update(b -> {
+            })).scaling(Scaling.bounded).grow().maxWidth(54f).update(b -> {
                 b.color.set(Pal.accent);
             });
             t.add(new SideBar(() -> player.unit().healthf(), () -> true, true)).width(bw).growY().padRight(pad);
