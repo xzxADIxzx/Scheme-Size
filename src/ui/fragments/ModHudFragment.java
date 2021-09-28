@@ -372,7 +372,7 @@ public class ModHudFragment extends HudFragment{
                 Draw.color(color);
 
                 float f1 = Math.min(fract * 2f, 1f), f2 = (fract - 0.5f) * 2f;
-                float bo = -(1f - f1) * (width - stroke);=
+                float bo = -(1f - f1) * (width - stroke);
 
                 Fill.quad(
                 x - width, y,
