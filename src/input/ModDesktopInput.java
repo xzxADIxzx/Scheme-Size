@@ -555,7 +555,7 @@ public class ModDesktopInput extends ModInputHandler{
                     && !(tryStopMineMod(selected) || (!settings.getBool("doubletapmine") || selected == prevSelected && Time.timeSinceMillis(selectMillis) < 500) && tryBeginMineMod(selected)) && !Core.scene.hasKeyboard()){
                     player.shooting = shouldShoot;
                 }
-            }else if(!Core.scene.hasKeyboard()){ //if it's out of bounds, shooting is just fine
+            }else if(!Core.scene.hasKeyboard() && !Core.input.keyDown(ModBinding.teleport)){ //if it's out of bounds, shooting is just fine
                 player.shooting = shouldShoot;
             }
             selectMillis = Time.millis();

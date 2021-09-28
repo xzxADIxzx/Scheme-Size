@@ -367,44 +367,32 @@ public class ModHudFragment extends HudFragment{
                 if(fract < 0) return;
                 fract = Mathf.clamp(fract);
 
-                float widthm = 50f;
-                float stroke = widthm * 0.35f;
+                float widthm = 100f;
+                // float stroke = widthm * 0.35f;
                 float bh = height/2f;
                 Draw.color(color);
 
                 float f1 = Math.min(fract * 2f, 1f), f2 = (fract - 0.5f) * 2f;
-                float bo = -(1f - f1) * (widthm - stroke);
+                // float bo = -(1f - f1) * (widthm - stroke);
+                float bo = -(1f - f1) * widthm;
 
                 Fill.quad(
                     x, y,
-                    x++, y,
-                    x++, y++,
-                    x, y++
+                    x + 5, y,
+                    x + 5, y + 5,
+                    x, y + 5
                 );
 
                 Fill.quad(
-                    100, 0,
-                    200, 0,
-                    250, 100,
-                    50, 100
-                );
-
-                Fill.quad(
-                    250, 100,
-                    50, 100,
-                    250, 100,
-                    50, 100
-                );
-
-                Fill.quad(
-                x + stroke, y,
-                x + widthm - stroke, y,
+                x, y,
+                x + widthm, y,
                 x + widthm + bo, y + bh * f1,
                 x - bo, y + bh * f1
                 );
 
                 if(f2 > 0){
-                    float bx = (widthm - stroke) * (1f - f2);
+                    // float bx = (widthm - stroke) * (1f - f2);
+                    float bx = widthm * (1f - f2);
                     Fill.quad(
                     x, y + bh,
                     x + widthm, y + bh,
