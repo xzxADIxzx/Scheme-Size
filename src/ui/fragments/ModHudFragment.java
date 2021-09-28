@@ -375,19 +375,19 @@ public class ModHudFragment extends HudFragment{
                 float bo = -(1f - f1) * (width - stroke);
 
                 Fill.quad(
-                x - width, y,
-                x + width, y,
+                x - width + stroke, y,
+                x + width - stroke, y,
                 x + width + bo, y + bh * f1,
                 x - width - bo, y + bh * f1
                 );
 
                 if(f2 > 0){
-                    float bx = x + (width - stroke) * (1f - f2);
+                    float bx = (width - stroke) * (1f - f2);
                     Fill.quad(
                     x - width, y + bh,
                     x + width, y + bh,
-                    bx, y + height * fract,
-                    bx + stroke, y + height * fract
+                    x + width + bx, y + height * fract,
+                    x - width - bx, y + height * fract
                     );
                 }
 
@@ -419,7 +419,7 @@ public class ModHudFragment extends HudFragment{
 
             t.add(new SideBar(() -> player.unit().healthf(), () -> true, true)).width(bw).growY().padRight(pad);
             t.add(new Bar(() -> maxShield == -1 ? 0f : player.unit().shield / maxShield, () -> true, b -> {
-                b.image(() -> player.icon());
+                b.image(() -> player.icon()).scaling(Scaling.bounded).grow();
             })).scaling(Scaling.bounded).grow().maxWidth(54f).update(b -> {
                 b.color.set(Pal.accent);
             });
