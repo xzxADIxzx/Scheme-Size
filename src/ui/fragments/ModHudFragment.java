@@ -330,15 +330,13 @@ public class ModHudFragment extends HudFragment{
         // TODO: remove flip
         class Bar extends Table{
             public final Floatp amount;
-            public final boolean flip;
             public final Boolp flash;
 
             float last, blink, value;
 
-            public Bar(Floatp amount, Boolp flash, boolean flip, Cons<Table> cons){
+            public Bar(Floatp amount, Boolp flash, Cons<Table> cons){
                 super(cons);
                 this.amount = amount;
-                this.flip = flip;
                 this.flash = flash;
 
                 setColor(Pal.health);
@@ -365,46 +363,35 @@ public class ModHudFragment extends HudFragment{
                 super.draw();
             }
 
-            void drawInner(Color color, float fract){
+            public void drawInner(Color color, float fract){
                 if(fract < 0) return;
-
                 fract = Mathf.clamp(fract);
-                if(flip){
-                    x += width;
-                    width = -width;
-                }
 
                 float stroke = width * 0.35f;
                 float bh = height/2f;
                 Draw.color(color);
 
                 float f1 = Math.min(fract * 2f, 1f), f2 = (fract - 0.5f) * 2f;
-
-                float bo = -(1f - f1) * (width - stroke);
+                float bo = -(1f - f1) * (width - stroke);=
 
                 Fill.quad(
-                x - stroke, y,
-                x + stroke, y,
+                x - width, y,
+                x + width, y,
                 x + width + bo, y + bh * f1,
-                x + width - stroke + bo, y + bh * f1
+                x - width - bo, y + bh * f1
                 );
 
                 if(f2 > 0){
                     float bx = x + (width - stroke) * (1f - f2);
                     Fill.quad(
                     x - width, y + bh,
-                    x + width - stroke, y + bh,
+                    x + width, y + bh,
                     bx, y + height * fract,
                     bx + stroke, y + height * fract
                     );
                 }
 
                 Draw.reset();
-
-                if(flip){
-                    width = -width;
-                    x -= width;
-                }
             }
         }
 
@@ -430,8 +417,8 @@ public class ModHudFragment extends HudFragment{
                 }
             });
 
-            t.add(new SideBar(() -> player.unit().healthf(), () -> true, false)).width(bw).growY().padRight(pad);
-            t.add(new Bar(() -> maxShield == -1 ? 0f : player.unit().shield / maxShield, () -> true, true, b -> {
+            t.add(new SideBar(() -> player.unit().healthf(), () -> true, true)).width(bw).growY().padRight(pad);
+            t.add(new Bar(() -> maxShield == -1 ? 0f : player.unit().shield / maxShield, () -> true, b -> {
                 b.image(() -> player.icon());
             })).scaling(Scaling.bounded).grow().maxWidth(54f).update(b -> {
                 b.color.set(Pal.accent);
