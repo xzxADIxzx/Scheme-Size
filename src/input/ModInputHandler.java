@@ -56,7 +56,7 @@ public class ModInputHandler extends InputHandler{
         Lines.rect(result.x, result.y, result.x2 - result.x, result.y2 - result.y);
 
         if(Core.settings.getBool("copyshow")){
-            NormalizeResult normalized = Placement.normalizeArea(selectX, selectY, cursorX, cursorY, 0, false, size);
+            NormalizeResult normalized = Placement.normalizeArea(x1, y1, x2, y2, 0, false, size);
 
             int sizeX = normalized.x2 - normalized.x;
             int sizeY = normalized.y2 - normalized.y;
@@ -106,6 +106,14 @@ public class ModInputHandler extends InputHandler{
 
     public boolean tryStopMineMod(Tile tile){
         if(player.unit().mineTile == tile){
+            player.unit().mineTile = null;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean tryStopMine(){
+        if(player.unit().mining()){
             player.unit().mineTile = null;
             return true;
         }
