@@ -112,7 +112,7 @@ public class ModInputHandler extends InputHandler{
         return false;
     }
 
-    public boolean tryStopMine(){
+    public boolean tryStopMineMod(){
         if(player.unit().mining()){
             player.unit().mineTile = null;
             return true;
