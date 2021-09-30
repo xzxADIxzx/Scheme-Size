@@ -405,6 +405,8 @@ public class ModHudFragment extends Fragment{
                     Call.unitClear(player);
                     control.input.recentRespawnTimer = 1f;
                     control.input.controlledType = null;
+
+                    SchemeSize.hudfrag.updateShield(player.unit());
                 }
             });
 

@@ -102,11 +102,11 @@ public class ModDesktopInput extends ModInputHandler{
 
         if(mode == breaking){
             int size = Core.input.keyDown(Binding.schematic_select) ? settings.getInt("copysize") : settings.getInt("breaksize");
-            drawBreakSelectionMod(selectX, selectY, cursorX, cursorY, size - 1);
+            drawBreakSelectionMod(selectX, selectY, cursorX, cursorY, --size);
         }
 
         if(Core.input.keyDown(Binding.schematic_select) && !Core.scene.hasKeyboard() && mode != breaking){
-            drawSelectionMod(schemX, schemY, cursorX, cursorY, settings.getInt("copysize") - 1);
+            drawSelectionMod(schemX, schemY, cursorX, cursorY, --settings.getInt("copysize"));
         }
 
         Draw.reset();
@@ -225,8 +225,6 @@ public class ModDesktopInput extends ModInputHandler{
                     shouldShoot = false;
                     recentRespawnTimer = 1f;
 
-                    // ModHudFragment hudfrag = (ModHudFragment)ui.hudfrag;
-                    // hudfrag.updateShield(on);
                     SchemeSize.hudfrag.updateShield(player.unit());
                 }else if(build != null){
                     Call.buildingControlSelect(player, build);
@@ -243,8 +241,6 @@ public class ModDesktopInput extends ModInputHandler{
                 recentRespawnTimer = 1f;
                 Call.unitClear(player);
 
-                // ModHudFragment hudfrag = (ModHudFragment)ui.hudfrag;
-                // hudfrag.updateShield(player.unit());
                 SchemeSize.hudfrag.updateShield(player.unit());
             }
         }

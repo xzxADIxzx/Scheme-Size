@@ -65,7 +65,7 @@ public class ModInputHandler extends InputHandler{
             String strSizeX = sizeX == size ? "[accent]" + Integer.toString(++sizeX) + "[]" : Integer.toString(++sizeX);
             String strSizeY = sizeY == size ? "[accent]" + Integer.toString(++sizeY) + "[]" : Integer.toString(++sizeY);
             String info = strSizeX + ", " + strSizeY;
-            ui.showLabel(info, 0.02f, x2 * tilesize + 16, y2 * tilesize - (mobile ? 0 : 16));
+            ui.showLabel(info, 0.02f, x2 * tilesize + (mobile ? 0 : 16), y2 * tilesize + (mobile ? 32 : -16));
         }
     }
 
@@ -76,12 +76,12 @@ public class ModInputHandler extends InputHandler{
         if(Core.settings.getBool("breakshow")){
             NormalizeResult normalized = Placement.normalizeArea(x1, y1, x2, y2, 0, false, size);
 
-            int sizeX = normalized.x2 - normalized.x + 1;
-            int sizeY = normalized.y2 - normalized.y + 1;
-            String strSizeX = sizeX - 1 == size ? "[accent]" + Integer.toString(sizeX) + "[]" : Integer.toString(sizeX);
-            String strSizeY = sizeY - 1 == size ? "[accent]" + Integer.toString(sizeY) + "[]" : Integer.toString(sizeY);
+            int sizeX = normalized.x2 - normalized.x;
+            int sizeY = normalized.y2 - normalized.y;
+            String strSizeX = sizeX == size ? "[accent]" + Integer.toString(++sizeX) + "[]" : Integer.toString(++sizeX);
+            String strSizeY = sizeY == size ? "[accent]" + Integer.toString(++sizeY) + "[]" : Integer.toString(++sizeY);
             String info = strSizeX + ", " + strSizeY;
-            ui.showLabel(info, 0.02f, x2 * 8 + 16, y2 * 8 - 16);
+            ui.showLabel(info, 0.02f, x2 * tilesize + (mobile ? 0 : 16), y2 * tilesize + (mobile ? 32 : -16));
         }
     }
 
