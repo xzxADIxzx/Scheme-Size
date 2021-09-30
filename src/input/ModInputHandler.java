@@ -56,8 +56,10 @@ public class ModInputHandler extends InputHandler{
         Lines.rect(result.x, result.y, result.x2 - result.x, result.y2 - result.y);
 
         if(Core.settings.getBool("copyshow")){
-            int sizeX = (int)result.x2 - (int)result.x;
-            int sizeY = (int)result.y2 - (int)result.y;
+            NormalizeResult normalized = Placement.normalizeArea(selectX, selectY, cursorX, cursorY, 0, false, size);
+
+            int sizeX = normalized.x2 - normalized.x;
+            int sizeY = normalized.y2 - normalized.y;
             String strSizeX = sizeX == size ? "[accent]" + Integer.toString(sizeX) + "[]" : Integer.toString(sizeX);
             String strSizeY = sizeY == size ? "[accent]" + Integer.toString(sizeY) + "[]" : Integer.toString(sizeY);
             String info = strSizeX + ", " + strSizeY;

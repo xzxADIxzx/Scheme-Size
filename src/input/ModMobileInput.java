@@ -307,8 +307,8 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
 
         //Draw lines
         if(lineMode){
-            int tileX = tileX(Core.input.mouseX());
-            int tileY = tileY(Core.input.mouseY());
+            int tileX = tileXMod(Core.input.mouseX());
+            int tileY = tileYMod(Core.input.mouseY());
 
             if(mode == placing && block != null){
                 //draw placing
@@ -443,7 +443,7 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
         if(player.dead()) return false;
 
         //get tile on cursor
-        Tile cursor = tileAt(screenX, screenY);
+        Tile cursor = tileAtMod(screenX, screenY);
 
         float worldx = Core.input.mouseWorld(screenX, screenY).x, worldy = Core.input.mouseWorld(screenX, screenY).y;
 
@@ -458,13 +458,13 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
             if(schematicMode && block == null){
                 mode = schematicSelect;
                 //engage schematic selection mode
-                int tileX = tileX(screenX);
-                int tileY = tileY(screenY);
+                int tileX = tileXMod(screenX);
+                int tileY = tileYMod(screenY);
                 lineStartX = tileX;
                 lineStartY = tileY;
                 lastLineX = tileX;
                 lastLineY = tileY;
-            }else if(!tryTapPlayer(worldx, worldy) && Core.settings.getBool("keyboard")){
+            }else if(!tryTapPlayerMod(worldx, worldy) && Core.settings.getBool("keyboard")){
                 //shoot on touch down when in keyboard mode
                 player.shooting = true;
             }
@@ -486,8 +486,8 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
 
         //place down a line if in line mode
         if(lineMode){
-            int tileX = tileX(screenX);
-            int tileY = tileY(screenY);
+            int tileX = tileXMod(screenX);
+            int tileY = tileYMod(screenY);
 
             if(mode == placing && isPlacing()){
                 flushSelectRequests(lineRequests);
@@ -507,7 +507,7 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
             schematicMode = false;
             mode = none;
         }else{
-            Tile tile = tileAt(screenX, screenY);
+            Tile tile = tileAtMod(screenX, screenY);
 
             tryDropItems(tile == null ? null : tile.build, Core.input.mouseWorld(screenX, screenY).x, Core.input.mouseWorld(screenX, screenY).y);
         }
@@ -519,7 +519,7 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
         if(state.isMenu()|| player.dead()) return false;
 
         //get tile on cursor
-        Tile cursor = tileAt(x, y);
+        Tile cursor = tileAtMod(x, y);
 
         if(Core.scene.hasMouse(x, y) || schematicMode) return false;
 
@@ -581,7 +581,7 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
         float worldx = Core.input.mouseWorld(x, y).x, worldy = Core.input.mouseWorld(x, y).y;
 
         //get tile on cursor
-        Tile cursor = tileAt(x, y);
+        Tile cursor = tileAtMod(x, y);
 
         //ignore off-screen taps
         if(cursor == null || Core.scene.hasMouse(x, y)) return false;
@@ -620,8 +620,8 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
                     }else if(buildingTapped != null){
                         Call.buildingControlSelect(player, buildingTapped);
                         recentRespawnTimer = 1f;
-                    }else if(!tryBeginMine(cursor)){
-                        tileTapped(linked.build);
+                    }else if(!tryBeginMineMod(cursor)){
+                        tileTappedMod(linked.build);
                     }
                 }
                 return false;
@@ -630,8 +630,8 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
             unitTapped = selectedUnit();
             buildingTapped = selectedControlBuild();
             //prevent mining if placing/breaking blocks
-            if(!tryStopMine() && !canTapPlayer(worldx, worldy) && !tileTapped(linked.build) && mode == none && !Core.settings.getBool("doubletapmine")){
-                tryBeginMine(cursor);
+            if(!tryStopMineMod() && !canTapPlayerMod(worldx, worldy) && !tileTappedMod(linked.build) && mode == none && !Core.settings.getBool("doubletapmine")){
+                tryBeginMineMod(cursor);
             }
         }
 
@@ -734,7 +734,7 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
                 autoPan();
             }
 
-            int lx = tileX(Core.input.mouseX()), ly = tileY(Core.input.mouseY());
+            int lx = tileXMod(Core.input.mouseX()), ly = tileYMod(Core.input.mouseY());
 
             if((lastLineX != lx || lastLineY != ly) && isPlacing()){
                 lastLineX = lx;

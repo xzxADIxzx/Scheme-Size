@@ -101,8 +101,8 @@ public class ModDesktopInput extends ModInputHandler{
         int cursorY = tileYMod(Core.input.mouseY());
 
         if(mode == breaking){
-            int size = settings.getInt("breaksize") - 1;
-            drawBreakSelection(selectX, selectY, cursorX, cursorY, Core.input.keyDown(Binding.schematic_select) ? settings.getInt("copysize") - 1 : size);
+            int size = Core.input.keyDown(Binding.schematic_select) ? settings.getInt("copysize") : settings.getInt("breaksize");
+            drawBreakSelection(selectX, selectY, cursorX, cursorY, size - 1);
 
             // Show Size
             if(settings.getBool("breakshow")){
@@ -117,19 +117,7 @@ public class ModDesktopInput extends ModInputHandler{
         }
 
         if(Core.input.keyDown(Binding.schematic_select) && !Core.scene.hasKeyboard() && mode != breaking){
-            int size = settings.getInt("copysize") - 1;
-            drawSelectionMod(schemX, schemY, cursorX, cursorY, size);
-
-            // Show Size
-            // if(settings.getBool("copyshow")){
-            //     NormalizeResult normalized = Placement.normalizeArea(schemX, schemY, cursorX, cursorY, 0, false, size);
-            //     int sizeX = normalized.x2 - normalized.x + 1;
-            //     int sizeY = normalized.y2 - normalized.y + 1;
-            //     String strSizeX = sizeX - 1 == size ? "[accent]" + Integer.toString(sizeX) + "[]" : Integer.toString(sizeX);
-            //     String strSizeY = sizeY - 1 == size ? "[accent]" + Integer.toString(sizeY) + "[]" : Integer.toString(sizeY);
-            //     String info = strSizeX + ", " + strSizeY;
-            //     ui.showLabel(info, 0.02f, cursorX * 8 + 16, cursorY * 8 - 16);
-            // }
+            drawSelectionMod(schemX, schemY, cursorX, cursorY, settings.getInt("copysize") - 1);
         }
 
         Draw.reset();
