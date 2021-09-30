@@ -73,7 +73,7 @@ public class ModInputHandler extends InputHandler{
         drawBreakSelection(x1, y1, x2, y2, size);
 
         // Show Size
-        if(settings.getBool("breakshow")){
+        if(Core.settings.getBool("breakshow")){
             NormalizeResult normalized = Placement.normalizeArea(x1, y1, x2, y2, 0, false, size);
 
             int sizeX = normalized.x2 - normalized.x + 1;
@@ -81,7 +81,7 @@ public class ModInputHandler extends InputHandler{
             String strSizeX = sizeX - 1 == size ? "[accent]" + Integer.toString(sizeX) + "[]" : Integer.toString(sizeX);
             String strSizeY = sizeY - 1 == size ? "[accent]" + Integer.toString(sizeY) + "[]" : Integer.toString(sizeY);
             String info = strSizeX + ", " + strSizeY;
-            ui.showLabel(info, 0.02f, cursorX * 8 + 16, cursorY * 8 - 16);
+            ui.showLabel(info, 0.02f, x2 * 8 + 16, y2 * 8 - 16);
         }
     }
 
