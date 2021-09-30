@@ -118,18 +118,18 @@ public class ModDesktopInput extends ModInputHandler{
 
         if(Core.input.keyDown(Binding.schematic_select) && !Core.scene.hasKeyboard() && mode != breaking){
             int size = settings.getInt("copysize") - 1;
-            drawSelection(schemX, schemY, cursorX, cursorY, size);
+            drawSelectionMod(schemX, schemY, cursorX, cursorY, size);
 
             // Show Size
-            if(settings.getBool("copyshow")){
-                NormalizeResult normalized = Placement.normalizeArea(schemX, schemY, cursorX, cursorY, 0, false, size);
-                int sizeX = normalized.x2 - normalized.x + 1;
-                int sizeY = normalized.y2 - normalized.y + 1;
-                String strSizeX = sizeX - 1 == size ? "[accent]" + Integer.toString(sizeX) + "[]" : Integer.toString(sizeX);
-                String strSizeY = sizeY - 1 == size ? "[accent]" + Integer.toString(sizeY) + "[]" : Integer.toString(sizeY);
-                String info = strSizeX + ", " + strSizeY;
-                ui.showLabel(info, 0.02f, cursorX * 8 + 16, cursorY * 8 - 16);
-            }
+            // if(settings.getBool("copyshow")){
+            //     NormalizeResult normalized = Placement.normalizeArea(schemX, schemY, cursorX, cursorY, 0, false, size);
+            //     int sizeX = normalized.x2 - normalized.x + 1;
+            //     int sizeY = normalized.y2 - normalized.y + 1;
+            //     String strSizeX = sizeX - 1 == size ? "[accent]" + Integer.toString(sizeX) + "[]" : Integer.toString(sizeX);
+            //     String strSizeY = sizeY - 1 == size ? "[accent]" + Integer.toString(sizeY) + "[]" : Integer.toString(sizeY);
+            //     String info = strSizeX + ", " + strSizeY;
+            //     ui.showLabel(info, 0.02f, cursorX * 8 + 16, cursorY * 8 - 16);
+            // }
         }
 
         Draw.reset();

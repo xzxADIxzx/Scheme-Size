@@ -26,9 +26,7 @@ public class SchemeSize extends Mod{
             schematics.loadSync();
 
             // change input
-            if(!mobile){
-                control.setInput(new ModDesktopInput());
-            }
+            control.setInput(mobile ? new ModMobileInput() : new ModDesktopInput());
 
             // change dialog
             var settings = new ModSettingsMenuDialog();
@@ -50,6 +48,9 @@ public class SchemeSize extends Mod{
             sliderMin.changed(() -> { renderer.minZoom = 1 / (sliderMin.getValue() / 4f) * 1.5f; });
             renderer.maxZoom = sliderMax.getValue() / 4f * 6f; // apply zoom
             renderer.minZoom = 1f / (sliderMin.getValue() / 4f) * 1.5f;
+
+            // mobiles haven`t keybinds
+            if(mobile) return;
 
             // add keybinds
             KeyBind[] origi = (KeyBind[])Binding.values();

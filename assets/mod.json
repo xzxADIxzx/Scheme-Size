@@ -1,9 +1,9 @@
 {
 	"name": "scheme-size",
 	"displayName": "Scheme Size",
-	"description": "Mod that could... Increases the maximum size of schemes to 512 blocks! \nDesktop Only!",
+	"description": "Mod that could... Increases the maximum size of schemes to 512 blocks!\nMobile Support!",
 	"author": "xzxADIxzx",
-	"version": "1.67",
+	"version": "1.7",
 	"minGameVersion": "131",
 	"hidden": true,
 	"main": "mindustry.game.SchemeSize"

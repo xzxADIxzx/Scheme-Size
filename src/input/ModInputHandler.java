@@ -45,6 +45,26 @@ public class ModInputHandler extends InputHandler{
 
 	final static float playerSelectRange = mobile ? 17f : 11f;
 	
+    public void drawSelectionMod(int x1, int y1, int x2, int y2, int maxLength){
+        NormalizeDrawResult result = Placement.normalizeDrawArea(Blocks.air, x1, y1, x2, y2, false, maxLength, 1f);
+
+        Lines.stroke(2f);
+
+        Draw.color(Pal.accentBack);
+        Lines.rect(result.x, result.y - 1, result.x2 - result.x, result.y2 - result.y);
+        Draw.color(Pal.accent);
+        Lines.rect(result.x, result.y, result.x2 - result.x, result.y2 - result.y);
+
+        if(settings.getBool("copyshow")){
+            int sizeX = result.x2 - result.x;
+            int sizeY = result.y2 - result.y;
+            String strSizeX = sizeX == size ? "[accent]" + Integer.toString(sizeX) + "[]" : Integer.toString(sizeX);
+            String strSizeY = sizeY == size ? "[accent]" + Integer.toString(sizeY) + "[]" : Integer.toString(sizeY);
+            String info = strSizeX + ", " + strSizeY;
+            ui.showLabel(info, 0.02f, x2 * tilesize + 16, y2 * tilesize - mobile ? 0 : 16);
+        }
+    }
+
 	public int tileXMod(float cursorX){
         Vec2 vec = Core.input.mouseWorld(cursorX, 0);
         if(selectedBlock()){
