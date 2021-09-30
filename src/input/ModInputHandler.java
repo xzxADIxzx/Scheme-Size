@@ -44,6 +44,7 @@ import static mindustry.Vars.*;
 public class ModInputHandler extends InputHandler{
 
 	final static float playerSelectRange = mobile ? 17f : 11f;
+    final static Rect r1 = new Rect(), r2 = new Rect();
 	
     public void drawSelectionMod(int x1, int y1, int x2, int y2, int size){
         NormalizeDrawResult result = Placement.normalizeDrawArea(Blocks.air, x1, y1, x2, y2, false, size, 1f);
@@ -60,8 +61,8 @@ public class ModInputHandler extends InputHandler{
 
             int sizeX = normalized.x2 - normalized.x;
             int sizeY = normalized.y2 - normalized.y;
-            String strSizeX = sizeX == size ? "[accent]" + Integer.toString(sizeX) + "[]" : Integer.toString(sizeX);
-            String strSizeY = sizeY == size ? "[accent]" + Integer.toString(sizeY) + "[]" : Integer.toString(sizeY);
+            String strSizeX = sizeX == size ? "[accent]" + Integer.toString(sizeX++) + "[]" : Integer.toString(sizeX++);
+            String strSizeY = sizeY == size ? "[accent]" + Integer.toString(sizeY++) + "[]" : Integer.toString(sizeY++);
             String info = strSizeX + ", " + strSizeY;
             ui.showLabel(info, 0.02f, x2 * tilesize + 16, y2 * tilesize - (mobile ? 0 : 16));
         }
