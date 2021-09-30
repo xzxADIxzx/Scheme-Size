@@ -45,8 +45,8 @@ public class ModInputHandler extends InputHandler{
 
 	final static float playerSelectRange = mobile ? 17f : 11f;
 	
-    public void drawSelectionMod(int x1, int y1, int x2, int y2, int maxLength){
-        NormalizeDrawResult result = Placement.normalizeDrawArea(Blocks.air, x1, y1, x2, y2, false, maxLength, 1f);
+    public void drawSelectionMod(int x1, int y1, int x2, int y2, int size){
+        NormalizeDrawResult result = Placement.normalizeDrawArea(Blocks.air, x1, y1, x2, y2, false, size, 1f);
 
         Lines.stroke(2f);
 
@@ -55,13 +55,13 @@ public class ModInputHandler extends InputHandler{
         Draw.color(Pal.accent);
         Lines.rect(result.x, result.y, result.x2 - result.x, result.y2 - result.y);
 
-        if(settings.getBool("copyshow")){
-            int sizeX = result.x2 - result.x;
-            int sizeY = result.y2 - result.y;
+        if(Core.settings.getBool("copyshow")){
+            int sizeX = (int)result.x2 - (int)result.x;
+            int sizeY = (int)result.y2 - (int)result.y;
             String strSizeX = sizeX == size ? "[accent]" + Integer.toString(sizeX) + "[]" : Integer.toString(sizeX);
             String strSizeY = sizeY == size ? "[accent]" + Integer.toString(sizeY) + "[]" : Integer.toString(sizeY);
             String info = strSizeX + ", " + strSizeY;
-            ui.showLabel(info, 0.02f, x2 * tilesize + 16, y2 * tilesize - mobile ? 0 : 16);
+            ui.showLabel(info, 0.02f, x2 * tilesize + 16, y2 * tilesize - (mobile ? 0 : 16));
         }
     }
 

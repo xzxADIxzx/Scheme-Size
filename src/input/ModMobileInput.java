@@ -333,7 +333,7 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
     public void drawTop(){
         //draw schematic selection
         if(mode == schematicSelect){
-            drawSelectionMod(lineStartX, lineStartY, lastLineX, lastLineY, settings.getInt("copysize") - 1);
+            drawSelectionMod(lineStartX, lineStartY, lastLineX, lastLineY, Core.settings.getInt("copysize") - 1);
         }
     }
 
