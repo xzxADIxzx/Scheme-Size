@@ -56,16 +56,41 @@ public class ModInputHandler extends InputHandler{
         Draw.color(Pal.accent);
         Lines.rect(result.x, result.y, result.x2 - result.x, result.y2 - result.y);
 
+        // Show Size
         if(Core.settings.getBool("copyshow")){
             NormalizeResult normalized = Placement.normalizeArea(x1, y1, x2, y2, 0, false, size);
 
             int sizeX = normalized.x2 - normalized.x;
             int sizeY = normalized.y2 - normalized.y;
-            String strSizeX = sizeX == size ? "[accent]" + Integer.toString(sizeX++) + "[]" : Integer.toString(sizeX++);
-            String strSizeY = sizeY == size ? "[accent]" + Integer.toString(sizeY++) + "[]" : Integer.toString(sizeY++);
+            String strSizeX = sizeX == size ? "[accent]" + Integer.toString(++sizeX) + "[]" : Integer.toString(++sizeX);
+            String strSizeY = sizeY == size ? "[accent]" + Integer.toString(++sizeY) + "[]" : Integer.toString(++sizeY);
             String info = strSizeX + ", " + strSizeY;
             ui.showLabel(info, 0.02f, x2 * tilesize + 16, y2 * tilesize - (mobile ? 0 : 16));
         }
+    }
+
+    public void drawBreakSelectionMod(int x1, int y1, int x2, int y2, int size){
+        drawBreakSelection(x1, y1, x2, y2, size);
+
+        // Show Size
+        if(settings.getBool("breakshow")){
+            NormalizeResult normalized = Placement.normalizeArea(x1, y1, x2, y2, 0, false, size);
+
+            int sizeX = normalized.x2 - normalized.x + 1;
+            int sizeY = normalized.y2 - normalized.y + 1;
+            String strSizeX = sizeX - 1 == size ? "[accent]" + Integer.toString(sizeX) + "[]" : Integer.toString(sizeX);
+            String strSizeY = sizeY - 1 == size ? "[accent]" + Integer.toString(sizeY) + "[]" : Integer.toString(sizeY);
+            String info = strSizeX + ", " + strSizeY;
+            ui.showLabel(info, 0.02f, cursorX * 8 + 16, cursorY * 8 - 16);
+        }
+    }
+
+    public int rawTileXMod(){
+        return World.toTile(Core.input.mouseWorld().x);
+    }
+
+    public int rawTileYMod(){
+        return World.toTile(Core.input.mouseWorld().y);
     }
 
 	public int tileXMod(float cursorX){
@@ -86,51 +111,6 @@ public class ModInputHandler extends InputHandler{
 
     public Tile tileAtMod(float x, float y){
         return world.tile(tileXMod(x), tileYMod(y));
-    }
-
-    public boolean canMineMod(Tile tile){
-        return !Core.scene.hasMouse()
-            && tile.drop() != null
-            && player.unit().validMine(tile)
-            && !((!Core.settings.getBool("doubletapmine") && tile.floor().playerUnmineable) && tile.overlay().itemDrop == null)
-            && player.unit().acceptsItem(tile.drop())
-            && tile.block() == Blocks.air;
-    }
-
-    public boolean tryBeginMineMod(Tile tile){
-        if(canMineMod(tile)){
-            player.unit().mineTile = tile;
-            return true;
-        }
-        return false;
-    }
-
-    public boolean tryStopMineMod(Tile tile){
-        if(player.unit().mineTile == tile){
-            player.unit().mineTile = null;
-            return true;
-        }
-        return false;
-    }
-
-    public boolean tryStopMineMod(){
-        if(player.unit().mining()){
-            player.unit().mineTile = null;
-            return true;
-        }
-        return false;
-    }
-
-    public boolean canTapPlayerMod(float x, float y){
-        return player.within(x, y, playerSelectRange) && player.unit().stack.amount > 0;
-    }
-
-    public boolean tryTapPlayerMod(float x, float y){
-        if(canTapPlayerMod(x, y)){
-            droppingItem = true;
-            return true;
-        }
-        return false;
     }
 
     public boolean tileTappedMod(@Nullable Building build){
@@ -184,5 +164,50 @@ public class ModInputHandler extends InputHandler{
         }
 
         return consumed;
+    }
+
+    public boolean canMineMod(Tile tile){
+        return !Core.scene.hasMouse()
+            && tile.drop() != null
+            && player.unit().validMine(tile)
+            && !((!Core.settings.getBool("doubletapmine") && tile.floor().playerUnmineable) && tile.overlay().itemDrop == null)
+            && player.unit().acceptsItem(tile.drop())
+            && tile.block() == Blocks.air;
+    }
+
+    public boolean tryBeginMineMod(Tile tile){
+        if(canMineMod(tile)){
+            player.unit().mineTile = tile;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean tryStopMineMod(Tile tile){
+        if(player.unit().mineTile == tile){
+            player.unit().mineTile = null;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean tryStopMineMod(){
+        if(player.unit().mining()){
+            player.unit().mineTile = null;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean canTapPlayerMod(float x, float y){
+        return player.within(x, y, playerSelectRange) && player.unit().stack.amount > 0;
+    }
+
+    public boolean tryTapPlayerMod(float x, float y){
+        if(canTapPlayerMod(x, y)){
+            droppingItem = true;
+            return true;
+        }
+        return false;
     }
 }
