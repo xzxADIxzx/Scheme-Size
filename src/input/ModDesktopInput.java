@@ -102,11 +102,11 @@ public class ModDesktopInput extends ModInputHandler{
 
         if(mode == breaking){
             int size = Core.input.keyDown(Binding.schematic_select) ? settings.getInt("copysize") : settings.getInt("breaksize");
-            drawBreakSelectionMod(selectX, selectY, cursorX, cursorY, --size);
+            drawBreakSelectionMod(selectX, selectY, cursorX, cursorY, size - 1);
         }
 
         if(Core.input.keyDown(Binding.schematic_select) && !Core.scene.hasKeyboard() && mode != breaking){
-            drawSelectionMod(schemX, schemY, cursorX, cursorY, --settings.getInt("copysize"));
+            drawSelectionMod(schemX, schemY, cursorX, cursorY, settings.getInt("copysize") - 1);
         }
 
         Draw.reset();

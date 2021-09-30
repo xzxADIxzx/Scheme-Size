@@ -322,7 +322,7 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
                 }
                 lineRequests.each(this::drawOverRequest);
             }else if(mode == breaking){
-                drawBreakSelectionMod(lineStartX, lineStartY, tileX, tileY, --Core.settings.getInt("breaksize"));
+                drawBreakSelectionMod(lineStartX, lineStartY, tileX, tileY, Core.settings.getInt("breaksize") - 1);
             }
         }
 
@@ -333,7 +333,7 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
     public void drawTop(){
         //draw schematic selection
         if(mode == schematicSelect){
-            drawSelectionMod(lineStartX, lineStartY, lastLineX, lastLineY, --Core.settings.getInt("copysize"));
+            drawSelectionMod(lineStartX, lineStartY, lastLineX, lastLineY, Core.settings.getInt("copysize") - 1);
         }
     }
 
