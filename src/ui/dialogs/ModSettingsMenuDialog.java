@@ -291,8 +291,8 @@ public class ModSettingsMenuDialog extends SettingsMenuDialog{
     }
 
     void addSettings(){
-        mod.sliderPref("maxzoommul", 4, 4, 16, 1, i -> i / 4f + "x");
-        mod.sliderPref("minzoommul", 4, 4, 16, 1, i -> i / 4f + "x");
+        mod.sliderPref("maxzoommul", 4, 4, 20, 1, i -> i / 4f + "x");
+        mod.sliderPref("minzoommul", 4, 4, 20, 1, i -> i / 4f + "x");
         mod.sliderPref("copysize", 512, 32, 512, 32, i -> Core.bundle.format("setting.blocks", i));
         mod.sliderPref("breaksize", 512, 32, 512, 32, i -> Core.bundle.format("setting.blocks", i));
         mod.checkPref("copyshow", true);
