@@ -10,7 +10,8 @@ public enum ModBinding implements KeyBind{
     switch_team_btw(KeyCode.semicolon),
     switch_team(KeyCode.apostrophe),
     look_at(KeyCode.altLeft),
-    teleport(KeyCode.altLeft);
+    teleport(KeyCode.altLeft),
+    self_dest(KeyCode.altLeft);
 
     private final KeybindValue defaultValue;
     private final String category;

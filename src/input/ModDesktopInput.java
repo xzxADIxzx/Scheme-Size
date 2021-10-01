@@ -237,9 +237,13 @@ public class ModDesktopInput extends ModInputHandler{
             updateMovement(player.unit());
 
             if(Core.input.keyTap(Binding.respawn)){
-                controlledType = null;
-                recentRespawnTimer = 1f;
-                Call.unitClear(player);
+                if(Core.input.keyDown(ModBinding.self_dest)){
+                    player.unit().kill();
+                }else{
+                    controlledType = null;
+                    recentRespawnTimer = 1f;
+                    Call.unitClear(player);
+                }
 
                 SchemeSize.hudfrag.updateShield(player.unit());
             }
