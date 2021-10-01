@@ -9,6 +9,7 @@ public enum ModBinding implements KeyBind{
     toggle_core_items(KeyCode.f7, "mod"),
     switch_team_btw(KeyCode.semicolon),
     switch_team(KeyCode.apostrophe),
+    place_core(KeyCode.l),
     look_at(KeyCode.altLeft),
     teleport(KeyCode.altLeft),
     self_dest(KeyCode.altLeft);

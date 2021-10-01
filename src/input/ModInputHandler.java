@@ -36,7 +36,7 @@ import mindustry.world.blocks.distribution.*;
 import mindustry.world.blocks.payloads.*;
 import mindustry.world.meta.*;
 
-import java.util.*;
+// import java.util.*;
 
 import static mindustry.Vars.*;
 
@@ -62,8 +62,8 @@ public class ModInputHandler extends InputHandler{
 
             int sizeX = normalized.x2 - normalized.x;
             int sizeY = normalized.y2 - normalized.y;
-            String strSizeX = sizeX == size ? "[accent]" + Integer.toString(++sizeX) + "[]" : Integer.toString(++sizeX);
-            String strSizeY = sizeY == size ? "[accent]" + Integer.toString(++sizeY) + "[]" : Integer.toString(++sizeY);
+            String strSizeX = sizeX == size ? "[accent]" + String.valueOf(++sizeX) + "[]" : String.valueOf(++sizeX);
+            String strSizeY = sizeY == size ? "[accent]" + String.valueOf(++sizeY) + "[]" : String.valueOf(++sizeY);
             String info = strSizeX + ", " + strSizeY;
             ui.showLabel(info, 0.02f, x2 * tilesize + (mobile ? 0 : 16), y2 * tilesize + (mobile ? 32 : -16));
         }
