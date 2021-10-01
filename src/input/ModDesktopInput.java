@@ -14,6 +14,7 @@ import arc.util.*;
 import arc.struct.*;
 import mindustry.*;
 import mindustry.core.*;
+import mindustry.content.*;
 import mindustry.entities.units.*;
 import mindustry.game.EventType.*;
 import mindustry.game.*;
