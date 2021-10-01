@@ -320,7 +320,7 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
                     request.block.drawPlan(request, allRequests(), validPlace(request.x, request.y, request.block, request.rotation) && getRequest(request.x, request.y, request.block.size, null) == null);
                     drawSelected(request.x, request.y, request.block, Pal.accent);
                 }
-                lineRequests.each(this::drawOverRequest);
+                lineRequests.each(this::drawOverRequestMod);
             }else if(mode == breaking){
                 drawBreakSelectionMod(lineStartX, lineStartY, tileX, tileY, Core.settings.getInt("breaksize") - 1);
             }
@@ -362,7 +362,7 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
             Draw.reset();
             drawRequest(request);
             if(!request.breaking){
-                drawOverRequest(request);
+                drawOverRequestMod(request);
             }
 
             //draw last placed request
