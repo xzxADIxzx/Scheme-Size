@@ -407,8 +407,7 @@ public class ModDesktopInput extends ModInputHandler{
 
         // Place Core
         if(input.keyTap(ModBinding.place_core)){
-            var tile = world.tiles.get(player.tileX(), player.tileY());
-            tile?.setBlock(Blocks.coreShard, player.team());
+            world.tiles.get(player.tileX(), player.tileY())?.setBlock(Blocks.coreShard, player.team());
         }
 
         // Look At
