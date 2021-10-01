@@ -98,6 +98,28 @@ public class ModInputHandler extends InputHandler{
         Draw.reset();
     }
 
+    public void showSchematicSaveMod(){
+        if(lastSchematic == null) return;
+
+        ui.showTextInput("@schematic.add", "@name", "", text -> {
+            Schematic replacement = schematics.all().find(s -> s.name().equals(text));
+            if(replacement != null){
+                ui.showConfirm("@confirm", "@schematic.replace", () -> {
+                    schematics.overwrite(replacement, lastSchematic);
+                    ui.showInfoFade("@schematic.saved");
+                    ui.schematics.showInfo(replacement);
+                });
+            }else{
+                lastSchematic.tags.put("name", text);
+                lastSchematic.tags.put("description", "");
+                schematics.add(lastSchematic);
+                ui.showInfoFade("@schematic.saved");
+                ui.schematics.showInfo(lastSchematic);
+                Events.fire(new SchematicCreateEvent(lastSchematic));
+            }
+        });
+    }
+
     public int rawTileXMod(){
         return World.toTile(Core.input.mouseWorld().x);
     }

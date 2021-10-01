@@ -268,7 +268,7 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
 
                 ImageButtonStyle style = Styles.clearPartiali;
 
-                b.button(Icon.save, style, this::showSchematicSave).disabled(f -> lastSchematic == null || lastSchematic.file != null);
+                b.button(Icon.save, style, this::showSchematicSaveMod).disabled(f -> lastSchematic == null || lastSchematic.file != null);
                 b.button(Icon.cancel, style, () -> {
                     selectRequests.clear();
                     lastSchematic = null;
