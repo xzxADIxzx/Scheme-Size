@@ -493,7 +493,7 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
                 flushSelectRequests(lineRequests);
                 Events.fire(new LineConfirmEvent());
             }else if(mode == breaking){
-                removeSelection(lineStartX, lineStartY, tileX, tileY, Core.settings.getInt("breaksize") - 1);
+                removeSelection(lineStartX, lineStartY, tileX, tileY, true, Core.settings.getInt("breaksize") - 1);
             }
 
             lineMode = false;

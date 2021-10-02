@@ -45,14 +45,7 @@ public class ModInputHandler extends InputHandler{
     final static Rect r1 = new Rect(), r2 = new Rect();
 	
     public void drawSelectionMod(int x1, int y1, int x2, int y2, int size){
-        NormalizeDrawResult result = Placement.normalizeDrawArea(Blocks.air, x1, y1, x2, y2, false, size, 1f);
-
-        Lines.stroke(2f);
-
-        Draw.color(Pal.accentBack);
-        Lines.rect(result.x, result.y - 1, result.x2 - result.x, result.y2 - result.y);
-        Draw.color(Pal.accent);
-        Lines.rect(result.x, result.y, result.x2 - result.x, result.y2 - result.y);
+        drawSelection(x1, y1, x2, y2, size);
 
         // Show Size
         if(Core.settings.getBool("copyshow")){
