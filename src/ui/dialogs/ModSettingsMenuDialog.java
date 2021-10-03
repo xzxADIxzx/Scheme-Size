@@ -89,7 +89,7 @@ public class ModSettingsMenuDialog extends SettingsMenuDialog{
         game = new SettingsTable();
         graphics = new SettingsTable();
         sound = new SettingsTable();
-        mod = new SettingsTable();
+        mod = new ModSettingsTable();
 
         prefs = new Table();
         prefs.top();
@@ -532,7 +532,7 @@ public class ModSettingsMenuDialog extends SettingsMenuDialog{
 
     public static class ModSettingsTable extends SettingsTable{
 
-        public ModSliderSetting runnableSliderPref(String name, int def, int min, int max, int step, StringProcessor s, Cons<float> changed){
+        public ModSliderSetting runnableSliderPref(String name, int def, int min, int max, int step, StringProcessor s, Cons<Floatp> changed){
             ModSliderSetting res;
             list.add(res = new ModSliderSetting(name, def, min, max, step, s, changed));
             settings.defaults(name, def);
@@ -542,9 +542,9 @@ public class ModSettingsMenuDialog extends SettingsMenuDialog{
 
         public static class ModSliderSetting extends SliderSetting{
 
-            Cons<float> changed;
+            Cons<Floatp> changed;
 
-            public ModSliderSetting(String name, int def, int min, int max, int step, StringProcessor s, Cons<float> changed){
+            public ModSliderSetting(String name, int def, int min, int max, int step, StringProcessor s, Cons<Floatp> changed){
                 super(name, def, min, max, step, s);
                 this.changed = changed;
             }
