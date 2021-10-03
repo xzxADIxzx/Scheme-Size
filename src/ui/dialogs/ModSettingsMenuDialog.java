@@ -532,7 +532,7 @@ public class ModSettingsMenuDialog extends SettingsMenuDialog{
 
     public static class ModSettingsTable extends SettingsTable{
 
-        public ModSliderSetting runnableSliderPref(String name, int def, int min, int max, int step, StringProcessor s, Runnable changed){
+        public ModSliderSetting runnableSliderPref(String name, int def, int min, int max, int step, StringProcessor s, Cons<float> changed){
             ModSliderSetting res;
             list.add(res = new ModSliderSetting(name, def, min, max, step, s, changed));
             settings.defaults(name, def);
@@ -542,7 +542,7 @@ public class ModSettingsMenuDialog extends SettingsMenuDialog{
 
         public static class ModSliderSetting extends SliderSetting{
 
-            Runnable changed;
+            Cons<float> changed;
 
             public ModSliderSetting(String name, int def, int min, int max, int step, StringProcessor s, Cons<float> changed){
                 super(name, def, min, max, step, s);
