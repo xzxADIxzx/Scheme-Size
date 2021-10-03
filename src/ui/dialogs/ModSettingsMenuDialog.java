@@ -291,11 +291,17 @@ public class ModSettingsMenuDialog extends SettingsMenuDialog{
     }
 
     void addSettings(){
-        mod.consSliderSetting("panspeed", 4, 4, 20, 1, i -> i / 4f + "x", (value) -> {
+        mod.consSliderSetting("panspeedmul", 4, 4, 20, 1, i -> i / 4f + "x", value -> {
             if(control.input instanceof ModDesktopInput i) i.changePanSpeed(value.get()); 
         });
-        mod.sliderPref("maxzoommul", 4, 4, 20, 1, i -> i / 4f + "x");
-        mod.sliderPref("minzoommul", 4, 4, 20, 1, i -> i / 4f + "x");
+        mod.consSliderSetting("maxzoommul", 4, 4, 20, 1, i -> i / 4f + "x", value -> {
+            renderer.maxZoom = value.get() / 4f * 6f;
+        });
+        mod.consSliderSetting("minzoommul", 4, 4, 20, 1, i -> i / 4f + "x", value -> {
+            renderer.minZoom = 1f / (value.get() / 4f) * 1.5f;
+        });
+        // mod.sliderPref("minzoommul", 4, 4, 20, 1, i -> i / 4f + "x");
+        // mod.sliderPref("maxzoommul", 4, 4, 20, 1, i -> i / 4f + "x");
         mod.sliderPref("copysize", 512, 32, 512, 32, i -> Core.bundle.format("setting.blocks", i));
         mod.sliderPref("breaksize", 512, 32, 512, 32, i -> Core.bundle.format("setting.blocks", i));
         mod.checkPref("copyshow", true);

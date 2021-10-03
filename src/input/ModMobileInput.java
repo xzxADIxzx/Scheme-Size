@@ -79,6 +79,11 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
 
     //region utility methods
 
+    @Override
+    public void changePanSpeed(float value){
+        maxPanSpeed = 1.3f * value / 4f;
+    }
+
     /** Check and assign targets for a specific position. */
     void checkTargets(float x, float y){
         Unit unit = Units.closestEnemy(player.team(), x, y, 20f, u -> !u.dead);
