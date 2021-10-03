@@ -291,7 +291,7 @@ public class ModSettingsMenuDialog extends SettingsMenuDialog{
     }
 
     void addSettings(){
-        mod.runnableSliderPref("panspeed", 4, 4, 20, 1, i -> i / 4f + "x", (value) -> {
+        mod.consSliderSetting("panspeed", 4, 4, 20, 1, i -> i / 4f + "x", (value) -> {
             if(control.input instanceof ModDesktopInput i) i.changePanSpeed(value.get()); 
         });
         mod.sliderPref("maxzoommul", 4, 4, 20, 1, i -> i / 4f + "x");
@@ -532,20 +532,26 @@ public class ModSettingsMenuDialog extends SettingsMenuDialog{
 
     public static class ModSettingsTable extends SettingsTable{
 
-        public ModSliderSetting runnableSliderPref(String name, int def, int min, int max, int step, StringProcessor s, Cons<Floatp> changed){
-            ModSliderSetting res;
-            list.add(res = new ModSliderSetting(name, def, min, max, step, s, changed));
+        public ConsSliderSetting consSliderSetting(String name, int def, int min, int max, int step, StringProcessor s, Cons<Floatp> changed){
+            ConsSliderSetting res;
+            list.add(res = new ConsSliderSetting(name, def, min, max, step, s, changed));
             settings.defaults(name, def);
             rebuild();
             return res;
         }
 
-        public static class ModSliderSetting extends SliderSetting{
+        public static class ConsSliderSetting extends Setting{
 
+            int def, min, max, step;
+            StringProcessor sp;
             Cons<Floatp> changed;
 
-            public ModSliderSetting(String name, int def, int min, int max, int step, StringProcessor s, Cons<Floatp> changed){
-                super(name, def, min, max, step, s);
+            public ConsSliderSetting(String name, int def, int min, int max, int step, StringProcessor s, Cons<Floatp> changed){
+                super(name);
+                this.def = def;
+                this.min = min;
+                this.max = max;
+                this.step = step;
                 this.changed = changed;
             }
 
