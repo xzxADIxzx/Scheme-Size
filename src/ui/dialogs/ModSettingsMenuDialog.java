@@ -552,6 +552,7 @@ public class ModSettingsMenuDialog extends SettingsMenuDialog{
                 this.min = min;
                 this.max = max;
                 this.step = step;
+                this.sp = s;
                 this.changed = changed;
             }
 
