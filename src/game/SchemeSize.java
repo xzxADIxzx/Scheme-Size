@@ -36,7 +36,7 @@ public class SchemeSize extends Mod{
             hudfrag.build(ui.hudGroup);
 
             // add secret
-            settings.mod.getCells().get(8).visible(false); // hide secret
+            settings.mod.getCells().get(9).visible(false); // hide secret
 
             // mobiles haven`t keybinds
             if(mobile) return;
