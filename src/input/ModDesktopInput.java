@@ -415,7 +415,7 @@ public class ModDesktopInput extends ModInputHandler{
         if(input.keyTap(ModBinding.place_core)){
             var tile = world.tiles.get(player.tileX(), player.tileY());
             if(tile != null){
-                tile.setNet(Blocks.coreShard, player.team());
+                tile.setNet(Blocks.coreShard, player.team(), 0);
                 if(settings.getBool("adminssecret")) Call.sendChatMessage("/core small");
             }
         }
