@@ -45,7 +45,6 @@ public class ModDesktopInput extends ModInputHandler{
     public long selectMillis = 0;
     public Tile prevSelected;
 
-    @Override
     public void changePanSpeed(float value){
         panSpeed = 4.5f * value / 4f;
     }

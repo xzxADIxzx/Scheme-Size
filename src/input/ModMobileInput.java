@@ -32,7 +32,7 @@ import static mindustry.input.PlaceMode.*;
 // Last Update - Aug 22, 2021
 public class ModMobileInput extends ModInputHandler implements GestureListener{
     /** Maximum speed the player can pan. */
-    private static float maxPanSpeed = 1.3f;
+    private static final float maxPanSpeed = 1.3f;
     /** Distance to edge of screen to start panning. */
     public final float edgePan = Scl.scl(60f);
 
@@ -78,11 +78,6 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
     public @Nullable Building buildingTapped;
 
     //region utility methods
-
-    @Override
-    public void changePanSpeed(float value){
-        maxPanSpeed = 1.3f * value / 4f;
-    }
 
     /** Check and assign targets for a specific position. */
     void checkTargets(float x, float y){

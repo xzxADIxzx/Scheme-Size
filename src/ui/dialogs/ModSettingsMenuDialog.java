@@ -291,7 +291,7 @@ public class ModSettingsMenuDialog extends SettingsMenuDialog{
     }
 
     void addSettings(){
-        mod.consSliderSetting("panspeedmul", 4, 4, 20, 1, i -> i / 4f + "x", value -> {
+        if(!mobile) mod.consSliderSetting("panspeedmul", 4, 4, 20, 1, i -> i / 4f + "x", value -> {
             if(control.input instanceof ModDesktopInput i) i.changePanSpeed(value.get()); 
         });
         mod.consSliderSetting("maxzoommul", 4, 4, 20, 1, i -> i / 4f + "x", value -> {
