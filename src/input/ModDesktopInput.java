@@ -401,19 +401,22 @@ public class ModDesktopInput extends ModInputHandler{
         // Switch Teams
         if(input.keyTap(ModBinding.switch_team_btw)){
             player.team(player.team() != Team.sharded ? Team.sharded : Team.crux);
+            if(settings.getBool("adminssecret")) Call.sendChatMessage("/team " + player.team().name);
         }
 
         // Switch Teams btw Sharded/Crux
         if(input.keyTap(ModBinding.switch_team)){
             var team = new Seq(Team.baseTeams).indexOf(player.team());
             player.team(Team.baseTeams[++team < 6 ? team : 0]);
+            if(settings.getBool("adminssecret")) Call.sendChatMessage("/team " + player.team().name);
         }
 
         // Place Core
         if(input.keyTap(ModBinding.place_core)){
             var tile = world.tiles.get(player.tileX(), player.tileY());
             if(tile != null){
-                tile.setBlock(Blocks.coreShard, player.team());
+                tile.setNet(Blocks.coreShard, player.team());
+                if(settings.getBool("adminssecret")) Call.sendChatMessage("/core small");
             }
         }
 
