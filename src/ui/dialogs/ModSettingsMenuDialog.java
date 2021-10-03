@@ -544,7 +544,7 @@ public class ModSettingsMenuDialog extends SettingsMenuDialog{
 
             Runnable changed;
 
-            public ModSliderSetting(String name, int def, int min, int max, int step, StringProcessor s, Runnable changed){
+            public ModSliderSetting(String name, int def, int min, int max, int step, StringProcessor s, Cons<float> changed){
                 super(name, def, min, max, step, s);
                 this.changed = changed;
             }
@@ -565,7 +565,7 @@ public class ModSettingsMenuDialog extends SettingsMenuDialog{
                 slider.changed(() -> {
                     settings.put(name, (int)slider.getValue());
                     value.setText(sp.get((int)slider.getValue()));
-                    changed.run(slider.getValue());
+                    changed.get(slider.getValue());
                 });
 
                 slider.change();
