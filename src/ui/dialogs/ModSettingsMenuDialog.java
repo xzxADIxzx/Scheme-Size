@@ -292,7 +292,7 @@ public class ModSettingsMenuDialog extends SettingsMenuDialog{
 
     void addSettings(){
         mod.runnableSliderPref("panspeed", 4, 4, 20, 1, i -> i / 4f + "x", (value) -> {
-            if(control.input instanceof ModDesktopInput i) i.changePanSpeed(value); 
+            if(control.input instanceof ModDesktopInput i) i.changePanSpeed(value.get()); 
         });
         mod.sliderPref("maxzoommul", 4, 4, 20, 1, i -> i / 4f + "x");
         mod.sliderPref("minzoommul", 4, 4, 20, 1, i -> i / 4f + "x");
@@ -565,7 +565,7 @@ public class ModSettingsMenuDialog extends SettingsMenuDialog{
                 slider.changed(() -> {
                     settings.put(name, (int)slider.getValue());
                     value.setText(sp.get((int)slider.getValue()));
-                    changed.get(slider.getValue());
+                    changed.get(() -> slider.getValue());
                 });
 
                 slider.change();
