@@ -36,19 +36,7 @@ public class SchemeSize extends Mod{
             hudfrag.build(ui.hudGroup);
 
             // add secret
-            // var mod = settings.mod;
-            // mod.getCells().get(8).visible(false); // hide secret
             settings.mod.getCells().get(8).visible(false); // hide secret
-
-            // add zoom scale
-            // Stack elementMax = (Stack)mod.getCells().get(0).get();
-            // Stack elementMin = (Stack)mod.getCells().get(1).get();
-            // Slider sliderMax = (Slider)elementMax.getChildren().get(0);
-            // Slider sliderMin = (Slider)elementMin.getChildren().get(0);
-            // sliderMax.changed(() -> { renderer.maxZoom = sliderMax.getValue() / 4f * 6f; });
-            // sliderMin.changed(() -> { renderer.minZoom = 1 / (sliderMin.getValue() / 4f) * 1.5f; });
-            // renderer.maxZoom = sliderMax.getValue() / 4f * 6f; // apply zoom
-            // renderer.minZoom = 1f / (sliderMin.getValue() / 4f) * 1.5f;
 
             // mobiles haven`t keybinds
             if(mobile) return;

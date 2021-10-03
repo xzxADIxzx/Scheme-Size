@@ -300,8 +300,6 @@ public class ModSettingsMenuDialog extends SettingsMenuDialog{
         mod.consSliderSetting("minzoommul", 4, 4, 20, 1, i -> i / 4f + "x", value -> {
             renderer.minZoom = 1f / (value.get() / 4f) * 1.5f;
         });
-        // mod.sliderPref("minzoommul", 4, 4, 20, 1, i -> i / 4f + "x");
-        // mod.sliderPref("maxzoommul", 4, 4, 20, 1, i -> i / 4f + "x");
         mod.sliderPref("copysize", 512, 32, 512, 32, i -> Core.bundle.format("setting.blocks", i));
         mod.sliderPref("breaksize", 512, 32, 512, 32, i -> Core.bundle.format("setting.blocks", i));
         mod.checkPref("copyshow", true);
@@ -330,15 +328,6 @@ public class ModSettingsMenuDialog extends SettingsMenuDialog{
                 Core.settings.put("keyboard", false);
             }
         }
-        //the issue with touchscreen support on desktop is that:
-        //1) I can't test it
-        //2) the SDL backend doesn't support multitouch
-        /*else{
-            game.checkPref("touchscreen", false, val -> control.setInput(!val ? new DesktopInput() : new MobileInput()));
-            if(Core.settings.getBool("touchscreen")){
-                control.setInput(new MobileInput());
-            }
-        }*/
 
         if(!mobile){
             game.checkPref("crashreport", true);
