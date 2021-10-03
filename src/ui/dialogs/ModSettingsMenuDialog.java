@@ -34,7 +34,7 @@ import static mindustry.Vars.*;
 
 // Last Update - Sep 11, 2021
 public class ModSettingsMenuDialog extends SettingsMenuDialog{
-    public SettingsTable mod;
+    public ModSettingsTable mod;
 
     private Table prefs;
     private Table menu;
@@ -291,6 +291,9 @@ public class ModSettingsMenuDialog extends SettingsMenuDialog{
     }
 
     void addSettings(){
+        mod.runnableSliderPref("panspeed", 4, 4, 20, 1, i -> i / 4f + "x", (value) -> {
+            if(control.input instanceof ModDesktopInput i) i.changePanSpeed(value); 
+        });
         mod.sliderPref("maxzoommul", 4, 4, 20, 1, i -> i / 4f + "x");
         mod.sliderPref("minzoommul", 4, 4, 20, 1, i -> i / 4f + "x");
         mod.sliderPref("copysize", 512, 32, 512, 32, i -> Core.bundle.format("setting.blocks", i));
@@ -525,5 +528,51 @@ public class ModSettingsMenuDialog extends SettingsMenuDialog{
         getChildren().get(1).remove();
         buttons.clear();
         buttons.remove();
+    }
+
+    public static class ModSettingsTable extends SettingsTable{
+
+        public SliderSetting runnableSliderPref(String name, int def, int min, int max, int step, StringProcessor s, Runnable changed){
+            ModSliderSetting res;
+            list.add(res = new ModSliderSetting(name, def, min, max, step, s, changed));
+            settings.defaults(name, def);
+            rebuild();
+            return res;
+        }
+
+        public static class ModSliderSetting extends SliderSetting{
+
+            Runnable changed;
+
+            public SliderSetting(String name, int def, int min, int max, int step, StringProcessor s, Runnable changed){
+                super(name, def, min, max, step, s);
+                this.changed = changed;
+            }
+
+            @Override
+            public void add(SettingsTable table){
+                Slider slider = new Slider(min, max, step, false);
+
+                slider.setValue(settings.getInt(name));
+
+                Label value = new Label("", Styles.outlineLabel);
+                Table content = new Table();
+                content.add(title, Styles.outlineLabel).left().growX().wrap();
+                content.add(value).padLeft(10f).right();
+                content.margin(3f, 33f, 3f, 33f);
+                content.touchable = Touchable.disabled;
+
+                slider.changed(() -> {
+                    settings.put(name, (int)slider.getValue());
+                    value.setText(sp.get((int)slider.getValue()));
+                    changed.run(slider.getValue());
+                });
+
+                slider.change();
+
+                addDesc(table.stack(slider, content).width(Math.min(Core.graphics.getWidth() / 1.2f, 460f)).left().padTop(4f).get());
+                table.row();
+            }
+        }
     }
 }

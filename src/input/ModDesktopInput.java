@@ -45,6 +45,11 @@ public class ModDesktopInput extends ModInputHandler{
     public long selectMillis = 0;
     public Tile prevSelected;
 
+    @Override
+    public void changePanSpeed(float value){
+        panSpeed = 4.5f * value / 4f;
+    }
+
     boolean showHint(){
         return ui.hudfrag.shown && Core.settings.getBool("hints") && selectRequests.isEmpty() &&
             (!isBuilding && !Core.settings.getBool("buildautopause") || player.unit().isBuilding() || !player.dead() && !player.unit().spawnedByCore());

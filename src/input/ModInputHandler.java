@@ -43,7 +43,9 @@ public class ModInputHandler extends InputHandler{
 
 	final static float playerSelectRange = mobile ? 17f : 11f;
     final static Rect r1 = new Rect(), r2 = new Rect();
-	
+
+    public void changePanSpeed(float value){}
+
     public void drawSelectionMod(int x1, int y1, int x2, int y2, int size){
         drawSelection(x1, y1, x2, y2, size);
 
