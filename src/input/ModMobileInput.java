@@ -32,7 +32,7 @@ import static mindustry.input.PlaceMode.*;
 // Last Update - Aug 22, 2021
 public class ModMobileInput extends ModInputHandler implements GestureListener{
     /** Maximum speed the player can pan. */
-    private static final float maxPanSpeed = 1.3f;
+    private static float maxPanSpeed = 1.3f;
     /** Distance to edge of screen to start panning. */
     public final float edgePan = Scl.scl(60f);
 
