@@ -182,6 +182,8 @@ public class ModHudFragment extends Fragment{
             editorMain.visible(() -> shown && state.isEditor());
 
             if(true){
+                cont.image().height(4f).color(Pal.gray).fillX();
+                cont.row();
                 cont.table(select -> {
                     select.name = "mod buttons";
                     select.left();
@@ -191,16 +193,12 @@ public class ModHudFragment extends Fragment{
 
                     select.button(Icon.menu, style, SchemeSize.input::switchTeam).name("team");
                     select.button(Icon.upOpen, style, SchemeSize.input::placeCore).name("core");
-                    select.button(Icon.paste, style, player.unit()::kill).name("kill");
+                    select.button(Icon.paste, style, () -> player.unit().kill()).name("kill");
                     select.button(Icon.paste, style, SchemeSize.input::toggleMobilePanCam).name("pancam");
                     select.button(Icon.paste, style, SchemeSize.input::toggleMobileAltBtn).name("altbtn");
 
                     select.image().color(Pal.gray).width(4f).fillY();
                 });
-
-                cont.row();
-                cont.image().height(4f).color(Pal.gray).fillX();
-                cont.row();
             }
 
             //fps display
