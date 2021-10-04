@@ -157,6 +157,8 @@ public class ModHudFragment extends Fragment{
             if(true){
                 wavesMain.row();
                 wavesMain.table(select -> {
+                    select.defaults().size(dsize).left();
+
                     ImageButtonStyle style = new ImageButtonStyle(){{
                         up = Tex.wavepane;
                         down = Styles.flatDown;
@@ -164,11 +166,11 @@ public class ModHudFragment extends Fragment{
                     }};
 
                     select.button(Icon.menu, style, SchemeSize.input::switchTeam).name("team");
-                    select.button(Icon.upOpen, style, SchemeSize.input::placeCore).name("core");
-                    select.button(Icon.paste, style, () -> player.unit().kill()).name("kill");
-                    select.button(Icon.paste, style, SchemeSize.input::toggleMobilePanCam).name("pancam");
-                    select.button(Icon.paste, Styles.righti, SchemeSize.input::toggleMobileAltBtn).name("altbtn");
-                }).width(dsize * 5 - 4f).name("mod buttons");
+                    select.button(Icon.menu, style, SchemeSize.input::placeCore).name("core");
+                    select.button(Icon.menu, style, () -> player.unit().kill()).name("kill");
+                    select.button(Icon.menu, style, SchemeSize.input::toggleMobilePanCam).name("pancam");
+                    select.button(Icon.menu, Styles.righti, SchemeSize.input::toggleMobileAltBtn).name("altbtn");
+                }).width(dsize * 5 - 4f).padLeft(-4f).name("mod buttons");
             }
 
             wavesMain.row();

@@ -684,7 +684,7 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
             }
         }
 
-        if(!player.dead() && !state.isPaused() && !renderer.isCutscene()){
+        if(!player.dead() && !state.isPaused() && !renderer.isCutscene() && !mobilePanCam){
             updateMovement(player.unit());
         }
 
