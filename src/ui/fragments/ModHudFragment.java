@@ -145,37 +145,40 @@ public class ModHudFragment extends Fragment{
                 s.add(makeStatusTable()).grow().name("status");
 
                 //table with button to skip wave
-                s.button(Icon.play, Styles.nodei, 30f, () -> {
+                s.button(Icon.play, Styles.righti, 30f, () -> {
                     if(net.client() && player.admin){
                         Call.adminRequest(player, AdminAction.wave);
                     }else{
                         logic.skipWave();
                     }
                 }).growY().fillX().right().width(40f).disabled(b -> !canSkipWave()).name("skip");
-
-                if(true){
-                    s.row();
-                    s.image().height(4f).color(Pal.gray).fillX();
-                    s.row();
-                    s.table(select -> {
-                        select.name = "mod buttons";
-                        select.left();
-                        select.defaults().size(dsize).left();
-
-                        ImageButtonStyle style = Styles.clearTransi;
-
-                        select.button(Icon.menu, style, SchemeSize.input::switchTeam).name("team");
-                        select.button(Icon.upOpen, style, SchemeSize.input::placeCore).name("core");
-                        select.button(Icon.paste, style, () -> player.unit().kill()).name("kill");
-                        select.button(Icon.paste, style, SchemeSize.input::toggleMobilePanCam).name("pancam");
-                        select.button(Icon.paste, Styles.righti, SchemeSize.input::toggleMobileAltBtn).name("altbtn");
-
-                        select.image().color(Pal.gray).width(4f).fillY();
-                    });
-                }
             }).width(dsize * 5 + 4f).name("statustable");
 
             wavesMain.row();
+
+            if(true){
+                // cont.row();
+                cont.table(select -> {
+                    select.name = "mod buttons";
+                    select.left();
+                    select.defaults().size(dsize).left();
+
+                    ImageButtonStyle style = new ImageButtonStyle(){{
+                        up = Tex.wavepane;
+                        down = Styles.flatDown;
+                        over = Styles.flatOver;
+                    }};
+
+                    select.button(Icon.menu, style, SchemeSize.input::switchTeam).name("team");
+                    select.button(Icon.upOpen, style, SchemeSize.input::placeCore).name("core");
+                    select.button(Icon.paste, style, () -> player.unit().kill()).name("kill");
+                    select.button(Icon.paste, style, SchemeSize.input::toggleMobilePanCam).name("pancam");
+                    select.button(Icon.paste, Styles.righti, SchemeSize.input::toggleMobileAltBtn).name("altbtn");
+                    }
+                });
+                cont.row();
+                cont.image().height(4f).color(Pal.gray).fillX();
+            }
 
             addInfoTable(wavesMain.table().width(dsize * 5f + 4f).left().get());
 
