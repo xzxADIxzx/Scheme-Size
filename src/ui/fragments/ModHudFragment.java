@@ -163,11 +163,11 @@ public class ModHudFragment extends Fragment{
                     select.left();
                     select.defaults().size(dsize).left();
 
-                    ImageButtonStyle style = new ImageButtonStyle(){{
+                    ImageButtonStyle style = new ImageButtonStyle(){
                         up = Tex.wavepane;
                         down = Styles.flatDown;
                         over = Styles.flatOver;
-                    }};
+                    };
 
                     select.button(Icon.menu, style, SchemeSize.input::switchTeam).name("team");
                     select.button(Icon.upOpen, style, SchemeSize.input::placeCore).name("core");
