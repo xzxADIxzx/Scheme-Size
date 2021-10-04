@@ -154,6 +154,8 @@ public class ModHudFragment extends Fragment{
                 }).growY().fillX().right().width(40f).disabled(b -> !canSkipWave()).name("skip");
             }).width(dsize * 5 + 4f).name("statustable");
 
+            wavesMain.row();
+
             if(true){
                 wavesMain.row();
                 wavesMain.table(select -> {
@@ -174,8 +176,6 @@ public class ModHudFragment extends Fragment{
                     select.button(Icon.paste, Styles.righti, SchemeSize.input::toggleMobileAltBtn).name("altbtn");
                 });
             }
-
-            wavesMain.row();
 
             addInfoTable(wavesMain.table().width(dsize * 5f + 4f).left().get());
 
