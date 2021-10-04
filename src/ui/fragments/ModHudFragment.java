@@ -157,8 +157,8 @@ public class ModHudFragment extends Fragment{
             wavesMain.row();
 
             if(true){
-                wavesMain.row();
-                wavesMain.table(select -> {
+                cont.row();
+                cont.table(select -> {
                     select.name = "mod buttons";
                     select.left();
                     select.defaults().size(dsize).left();
