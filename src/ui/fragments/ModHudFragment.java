@@ -154,15 +154,9 @@ public class ModHudFragment extends Fragment{
                 }).growY().fillX().right().width(40f).disabled(b -> !canSkipWave()).name("skip");
             }).width(dsize * 5 + 4f).name("statustable");
 
-            wavesMain.row();
-
             if(true){
-                cont.row();
-                cont.table(select -> {
-                    select.name = "mod buttons";
-                    select.left();
-                    select.defaults().size(dsize).left();
-
+                wavesMain.row();
+                wavesMain.table(select -> {
                     ImageButtonStyle style = new ImageButtonStyle(){{
                         up = Tex.wavepane;
                         down = Styles.flatDown;
@@ -174,8 +168,10 @@ public class ModHudFragment extends Fragment{
                     select.button(Icon.paste, style, () -> player.unit().kill()).name("kill");
                     select.button(Icon.paste, style, SchemeSize.input::toggleMobilePanCam).name("pancam");
                     select.button(Icon.paste, Styles.righti, SchemeSize.input::toggleMobileAltBtn).name("altbtn");
-                });
+                }).width(dsize * 5 - 4f).name("mod buttons");
             }
+
+            wavesMain.row();
 
             addInfoTable(wavesMain.table().width(dsize * 5f + 4f).left().get());
 
