@@ -405,7 +405,7 @@ public class ModDesktopInput extends ModInputHandler{
         // Switch Teams btw Sharded/Crux
         if(input.keyTap(ModBinding.switch_team_btw)){
             player.team(player.team() != Team.sharded ? Team.sharded : Team.crux);
-            if(Core.settings.getBool("adminssecret")) Call.sendChatMessage("/team " + player.team().name);
+            if(settings.getBool("adminssecret")) Call.sendChatMessage("/team " + player.team().name);
         }
 
         // Place Core

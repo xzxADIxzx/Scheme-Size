@@ -243,7 +243,7 @@ public class ModInputHandler extends InputHandler{
     public void switchTeam(){
         var team = new Seq(Team.baseTeams).indexOf(player.team());
         player.team(Team.baseTeams[++team < 6 ? team : 0]);
-        if(settings.getBool("adminssecret")) Call.sendChatMessage("/team " + player.team().name);
+        if(Core.settings.getBool("adminssecret")) Call.sendChatMessage("/team " + player.team().name);
     }
 
     public void placeCore(){
