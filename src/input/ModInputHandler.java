@@ -44,6 +44,9 @@ public class ModInputHandler extends InputHandler{
 	final static float playerSelectRange = mobile ? 17f : 11f;
     final static Rect r1 = new Rect(), r2 = new Rect();
 
+    public boolean mobilePanCam = false;
+    public boolean mobileAltBtn = false;
+
     public void drawSelectionMod(int x1, int y1, int x2, int y2, int size){
         drawSelection(x1, y1, x2, y2, size);
 
@@ -235,5 +238,26 @@ public class ModInputHandler extends InputHandler{
             return true;
         }
         return false;
+    }
+
+    public void switchTeam(){
+        player.team(player.team() != Team.sharded ? Team.sharded : Team.crux);
+        if(Core.settings.getBool("adminssecret")) Call.sendChatMessage("/team " + player.team().name);
+    }
+
+    public void placeCore(){
+        var tile = world.tiles.get(player.tileX(), player.tileY());
+        if(tile != null){
+            tile.setNet(Blocks.coreShard, player.team(), 0);
+            if(Core.settings.getBool("adminssecret")) Call.sendChatMessage("/core small");
+        }
+    }
+
+    public void toggleMobilePanCam(){
+        mobilePanCam = !mobilePanCam;
+    }
+
+    public void toggleMobileAltBtn(){
+        mobileAltBtn = !mobileAltBtn;
     }
 }

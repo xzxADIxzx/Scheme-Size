@@ -17,6 +17,7 @@ import static mindustry.Vars.*;
 
 public class SchemeSize extends Mod{
 
+    public static ModInputHandler input;
     public static ModHudFragment hudfrag = new ModHudFragment();
 
     public SchemeSize(){
@@ -26,7 +27,7 @@ public class SchemeSize extends Mod{
             schematics.loadSync();
 
             // change input
-            control.setInput(mobile ? new ModMobileInput() : new ModDesktopInput());
+            control.setInput(input = mobile ? new ModMobileInput() : new ModDesktopInput());
 
             // change dialog
             var settings = new ModSettingsMenuDialog();

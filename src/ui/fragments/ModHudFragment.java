@@ -62,7 +62,8 @@ public class ModHudFragment extends Fragment{
             cont.name = "overlaymarker";
             cont.top().left();
 
-            if(mobile){
+            // if(mobile){
+            if(true){
                 cont.table(select -> {
                     select.name = "mobile buttons";
                     select.left();
@@ -159,7 +160,6 @@ public class ModHudFragment extends Fragment{
 
             editorMain.name = "editor";
             editorMain.table(Tex.buttonEdge4, t -> {
-                //t.margin(0f);
                 t.name = "teams";
                 t.add("@editor.teams").growX().left();
                 t.row();
@@ -180,6 +180,28 @@ public class ModHudFragment extends Fragment{
                 }).left();
             }).width(dsize * 5 + 4f);
             editorMain.visible(() -> shown && state.isEditor());
+
+            if(true){
+                cont.table(select -> {
+                    select.name = "mod buttons";
+                    select.left();
+                    select.defaults().size(dsize).left();
+
+                    ImageButtonStyle style = Styles.clearTransi;
+
+                    select.button(Icon.menu, style, SchemeSize.input::switchTeam).name("team");
+                    select.button(Icon.upOpen, style, SchemeSize.input::placeCore).name("core");
+                    select.button(Icon.paste, style, player.unit()::kill).name("kill");
+                    select.button(Icon.paste, style, SchemeSize.input::toggleMobilePanCam).name("pancam");
+                    select.button(Icon.paste, style, SchemeSize.input::toggleMobileAltBtn).name("altbtn");
+
+                    select.image().color(Pal.gray).width(4f).fillY();
+                });
+
+                cont.row();
+                cont.image().height(4f).color(Pal.gray).fillX();
+                cont.row();
+            }
 
             //fps display
             cont.table(info -> {
@@ -215,6 +237,7 @@ public class ModHudFragment extends Fragment{
         }
 
         shown = !shown;
+        ui.hudfrag.shown = shown;
     }
 
     private Table makeStatusTable(){

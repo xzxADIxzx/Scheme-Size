@@ -14,7 +14,6 @@ import arc.util.*;
 import arc.struct.*;
 import mindustry.*;
 import mindustry.core.*;
-import mindustry.content.*;
 import mindustry.entities.units.*;
 import mindustry.game.EventType.*;
 import mindustry.game.*;
@@ -400,8 +399,7 @@ public class ModDesktopInput extends ModInputHandler{
 
         // Switch Teams
         if(input.keyTap(ModBinding.switch_team_btw)){
-            player.team(player.team() != Team.sharded ? Team.sharded : Team.crux);
-            if(settings.getBool("adminssecret")) Call.sendChatMessage("/team " + player.team().name);
+            switchTeam();
         }
 
         // Switch Teams btw Sharded/Crux
@@ -413,11 +411,7 @@ public class ModDesktopInput extends ModInputHandler{
 
         // Place Core
         if(input.keyTap(ModBinding.place_core)){
-            var tile = world.tiles.get(player.tileX(), player.tileY());
-            if(tile != null){
-                tile.setNet(Blocks.coreShard, player.team(), 0);
-                if(settings.getBool("adminssecret")) Call.sendChatMessage("/core small");
-            }
+            placeCore();
         }
 
         // Look At
