@@ -32,13 +32,11 @@ public class SchemeSize extends Mod{
             var settings = new ModSettingsMenuDialog();
             ui.settings = settings;
 
-            // add fragment
-            Table table = ui.hudGroup.getChildren().get(5);
-            table.clear();
-            hudfrag.build(table);
+            // build fragment
+            hudfrag.build(ui.hudGroup);
 
-            // add secret
-            settings.mod.getCells().get(9).visible(false); // hide secret
+            // hide secret
+            settings.mod.getCells().get(9).visible(false);
 
             // mobiles haven`t keybinds
             if(mobile) return;

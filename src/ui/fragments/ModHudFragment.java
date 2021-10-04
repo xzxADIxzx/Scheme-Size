@@ -197,6 +197,14 @@ public class ModHudFragment extends Fragment{
 
             }).top().left();
         });
+
+        var child = parent.getChildren();
+        var table = child.get(5);
+        table.clear();
+        table.remove();
+        var menu = child.get(12);
+        menu.remove();
+        parent.addChildAt(5, menu);
     }
 
     private void toggleMenus(){
