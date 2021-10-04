@@ -27,7 +27,7 @@ public class SchemeSize extends Mod{
             schematics.loadSync();
 
             // change input
-            control.setInput(input != mobile ? new ModMobileInput() : new ModDesktopInput());
+            control.setInput(input = !mobile ? new ModMobileInput() : new ModDesktopInput());
 
             // change dialog
             var settings = new ModSettingsMenuDialog();
