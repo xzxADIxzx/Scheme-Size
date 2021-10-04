@@ -33,9 +33,9 @@ public class SchemeSize extends Mod{
             ui.settings = settings;
 
             // add fragment
-            var group = ui.hudGroup.getChildren().get(5);
-            group.clear();
-            hudfrag.build(group);
+            Table table = ui.hudGroup.getChildren().get(5);
+            table.clear();
+            hudfrag.build(table);
 
             // add secret
             settings.mod.getCells().get(9).visible(false); // hide secret
