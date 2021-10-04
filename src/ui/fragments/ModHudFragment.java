@@ -202,7 +202,7 @@ public class ModHudFragment extends Fragment{
         var table = child.get(5);
         table.clear();
         table.remove();
-        var menu = child.get(12);
+        var menu = child.get(11);
         menu.remove();
         parent.addChildAt(5, menu);
     }
