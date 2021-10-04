@@ -241,8 +241,9 @@ public class ModInputHandler extends InputHandler{
     }
 
     public void switchTeam(){
-        player.team(player.team() != Team.sharded ? Team.sharded : Team.crux);
-        if(Core.settings.getBool("adminssecret")) Call.sendChatMessage("/team " + player.team().name);
+        var team = new Seq(Team.baseTeams).indexOf(player.team());
+        player.team(Team.baseTeams[++team < 6 ? team : 0]);
+        if(settings.getBool("adminssecret")) Call.sendChatMessage("/team " + player.team().name);
     }
 
     public void placeCore(){
