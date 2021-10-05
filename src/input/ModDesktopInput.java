@@ -419,7 +419,7 @@ public class ModDesktopInput extends ModInputHandler{
 
         // Teleport
         if(input.keyDown(ModBinding.teleport) && input.keyTap(Binding.select)){
-            player.unit().set(input.mouseWorld());
+            teleport();
         }
 
         Tile selected = tileAtMod(Core.input.mouseX(), Core.input.mouseY());
@@ -703,5 +703,10 @@ public class ModDesktopInput extends ModInputHandler{
         if(Core.input.keyTap(Binding.command) && unit.type.commandLimit > 0){
             Call.unitCommand(player);
         }
+    }
+
+    @Override
+    public void teleport(){
+        player.unit().set(input.mouseWorld());
     }
 }

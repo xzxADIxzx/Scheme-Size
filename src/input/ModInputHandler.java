@@ -259,6 +259,8 @@ public class ModInputHandler extends InputHandler{
         }
     }
 
+    public void teleport(){}
+
     public void toggleMobilePanCam(){
         mobilePanCam = !mobilePanCam;
     }
