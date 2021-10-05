@@ -39,7 +39,8 @@ public class ModHudFragment extends Fragment{
     private float maxShield;
     public boolean shown = true;
 
-    public Drawable team = Core.atlas.drawable("scheme-size-team");
+    // public Drawable team = Core.atlas.drawable("scheme-size-team");
+    public Drawable team;
 
     @Override
     public void build(Group parent){
