@@ -166,10 +166,10 @@ public class ModHudFragment extends Fragment{
                     }};
 
                     Drawable team = Core.atlas.drawable("scheme-size-team");
-                    var core = Icon.admin;
+                    Drawable team = Core.atlas.drawable("scheme-size-kill");
 
+                    select.button(Icon.effect, style, SchemeSize.input::placeCore).name("core");
                     select.button(team, style, SchemeSize.input::switchTeam).name("team");
-                    select.button(core, style, SchemeSize.input::placeCore).name("core");
                     select.button(Icon.menu, style, () -> player.unit().kill()).name("kill");
                     select.button(Icon.menu, style, SchemeSize.input::toggleMobilePanCam).name("pancam");
                     select.button(Icon.menu, Styles.righti, SchemeSize.input::teleport).name("teleport");
