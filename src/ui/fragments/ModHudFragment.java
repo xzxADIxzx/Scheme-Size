@@ -39,7 +39,7 @@ public class ModHudFragment extends Fragment{
     private float maxShield;
     public boolean shown = true;
 
-    public TextureRegion team = Core.altas.find("scheme-size-team");
+    public TextureRegionDrawable team = TextureRegionDrawable(Core.atlas.find("scheme-size-team"));
 
     @Override
     public void build(Group parent){
