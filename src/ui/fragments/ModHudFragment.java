@@ -160,7 +160,13 @@ public class ModHudFragment extends Fragment{
                 wavesMain.table(select -> {
                     select.defaults().size(dsize).left();
 
-                    ImageButtonStyle style = new ImageButtonStyle(){{
+                    ImageButtonStyle styleBtn = new ImageButtonStyle(){{
+                        up = Tex.wavepane;
+                        down = Styles.flatDown;
+                        over = Styles.flatOver;
+                    }};
+
+                    ImageButtonStyle styleTgl = new ImageButtonStyle(){{
                         up = Tex.wavepane;
                         down = Styles.flatDown;
                         over = Styles.flatOver;
@@ -169,13 +175,14 @@ public class ModHudFragment extends Fragment{
                     Drawable core = Icon.effect;
                     Drawable team = Core.atlas.drawable("scheme-size-team");
                     Drawable kill = Core.atlas.drawable("scheme-size-kill");
-                    Drawable tele = Core.atlas.drawable("scheme-size-teleport");
+                    Drawable tele = Core.atlas.drawable("scheme-size-kill");
+                    Drawable port = Core.atlas.drawable("scheme-size-teleport");
 
-                    select.button(core, style, SchemeSize.input::placeCore).name("core");
-                    select.button(team, style, SchemeSize.input::switchTeam).name("team");
-                    select.button(kill, style, () -> player.unit().kill()).name("kill");
-                    select.button(Icon.menu, style, SchemeSize.input::toggleMobilePanCam).name("pancam");
-                    select.button(tele, Styles.righti, SchemeSize.input::teleport).name("teleport");
+                    select.button(core, styleBtn, SchemeSize.input::placeCore).name("core");
+                    select.button(team, styleBtn, SchemeSize.input::switchTeam).name("team");
+                    select.button(kill, styleBtn, () -> player.unit().kill()).name("kill");
+                    select.button(tele, styleBtn, SchemeSize.input::toggleMobilePanCam).name("pancam");
+                    select.button(port, Styles.righti, SchemeSize.input::teleport).name("teleport");
                 }).width(dsize * 5 - 8f).padLeft(-4f).name("mod buttons");
             }
 
