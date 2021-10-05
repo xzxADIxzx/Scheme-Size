@@ -1,7 +1,7 @@
 {
 	"name": "scheme-size",
 	"displayName": "Scheme Size",
-	"description": "Mod that could... Increases the maximum size of schemes to 512 blocks!\nMay conflict with some clients!",
+	"description": "Mod that could... Increases the maximum size of schemes to 512 blocks!\nСonflict with clients!",
 	"author": "xzxADIxzx",
 	"version": "1.82",
 	"minGameVersion": "131",

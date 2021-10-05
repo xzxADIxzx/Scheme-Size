@@ -166,24 +166,18 @@ public class ModHudFragment extends Fragment{
                         over = Styles.flatOver;
                     }};
 
-                    ImageButtonStyle styleTgl = new ImageButtonStyle(){{
-                        up = Tex.wavepane;
-                        down = Styles.flatDown;
-                        over = Styles.flatOver;
-                    }};
-
                     Drawable core = Icon.effect;
                     Drawable team = Core.atlas.drawable("scheme-size-team");
                     Drawable kill = Core.atlas.drawable("scheme-size-kill");
-                    Drawable tele = Core.atlas.drawable("scheme-size-kill");
-                    Drawable port = Core.atlas.drawable("scheme-size-teleport");
+                    Drawable tele = Core.atlas.drawable("scheme-size-teleport");
+                    Drawable port = Core.atlas.drawable("scheme-size-kill");
 
-                    select.button(core, styleBtn, SchemeSize.input::placeCore).name("core");
-                    select.button(team, styleBtn, SchemeSize.input::switchTeam).name("team");
-                    select.button(kill, styleBtn, () -> player.unit().kill()).name("kill");
-                    select.button(tele, styleBtn, SchemeSize.input::toggleMobilePanCam).name("pancam");
-                    select.button(port, Styles.righti, SchemeSize.input::teleport).name("teleport");
-                }).width(dsize * 5 - 8f).padLeft(-4f).name("mod buttons");
+                    select.button(core, styleBtn, dsize, SchemeSize.input::placeCore).name("core");
+                    select.button(team, styleBtn, dsize, SchemeSize.input::switchTeam).name("team");
+                    select.button(kill, styleBtn, dsize, () -> player.unit().kill()).name("kill");
+                    select.button(tele, styleBtn, dsize, SchemeSize.input::toggleMobilePanCam).name("teleport");
+                    select.button(port, Styles.righti, dsize, SchemeSize.input::teleport).name("pancam");
+                }).width(dsize * 5 - 12f).padLeft(-6f).name("mod buttons");
             }
 
             wavesMain.row();
