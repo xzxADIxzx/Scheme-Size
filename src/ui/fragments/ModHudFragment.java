@@ -172,12 +172,12 @@ public class ModHudFragment extends Fragment{
                     Drawable tele = Core.atlas.drawable("scheme-size-teleport");
                     Drawable port = Core.atlas.drawable("scheme-size-kill");
 
-                    select.button(core, styleBtn, dsize, SchemeSize.input::placeCore).name("core");
-                    select.button(team, styleBtn, dsize, SchemeSize.input::switchTeam).name("team");
-                    select.button(kill, styleBtn, dsize, () -> player.unit().kill()).name("kill");
-                    select.button(tele, styleBtn, dsize, SchemeSize.input::toggleMobilePanCam).name("teleport");
-                    select.button(port, Styles.righti, dsize, SchemeSize.input::teleport).name("pancam");
-                }).width(dsize * 5 - 12f).padLeft(-6f).name("mod buttons");
+                    select.button(core, styleBtn, dsize - 8f, SchemeSize.input::placeCore).name("core");
+                    select.button(team, styleBtn, dsize - 8f, SchemeSize.input::switchTeam).name("team");
+                    select.button(kill, styleBtn, dsize - 8f, () -> player.unit().kill()).name("kill");
+                    select.button(tele, styleBtn, dsize - 8f, SchemeSize.input::teleport).name("teleport");
+                    select.button(port, Styles.righti, dsize, SchemeSize.input::toggleMobilePanCam).name("pancam");
+                }).width(dsize * 5 - 16f).padLeft(-8f).name("mod buttons");
             }
 
             wavesMain.row();
