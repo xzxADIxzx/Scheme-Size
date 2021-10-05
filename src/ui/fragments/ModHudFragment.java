@@ -39,6 +39,8 @@ public class ModHudFragment extends Fragment{
     private float maxShield;
     public boolean shown = true;
 
+    public TextureRegion team = Core.altas.find("scheme-size-team");
+
     @Override
     public void build(Group parent){
         Events.on(WorldLoadEvent.class, e -> {
@@ -165,12 +167,15 @@ public class ModHudFragment extends Fragment{
                         over = Styles.flatOver;
                     }};
 
-                    select.button(Icon.menu, style, SchemeSize.input::switchTeam).name("team");
+                    select.button(team, style, SchemeSize.input::switchTeam).name("team");
                     select.button(Icon.menu, style, SchemeSize.input::placeCore).name("core");
                     select.button(Icon.menu, style, () -> player.unit().kill()).name("kill");
                     select.button(Icon.menu, style, SchemeSize.input::toggleMobilePanCam).name("pancam");
                     select.button(Icon.menu, Styles.righti, SchemeSize.input::toggleMobileAltBtn).name("altbtn");
-                }).width(dsize * 5 - 4f).padLeft(-4f).name("mod buttons");
+                }).width(dsize * 5 - 8f).padLeft(-4f).name("mod buttons");
+                // TODO: add style for pancam *it`s should be a toggle
+                // TODO: add style for altbtn *it`s also toggle but with radius
+                // TODO: add teleport to mobile input
             }
 
             wavesMain.row();

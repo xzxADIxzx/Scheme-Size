@@ -958,7 +958,8 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
             }
         }
 
-        unit.controlWeapons(player.shooting && !boosted);
+        if(mobileAltBtn) player.unit().set(input.mouseWorld());
+        else unit.controlWeapons(player.shooting && !boosted);
     }
 
     //endregion
