@@ -39,8 +39,6 @@ public class ModHudFragment extends Fragment{
     private float maxShield;
     public boolean shown = true;
 
-    // public Drawable team = Core.atlas.drawable("scheme-size-team");
-
     @Override
     public void build(Group parent){
         Events.on(WorldLoadEvent.class, e -> {
@@ -167,8 +165,11 @@ public class ModHudFragment extends Fragment{
                         over = Styles.flatOver;
                     }};
 
-                    // select.button(team, style, SchemeSize.input::switchTeam).name("team");
-                    select.button(Icon.menu, style, SchemeSize.input::placeCore).name("core");
+                    Drawable team = Core.atlas.drawable("scheme-size-team");
+                    var core = Icon.admin;
+
+                    select.button(team, style, SchemeSize.input::switchTeam).name("team");
+                    select.button(core, style, SchemeSize.input::placeCore).name("core");
                     select.button(Icon.menu, style, () -> player.unit().kill()).name("kill");
                     select.button(Icon.menu, style, SchemeSize.input::toggleMobilePanCam).name("pancam");
                     select.button(Icon.menu, Styles.righti, SchemeSize.input::teleport).name("teleport");
