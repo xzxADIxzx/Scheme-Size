@@ -154,6 +154,7 @@ public class ModHudFragment extends Fragment{
                 }).growY().fillX().right().width(40f).disabled(b -> !canSkipWave()).name("skip");
             }).width(dsize * 5 + 4f).name("statustable");
 
+            // if(mobile){
             if(true){
                 wavesMain.row();
                 wavesMain.table(select -> {
