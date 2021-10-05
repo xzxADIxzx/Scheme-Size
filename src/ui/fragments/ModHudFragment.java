@@ -40,7 +40,6 @@ public class ModHudFragment extends Fragment{
     public boolean shown = true;
 
     // public Drawable team = Core.atlas.drawable("scheme-size-team");
-    public Drawable team;
 
     @Override
     public void build(Group parent){
@@ -168,7 +167,7 @@ public class ModHudFragment extends Fragment{
                         over = Styles.flatOver;
                     }};
 
-                    select.button(team, style, SchemeSize.input::switchTeam).name("team");
+                    // select.button(team, style, SchemeSize.input::switchTeam).name("team");
                     select.button(Icon.menu, style, SchemeSize.input::placeCore).name("core");
                     select.button(Icon.menu, style, () -> player.unit().kill()).name("kill");
                     select.button(Icon.menu, style, SchemeSize.input::toggleMobilePanCam).name("pancam");
