@@ -45,7 +45,6 @@ public class ModInputHandler extends InputHandler{
     final static Rect r1 = new Rect(), r2 = new Rect();
 
     public boolean mobilePanCam = false;
-    public boolean mobileAltBtn = false;
 
     public void drawSelectionMod(int x1, int y1, int x2, int y2, int size){
         drawSelection(x1, y1, x2, y2, size);
@@ -263,9 +262,5 @@ public class ModInputHandler extends InputHandler{
 
     public void toggleMobilePanCam(){
         mobilePanCam = !mobilePanCam;
-    }
-
-    public void toggleMobileAltBtn(){
-        mobileAltBtn = !mobileAltBtn;
     }
 }
