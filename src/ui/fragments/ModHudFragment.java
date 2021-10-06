@@ -158,8 +158,8 @@ public class ModHudFragment extends Fragment{
             if(true){
                 wavesMain.row();
                 wavesMain.table(select -> {
-                    float msize = dsize -8f;
-                    select.defaults().size(msize).left();
+                    float isize = dsize - 12f;
+                    select.defaults().size(dsize - 4f).left();
 
                     ImageButtonStyle style = new ImageButtonStyle(){{
                         up = Tex.wavepane;
@@ -173,11 +173,11 @@ public class ModHudFragment extends Fragment{
                     Drawable tele = Core.atlas.drawable("status-overdrive");
                     Drawable port = Icon.lock;
 
-                    select.button(core, style, msize, SchemeSize.input::placeCore).name("core");
-                    select.button(team, style, msize, SchemeSize.input::switchTeam).name("team");
-                    select.button(kill, style, msize, () -> player.unit().kill()).name("kill");
-                    select.button(tele, style, msize, SchemeSize.input::teleport).name("teleport");
-                    select.button(port, style, msize, SchemeSize.input::toggleMobilePanCam).name("pancam");
+                    select.button(core, style, isize, SchemeSize.input::placeCore).name("core");
+                    select.button(team, style, isize, SchemeSize.input::switchTeam).name("team");
+                    select.button(kill, style, isize, () -> player.unit().kill()).name("kill");
+                    select.button(tele, style, isize, SchemeSize.input::teleport).name("teleport");
+                    select.button(port, style, isize, SchemeSize.input::toggleMobilePanCam).name("pancam").image().color(Pal.gray).width(4).fillY().padRight(-4);
                 }).left().name("mod buttons");
             }
 
