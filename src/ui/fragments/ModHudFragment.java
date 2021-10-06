@@ -158,7 +158,7 @@ public class ModHudFragment extends Fragment{
             if(true){
                 wavesMain.row();
                 wavesMain.table(select -> {
-                    float isize = dsize - 20f;
+                    float isize = dsize - 28f;
                     select.defaults().size(dsize - 2f).left();
 
                     ImageButtonStyle style = new ImageButtonStyle(){{
@@ -177,7 +177,7 @@ public class ModHudFragment extends Fragment{
                     select.button(team, style, isize, SchemeSize.input::switchTeam).name("team");
                     select.button(kill, style, isize, () -> player.unit().kill()).name("kill");
                     select.button(tele, style, isize, SchemeSize.input::teleport).name("teleport");
-                    select.button(port, style, isize, SchemeSize.input::toggleMobilePanCam).name("pancam").get().image().color(Pal.gray).width(4).height(dsize - 2f).padRight(4);
+                    select.button(port, style, isize, SchemeSize.input::toggleMobilePanCam).name("pancam").get().image().color(Pal.gray).width(4).height(dsize - 2f).padRight(-8);
                 }).left().name("mod buttons");
             }
 
