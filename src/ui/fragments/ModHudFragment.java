@@ -177,7 +177,7 @@ public class ModHudFragment extends Fragment{
                     select.button(team, style, isize, SchemeSize.input::switchTeam).name("team");
                     select.button(kill, style, isize, () -> player.unit().kill()).name("kill");
                     select.button(tele, style, isize, SchemeSize.input::teleport).name("teleport");
-                    select.button(port, style, isize, SchemeSize.input::toggleMobilePanCam).name("pancam").get().image().color(Pal.gray).width(4).height(dsize - 1f).padLeft(dsize);
+                    select.button(port, style, isize, SchemeSize.input::toggleMobilePanCam).name("pancam").get().image().color(Pal.gray).width(4).height(dsize - 1f).padRight(-4);
                 }).left().name("mod buttons");
             }
 
