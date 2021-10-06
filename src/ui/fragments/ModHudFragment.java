@@ -159,7 +159,7 @@ public class ModHudFragment extends Fragment{
                 wavesMain.row();
                 wavesMain.table(select -> {
                     select.left();
-                    select.defaults().size(--dsize).left();
+                    select.defaults().size(dsize - 1).left();
 
                     ImageButtonStyle style = new ImageButtonStyle(){{
                         up = Tex.wavepane;
