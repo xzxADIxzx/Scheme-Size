@@ -158,26 +158,33 @@ public class ModHudFragment extends Fragment{
             if(true){
                 wavesMain.row();
                 wavesMain.table(select -> {
-                    select.defaults().size(dsize).left();
+                    select.left();
+                    select.defaults().size(--dsize).left();
 
-                    ImageButtonStyle styleBtn = new ImageButtonStyle(){{
+                    ImageButtonStyle style = new ImageButtonStyle(){{
                         up = Tex.wavepane;
                         down = Styles.flatDown;
                         over = Styles.flatOver;
                     }};
 
+                    // Drawable core = Icon.effect;
+                    // Drawable team = Core.atlas.drawable("scheme-size-team");
+                    // Drawable kill = Core.atlas.drawable("scheme-size-kill");
+                    // Drawable tele = Core.atlas.drawable("scheme-size-teleport");
+                    // Drawable port = Core.atlas.drawable("scheme-size-kill");
+
                     Drawable core = Icon.effect;
-                    Drawable team = Core.atlas.drawable("scheme-size-team");
-                    Drawable kill = Core.atlas.drawable("scheme-size-kill");
-                    Drawable tele = Core.atlas.drawable("scheme-size-teleport");
+                    Drawable team = Core.atlas.drawable("team-derelict");
+                    Drawable kill = Core.atlas.drawable("status-blasted");
+                    Drawable tele = Core.atlas.drawable("status-overdrive");
                     Drawable port = Core.atlas.drawable("scheme-size-kill");
 
-                    select.button(core, styleBtn, dsize - 8f, SchemeSize.input::placeCore).name("core");
-                    select.button(team, styleBtn, dsize - 8f, SchemeSize.input::switchTeam).name("team");
-                    select.button(kill, styleBtn, dsize - 8f, () -> player.unit().kill()).name("kill");
-                    select.button(tele, styleBtn, dsize - 8f, SchemeSize.input::teleport).name("teleport");
-                    select.button(port, Styles.righti, dsize, SchemeSize.input::toggleMobilePanCam).name("pancam");
-                }).width(dsize * 5 - 16f).padLeft(-8f).name("mod buttons");
+                    select.button(core, style, SchemeSize.input::placeCore).name("core");
+                    select.button(team, style, SchemeSize.input::switchTeam).name("team");
+                    select.button(kill, style, () -> player.unit().kill()).name("kill");
+                    select.button(tele, style, SchemeSize.input::teleport).name("teleport");
+                    select.button(port, style, SchemeSize.input::toggleMobilePanCam).name("pancam");
+                }).name("mod buttons");
             }
 
             wavesMain.row();
