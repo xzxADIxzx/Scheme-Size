@@ -177,7 +177,7 @@ public class ModHudFragment extends Fragment{
                     select.button(team, style, isize, SchemeSize.input::switchTeam).name("team");
                     select.button(kill, style, isize, () -> player.unit().kill()).name("kill");
                     select.button(tele, style, isize, SchemeSize.input::teleport).name("teleport");
-                    select.button(port, style, isize, SchemeSize.input::toggleMobilePanCam).name("pancam").get().image().color(Pal.gray).width(4).height(dsize - 2f).padLeft(-8);
+                    select.button(port, style, isize, SchemeSize.input::toggleMobilePanCam).name("pancam").get().image().color(Pal.gray).width(4).height(dsize - 2f);
                 }).left().name("mod buttons");
             }
 
@@ -232,7 +232,7 @@ public class ModHudFragment extends Fragment{
                 info.label(() -> ping.get(netClient.getPing())).visible(net::client).left().style(Styles.outlineLabel).name("ping").row();
                 info.label(() -> tps.get(state.serverTps == -1 ? 60 : state.serverTps)).visible(net::client).left().style(Styles.outlineLabel).name("tps").row();
 
-            }).top().left();
+            }).top().left().marginTop(dsize - 2f);
         });
     }
 
