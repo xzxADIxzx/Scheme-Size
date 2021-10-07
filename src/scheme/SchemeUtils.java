@@ -6,7 +6,7 @@ import mindustry.content.*;
 import static arc.Core.*;
 import static mindustry.Vars.*;
 
-public static class SchemeUtils{
+public class SchemeUtils{
 
 	public static void placeCore(){
         var tile = world.tiles.get(player.tileX(), player.tileY());
