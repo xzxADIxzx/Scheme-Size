@@ -14,7 +14,7 @@ import static mindustry.Vars.*;
 public class SchemeUtils{
 
 	public static void history(){
-		if(settings.getBool("adminssecret")) Call.sendChatMessage("/history");
+		Call.sendChatMessage("/history");
 	}
 
 	public static void toggleCoreItems(){
