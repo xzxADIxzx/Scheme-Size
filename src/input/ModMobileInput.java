@@ -18,13 +18,14 @@ import mindustry.core.*;
 import mindustry.entities.*;
 import mindustry.entities.units.*;
 import mindustry.game.EventType.*;
-import mindustry.game.*;
+// import mindustry.game.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.type.*;
 import mindustry.ui.*;
 import mindustry.world.*;
 import mindustry.world.blocks.*;
+import mindustry.scheme.*;
 
 import static mindustry.Vars.*;
 import static mindustry.input.PlaceMode.*;

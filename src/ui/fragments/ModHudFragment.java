@@ -17,6 +17,7 @@ import arc.util.*;
 // import mindustry.annotations.Annotations.*;
 import mindustry.entities.abilities.*;
 import mindustry.content.*;
+import mindustry.scheme.*;
 import mindustry.core.GameState.*;
 import mindustry.core.*;
 import mindustry.ctype.*;
@@ -171,7 +172,7 @@ public class ModHudFragment extends Fragment{
                     Drawable tele = Core.atlas.drawable("status-overdrive");
                     Drawable port = Icon.lock;
 
-                    select.button(core, style, isize, SchemeSize.input::placeCore).name("core");
+                    select.button(core, style, isize, SchemeUtils::placeCore).name("core");
                     select.button(team, style, isize, SchemeSize.input::switchTeam).name("team");
                     select.button(kill, style, isize, () -> player.unit().kill()).name("kill");
                     select.button(tele, style, isize, SchemeSize.input::teleport).name("teleport");

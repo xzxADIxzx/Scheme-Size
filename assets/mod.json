@@ -6,5 +6,5 @@
 	"version": "1.82",
 	"minGameVersion": "131",
 	"hidden": true,
-	"main": "mindustry.game.SchemeSize"
+	"main": "mindustry.scheme.SchemeSize"
 }

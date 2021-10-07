@@ -1,4 +1,4 @@
-package mindustry.game;
+package mindustry.scheme;
 
 import arc.*;
 import arc.util.*;
@@ -10,6 +10,7 @@ import mindustry.ui.dialogs.*;
 import mindustry.ui.fragments.*;
 import mindustry.mod.*;
 import mindustry.core.*;
+import mindustry.game.*;
 import mindustry.game.EventType.*;
 import mindustry.input.*;
 

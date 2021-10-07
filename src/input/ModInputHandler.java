@@ -250,14 +250,6 @@ public class ModInputHandler extends InputHandler{
         if(Core.settings.getBool("adminssecret")) Call.sendChatMessage("/team " + player.team().name);
     }
 
-    public void placeCore(){
-        var tile = world.tiles.get(player.tileX(), player.tileY());
-        if(tile != null){
-            tile.setNet(tile.block() != Blocks.coreShard ? Blocks.coreShard : Blocks.air, player.team(), 0);
-            if(Core.settings.getBool("adminssecret")) Call.sendChatMessage("/core small");
-        }
-    }
-
     public void teleport(){}
 
     public void toggleMobilePanCam(){

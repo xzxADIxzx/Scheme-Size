@@ -16,13 +16,14 @@ import mindustry.*;
 import mindustry.core.*;
 import mindustry.entities.units.*;
 import mindustry.game.EventType.*;
-import mindustry.game.*;
+// import mindustry.game.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.ui.*;
 import mindustry.ui.fragments.*;
 import mindustry.world.*;
 import mindustry.input.Placement.*;
+import mindustry.scheme.*;
 
 import static arc.Core.*;
 import static mindustry.Vars.net;
@@ -392,6 +393,11 @@ public class ModDesktopInput extends ModInputHandler{
     void pollInput(){
         if(scene.getKeyboardFocus() instanceof TextField) return;
 
+        // History
+        if(input.keyTap(ModBinding.history)){
+            Call.sendChatMessage("/history");
+        }
+
         // Toggle Core Items
         if(input.keyTap(ModBinding.toggle_core_items)){
             settings.put("coreitems", !settings.getBool("coreitems"));
@@ -409,7 +415,7 @@ public class ModDesktopInput extends ModInputHandler{
 
         // Place Core
         if(input.keyTap(ModBinding.place_core)){
-            placeCore();
+            SchemeUtils.placeCore();
         }
 
         // Look At
