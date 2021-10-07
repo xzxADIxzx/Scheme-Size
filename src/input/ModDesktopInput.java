@@ -243,14 +243,14 @@ public class ModDesktopInput extends ModInputHandler{
 
             if(Core.input.keyTap(Binding.respawn)){
                 if(Core.input.keyDown(ModBinding.self_dest)){
-                    player.unit().kill();
+                    SchemeUtils.selfDest();
                 }else{
                     controlledType = null;
                     recentRespawnTimer = 1f;
                     Call.unitClear(player);
-                }
 
-                SchemeSize.hudfrag.updateShield(player.unit());
+                    SchemeSize.hudfrag.updateShield(player.unit());
+                }
             }
         }
 
@@ -393,39 +393,32 @@ public class ModDesktopInput extends ModInputHandler{
     void pollInput(){
         if(scene.getKeyboardFocus() instanceof TextField) return;
 
-        // History
         if(input.keyTap(ModBinding.history)){
-            Call.sendChatMessage("/history");
+            SchemeUtils.history();
         }
 
-        // Toggle Core Items
         if(input.keyTap(ModBinding.toggle_core_items)){
-            settings.put("coreitems", !settings.getBool("coreitems"));
+            SchemeUtils.toggleCoreItems();
         }
 
-        // Switch Teams
         if(input.keyTap(ModBinding.switch_team)){
-            switchTeam();
+            SchemeUtils.switchTeam();
         }
 
-        // Switch Teams btw Sharded/Crux
         if(input.keyTap(ModBinding.switch_team_btw)){
-            switchTeamBtw();
+            SchemeUtils.switchTeamBtw();
         }
 
-        // Place Core
         if(input.keyTap(ModBinding.place_core)){
             SchemeUtils.placeCore();
         }
 
-        // Look At
         if(input.keyDown(ModBinding.look_at)){
-            player.unit().lookAt(input.mouseWorld());
+            SchemeUtils.lookAt();
         }
 
-        // Teleport
         if(input.keyDown(ModBinding.teleport) && input.keyTap(Binding.select)){
-            teleport();
+            SchemeUtils.teleport(input.mouseWorld());
         }
 
         Tile selected = tileAtMod(Core.input.mouseX(), Core.input.mouseY());
@@ -709,10 +702,5 @@ public class ModDesktopInput extends ModInputHandler{
         if(Core.input.keyTap(Binding.command) && unit.type.commandLimit > 0){
             Call.unitCommand(player);
         }
-    }
-
-    @Override
-    public void teleport(){
-        player.unit().set(input.mouseWorld());
     }
 }

@@ -239,19 +239,6 @@ public class ModInputHandler extends InputHandler{
         return false;
     }
 
-    public void switchTeam(){
-        var team = new Seq(Team.baseTeams).indexOf(player.team());
-        player.team(Team.baseTeams[++team < 6 ? team : 0]);
-        if(Core.settings.getBool("adminssecret")) Call.sendChatMessage("/team " + player.team().name);
-    }
-
-    public void switchTeamBtw(){
-        player.team(player.team() != Team.sharded ? Team.sharded : Team.crux);
-        if(Core.settings.getBool("adminssecret")) Call.sendChatMessage("/team " + player.team().name);
-    }
-
-    public void teleport(){}
-
     public void toggleMobilePanCam(){
         mobilePanCam = !mobilePanCam;
     }

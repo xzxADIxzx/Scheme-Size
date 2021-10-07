@@ -173,9 +173,9 @@ public class ModHudFragment extends Fragment{
                     Drawable port = Icon.lock;
 
                     select.button(core, style, isize, SchemeUtils::placeCore).name("core");
-                    select.button(team, style, isize, SchemeSize.input::switchTeam).name("team");
-                    select.button(kill, style, isize, () -> player.unit().kill()).name("kill");
-                    select.button(tele, style, isize, SchemeSize.input::teleport).name("teleport");
+                    select.button(team, style, isize, SchemeUtils::switchTeam).name("team");
+                    select.button(kill, style, isize, SchemeUtils::selfDest).name("kill");
+                    select.button(tele, style, isize, () -> SchemeUtils.teleport(Core.camera.position)).name("teleport");
                     select.button(port, style, isize, SchemeSize.input::toggleMobilePanCam).name("pancam").get(
                     ).image().color(Pal.gray).width(4).height(dsize - 1.5f).padRight(-dsize + 1.5f + isize);
                 }).left().name("mod buttons");

@@ -962,10 +962,5 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
         unit.controlWeapons(player.shooting && !boosted);
     }
 
-    @Override
-    public void teleport(){
-        player.unit().set(Core.camera.position);
-    }
-
     //endregion
 }
