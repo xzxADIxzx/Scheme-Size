@@ -26,8 +26,8 @@ public class SchemeSize extends Mod{
 
     public SchemeSize(){
         Events.on(ClientLoadEvent.class, e -> {
-            schematic = new ModSchematics()
-            unit =  = new ModUnitSelectDialog();
+            schematic = new ModSchematics();
+            unit = new ModUnitSelectDialog();
             setting = new ModSettingsMenuDialog();
             hudfrag = new ModHudFragment();
 
