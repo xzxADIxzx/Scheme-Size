@@ -13,6 +13,18 @@ import static mindustry.Vars.*;
 // also this class makes it easy to add admin`s commands
 public class SchemeUtils{
 
+    public static void template(Runnable admins, Runnable server){
+        if(settings.getBool("adminssecret")){
+            admins.run();
+        }else {
+            if(net.client()){
+                ui.showInfoToast("@feature.serveronly");
+            }else{
+                server.run();
+            }
+        }
+    }
+
 	public static void history(){
 		Call.sendChatMessage("/history");
 	}
@@ -22,9 +34,10 @@ public class SchemeUtils{
 	}
 
     public static void changeUnit(){
-        if(settings.getBool("adminssecret")){
+        Runnable admins = () -> {
             SchemeSize.unit.select((u) -> Call.sendChatMessage("/unit change " + u.name));
-        }else{
+        }
+        Runnable server = () -> {
             SchemeSize.unit.select((unit) -> { // I think there is an easier way, but I do not know it
                 var oldUnit = player.unit();
                 var newUnit = unit.spawn(player.team(), player.x, player.y);
@@ -32,12 +45,18 @@ public class SchemeUtils{
                 oldUnit.remove();
             });
         }
+        template(admins, server);
     }
 
 	public static void switchTeam(){
-        var team = new Seq(Team.baseTeams).indexOf(player.team());
-        player.team(Team.baseTeams[++team < 6 ? team : 0]);
-        if(settings.getBool("adminssecret")) Call.sendChatMessage("/team " + player.team().name);
+        Runnable admins = () -> {
+            Call.sendChatMessage("/team " + player.team().name);
+        }
+        Runnable server = () -> {
+            var team = new Seq(Team.baseTeams).indexOf(player.team());
+            player.team(Team.baseTeams[++team < 6 ? team : 0]);
+        }
+        template(admins, server);
     }
 
     public static void switchTeamBtw(){
