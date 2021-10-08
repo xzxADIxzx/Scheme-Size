@@ -36,20 +36,21 @@ public class SchemeUtils{
 
     public static void changeUnit(){
         Runnable admins = () -> {
-            SchemeSize.unit.select((u) -> Call.sendChatMessage("/unit change " + u.name));
+            SchemeSize.unit.select((u) -> {
+                Call.sendChatMessage("/unit change " + u.name)
+                SchemeSize.hudfrag.updateShield(player.unit());
+            });
         };
         Runnable server = () -> {
             SchemeSize.unit.select((unit) -> { // I think there is an easier way, but I do not know it
                 var oldUnit = player.unit();
                 var newUnit = unit.spawn(player.team(), player.x, player.y);
                 Call.unitControl(player, newUnit);
-                oldUnit.kill();
+                oldUnit.kill(); // oof... remove does work in multiplayer, so I use kill
+                SchemeSize.hudfrag.updateShield(player.unit());
             });
         };
         template(admins, server);
-        Time.runTask(10f, () -> {
-            SchemeSize.hudfrag.updateShield(player.unit());
-        });
     }
 
 	public static void switchTeam(){
@@ -99,16 +100,17 @@ public class SchemeUtils{
 
     public static void spawnUnit(){
         Runnable admins = () -> {
-            SchemeSize.unit.select((u) -> Call.sendChatMessage("/spawn " + u.name + " 1 " + player.team().name));
+            SchemeSize.unit.select((u) -> {
+                Call.sendChatMessage("/spawn " + u.name + " 1 " + player.team().name)
+                SchemeSize.hudfrag.updateShield(player.unit());
+            });
         };
         Runnable server = () -> {
             SchemeSize.unit.select((unit) -> {
                 unit.spawn(player.team(), player.x, player.y);
+                SchemeSize.hudfrag.updateShield(player.unit());
             });
         };
         template(admins, server);
-        Time.runTask(10f, () -> {
-            SchemeSize.hudfrag.updateShield(player.unit());
-        });
     }
 }
