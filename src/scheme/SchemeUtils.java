@@ -37,7 +37,7 @@ public class SchemeUtils{
     public static void changeUnit(){
         Runnable admins = () -> {
             SchemeSize.unit.select((u) -> {
-                Call.sendChatMessage("/unit change " + u.name)
+                Call.sendChatMessage("/unit change " + u.name);
                 SchemeSize.hudfrag.updateShield(player.unit());
             });
         };
@@ -101,7 +101,7 @@ public class SchemeUtils{
     public static void spawnUnit(){
         Runnable admins = () -> {
             SchemeSize.unit.select((u) -> {
-                Call.sendChatMessage("/spawn " + u.name + " 1 " + player.team().name)
+                Call.sendChatMessage("/spawn " + u.name + " 1 " + player.team().name);
                 SchemeSize.hudfrag.updateShield(player.unit());
             });
         };
