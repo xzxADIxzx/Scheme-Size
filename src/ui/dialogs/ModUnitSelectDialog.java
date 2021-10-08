@@ -1,7 +1,9 @@
 package mindustry.ui.dialogs;
 
 import arc.func.*;
+import arc.scene.style.*;
 import mindustry.ui.*;
+import mindustry.type.*;
 
 import static mindustry.Vars.*;
 
