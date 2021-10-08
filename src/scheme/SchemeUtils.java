@@ -18,7 +18,7 @@ public class SchemeUtils{
             admins.run();
         }else {
             if(net.client()){
-                ui.showInfoToast("@feature.serveronly");
+                ui.showInfoToast("@feature.serveronly", 5);
             }else{
                 server.run();
             }
