@@ -22,13 +22,16 @@ public class SchemeUtils{
 	}
 
     public static void changeUnit(){
-        settings.getBool("adminssecret") ? SchemeSize.unit.select((u) -> Call.sendChatMessage("/unit change " + u.name)) : SchemeSize.unit.select((unit) -> {
-            // I think there is an easier way, but I do not know it
-            var oldUnit = player.unit();
-            var newUnit = unit.spawn(player.team(), player.x, player.y);
-            Call.unitControl(player, newUnit);
-            oldUnit.remove();
-        });
+        if(settings.getBool("adminssecret")){
+            SchemeSize.unit.select((u) -> Call.sendChatMessage("/unit change " + u.name));
+        }else{
+            SchemeSize.unit.select((unit) -> { // I think there is an easier way, but I do not know it
+                var oldUnit = player.unit();
+                var newUnit = unit.spawn(player.team(), player.x, player.y);
+                Call.unitControl(player, newUnit);
+                oldUnit.remove();
+            });
+        }
     }
 
 	public static void switchTeam(){
