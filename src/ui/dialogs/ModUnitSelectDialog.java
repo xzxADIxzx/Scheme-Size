@@ -17,7 +17,7 @@ public class ModUnitSelectDialog extends BaseDialog{
 		units.each((unit) -> {
 			if (unit.isHidden()) return;
 			var drawable = new TextureRegionDrawable(unit.icon(Cicon.full));
-			cont.button(drawable, () => { 
+			cont.button(drawable, () -> { 
 				callback.get(unit);
 				hide(); 
 			}).size(64f);
