@@ -46,6 +46,7 @@ public class SchemeUtils{
             });
         };
         template(admins, server);
+        SchemeSize.hudfrag.updateShield(player.unit());
     }
 
 	public static void switchTeam(){
@@ -60,16 +61,24 @@ public class SchemeUtils{
     }
 
     public static void switchTeamBtw(){
-        player.team(player.team() != Team.sharded ? Team.sharded : Team.crux);
-        if(settings.getBool("adminssecret")) Call.sendChatMessage("/team " + player.team().name);
+        Runnable admins = () -> {
+            Call.sendChatMessage("/team " + player.team().name);
+        };
+        Runnable server = () -> {
+            player.team(player.team() != Team.sharded ? Team.sharded : Team.crux);
+        };
+        template(admins, server);
     }
 
 	public static void placeCore(){
-        var tile = world.tiles.get(player.tileX(), player.tileY());
-        if(tile != null){
-            tile.setNet(tile.block() != Blocks.coreShard ? Blocks.coreShard : Blocks.air, player.team(), 0);
-            if(settings.getBool("adminssecret")) Call.sendChatMessage("/core small");
-        }
+        Runnable admins = () -> {
+            Call.sendChatMessage("/core small");
+        };
+        Runnable server = () -> {
+            var tile = world.tiles.get(player.tileX(), player.tileY());
+            if(tile != null) tile.setNet(tile.block() != Blocks.coreShard ? Blocks.coreShard : Blocks.air, player.team(), 0);
+        };
+        template(admins, server);
     }
 
     public static void lookAt(){

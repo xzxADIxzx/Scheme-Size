@@ -685,7 +685,7 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
             }
         }
 
-        if(!player.dead() && !state.isPaused() && !renderer.isCutscene() && !mobilePanCam){
+        if(!player.dead() && !state.isPaused() && !renderer.isCutscene()){
             updateMovement(player.unit());
         }
 
@@ -923,7 +923,7 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
 
         player.boosting = collisions.overlapsTile(rect) || !unit.within(targetPos, 85f);
 
-        unit.movePref(movement);
+        if(!mobilePanCam) unit.movePref(movement);
 
         //update shooting if not building + not mining
         if(!player.unit().activelyBuilding() && player.unit().mineTile == null){
