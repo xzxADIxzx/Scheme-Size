@@ -14,7 +14,8 @@ public enum ModBinding implements KeyBind{
     place_core(KeyCode.l),
     look_at(KeyCode.altLeft),
     teleport(KeyCode.altLeft),
-    self_dest(KeyCode.altLeft);
+    self_dest(KeyCode.altLeft),
+    spawn_unit(KeyCode.altLeft);
 
     private final KeybindValue defaultValue;
     private final String category;

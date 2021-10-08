@@ -401,7 +401,7 @@ public class ModDesktopInput extends ModInputHandler{
             SchemeUtils.toggleCoreItems();
         }
 
-        if(input.keyTap(ModBinding.change_unit)){ //add spawn unit & !input.keyDown(ModBinding.alt)
+        if(input.keyTap(ModBinding.change_unit) && !input.keyDown(ModBinding.spawn_unit)){
             SchemeUtils.changeUnit();
         }
 
@@ -423,6 +423,10 @@ public class ModDesktopInput extends ModInputHandler{
 
         if(input.keyDown(ModBinding.teleport) && input.keyTap(Binding.select)){
             SchemeUtils.teleport(input.mouseWorld());
+        }
+
+        if(input.keyDown(ModBinding.spawn_unit) && input.keyTap(ModBinding.change_unit)){
+            SchemeUtils.spawnUnit();
         }
 
         Tile selected = tileAtMod(Core.input.mouseX(), Core.input.mouseY());

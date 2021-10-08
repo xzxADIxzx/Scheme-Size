@@ -1,5 +1,6 @@
 package mindustry.scheme;
 
+import arc.util.*;
 import arc.math.geom.*;
 import arc.struct.*;
 import mindustry.gen.*;
@@ -42,11 +43,13 @@ public class SchemeUtils{
                 var oldUnit = player.unit();
                 var newUnit = unit.spawn(player.team(), player.x, player.y);
                 Call.unitControl(player, newUnit);
-                oldUnit.remove();
+                oldUnit.kill();
             });
         };
         template(admins, server);
-        SchemeSize.hudfrag.updateShield(player.unit());
+        Time.runTask(10f, () -> {
+            SchemeSize.hudfrag.updateShield(player.unit());
+        });
     }
 
 	public static void switchTeam(){
@@ -92,5 +95,20 @@ public class SchemeUtils{
     public static void selfDest(){
     	player.unit().kill();
     	SchemeSize.hudfrag.updateShield(player.unit());
+    }
+
+    public static void spawnUnit(){
+        Runnable admins = () -> {
+            SchemeSize.unit.select((u) -> Call.sendChatMessage("/spawn " + u.name + " 1 " + player.team().name));
+        };
+        Runnable server = () -> {
+            SchemeSize.unit.select((unit) -> {
+                unit.spawn(player.team(), player.x, player.y);
+            });
+        };
+        template(admins, server);
+        Time.runTask(10f, () -> {
+            SchemeSize.hudfrag.updateShield(player.unit());
+        });
     }
 }
