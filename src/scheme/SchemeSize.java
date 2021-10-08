@@ -18,16 +18,21 @@ import static mindustry.Vars.*;
 
 public class SchemeSize extends Mod{
 
+    public static ModSchematics schematic;
     public static ModInputHandler input;
-    public static ModSchematics schematic = new ModSchematics();
-    public static ModUnitSelectDialog unit = new ModUnitSelectDialog();
-    public static ModSettingsMenuDialog setting = new ModSettingsMenuDialog();
-    public static ModHudFragment hudfrag = new ModHudFragment();
+    public static ModUnitSelectDialog unit;
+    public static ModSettingsMenuDialog setting;
+    public static ModHudFragment hudfrag;
 
     public SchemeSize(){
         Events.on(ClientLoadEvent.class, e -> {
+            schematic = new ModSchematics()
+            unit =  = new ModUnitSelectDialog();
+            setting = new ModSettingsMenuDialog();
+            hudfrag = new ModHudFragment();
+
             schematics = schematic;
-            schematic.loadSync();
+            schematics.loadSync();
 
             control.setInput(input = mobile ? new ModMobileInput() : new ModDesktopInput());
 
