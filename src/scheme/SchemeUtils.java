@@ -36,7 +36,7 @@ public class SchemeUtils{
     public static void changeUnit(){
         Runnable admins = () -> {
             SchemeSize.unit.select((u) -> Call.sendChatMessage("/unit change " + u.name));
-        }ж
+        };
         Runnable server = () -> {
             SchemeSize.unit.select((unit) -> { // I think there is an easier way, but I do not know it
                 var oldUnit = player.unit();
@@ -44,18 +44,18 @@ public class SchemeUtils{
                 Call.unitControl(player, newUnit);
                 oldUnit.remove();
             });
-        }ж
+        };
         template(admins, server);
     }
 
 	public static void switchTeam(){
         Runnable admins = () -> {
             Call.sendChatMessage("/team " + player.team().name);
-        }ж
+        };
         Runnable server = () -> {
             var team = new Seq(Team.baseTeams).indexOf(player.team());
             player.team(Team.baseTeams[++team < 6 ? team : 0]);
-        }ж
+        };
         template(admins, server);
     }
 
