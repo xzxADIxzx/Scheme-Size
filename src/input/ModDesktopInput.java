@@ -401,6 +401,10 @@ public class ModDesktopInput extends ModInputHandler{
             SchemeUtils.toggleCoreItems();
         }
 
+        if(input.keyTap(ModBinding.change_unit)){ //add spawn unit & !input.keyDown(ModBinding.alt)
+            SchemeUtils.changeUnit();
+        }
+
         if(input.keyTap(ModBinding.switch_team)){
             SchemeUtils.switchTeam();
         }

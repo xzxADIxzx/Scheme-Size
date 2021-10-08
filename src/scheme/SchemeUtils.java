@@ -21,6 +21,19 @@ public class SchemeUtils{
 		settings.put("coreitems", !settings.getBool("coreitems"));
 	}
 
+    public static void changeUnit(){
+        settings.getBool("adminssecret") ? SchemeSize.unit.select((unit) -> {
+            // admin`s command... so I didn`t need to do something more
+            Call.sendChatMessage("/unit change " + unit.name)
+        }) : SchemeSize.unit.select((unit) -> {
+            // I think there is an easier way, but I do not know it
+            var oldUnit = player.unit();
+            var newUnit = unit.spawn(player.team(), player.x, player.y);
+            Call.unitControl(player, newUnit);
+            oldUnit.remove();
+        });
+    }
+
 	public static void switchTeam(){
         var team = new Seq(Team.baseTeams).indexOf(player.team());
         player.team(Team.baseTeams[++team < 6 ? team : 0]);

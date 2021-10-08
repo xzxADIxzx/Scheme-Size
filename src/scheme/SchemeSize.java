@@ -19,31 +19,27 @@ import static mindustry.Vars.*;
 public class SchemeSize extends Mod{
 
     public static ModInputHandler input;
+    public static ModSchematics schematic = new ModSchematics();
+    public static ModUnitSelectDialog unit = new ModUnitSelectDialog();
+    public static ModSettingsMenuDialog setting = new ModSettingsMenuDialog();
     public static ModHudFragment hudfrag = new ModHudFragment();
 
     public SchemeSize(){
         Events.on(ClientLoadEvent.class, e -> {
-            // change schematics
-            schematics = new ModSchematics();
-            schematics.loadSync();
+            schematics = schematic;
+            schematic.loadSync();
 
-            // change input
             control.setInput(input = mobile ? new ModMobileInput() : new ModDesktopInput());
 
-            // change dialog
-            var settings = new ModSettingsMenuDialog();
-            ui.settings = settings;
-
-            // build fragment
+            ui.settings = setting;
             hudfrag.build(ui.hudGroup);
 
             // hide secret
-            settings.mod.getCells().get(mobile ? 8 : 9).visible(false);
+            setting.mod.getCells().get(mobile ? 8 : 9).visible(false);
 
             // mobiles haven`t keybinds
             if(mobile) return;
 
-            // add keybinds
             KeyBind[] origi = (KeyBind[])Binding.values();
             KeyBind[] moded = (KeyBind[])ModBinding.values();
             KeyBind[] binds = new KeyBind[origi.length + moded.length];
