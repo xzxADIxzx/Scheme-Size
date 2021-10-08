@@ -25,7 +25,7 @@ public class ModUnitSelectDialog extends BaseDialog{
 		});
 	}
 
-	public void Select(Cons<UnitType> callback){
+	public void select(Cons<UnitType> callback){
 		this.callback = callback;
 		show();
 	}
