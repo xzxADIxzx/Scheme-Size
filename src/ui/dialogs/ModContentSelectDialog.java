@@ -17,7 +17,7 @@ public class ModContentSelectDialog<T> extends BaseDialog{
 	private Cell label;
 	private Cell slider;
 
-	public ModUnitSelectDialog(String name, Seq<T> content, float min, float max, float step, Cons<float> format){
+	public ModContentSelectDialog(String name, Seq<T> content, float min, float max, float step, Cons<float> format){
 		super(name);
 		this.format = format;
 		addCloseButton();
@@ -33,7 +33,7 @@ public class ModContentSelectDialog<T> extends BaseDialog{
 		content.each(item -> {
 			if (item.isHidden()) return;
 			var drawable = new TextureRegionDrawable(item.icon(Cicon.full));
-			table.button(drawable, () => { 
+			table.button(drawable, () -> { 
 				callback.get(item, slider.getValue());
 				hide(); 
 			}).size(64);
