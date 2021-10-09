@@ -6,10 +6,11 @@ import arc.scene.style.*;
 import arc.struct.*;
 import mindustry.ui.*;
 import mindustry.type.*;
+import mindustry.ctype.*;
 
 import static mindustry.Vars.*;
 
-public class ModContentSelectDialog<T> extends BaseDialog{
+public class ModContentSelectDialog<T extends UnlockableContent> extends BaseDialog{
 
 	public Cons2<T, float> callback;
 	public StringS format;
@@ -41,7 +42,7 @@ public class ModContentSelectDialog<T> extends BaseDialog{
 		});
 
 		cont.add(table).row();
-		cont.add(text).center().padTop(16).row();
+		cont.add(label).center().padTop(16).row();
 		cont.add(slider).fillX().row();
 	}
 
