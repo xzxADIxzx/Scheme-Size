@@ -55,7 +55,7 @@ public class SchemeUtils{
 
 	public static void switchTeam(){
         var index = new Seq(Team.baseTeams).indexOf(player.team());
-        var team = Team.baseTeams[++index < 6 ? index : 0].name;
+        var team = Team.baseTeams[++index < 6 ? index : 0];
         Runnable admins = () -> {
             Call.sendChatMessage("/team " + team.name);
         };
