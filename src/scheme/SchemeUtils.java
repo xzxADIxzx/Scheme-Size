@@ -37,7 +37,7 @@ public class SchemeUtils{
     public static void changeUnit(){
         Runnable admins = () -> {
             SchemeSize.unit.select((u) -> {
-                Call.sendChatMessage("/unit change " + u.name);
+                Call.sendChatMessage("/units change " + u.name);
                 SchemeSize.hudfrag.updateShield(player.unit());
             });
         };
