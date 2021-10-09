@@ -38,7 +38,7 @@ public class SchemeUtils{
         Runnable admins = () -> {
             SchemeSize.unit.select((u) -> {
                 Call.sendChatMessage("/units change " + u.name);
-                SchemeSize.hudfrag.updateShield(player.unit());
+                updatefrag();
             });
         };
         Runnable server = () -> {
@@ -47,29 +47,31 @@ public class SchemeUtils{
                 var newUnit = unit.spawn(player.team(), player.x, player.y);
                 Call.unitControl(player, newUnit);
                 oldUnit.kill(); // oof... remove does work in multiplayer, so I use kill
-                SchemeSize.hudfrag.updateShield(player.unit());
+                updatefrag();
             });
         };
         template(admins, server);
     }
 
 	public static void switchTeam(){
+        var index = new Seq(Team.baseTeams).indexOf(player.team());
+        var team = Team.baseTeams[++index < 6 ? index : 0].name;
         Runnable admins = () -> {
-            Call.sendChatMessage("/team " + player.team().name);
+            Call.sendChatMessage("/team " + team.name);
         };
         Runnable server = () -> {
-            var team = new Seq(Team.baseTeams).indexOf(player.team());
-            player.team(Team.baseTeams[++team < 6 ? team : 0]);
+            player.team(team);
         };
         template(admins, server);
     }
 
     public static void switchTeamBtw(){
+        var team = player.team() != Team.sharded ? Team.sharded : Team.crux;
         Runnable admins = () -> {
-            Call.sendChatMessage("/team " + player.team().name);
+            Call.sendChatMessage("/team " + team.name);
         };
         Runnable server = () -> {
-            player.team(player.team() != Team.sharded ? Team.sharded : Team.crux);
+            player.team(team);
         };
         template(admins, server);
     }
@@ -102,15 +104,19 @@ public class SchemeUtils{
         Runnable admins = () -> {
             SchemeSize.unit.select((u) -> {
                 Call.sendChatMessage("/spawn " + u.name + " 1 " + player.team().name);
-                SchemeSize.hudfrag.updateShield(player.unit());
+                updatefrag();
             });
         };
         Runnable server = () -> {
             SchemeSize.unit.select((unit) -> {
                 unit.spawn(player.team(), player.x, player.y);
-                SchemeSize.hudfrag.updateShield(player.unit());
+                updatefrag();
             });
         };
         template(admins, server);
+    }
+
+    private void updatefrag(){
+        SchemeSize.hudfrag.updateShield(player.unit());
     }
 }
