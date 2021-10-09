@@ -1,6 +1,5 @@
 package mindustry.scheme;
 
-import arc.util.*;
 import arc.math.geom.*;
 import arc.struct.*;
 import mindustry.gen.*;
@@ -36,13 +35,13 @@ public class SchemeUtils{
 
     public static void changeUnit(){
         Runnable admins = () -> {
-            SchemeSize.unit.select((u) -> {
-                Call.sendChatMessage("/units change " + u.name);
+            SchemeSize.unit.select(false, (unit, amount) -> {
+                Call.sendChatMessage("/units change " + unit.name);
                 updatefrag();
             });
         };
         Runnable server = () -> {
-            SchemeSize.unit.select((unit) -> { // I think there is an easier way, but I do not know it
+            SchemeSize.unit.select(false, (unit, amount) -> { // I think there is an easier way, but I do not know it
                 var oldUnit = player.unit();
                 var newUnit = unit.spawn(player.team(), player.x, player.y);
                 Call.unitControl(player, newUnit);
@@ -102,15 +101,14 @@ public class SchemeUtils{
 
     public static void spawnUnit(){
         Runnable admins = () -> {
-            SchemeSize.unit.select((u) -> {
-                Call.sendChatMessage("/spawn " + u.name + " 1 " + player.team().name);
-                updatefrag();
+            SchemeSize.unit.select((unit, amount) -> {
+                Call.sendChatMessage("/spawn " + unti.name + " " + String.valueOf(amount) + " " + player.team().name);
             });
         };
         Runnable server = () -> {
-            SchemeSize.unit.select((unit) -> {
-                unit.spawn(player.team(), player.x, player.y);
-                updatefrag();
+            SchemeSize.unit.select((unit, amount) -> {
+                for (int i = 0; i < amount; i++)
+                    unit.spawn(player.team(), player.x, player.y);
             });
         };
         template(admins, server);

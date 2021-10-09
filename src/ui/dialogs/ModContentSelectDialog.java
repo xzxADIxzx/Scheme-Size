@@ -45,7 +45,7 @@ public class ModContentSelectDialog<T> extends BaseDialog{
 		cont.add(slider).fillX().row();
 	}
 
-	public void select(Cons<UnitType> callback, boolean show){
+	public void select(boolean show, Cons<UnitType> callback){
 		this.callback = callback;
 		label.visible(show);
 		slider.visible(show);
