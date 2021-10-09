@@ -12,12 +12,12 @@ import static mindustry.Vars.*;
 public class ModContentSelectDialog<T> extends BaseDialog{
 
 	public Cons2<T, float> callback;
-	public Strings format;
+	public StringS format;
 
 	private Cell label;
 	private Cell slider;
 
-	public ModContentSelectDialog(String name, Seq<T> content, float min, float max, float step, Strings format){
+	public ModContentSelectDialog(String name, Seq<T> content, float min, float max, float step, StringS format){
 		super(name);
 		this.format = format;
 		addCloseButton();
@@ -52,7 +52,7 @@ public class ModContentSelectDialog<T> extends BaseDialog{
 		show();
 	}
 
-	public interface Strings{
+	public interface StringS{
         String get(T t);
     }
 }
