@@ -116,7 +116,7 @@ public class SchemeUtils{
         template(admins, server);
     }
 
-    private void updatefrag(){
+    private static void updatefrag(){
         SchemeSize.hudfrag.updateShield(player.unit());
     }
 }
