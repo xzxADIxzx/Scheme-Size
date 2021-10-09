@@ -20,16 +20,28 @@ public class SchemeSize extends Mod{
 
     public static ModSchematics schematic;
     public static ModInputHandler input;
-    public static ModUnitSelectDialog unit;
     public static ModSettingsMenuDialog setting;
     public static ModHudFragment hudfrag;
+
+    public static ModContentSelectDialog unit;
+    public static ModContentSelectDialog effect;
+    public static ModContentSelectDialog item;
 
     public SchemeSize(){
         Events.on(ClientLoadEvent.class, e -> {
             schematic = new ModSchematics();
-            unit = new ModUnitSelectDialog();
             setting = new ModSettingsMenuDialog();
             hudfrag = new ModHudFragment();
+
+            unit = new ModContentSelectDialog("@unitselect", content.units(), 0, 10, 1, value -> {
+                return Core.bundle.format("setting.blocks", value)
+            });
+            effect = new ModContentSelectDialog("@unitselect", content.units(), 0, 180, 1, value -> {
+                return Core.bundle.format("setting.blocks", value)
+            });
+            item = new ModContentSelectDialog("@unitselect", content.units(), -10000, 10000, 1000, value -> {
+                return Core.bundle.format("setting.blocks", UI.formatAmount(value))
+            });
 
             schematics = schematic;
             schematics.loadSync();
