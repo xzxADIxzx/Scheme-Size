@@ -1,6 +1,7 @@
 package mindustry.ui.dialogs;
 
 import arc.func.*;
+import arc.scene.ui.*;
 import arc.scene.ui.layout.*;
 import arc.scene.style.*;
 import arc.struct.*;
@@ -13,12 +14,12 @@ import static mindustry.Vars.*;
 public class ModContentSelectDialog<T extends UnlockableContent> extends BaseDialog{
 
 	public Cons2<T, float> callback;
-	public StringS format;
+	public StringS<float> format;
 
 	private Cell label;
 	private Cell slider;
 
-	public ModContentSelectDialog(String name, Seq<T> content, float min, float max, float step, StringS format){
+	public ModContentSelectDialog(String name, Seq<T> content, float min, float max, float step, StringS<float> format){
 		super(name);
 		this.format = format;
 		addCloseButton();
@@ -53,7 +54,7 @@ public class ModContentSelectDialog<T extends UnlockableContent> extends BaseDia
 		show();
 	}
 
-	public interface StringS{
-        String get(T t);
+	public interface StringS<S>{
+        String get(S s);
     }
 }
