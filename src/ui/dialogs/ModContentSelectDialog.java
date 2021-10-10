@@ -13,13 +13,13 @@ import static mindustry.Vars.*;
 
 public class ModContentSelectDialog<T extends UnlockableContent> extends BaseDialog{
 
-	public Cons2<T, float> callback;
-	public StringS<float> format;
+	public Cons2<T, Floatp> callback;
+	public StringS<Floatp> format;
 
 	private Cell label;
 	private Cell slider;
 
-	public ModContentSelectDialog(String name, Seq<T> content, float min, float max, float step, StringS<float> format){
+	public ModContentSelectDialog(String name, Seq<T> content, float min, float max, float step, StringS<Floatp> format){
 		super(name);
 		this.format = format;
 		addCloseButton();
@@ -27,7 +27,7 @@ public class ModContentSelectDialog<T extends UnlockableContent> extends BaseDia
 		label = new Label("", Styles.outlineLabel);
 		slider = new Slider(min, max, step, false);
 		slider.moved(value -> {
-			label.setText(format.get(value));
+			label.setText(format.get(() -> value));
 		});
 		slider.change();
 
@@ -36,7 +36,7 @@ public class ModContentSelectDialog<T extends UnlockableContent> extends BaseDia
 			if (item.isHidden()) return;
 			var drawable = new TextureRegionDrawable(item.icon(Cicon.full));
 			table.button(drawable, () -> { 
-				callback.get(item, slider.getValue());
+				callback.get(item, () -> slider.getValue());
 				hide(); 
 			}).size(64);
 			if (item.id % 10 == 9) table.row();
@@ -47,7 +47,7 @@ public class ModContentSelectDialog<T extends UnlockableContent> extends BaseDia
 		cont.add(slider).fillX().row();
 	}
 
-	public void select(boolean show, Cons<T, float> callback){
+	public void select(boolean show, Cons<T, Floatp> callback){
 		this.callback = callback;
 		label.visible(show);
 		slider.visible(show);
