@@ -10,6 +10,8 @@ public enum ModBinding implements KeyBind{
     history(KeyCode.f7, "mod"),
     toggle_core_items(KeyCode.f4),
     change_unit(KeyCode.f1),
+    change_effect(KeyCode.f2),
+    change_item(KeyCode.f3),
     switch_team_btw(KeyCode.semicolon),
     switch_team(KeyCode.apostrophe),
     place_core(KeyCode.l),
