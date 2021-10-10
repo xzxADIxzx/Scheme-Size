@@ -9,6 +9,7 @@ import arc.scene.ui.layout.*;
 import mindustry.ui.dialogs.*;
 import mindustry.ui.fragments.*;
 import mindustry.mod.*;
+import mindustry.type.*;
 import mindustry.core.*;
 import mindustry.game.*;
 import mindustry.game.EventType.*;
@@ -43,9 +44,9 @@ public class SchemeSize extends Mod{
             //     return Core.bundle.format("setting.blocks", UI.formatAmount(value.get()));
             // });
 
-            unit = new ModContentSelectDialog("@unitselect", content.units(), 0, 10, 1);
-            effect = new ModContentSelectDialog("@unitselect", content.units(), 0, 180, 1);
-            item = new ModContentSelectDialog("@unitselect", content.units(), -10000, 10000, 1000);
+            unit = new ModContentSelectDialog<UnitType>("@unitselect", content.units(), 0, 10, 1);
+            effect = new ModContentSelectDialog<StatusEffect>("@unitselect", content.units(), 0, 180, 1);
+            item = new ModContentSelectDialog<Item>("@unitselect", content.units(), -10000, 10000, 1000);
 
             schematics = schematic;
             schematics.loadSync();
