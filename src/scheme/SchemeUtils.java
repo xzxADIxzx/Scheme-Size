@@ -54,7 +54,7 @@ public class SchemeUtils{
 
     public static void changeEffect(){
         SchemeSize.effect.select(true, (effect, amount) -> {
-            if (amount == 0) player.unit().unapply(effect);
+            if(amount.get() == 0) player.unit().unapply(effect);
             else player.unit().apply(effect, amount.get());
         });
     }
