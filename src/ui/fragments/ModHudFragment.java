@@ -325,7 +325,7 @@ public class ModHudFragment extends Fragment{
 
                 float stroke = width * 0.35f;
                 float bh = height/2f;
-                Draw.color(color);
+                Draw.color(player.team().color);
 
                 float f1 = Math.min(fract * 2f, 1f), f2 = (fract - 0.5f) * 2f;
 
