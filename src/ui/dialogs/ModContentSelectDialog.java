@@ -27,7 +27,7 @@ public class ModContentSelectDialog<T extends UnlockableContent> extends BaseDia
 		var label = new Label("", Styles.outlineLabel);
 		var slider = new Slider(min, max, step, false);
 		slider.moved(value -> {
-			label.setText(format.get(() -> value));
+			label.setText(format.get(value));
 		});
 		slider.change();
 
