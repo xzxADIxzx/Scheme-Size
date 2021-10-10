@@ -142,6 +142,6 @@ public class SchemeUtils{
 
     private static int fix(Item item, int amount){
         var items = player.team().core().items;
-        return items.get(item) + amount < 0 ? items.get(item) : amount;
+        return amount == 0 ? -items.get(item) : (items.get(item) + amount < 0 ? items.get(item) : amount);
     }
 }

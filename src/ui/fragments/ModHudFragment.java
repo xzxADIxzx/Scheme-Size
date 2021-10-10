@@ -32,7 +32,7 @@ import mindustry.ui.*;
 
 import static mindustry.Vars.*;
 
-// Last Update - Sep 4, 2021
+// Last Update - Sep 30, 2021
 public class ModHudFragment extends Fragment{
 
     private static final float dsize = 65f;
@@ -509,6 +509,7 @@ public class ModHudFragment extends Fragment{
     }
 
     private void addInfoTable(Table table){
+        table.name = "infotable";
         table.left();
 
         var count = new float[]{-1};

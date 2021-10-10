@@ -41,7 +41,7 @@ public class SchemeSize extends Mod{
                 return value == 0 ? "@cleareffect" : Core.bundle.format("unit.zero.seconds", value / 60);
             });
             item = new ModContentSelectDialog("@itemselect", content.items(), -10000, 10000, 1000, value -> {
-                return Core.bundle.format("unit.zero.items", UI.formatAmount((long)value));
+                return value == 0 ? "@clearitem" : Core.bundle.format("unit.zero.items", UI.formatAmount((long)value));
             });
 
             schematics = schematic;
