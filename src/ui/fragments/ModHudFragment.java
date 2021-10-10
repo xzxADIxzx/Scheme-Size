@@ -30,7 +30,7 @@ import mindustry.net.Packets.*;
 import mindustry.type.*;
 import mindustry.ui.*;
 
-import mindustry.Vars.*;
+import static mindustry.Vars.*;
 
 // Last Update - Sep 4, 2021
 public class ModHudFragment extends Fragment{
@@ -325,7 +325,7 @@ public class ModHudFragment extends Fragment{
 
                 float stroke = width * 0.35f;
                 float bh = height/2f;
-                Draw.color(Vars.player.team().color);
+                Draw.color(color);
 
                 float f1 = Math.min(fract * 2f, 1f), f2 = (fract - 0.5f) * 2f;
 
