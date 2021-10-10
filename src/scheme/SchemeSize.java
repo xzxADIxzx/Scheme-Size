@@ -35,13 +35,13 @@ public class SchemeSize extends Mod{
             hudfrag = new ModHudFragment();
 
             unit = new ModContentSelectDialog("@unitselect", content.units(), 1, 10, 1, value -> {
-                return Core.bundle.format("setting.blocks", value);
+                return Core.bundle.format("unit.zero.units", value);
             });
             effect = new ModContentSelectDialog("@unitselect", content.statusEffects(), 0, 180, 1, value -> {
-                return Core.bundle.format("setting.blocks", value);
+                return Core.bundle.format("unit.zero.seconds", value);
             });
             item = new ModContentSelectDialog("@unitselect", content.items(), -10000, 10000, 1000, value -> {
-                return Core.bundle.format("setting.blocks", UI.formatAmount((long)value));
+                return Core.bundle.format("unit.zero.items", UI.formatAmount((long)value));
             });
 
             schematics = schematic;

@@ -52,6 +52,29 @@ public class SchemeUtils{
         template(admins, server);
     }
 
+    public static void changeEffect(){
+        SchemeSize.effect.select(true, (effect, amount) -> {
+            if(amount.get() == 0) player.unit().unapply(effect);
+            else player.unit().apply(effect, amount.get());
+        });
+    }
+
+    public static void changeItem(){
+        Runnable admins = () -> {
+            SchemeSize.item.select(true, (item, amount) -> {
+                Call.sendChatMessage("/give " + item.name + " " + String.valueOf(amount.get()));
+            });
+        };
+        Runnable server = () -> {
+            SchemeSize.item.select(true, (item, amount) -> {
+                var items = player.team().core().items;
+                int fix = items.get(item) - (int)amount.get() > 0 ? (int)amount.get() : items.get(item);
+                items.add(item, fix);
+            });
+        };
+        template(admins, server);
+    }
+
 	public static void switchTeam(){
         var index = new Seq(Team.baseTeams).indexOf(player.team());
         var team = Team.baseTeams[++index < 6 ? index : 0];
@@ -96,7 +119,7 @@ public class SchemeUtils{
 
     public static void selfDest(){
     	player.unit().kill();
-    	SchemeSize.hudfrag.updateShield(player.unit());
+    	updatefrag();
     }
 
     public static void spawnUnit(){

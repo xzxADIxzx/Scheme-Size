@@ -405,6 +405,14 @@ public class ModDesktopInput extends ModInputHandler{
             SchemeUtils.changeUnit();
         }
 
+        if(input.keyTap(ModBinding.change_effect)){
+            SchemeUtils.changeEffect();
+        }
+
+        if(input.keyTap(ModBinding.change_item)){
+            SchemeUtils.changeItem();
+        }
+
         if(input.keyTap(ModBinding.switch_team)){
             SchemeUtils.switchTeam();
         }
