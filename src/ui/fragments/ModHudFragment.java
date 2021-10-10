@@ -30,7 +30,7 @@ import mindustry.net.Packets.*;
 import mindustry.type.*;
 import mindustry.ui.*;
 
-import static mindustry.Vars.*;
+import mindustry.Vars.*;
 
 // Last Update - Sep 4, 2021
 public class ModHudFragment extends Fragment{
