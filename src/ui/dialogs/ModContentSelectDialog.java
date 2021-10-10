@@ -19,7 +19,7 @@ public class ModContentSelectDialog<T extends UnlockableContent> extends BaseDia
 	private Cell label;
 	private Cell slider;
 
-	public ModContentSelectDialog(String name, Seq<T> content, float min, float max, float step, StringS<Floatp> format){
+	public ModContentSelectDialog(String name, Seq<T> content, float min, float max, float step){ //, StringS<Floatp> format
 		super(name);
 		this.format = format;
 		addCloseButton();
@@ -27,7 +27,8 @@ public class ModContentSelectDialog<T extends UnlockableContent> extends BaseDia
 		label = new Label("", Styles.outlineLabel);
 		slider = new Slider(min, max, step, false);
 		slider.moved(value -> {
-			label.setText(format.get(() -> value));
+			// label.setText(format.get(() -> value));
+			label.setText(String.valueOf(value));
 		});
 		slider.change();
 
