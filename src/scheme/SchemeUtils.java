@@ -3,6 +3,7 @@ package mindustry.scheme;
 import arc.math.geom.*;
 import arc.struct.*;
 import mindustry.gen.*;
+import mindustry.type.*;
 import mindustry.game.*;
 import mindustry.content.*;
 
@@ -62,14 +63,12 @@ public class SchemeUtils{
     public static void changeItem(){
         Runnable admins = () -> {
             SchemeSize.item.select(true, (item, amount) -> {
-                Call.sendChatMessage("/give " + item.name + " " + String.valueOf(amount.get()));
+                Call.sendChatMessage("/give " + item.name + " " + String.valueOf(fix(item, (int)amount.get())));
             });
         };
         Runnable server = () -> {
             SchemeSize.item.select(true, (item, amount) -> {
-                var items = player.team().core().items;
-                int fix = items.get(item) - (int)amount.get() > 0 ? (int)amount.get() : items.get(item);
-                items.add(item, fix);
+                Vars.player.team().core().items.add(item, fix(item, (int)amount.get()));
             });
         };
         template(admins, server);
@@ -139,5 +138,10 @@ public class SchemeUtils{
 
     private static void updatefrag(){
         SchemeSize.hudfrag.updateShield(player.unit());
+    }
+
+    private static int fix(Item item, int amount){
+        var items = player.team().core().items;
+        return items.get(item) + amount < 0 ? items.get(item) : amount;
     }
 }
