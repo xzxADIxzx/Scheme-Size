@@ -406,7 +406,7 @@ public class ModDesktopInput extends ModInputHandler{
         }
 
         if(input.keyTap(ModBinding.change_effect)){
-            SchemeUtils.changeEffcet();
+            SchemeUtils.changeEffect();
         }
 
         if(input.keyTap(ModBinding.change_item)){
