@@ -24,8 +24,8 @@ public class ModContentSelectDialog<T extends UnlockableContent> extends BaseDia
 		this.format = format;
 		addCloseButton();
 
-		label = new Label("", Styles.outlineLabel);
-		slider = new Slider(min, max, step, false);
+		var label = new Label("", Styles.outlineLabel);
+		var slider = new Slider(min, max, step, false);
 		slider.moved(value -> {
 			// label.setText(format.get(() -> value));
 			label.setText(String.valueOf(value));
@@ -44,8 +44,8 @@ public class ModContentSelectDialog<T extends UnlockableContent> extends BaseDia
 		});
 
 		cont.add(table).row();
-		cont.add(label).center().padTop(16).row();
-		cont.add(slider).fillX().row();
+		this.label = cont.add(label).center().padTop(16).row();
+		this.slider = cont.add(slider).fillX().row();
 	}
 
 	public void select(boolean show, Cons<T, Floatp> callback){
