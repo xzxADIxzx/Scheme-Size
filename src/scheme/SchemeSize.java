@@ -24,9 +24,9 @@ public class SchemeSize extends Mod{
     public static ModSettingsMenuDialog setting;
     public static ModHudFragment hudfrag;
 
-    public static ModContentSelectDialog unit;
-    public static ModContentSelectDialog effect;
-    public static ModContentSelectDialog item;
+    public static ModContentSelectDialog<UnitType> unit;
+    public static ModContentSelectDialog<StatusEffect> effect;
+    public static ModContentSelectDialog<Item> item;
 
     public SchemeSize(){
         Events.on(ClientLoadEvent.class, e -> {
