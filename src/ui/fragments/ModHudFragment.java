@@ -291,7 +291,7 @@ public class ModHudFragment extends Fragment{
                 this.flip = flip;
                 this.flash = flash;
 
-                setColor(player.team().color);
+                setColor(Pal.health);
             }
 
             @Override
@@ -397,7 +397,7 @@ public class ModHudFragment extends Fragment{
                 fract = Mathf.clamp(fract);
 
                 float bh = height/2f;
-                Draw.color(color);
+                Draw.color(player.team().color);
 
                 float f1 = Math.min(fract * 2f, 1f), f2 = (fract - 0.5f) * 2f;
                 float stroke = width - (width * 0.35f);
