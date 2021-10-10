@@ -30,7 +30,7 @@ import static mindustry.Vars.net;
 import static mindustry.Vars.*;
 import static mindustry.input.PlaceMode.*;
 
-// Last Update - Oct 3, 2021
+// Last Update - Aug 22, 2021
 public class ModDesktopInput extends ModInputHandler{
     
     public Vec2 movement = new Vec2();
@@ -192,7 +192,6 @@ public class ModDesktopInput extends ModInputHandler{
             ui.listfrag.toggle();
         }
 
-        boolean locked = locked();
         boolean panCam = false;
         float camSpeed = (!Core.input.keyDown(Binding.boost) ? panSpeed : panBoostSpeed) * Time.delta;
 
@@ -205,26 +204,24 @@ public class ModDesktopInput extends ModInputHandler{
             panning = false;
         }
 
-        if(!locked){
-            if(((player.dead() || state.isPaused()) && !ui.chatfrag.shown()) && !scene.hasField() && !scene.hasDialog()){
-                if(input.keyDown(Binding.mouse_move)){
-                    panCam = true;
-                }
-
-                Core.camera.position.add(Tmp.v1.setZero().add(Core.input.axis(Binding.move_x), Core.input.axis(Binding.move_y)).nor().scl(camSpeed));
-            }else if(!player.dead() && !panning){
-                Core.camera.position.lerpDelta(player, Core.settings.getBool("smoothcamera") ? 0.08f : 1f);
+        if(((player.dead() || state.isPaused()) && !ui.chatfrag.shown()) && !scene.hasField() && !scene.hasDialog()){
+            if(input.keyDown(Binding.mouse_move)){
+                panCam = true;
             }
 
-            if(panCam){
-                Core.camera.position.x += Mathf.clamp((Core.input.mouseX() - Core.graphics.getWidth() / 2f) * panScale, -1, 1) * camSpeed;
-                Core.camera.position.y += Mathf.clamp((Core.input.mouseY() - Core.graphics.getHeight() / 2f) * panScale, -1, 1) * camSpeed;
-            }
+            Core.camera.position.add(Tmp.v1.setZero().add(Core.input.axis(Binding.move_x), Core.input.axis(Binding.move_y)).nor().scl(camSpeed));
+        }else if(!player.dead() && !panning){
+            Core.camera.position.lerpDelta(player, Core.settings.getBool("smoothcamera") ? 0.08f : 1f);
         }
 
-        shouldShoot = !scene.hasMouse() && !locked;
+        if(panCam){
+            Core.camera.position.x += Mathf.clamp((Core.input.mouseX() - Core.graphics.getWidth() / 2f) * panScale, -1, 1) * camSpeed;
+            Core.camera.position.y += Mathf.clamp((Core.input.mouseY() - Core.graphics.getHeight() / 2f) * panScale, -1, 1) * camSpeed;
+        }
 
-        if(!scene.hasMouse() && !locked){
+        shouldShoot = !scene.hasMouse();
+
+        if(!scene.hasMouse()){
             if(Core.input.keyDown(Binding.control) && Core.input.keyTap(Binding.select)){
                 Unit on = selectedUnit();
                 var build = selectedControlBuild();
@@ -241,7 +238,7 @@ public class ModDesktopInput extends ModInputHandler{
             }
         }
 
-        if(!player.dead() && !state.isPaused() && !scene.hasField() && !locked){
+        if(!player.dead() && !state.isPaused() && !scene.hasField() && !renderer.isCutscene()){
             updateMovement(player.unit());
 
             if(Core.input.keyTap(Binding.respawn)){
@@ -282,7 +279,7 @@ public class ModDesktopInput extends ModInputHandler{
             }
         }
 
-        if(player.dead() || locked){
+        if(player.dead()){
             cursorType = SystemCursor.arrow;
             return;
         }
