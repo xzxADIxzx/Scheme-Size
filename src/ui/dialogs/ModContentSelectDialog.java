@@ -47,7 +47,7 @@ public class ModContentSelectDialog<T extends UnlockableContent> extends BaseDia
 		cont.add(slider).fillX().row();
 	}
 
-	public void select(boolean show, Cons<UnitType> callback){
+	public void select(boolean show, Cons<T, float> callback){
 		this.callback = callback;
 		label.visible(show);
 		slider.visible(show);
