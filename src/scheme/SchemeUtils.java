@@ -66,7 +66,7 @@ public class SchemeUtils{
         };
         Runnable server = () -> {
             SchemeSize.item.select(true, (item, amount) -> {
-                player.team().core().items.add(item, amount.get());
+                player.team().core().items.add(item, (int)amount.get());
             });
         };
         template(admins, server);
