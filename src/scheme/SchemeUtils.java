@@ -54,7 +54,8 @@ public class SchemeUtils{
 
     public static void changeEffect(){
         SchemeSize.effect.select(true, (effect, amount) -> {
-            player.unit().apply(effect, amount.get());
+            if (amount == 0) player.unit().unapply(effect);
+            else player.unit().apply(effect, amount.get());
         });
     }
 
@@ -66,7 +67,9 @@ public class SchemeUtils{
         };
         Runnable server = () -> {
             SchemeSize.item.select(true, (item, amount) -> {
-                player.team().core().items.add(item, (int)amount.get());
+                var items = player.team().core().items;
+                int fix = items.get(item) - (int)amount.get() > 0 : (int)amount.get() : items.get(item);
+                items.add(item, fix);
             });
         };
         template(admins, server);
