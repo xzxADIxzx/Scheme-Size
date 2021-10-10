@@ -6,7 +6,6 @@ import arc.scene.ui.layout.*;
 import arc.scene.style.*;
 import arc.struct.*;
 import mindustry.ui.*;
-import mindustry.type.*; //mb remove
 import mindustry.ctype.*;
 
 import static mindustry.Vars.*;
@@ -34,7 +33,7 @@ public class ModContentSelectDialog<T extends UnlockableContent> extends BaseDia
 		var table = new Table();
 		content.each(item -> {
 			if (item.isHidden()) return;
-			var drawable = new TextureRegionDrawable(item.icon(Cicon.full));
+			var drawable = new TextureRegionDrawable(item.icon(Cicon.tiny));
 			table.button(drawable, () -> { 
 				callback.get(item, () -> slider.getValue());
 				hide(); 
