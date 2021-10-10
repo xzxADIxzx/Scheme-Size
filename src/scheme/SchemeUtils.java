@@ -68,7 +68,7 @@ public class SchemeUtils{
         Runnable server = () -> {
             SchemeSize.item.select(true, (item, amount) -> {
                 var items = player.team().core().items;
-                int fix = items.get(item) - (int)amount.get() > 0 : (int)amount.get() : items.get(item);
+                int fix = items.get(item) - (int)amount.get() > 0 ? (int)amount.get() : items.get(item);
                 items.add(item, fix);
             });
         };
