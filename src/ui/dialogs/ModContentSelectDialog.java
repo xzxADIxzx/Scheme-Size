@@ -44,11 +44,13 @@ public class ModContentSelectDialog<T extends UnlockableContent> extends BaseDia
 		});
 
 		cont.add(table).row();
-		this.label = cont.add(label).center().padTop(16).row();
-		this.slider = cont.add(slider).fillX().row();
+		this.label = cont.add(label);
+		this.slider = cont.add(slider);
+		this.label.center().padTop(16).row();
+		this.slider.fillX().row();
 	}
 
-	public void select(boolean show, Cons<T, Floatp> callback){
+	public void select(boolean show, Cons2<T, Floatp> callback){
 		this.callback = callback;
 		label.visible(show);
 		slider.visible(show);
