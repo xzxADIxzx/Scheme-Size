@@ -6,7 +6,7 @@ import arc.scene.ui.layout.*;
 import arc.scene.style.*;
 import arc.struct.*;
 import mindustry.ui.*;
-import mindustry.type.*;
+import mindustry.type.*; //mb remove
 import mindustry.ctype.*;
 
 import static mindustry.Vars.*;
@@ -19,7 +19,7 @@ public class ModContentSelectDialog<T extends UnlockableContent> extends BaseDia
 	private Cell label;
 	private Cell slider;
 
-	public ModContentSelectDialog(String name, Seq<T> content, float min, float max, float step){ //, StringS<Floatp> format
+	public ModContentSelectDialog(String name, Seq<T> content, float min, float max, float step, StringS<Floatp> format){
 		super(name);
 		this.format = format;
 		addCloseButton();
@@ -27,8 +27,7 @@ public class ModContentSelectDialog<T extends UnlockableContent> extends BaseDia
 		var label = new Label("", Styles.outlineLabel);
 		var slider = new Slider(min, max, step, false);
 		slider.moved(value -> {
-			// label.setText(format.get(() -> value));
-			label.setText(String.valueOf(value));
+			label.setText(format.get(() -> value));
 		});
 		slider.change();
 
@@ -45,8 +44,8 @@ public class ModContentSelectDialog<T extends UnlockableContent> extends BaseDia
 
 		cont.add(table).row();
 		this.label = cont.add(label);
-		this.slider = cont.add(slider);
 		this.label.center().padTop(16).row();
+		this.slider = cont.add(slider);
 		this.slider.fillX().row();
 	}
 
