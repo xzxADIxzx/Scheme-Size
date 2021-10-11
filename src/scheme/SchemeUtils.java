@@ -19,7 +19,7 @@ public class SchemeUtils{
             admins.run();
         }else {
             if(net.client()){
-                ui.showInfoToast("@feature.serveronly", 5);
+                ui.showInfoFade("@feature.serveronly");
             }else{
                 server.run();
             }
@@ -137,12 +137,7 @@ public class SchemeUtils{
     }
 
     public static void showInfo(){
-        var cm0 = bundle.get("keycom.main");
-        var cm1 = bundle.get("keybind.block_info.name");
-        var cm2 = bundle.get("keybind.select.name");
-        var cm3 = bundle.get("keybind.respawn.name");
-        var cm4 = bundle.get("keybind.change_unit.name");
-        ui.showInfo(bundle.format("keycom.info", cm0, cm1, cm2, cm3, cm4));
+        SchemeSize.keycomb.show();
     }
 
     private static void updatefrag(){
@@ -151,6 +146,6 @@ public class SchemeUtils{
 
     private static int fix(Item item, int amount){
         var items = player.team().core().items;
-        return amount == 0 ? -items.get(item) : (items.get(item) + amount < 0 ? items.get(item) : amount);
+        return amount == 0 ? -items.get(item) : (items.get(item) + amount < 0 ? -items.get(item) : amount);
     }
 }

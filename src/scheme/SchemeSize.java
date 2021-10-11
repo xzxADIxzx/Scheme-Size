@@ -22,6 +22,7 @@ public class SchemeSize extends Mod{
     public static ModSchematics schematic;
     public static ModInputHandler input;
     public static ModSettingsMenuDialog setting;
+    public static ModKeybindCombinationsDialog keycomb;
     public static ModHudFragment hudfrag;
 
     public static ModContentSelectDialog<UnitType> unit;
@@ -32,6 +33,7 @@ public class SchemeSize extends Mod{
         Events.on(ClientLoadEvent.class, e -> {
             schematic = new ModSchematics();
             setting = new ModSettingsMenuDialog();
+            keycomb = new ModKeybindCombinationsDialog();
             hudfrag = new ModHudFragment();
 
             unit = new ModContentSelectDialog("@unitselect", content.units(), 1, 10, 1, value -> {

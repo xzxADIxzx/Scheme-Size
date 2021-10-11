@@ -639,7 +639,7 @@ public class ModDesktopInput extends ModInputHandler{
             SchemeUtils.teleport(input.mouseWorld());
         }
 
-        if(input.keyTap(Binding.respawn) && !input.keyDown(ModBinding.alternative)){
+        if(input.keyTap(Binding.respawn) && input.keyDown(ModBinding.alternative)){
             SchemeUtils.selfDest();
         }
 
