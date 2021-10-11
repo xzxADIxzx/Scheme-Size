@@ -241,7 +241,7 @@ public class ModDesktopInput extends ModInputHandler{
         if(!player.dead() && !state.isPaused() && !scene.hasField() && !renderer.isCutscene()){
             updateMovement(player.unit());
 
-            if(Core.input.keyTap(Binding.respawn) && !Core.input.keyDown(ModBinding.self_dest)){
+            if(Core.input.keyTap(Binding.respawn) && !Core.input.keyDown(ModBinding.alternative)){
                 controlledType = null;
                 recentRespawnTimer = 1f;
                 Call.unitClear(player);
@@ -287,7 +287,7 @@ public class ModDesktopInput extends ModInputHandler{
             mode = none;
         }
 
-        if(player.shooting && (!canShoot() || Core.input.keyDown(ModBinding.teleport))){
+        if(player.shooting && (!canShoot() || Core.input.keyDown(ModBinding.alternative))){
             player.shooting = false;
         }
 
@@ -607,7 +607,7 @@ public class ModDesktopInput extends ModInputHandler{
             SchemeUtils.toggleCoreItems();
         }
 
-        if(input.keyTap(ModBinding.change_unit) && !input.keyDown(ModBinding.spawn_unit)){
+        if(input.keyTap(ModBinding.change_unit) && !input.keyDown(ModBinding.alternative)){
             SchemeUtils.changeUnit();
         }
 
@@ -639,7 +639,7 @@ public class ModDesktopInput extends ModInputHandler{
             SchemeUtils.teleport(input.mouseWorld());
         }
 
-        if(input.keyTap(Binding.respawn) && !input.keyDown(ModBinding.self_dest)){
+        if(input.keyTap(Binding.respawn) && !input.keyDown(ModBinding.alternative)){
             SchemeUtils.selfDest();
         }
 
