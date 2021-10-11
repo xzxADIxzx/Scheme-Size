@@ -22,7 +22,7 @@ public class ModKeybindCombinationsDialog extends BaseDialog{
 	}
 
 	private void template(String name, String comb){
-		String sec = bundle.get("keybind.block_info.name");
+		String sec = Core.bundle.get("keybind.block_info.name");
 		cont.add(name, Color.white).left().padRight(20).padLeft(8);
 		cont.add(main + " + " + sec, Pal.accent).left().minWidth(90).padRight(20);
 		cont.row();
