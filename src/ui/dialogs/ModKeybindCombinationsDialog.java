@@ -6,7 +6,7 @@ public class ModKeybindCombinationsDialog extends BaseDialog{
 
 	public String main;
 
-	public ModContentSelectDialog(){
+	public ModKeybindCombinationsDialog(){
 		super("keycomb.name");
 		addCloseButton();
 
