@@ -136,6 +136,15 @@ public class SchemeUtils{
         template(admins, server);
     }
 
+    public static void showInfo(){
+        var cm0 = bundle.get("keycom.main");
+        var cm1 = bundle.get("keybind.block_info.name");
+        var cm2 = bundle.get("keybind.select.name");
+        var cm3 = bundle.get("keybind.respawn.name");
+        var cm4 = bundle.get("keybind.change_unit.name");
+        ui.showInfo(bundle.format("keycom.info", cm0, cm1, cm2, cm3, cm4));
+    }
+
     private static void updatefrag(){
         SchemeSize.hudfrag.updateShield(player.unit());
     }

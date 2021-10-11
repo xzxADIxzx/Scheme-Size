@@ -241,16 +241,12 @@ public class ModDesktopInput extends ModInputHandler{
         if(!player.dead() && !state.isPaused() && !scene.hasField() && !renderer.isCutscene()){
             updateMovement(player.unit());
 
-            if(Core.input.keyTap(Binding.respawn)){
-                if(Core.input.keyDown(ModBinding.self_dest)){
-                    SchemeUtils.selfDest();
-                }else{
-                    controlledType = null;
-                    recentRespawnTimer = 1f;
-                    Call.unitClear(player);
+            if(Core.input.keyTap(Binding.respawn) && !Core.input.keyDown(ModBinding.self_dest)){
+                controlledType = null;
+                recentRespawnTimer = 1f;
+                Call.unitClear(player);
 
-                    SchemeSize.hudfrag.updateShield(player.unit());
-                }
+                SchemeSize.hudfrag.updateShield(player.unit());
             }
         }
 
@@ -393,49 +389,7 @@ public class ModDesktopInput extends ModInputHandler{
     void pollInput(){
         if(scene.getKeyboardFocus() instanceof TextField) return;
 
-        if(input.keyTap(ModBinding.history)){
-            SchemeUtils.history();
-        }
-
-        if(input.keyTap(ModBinding.toggle_core_items)){
-            SchemeUtils.toggleCoreItems();
-        }
-
-        if(input.keyTap(ModBinding.change_unit) && !input.keyDown(ModBinding.spawn_unit)){
-            SchemeUtils.changeUnit();
-        }
-
-        if(input.keyTap(ModBinding.change_effect)){
-            SchemeUtils.changeEffect();
-        }
-
-        if(input.keyTap(ModBinding.change_item)){
-            SchemeUtils.changeItem();
-        }
-
-        if(input.keyTap(ModBinding.switch_team)){
-            SchemeUtils.switchTeam();
-        }
-
-        if(input.keyTap(ModBinding.switch_team_btw)){
-            SchemeUtils.switchTeamBtw();
-        }
-
-        if(input.keyTap(ModBinding.place_core)){
-            SchemeUtils.placeCore();
-        }
-
-        if(input.keyDown(ModBinding.look_at)){
-            SchemeUtils.lookAt();
-        }
-
-        if(input.keyDown(ModBinding.teleport) && input.keyTap(Binding.select)){
-            SchemeUtils.teleport(input.mouseWorld());
-        }
-
-        if(input.keyDown(ModBinding.spawn_unit) && input.keyTap(ModBinding.change_unit)){
-            SchemeUtils.spawnUnit();
-        }
+        modInput();
 
         Tile selected = tileAtMod(Core.input.mouseX(), Core.input.mouseY());
         int cursorX = tileXMod(Core.input.mouseX());
@@ -641,6 +595,60 @@ public class ModDesktopInput extends ModInputHandler{
                 Core.settings.put("preferredlaseropacity", Core.settings.getInt("lasersopacity"));
                 Core.settings.put("lasersopacity", 0);
             }
+        }
+    }
+
+    public void modInput(){
+        if(input.keyTap(ModBinding.history)){
+            SchemeUtils.history();
+        }
+
+        if(input.keyTap(ModBinding.toggle_core_items)){
+            SchemeUtils.toggleCoreItems();
+        }
+
+        if(input.keyTap(ModBinding.change_unit) && !input.keyDown(ModBinding.spawn_unit)){
+            SchemeUtils.changeUnit();
+        }
+
+        if(input.keyTap(ModBinding.change_effect)){
+            SchemeUtils.changeEffect();
+        }
+
+        if(input.keyTap(ModBinding.change_item)){
+            SchemeUtils.changeItem();
+        }
+
+        if(input.keyTap(ModBinding.switch_team)){
+            SchemeUtils.switchTeam();
+        }
+
+        if(input.keyTap(ModBinding.switch_team_btw)){
+            SchemeUtils.switchTeamBtw();
+        }
+
+        if(input.keyTap(ModBinding.place_core)){
+            SchemeUtils.placeCore();
+        }
+
+        if(input.keyDown(ModBinding.look_at)){
+            SchemeUtils.lookAt();
+        }
+
+        if(input.keyTap(Binding.select) && input.keyDown(ModBinding.alternative)){
+            SchemeUtils.teleport(input.mouseWorld());
+        }
+
+        if(input.keyTap(Binding.respawn) && !input.keyDown(ModBinding.self_dest)){
+            SchemeUtils.selfDest();
+        }
+
+        if(input.keyTap(ModBinding.change_unit) && input.keyDown(ModBinding.alternative)){
+            SchemeUtils.spawnUnit();
+        }
+
+        if(input.keyTap(Binding.block_info) && input.keyDown(ModBinding.alternative)){
+            SchemeUtils.showInfo();
         }
     }
 
