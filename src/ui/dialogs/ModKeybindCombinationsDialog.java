@@ -9,7 +9,7 @@ public class ModKeybindCombinationsDialog extends BaseDialog{
 	public String main;
 
 	public ModKeybindCombinationsDialog(){
-		super("keycomb.name");
+		super("@keycomb.name");
 		addCloseButton();
 
 		main = Core.bundle.get("keycomb.main");
@@ -22,7 +22,7 @@ public class ModKeybindCombinationsDialog extends BaseDialog{
 	}
 
 	private void template(String name, String comb){
-		String sec = Core.bundle.get("keybind.block_info.name");
+		String sec = Core.bundle.get(comb);
 		cont.add(name, Color.white).left().padRight(20).padLeft(8);
 		cont.add(main + " + " + sec, Pal.accent).left().minWidth(90).padRight(20);
 		cont.row();

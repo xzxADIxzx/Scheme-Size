@@ -36,13 +36,13 @@ public class SchemeSize extends Mod{
             keycomb = new ModKeybindCombinationsDialog();
             hudfrag = new ModHudFragment();
 
-            unit = new ModContentSelectDialog("@unitselect", content.units(), 1, 10, 1, value -> {
+            unit = new ModContentSelectDialog("@unitselect", content.units(), 1, 20, 1, value -> {
                 return Core.bundle.format("unit.zero.units", value);
             });
-            effect = new ModContentSelectDialog("@effectselect", content.statusEffects(), 0, 180 * 60, 60, value -> {
+            effect = new ModContentSelectDialog("@effectselect", content.statusEffects(), 0, 60 * 60 * 5, 60, value -> {
                 return value == 0 ? "@cleareffect" : Core.bundle.format("unit.zero.seconds", value / 60);
             });
-            item = new ModContentSelectDialog("@itemselect", content.items(), -10000, 10000, 1000, value -> {
+            item = new ModContentSelectDialog("@itemselect", content.items(), -10000, 10000, 100, value -> {
                 return value == 0 ? "@clearitem" : Core.bundle.format("unit.zero.items", UI.formatAmount((long)value));
             });
 
