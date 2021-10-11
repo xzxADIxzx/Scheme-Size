@@ -42,7 +42,7 @@ public class SchemeSize extends Mod{
             effect = new ModContentSelectDialog("@effectselect", content.statusEffects(), 0, 60 * 60 * 5, 60, value -> {
                 return value == 0 ? "@cleareffect" : Core.bundle.format("unit.zero.seconds", value / 60);
             });
-            item = new ModContentSelectDialog("@itemselect", content.items(), -10000, 10000, 100, value -> {
+            item = new ModContentSelectDialog("@itemselect", content.items(), -10000, 10000, 200, value -> {
                 return value == 0 ? "@clearitem" : Core.bundle.format("unit.zero.items", UI.formatAmount((long)value));
             });
 
