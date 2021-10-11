@@ -1,6 +1,8 @@
 package mindustry.ui.dialogs;
 
-import static arc.Core.*;
+import arc.*;
+import arc.graphics.*;
+import mindustry.graphics.*;
 
 public class ModKeybindCombinationsDialog extends BaseDialog{
 
@@ -10,7 +12,7 @@ public class ModKeybindCombinationsDialog extends BaseDialog{
 		super("keycomb.name");
 		addCloseButton();
 
-		main = bundle.get("keycomb.main");
+		main = Core.bundle.get("keycomb.main");
 
 		// bad code, but I`m too lazy
 		template("@keycomb.view_comb", "keybind.block_info.name");
