@@ -65,8 +65,7 @@ public class ModHudFragment extends Fragment{
             cont.name = "overlaymarker";
             cont.top().left();
 
-            // if(mobile){
-            if(true){
+            if(mobile){
                 cont.table(select -> {
                     select.name = "mobile buttons";
                     select.left();
@@ -157,8 +156,7 @@ public class ModHudFragment extends Fragment{
                 }).growY().fillX().right().width(40f).disabled(b -> !canSkipWave()).name("skip");
             }).width(dsize * 5 + 4f).name("statustable");
 
-            // if(mobile){
-            if(true){
+            if(mobile){
                 float bsize = dsize - 1.5f;
                 float isize = dsize - 28f;
 
