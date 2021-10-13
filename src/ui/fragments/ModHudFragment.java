@@ -190,7 +190,7 @@ public class ModHudFragment extends Fragment{
                     flipMobile = select.button(flip, style, this::toggleMobile).get();
                     flipMobile.name = "flip";
 
-                    select.button(look, style, isize, SchemeUtils::toggleCoreItems).name("crtm");
+                    select.button(crtm, style, isize, SchemeUtils::toggleCoreItems).name("crtm");
                     select.button(look, style, isize, SchemeSize.input::toggleMobileDisWpn).name("look");
                     select.button(tele, style, isize, () -> SchemeUtils.teleport(Core.camera.position)).name("tele");
                     select.button(port, style, isize, SchemeSize.input::toggleMobilePanCam).name("port").get(
@@ -198,7 +198,7 @@ public class ModHudFragment extends Fragment{
 
                     select.row();
                     select.table(s -> {
-                         select.defaults().size(bsize).left();
+                        s.defaults().size(bsize).left();
 
                         s.button(core, style, isize, SchemeUtils::placeCore).name("core");
                         s.button(team, style, isize, SchemeUtils::switchTeam).name("team");
