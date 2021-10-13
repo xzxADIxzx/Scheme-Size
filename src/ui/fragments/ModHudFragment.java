@@ -191,7 +191,7 @@ public class ModHudFragment extends Fragment{
                     flipMobile.name = "flip";
 
                     select.button(crtm, style, isize, SchemeUtils::toggleCoreItems).name("crtm");
-                    select.button(look, style, isize, SchemeSize.input::toggleMobileDisWpn).name("look");
+                    select.button(look, style, isize - 4, SchemeSize.input::toggleMobileDisWpn).name("look");
                     select.button(tele, style, isize, () -> SchemeUtils.teleport(Core.camera.position)).name("tele");
                     select.button(port, style, isize, SchemeSize.input::toggleMobilePanCam).name("port").get(
                     ).image().color(Pal.gray).width(4).height(bsize).padRight(-dsize + 1.5f + isize);
@@ -208,12 +208,12 @@ public class ModHudFragment extends Fragment{
 
                         s.row();
 
-                        s.button(unit, style, isize, SchemeUtils::placeCore).name("unit");
-                        s.button(effe, style, isize, SchemeUtils::switchTeam).name("effe");
-                        s.button(item, style, isize, SchemeUtils::selfDest).name("item");
-                        s.button(spwn, style, isize, SchemeUtils::switchTeam).name("spwn").get(
+                        s.button(unit, style, isize, SchemeUtils::changeUnit).name("unit");
+                        s.button(effe, style, isize, SchemeUtils::changeEffect).name("effe");
+                        s.button(item, style, isize, SchemeUtils::changeItem).name("item");
+                        s.button(spwn, style, isize, SchemeUtils::spawnUnit).name("spwn").get(
                         ).image().color(Pal.gray).width(4).height(bsize).padRight(-dsize + 1.5f + isize);
-                    }).visible(() -> shownMobile);
+                    }).left().name("more mod buttons").visible(() -> shownMobile);
                 }).left().name("mod buttons");
             }
 
