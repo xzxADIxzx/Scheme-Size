@@ -191,7 +191,7 @@ public class ModHudFragment extends Fragment{
                     flipMobile.name = "flip";
 
                     select.button(crtm, style, isize, SchemeUtils::toggleCoreItems).name("crtm");
-                    select.button(look, style, isize - 4, SchemeSize.input::toggleMobileDisWpn).name("look");
+                    select.button(look, style, isize - 12f, SchemeSize.input::toggleMobileDisWpn).name("look");
                     select.button(tele, style, isize, () -> SchemeUtils.teleport(Core.camera.position)).name("tele");
                     select.button(port, style, isize, SchemeSize.input::toggleMobilePanCam).name("port").get(
                     ).image().color(Pal.gray).width(4).height(bsize).padRight(-dsize + 1.5f + isize);
@@ -214,7 +214,7 @@ public class ModHudFragment extends Fragment{
                         s.button(spwn, style, isize, SchemeUtils::spawnUnit).name("spwn").get(
                         ).image().color(Pal.gray).width(4).height(bsize).padRight(-dsize + 1.5f + isize);
                     }).left().name("more mod buttons").visible(() -> shownMobile);
-                }).left().name("mod buttons");
+                }).left().size(bsize * 4f).name("mod buttons");
             }
 
             wavesMain.row();
