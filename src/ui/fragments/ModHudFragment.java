@@ -213,8 +213,8 @@ public class ModHudFragment extends Fragment{
                         s.button(item, style, isize, SchemeUtils::changeItem).name("item");
                         s.button(spwn, style, isize, SchemeUtils::spawnUnit).name("spwn").get(
                         ).image().color(Pal.gray).width(4).height(bsize).padRight(-dsize + 1.5f + isize);
-                    }).left().name("more mod buttons").visible(() -> shownMobile);
-                }).left().size(bsize * 4f).name("mod buttons");
+                    }).left().size(bsize * 4f).name("more mod buttons").visible(() -> shownMobile);
+                }).left().name("mod buttons");
             }
 
             wavesMain.row();
