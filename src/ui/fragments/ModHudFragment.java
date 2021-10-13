@@ -181,8 +181,8 @@ public class ModHudFragment extends Fragment{
                     flipMobile = select.button(flip, style, this::toggleMobile).get();
                     flipMobile.name = "flip";
 
-                    select.button(crtm, style, isize, SchemeUtils::toggleCoreItems).name("crtm");
-                    select.button(look, style, isize - 12f, SchemeSize.input::toggleMobileDisWpn).name("look");
+                    select.button(crtm, style, isize - 12f, SchemeUtils::toggleCoreItems).name("crtm");
+                    select.button(look, style, isize, SchemeSize.input::toggleMobileDisWpn).name("look");
                     select.button(tele, style, isize, () -> SchemeUtils.teleport(Core.camera.position)).name("tele");
                     select.button(port, style, isize, SchemeSize.input::toggleMobilePanCam).name("port").get(
                     ).image().color(Pal.gray).width(4).height(bsize).padRight(-dsize + 1.5f + isize);
@@ -194,7 +194,7 @@ public class ModHudFragment extends Fragment{
                     Drawable core = Icon.effect;
                     Drawable team = Core.atlas.drawable("team-derelict");
                     Drawable kill = Core.atlas.drawable("status-blasted");
-                    Drawable hist = Icon.book;
+                    Drawable hist = Icon.info;
 
                     select.button(core, style, isize, SchemeUtils::placeCore).name("core");
                     select.button(team, style, isize, SchemeUtils::switchTeam).name("team");
@@ -207,8 +207,8 @@ public class ModHudFragment extends Fragment{
                     select.defaults().size(bsize).left();
 
                     Drawable unit = Icon.units;
-                    Drawable effe = Core.atlas.drawable("team-corroded");
-                    Drawable item = Core.atlas.drawable("item");
+                    Drawable effe = Core.atlas.drawable("status-corroded");
+                    Drawable item = Icon.production;
                     Drawable spwn = Icon.add;
 
                     select.button(unit, style, isize, SchemeUtils::changeUnit).name("unit");
