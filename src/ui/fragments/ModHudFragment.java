@@ -37,8 +37,10 @@ public class ModHudFragment extends Fragment{
 
     private static final float dsize = 65f;
     private ImageButton flip;
+    private ImageButton flipMobile;
     private float maxShield;
     public boolean shown = true;
+    public boolean shownMobile = false;
 
     @Override
     public void build(Group parent){
@@ -63,7 +65,8 @@ public class ModHudFragment extends Fragment{
             cont.name = "overlaymarker";
             cont.top().left();
 
-            if(mobile){
+            // if(mobile){
+            if(true){
                 cont.table(select -> {
                     select.name = "mobile buttons";
                     select.left();
@@ -154,11 +157,13 @@ public class ModHudFragment extends Fragment{
                 }).growY().fillX().right().width(40f).disabled(b -> !canSkipWave()).name("skip");
             }).width(dsize * 5 + 4f).name("statustable");
 
-            if(mobile){
+            // if(mobile){
+            if(true){
                 wavesMain.row();
                 wavesMain.table(select -> {
+                    float bsize = dsize - 1.5f;
                     float isize = dsize - 28f;
-                    select.defaults().size(dsize - 1.5f).left();
+                    select.defaults().size(bsize).left();
 
                     ImageButtonStyle style = new ImageButtonStyle(){{
                         up = Tex.wavepane;
@@ -166,18 +171,47 @@ public class ModHudFragment extends Fragment{
                         over = Styles.flatOver;
                     }};
 
-                    Drawable core = Icon.effect;
-                    Drawable team = Core.atlas.drawable("team-derelict");
-                    Drawable kill = Core.atlas.drawable("status-blasted");
+                    Drawable flip = Icon.downOpen;
+                    Drawable crtm = Core.atlas.drawable("status-disarmed");
+                    Drawable look = Core.atlas.drawable("status-disarmed");
                     Drawable tele = Core.atlas.drawable("status-overdrive");
                     Drawable port = Icon.lock;
 
-                    select.button(core, style, isize, SchemeUtils::placeCore).name("core");
-                    select.button(team, style, isize, SchemeUtils::switchTeam).name("team");
-                    select.button(kill, style, isize, SchemeUtils::selfDest).name("kill");
-                    select.button(tele, style, isize, () -> SchemeUtils.teleport(Core.camera.position)).name("teleport");
-                    select.button(port, style, isize, SchemeSize.input::toggleMobilePanCam).name("pancam").get(
-                    ).image().color(Pal.gray).width(4).height(dsize - 1.5f).padRight(-dsize + 1.5f + isize);
+                    Drawable core = Icon.effect;
+                    Drawable team = Core.atlas.drawable("team-derelict");
+                    Drawable kill = Core.atlas.drawable("status-blasted");
+                    Drawable hist = Icon.book;
+
+                    Drawable unit = Icon.units;
+                    Drawable effe = Core.atlas.drawable("team-corroded");
+                    Drawable item = Core.atlas.drawable("item");
+                    Drawable spwn = Icon.add;
+
+                    flipMobile = select.button(flip, style, this::toggleMobile).get();
+                    flipMobile.name = "flip";
+
+                    select.button(look, style, isize, SchemeUtils::toggleCoreItems).name("crtm");
+                    select.button(look, style, isize, SchemeSize.input::toggleMobileDisWpn).name("look");
+                    select.button(tele, style, isize, () -> SchemeUtils.teleport(Core.camera.position)).name("tele");
+                    select.button(port, style, isize, SchemeSize.input::toggleMobilePanCam).name("port").get(
+                    ).image().color(Pal.gray).width(4).height(bsize).padRight(-dsize + 1.5f + isize);
+
+                    select.row();
+                    select.table(s -> {
+                        s.button(core, style, isize, SchemeUtils::placeCore).name("core");
+                        s.button(team, style, isize, SchemeUtils::switchTeam).name("team");
+                        s.button(kill, style, isize, SchemeUtils::selfDest).name("kill");
+                        s.button(hist, style, isize, SchemeUtils::history).name("hist").get(
+                        ).image().color(Pal.gray).width(4).height(bsize).padRight(-dsize + 1.5f + isize);
+
+                        s.row();
+
+                        s.button(unit, style, isize, SchemeUtils::placeCore).name("unit");
+                        s.button(effe, style, isize, SchemeUtils::switchTeam).name("effe");
+                        s.button(item, style, isize, SchemeUtils::selfDest).name("item");
+                        s.button(spwn, style, isize, SchemeUtils::switchTeam).name("spwn").get(
+                        ).image().color(Pal.gray).width(4).height(bsize).padRight(-dsize + 1.5f + isize);
+                    }).visible(() -> shownMobile);
                 }).left().name("mod buttons");
             }
 
@@ -243,6 +277,14 @@ public class ModHudFragment extends Fragment{
 
         shown = !shown;
         ui.hudfrag.shown = shown;
+    }
+
+    private void toggleMobile(){
+        if(flipMobile != null){
+            flipMobile.getStyle().imageUp = shownMobile ? Icon.downOpen : Icon.upOpen;
+        }
+
+        shownMobile = !shownMobile;
     }
 
     private Table makeStatusTable(){

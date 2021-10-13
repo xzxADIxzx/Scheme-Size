@@ -49,7 +49,7 @@ public class SchemeSize extends Mod{
             schematics = schematic;
             schematics.loadSync();
 
-            control.setInput(input = mobile ? new ModMobileInput() : new ModDesktopInput());
+            control.setInput(input = !mobile ? new ModMobileInput() : new ModDesktopInput()); // undo
 
             ui.settings = setting;
             hudfrag.build(ui.hudGroup);

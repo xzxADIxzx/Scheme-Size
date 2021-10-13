@@ -959,7 +959,7 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
             }
         }
 
-        unit.controlWeapons(player.shooting && !boosted);
+        unit.controlWeapons(player.shooting && !boosted && !mobileDisWpn);
     }
 
     //endregion
