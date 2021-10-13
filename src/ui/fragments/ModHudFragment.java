@@ -172,7 +172,7 @@ public class ModHudFragment extends Fragment{
                     }};
 
                     Drawable flip = Icon.downOpen;
-                    Drawable crtm = Core.atlas.drawable("status-disarmed");
+                    Drawable crtm = Icon.eye;
                     Drawable look = Core.atlas.drawable("status-disarmed");
                     Drawable tele = Core.atlas.drawable("status-overdrive");
                     Drawable port = Icon.lock;
@@ -198,6 +198,8 @@ public class ModHudFragment extends Fragment{
 
                     select.row();
                     select.table(s -> {
+                         select.defaults().size(bsize).left();
+
                         s.button(core, style, isize, SchemeUtils::placeCore).name("core");
                         s.button(team, style, isize, SchemeUtils::switchTeam).name("team");
                         s.button(kill, style, isize, SchemeUtils::selfDest).name("kill");
