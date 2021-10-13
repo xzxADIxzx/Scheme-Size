@@ -159,33 +159,24 @@ public class ModHudFragment extends Fragment{
 
             // if(mobile){
             if(true){
+                float bsize = dsize - 1.5f;
+                float isize = dsize - 28f;
+
+                ImageButtonStyle style = new ImageButtonStyle(){{
+                    up = Tex.wavepane;
+                    down = Styles.flatDown;
+                    over = Styles.flatOver;
+                }};
+
                 wavesMain.row();
                 wavesMain.table(select -> {
-                    float bsize = dsize - 1.5f;
-                    float isize = dsize - 28f;
                     select.defaults().size(bsize).left();
-
-                    ImageButtonStyle style = new ImageButtonStyle(){{
-                        up = Tex.wavepane;
-                        down = Styles.flatDown;
-                        over = Styles.flatOver;
-                    }};
 
                     Drawable flip = Icon.downOpen;
                     Drawable crtm = Icon.eye;
                     Drawable look = Core.atlas.drawable("status-disarmed");
                     Drawable tele = Core.atlas.drawable("status-overdrive");
                     Drawable port = Icon.lock;
-
-                    Drawable core = Icon.effect;
-                    Drawable team = Core.atlas.drawable("team-derelict");
-                    Drawable kill = Core.atlas.drawable("status-blasted");
-                    Drawable hist = Icon.book;
-
-                    Drawable unit = Icon.units;
-                    Drawable effe = Core.atlas.drawable("team-corroded");
-                    Drawable item = Core.atlas.drawable("item");
-                    Drawable spwn = Icon.add;
 
                     flipMobile = select.button(flip, style, this::toggleMobile).get();
                     flipMobile.name = "flip";
@@ -195,26 +186,37 @@ public class ModHudFragment extends Fragment{
                     select.button(tele, style, isize, () -> SchemeUtils.teleport(Core.camera.position)).name("tele");
                     select.button(port, style, isize, SchemeSize.input::toggleMobilePanCam).name("port").get(
                     ).image().color(Pal.gray).width(4).height(bsize).padRight(-dsize + 1.5f + isize);
+                }).left().name("mod buttons").row();
 
-                    select.row();
-                    select.table(s -> {
-                        s.defaults().size(bsize).left();
+                wavesMain.table(select -> {
+                    select.defaults().size(bsize).left();
 
-                        s.button(core, style, isize, SchemeUtils::placeCore).name("core");
-                        s.button(team, style, isize, SchemeUtils::switchTeam).name("team");
-                        s.button(kill, style, isize, SchemeUtils::selfDest).name("kill");
-                        s.button(hist, style, isize, SchemeUtils::history).name("hist").get(
-                        ).image().color(Pal.gray).width(4).height(bsize).padRight(-dsize + 1.5f + isize);
+                    Drawable core = Icon.effect;
+                    Drawable team = Core.atlas.drawable("team-derelict");
+                    Drawable kill = Core.atlas.drawable("status-blasted");
+                    Drawable hist = Icon.book;
 
-                        s.row();
+                    select.button(core, style, isize, SchemeUtils::placeCore).name("core");
+                    select.button(team, style, isize, SchemeUtils::switchTeam).name("team");
+                    select.button(kill, style, isize, SchemeUtils::selfDest).name("kill");
+                    select.button(hist, style, isize, SchemeUtils::history).name("hist").get(
+                    ).image().color(Pal.gray).width(4).height(bsize).padRight(-dsize + 1.5f + isize);
+                }).left().name("mod buttons").visible(() -> shownMobile).row();
 
-                        s.button(unit, style, isize, SchemeUtils::changeUnit).name("unit");
-                        s.button(effe, style, isize, SchemeUtils::changeEffect).name("effe");
-                        s.button(item, style, isize, SchemeUtils::changeItem).name("item");
-                        s.button(spwn, style, isize, SchemeUtils::spawnUnit).name("spwn").get(
-                        ).image().color(Pal.gray).width(4).height(bsize).padRight(-dsize + 1.5f + isize);
-                    }).left().size(bsize * 4f).name("more mod buttons").visible(() -> shownMobile);
-                }).left().name("mod buttons");
+                wavesMain.table(select -> {
+                    select.defaults().size(bsize).left();
+
+                    Drawable unit = Icon.units;
+                    Drawable effe = Core.atlas.drawable("team-corroded");
+                    Drawable item = Core.atlas.drawable("item");
+                    Drawable spwn = Icon.add;
+
+                    select.button(unit, style, isize, SchemeUtils::changeUnit).name("unit");
+                    select.button(effe, style, isize, SchemeUtils::changeEffect).name("effe");
+                    select.button(item, style, isize, SchemeUtils::changeItem).name("item");
+                    select.button(spwn, style, isize, SchemeUtils::spawnUnit).name("spwn").get(
+                    ).image().color(Pal.gray).width(4).height(bsize).padRight(-dsize + 1.5f + isize);
+                }).left().name("mod buttons").visible(() -> shownMobile).row();
             }
 
             wavesMain.row();
