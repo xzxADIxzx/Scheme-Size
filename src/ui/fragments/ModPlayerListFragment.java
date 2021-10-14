@@ -16,7 +16,7 @@ import mindustry.ui.*;
 
 import static mindustry.Vars.*;
 
-public class ModPlayerListFragment extends ModPlayerListFragment{
+public class ModPlayerListFragment extends PlayerListFragment{
     private boolean visible = false;
     private Interval timer = new Interval();
     private TextField search;
