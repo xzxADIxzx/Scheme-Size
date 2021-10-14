@@ -21,9 +21,11 @@ public class SchemeSize extends Mod{
 
     public static ModSchematics schematic;
     public static ModInputHandler input;
+
     public static ModSettingsMenuDialog setting;
     public static ModKeybindCombinationsDialog keycomb;
     public static ModHudFragment hudfrag;
+    public static ModHudFragment listfrag;
 
     public static ModContentSelectDialog<UnitType> unit;
     public static ModContentSelectDialog<StatusEffect> effect;
@@ -35,6 +37,7 @@ public class SchemeSize extends Mod{
             setting = new ModSettingsMenuDialog();
             keycomb = new ModKeybindCombinationsDialog();
             hudfrag = new ModHudFragment();
+            listfrag = new ModPlayerListFragment();
 
             unit = new ModContentSelectDialog("@unitselect", content.units(), 1, 20, 1, value -> {
                 return Core.bundle.format("unit.zero.units", value);
@@ -52,7 +55,9 @@ public class SchemeSize extends Mod{
             control.setInput(input = mobile ? new ModMobileInput() : new ModDesktopInput());
 
             ui.settings = setting;
+            ui.listfrag = listfrag;
             hudfrag.build(ui.hudGroup);
+            listfrag.build(ui.hudGroup);
 
             // hide secret
             setting.mod.getCells().get(mobile ? 8 : 9).visible(false);
