@@ -168,7 +168,7 @@ public class ModPlayerListFragment extends PlayerListFragment{
 
                     t.button(Icon.zoom, Styles.clearPartiali, () -> Call.adminRequest(user, AdminAction.trace));
 
-                }).padRight(12).padLeft(12).size(bs + 10f, bs);
+                }).padRight(12).padLeft(16).size(bs + 10f, bs);
             }else if(!user.isLocal() && !user.admin && net.client() && Groups.player.size() >= 3 && player.team() == user.team()){ //votekick
                 button.add().growY();
                 button.button(Icon.hammer, Styles.clearPartiali,
