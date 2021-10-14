@@ -124,15 +124,15 @@ public class ModPlayerListFragment extends PlayerListFragment{
             button.labelWrap("[#" + user.color().toString().toUpperCase() + "]" + user.name()).width(170f).pad(10);
             button.add().grow();
 
-            button.image(Icon.admin).visible(() -> user.admin && !(!user.isLocal() && net.server())).padRight(5).get().updateVisibility();
-
             if(!user.isLocal()){
                 button.add().growY();
                 button.button(Icon.copy, Styles.clearPartiali, () -> {
                     Core.app.setClipboardText(user.name);
                     ui.showInfoFade("@copied");
-                }).size(h).padRight(h);
+                }).size(h);
             }
+
+            button.image(Icon.admin).visible(() -> user.admin && !(!user.isLocal() && net.server())).size(h).get().updateVisibility();
 
             if((net.server() || player.admin) && !user.isLocal() && (!user.admin || net.server())){
                 button.add().growY();
@@ -169,7 +169,6 @@ public class ModPlayerListFragment extends PlayerListFragment{
                 }).padRight(12).size(bs + 10f, bs);
             }else if(!user.isLocal() && !user.admin && net.client() && Groups.player.size() >= 3 && player.team() == user.team()){ //votekick
                 button.add().growY();
-
                 button.button(Icon.hammer, Styles.clearPartiali,
                 () -> {
                     ui.showConfirm("@confirm", Core.bundle.format("confirmvotekick",  user.name()), () -> {
