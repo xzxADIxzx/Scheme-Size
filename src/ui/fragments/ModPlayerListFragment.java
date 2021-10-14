@@ -126,7 +126,7 @@ public class ModPlayerListFragment extends PlayerListFragment{
             button.image(Icon.admin).visible(() -> user.admin && !(!user.isLocal() && net.server())).padRight(5).get().updateVisibility();
 
             if(!user.isLocal()){
-                button.imageButton(Icon.copy, () -> {
+                button.button(Icon.copy, Styles.clearPartiali, () -> {
                     // nothing
                 }).size(h);
             }

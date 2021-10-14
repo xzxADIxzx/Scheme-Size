@@ -25,7 +25,7 @@ public class SchemeSize extends Mod{
     public static ModSettingsMenuDialog setting;
     public static ModKeybindCombinationsDialog keycomb;
     public static ModHudFragment hudfrag;
-    public static ModHudFragment listfrag;
+    public static ModPlayerListFragment listfrag;
 
     public static ModContentSelectDialog<UnitType> unit;
     public static ModContentSelectDialog<StatusEffect> effect;
