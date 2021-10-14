@@ -71,12 +71,12 @@ public class ModPlayerListFragment extends PlayerListFragment{
 
         Events.on(ClientLoadEvent.class, e -> {
             var child = parent.getChildren();
-            var table = child.get(11);
+            var table = child.get(12);
             table.clear();
             table.remove();
             var menu = child.get(12);
             menu.remove();
-            parent.addChildAt(11, menu);
+            parent.addChildAt(12, menu);
         });
     }
 
@@ -126,6 +126,14 @@ public class ModPlayerListFragment extends PlayerListFragment{
 
             button.image(Icon.admin).visible(() -> user.admin && !(!user.isLocal() && net.server())).padRight(5).get().updateVisibility();
 
+            if(!user.isLocal()){
+                button.add().growY();
+                button.button(Icon.copy, Styles.clearPartiali, () -> {
+                    Core.app.setClipboardText(user.name);
+                    ui.showInfoFade("@copied");
+                }).size(h).padRight(h);
+            }
+
             if((net.server() || player.admin) && !user.isLocal() && (!user.admin || net.server())){
                 button.add().growY();
 
@@ -170,14 +178,7 @@ public class ModPlayerListFragment extends PlayerListFragment{
                 }).size(h);
             }
 
-            if(!user.isLocal()){
-                button.button(Icon.copy, Styles.clearPartiali, () -> {
-                    Core.app.setClipboardText(user.name);
-                    ui.showInfoFade("@copied");
-                }).size(h).padRight(h);
-            }
-
-            content.add(button).padBottom(-6).width(350f).maxHeight(h + 14);
+            content.add(button).padBottom(-6).width(350f + h).maxHeight(h + 14);
             content.row();
             content.image().height(4f).color(state.rules.pvp ? user.team().color : Pal.gray).growX();
             content.row();
