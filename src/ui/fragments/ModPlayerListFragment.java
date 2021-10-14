@@ -74,7 +74,7 @@ public class ModPlayerListFragment extends PlayerListFragment{
             var table = child.get(11);
             table.clear();
             table.remove();
-            var menu = child.get(13);
+            var menu = child.get(12);
             menu.remove();
             parent.addChildAt(11, menu);
         });
