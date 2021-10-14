@@ -68,15 +68,15 @@ public class ModPlayerListFragment extends PlayerListFragment{
 
         rebuild();
 
-        // Events.on(ClientLoadEvent.class, e -> {
-        //     var child = parent.getChildren();
-        //     var table = child.get(5);
-        //     table.clear();
-        //     table.remove();
-        //     var menu = child.get(12);
-        //     menu.remove();
-        //     parent.addChildAt(5, menu);
-        // });
+        Events.on(ClientLoadEvent.class, e -> {
+            var child = parent.getChildren();
+            var table = child.get(11);
+            table.clear();
+            table.remove();
+            var menu = child.get(13);
+            menu.remove();
+            parent.addChildAt(11, menu);
+        });
     }
 
     @Override
@@ -125,12 +125,6 @@ public class ModPlayerListFragment extends PlayerListFragment{
 
             button.image(Icon.admin).visible(() -> user.admin && !(!user.isLocal() && net.server())).padRight(5).get().updateVisibility();
 
-            if(!user.isLocal()){
-                button.button(Icon.copy, Styles.clearPartiali, () -> {
-                    // nothing
-                }).size(h);
-            }
-
             if((net.server() || player.admin) && !user.isLocal() && (!user.admin || net.server())){
                 button.add().growY();
 
@@ -173,6 +167,13 @@ public class ModPlayerListFragment extends PlayerListFragment{
                         Call.sendChatMessage("/votekick " + user.name());
                     });
                 }).size(h);
+            }
+
+            if(!user.isLocal()){
+                button.button(Icon.copy, Styles.clearPartiali, () -> {
+                    Core.app.setClipboardText(user.name);
+                    ui.showInfoFade("@copied");
+                }).size(h).padRight(h);
             }
 
             content.add(button).padBottom(-6).width(350f).maxHeight(h + 14);
