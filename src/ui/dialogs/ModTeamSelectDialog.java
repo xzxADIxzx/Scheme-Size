@@ -1,10 +1,10 @@
 package mindustry.ui.dialogs;
 
+import arc.*;
 import arc.util.*;
 import arc.func.*;
 import arc.scene.ui.*;
 import arc.scene.ui.layout.*;
-import arc.scene.style.*;
 import arc.graphics.g2d.*;
 import mindustry.ui.*;
 import mindustry.gen.*;
@@ -37,14 +37,14 @@ public class ModTeamSelectDialog extends BaseDialog{
 	private void rebuild(){
 		list.clear();
 		Groups.player.each(player -> {
-			CheckBox check = new CheckBox(player.name, (TextButton.TextButtonStyle)Styles.cleart);
+			CheckBox check = new CheckBox(player.name, new CheckBox.CheckBoxStyle());
 			check.changed(() -> this.player = player);
 
 			Table icon = new Table(){
                 @Override
                 public void draw(){
                     super.draw();
-                    Draw.color(Pal.gray);
+                    Draw.color(check.isChecked() ? Pal.accent : Pal.gray);
                     Draw.alpha(parentAlpha);
                     Lines.stroke(Scl.scl(4f));
                     Lines.rect(x, y, width, height);
@@ -62,10 +62,10 @@ public class ModTeamSelectDialog extends BaseDialog{
 	}
 
 	private void template(String icon, Team team){
-		Drawable draw = Core.atlas.drawable(icon);
-		team.button(draw, () -> {
+		var draw = Core.atlas.drawable(icon);
+		this.team.button(draw, () -> {
 			callback.get(team, player);
-			dialog.hide();
+			hide();
 		}).size(64).row();
 	}
 
