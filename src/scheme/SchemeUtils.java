@@ -74,7 +74,7 @@ public class SchemeUtils{
             });
         };
         Runnable js = () -> {
-            SchemeSize.unit.select(false, (item, amount) -> {
+            SchemeSize.item.select(false, (item, amount) -> {
                 Call.sendChatMessage(js(
                     "player.team().core().items.add(" + getItem(item) + ", " + String.valueOf(fix(item, (int)amount.get())) + ");"
                 ));
@@ -157,7 +157,7 @@ public class SchemeUtils{
 
     // js helpfull methods
     private static String js(String code){
-        return "/js var player = Groups.player.find(p => p.name == \"" + Vars.player.name + "\");\n" + js;
+        return "/js var player = Groups.player.find(p => p.name == \"" + player.name + "\");\n" + code;
     }
 
     private static String getUnit(UnitType unit){
