@@ -41,6 +41,7 @@ public class SchemeUtils{
         };
         Runnable js = () -> {
             SchemeSize.unit.select(false, (unit, amount) -> {
+                Call.sendChatMessage(js(getPlayer()));
                 Call.sendChatMessage(js("player.unit().kill()"));
                 Call.sendChatMessage(js("var newUnit = " + getUnit(unit) + ".spawn(player.team(), player.x, player.y)"));
                 Call.sendChatMessage(js("Call.unitControl(player, newUnit)"));
@@ -66,6 +67,7 @@ public class SchemeUtils{
         };
         Runnable js = () -> {
             SchemeSize.effect.select(true, (effect, amount) -> {
+                Call.sendChatMessage(js(getPlayer()));
                 if(amount.get() == 0) Call.sendChatMessage(js("player.unit().unapply(" + getEffect(effect) + ")"));
                 else Call.sendChatMessage(js("player.unit().apply(" + getEffect(effect) + ", " + String.valueOf(amount.get()) + ")"));
             });
@@ -87,9 +89,8 @@ public class SchemeUtils{
         };
         Runnable js = () -> {
             SchemeSize.item.select(true, (item, amount) -> {
-                Call.sendChatMessage(js(
-                    "player.team().core().items.add(" + getItem(item) + ", " + String.valueOf(fix(item, (int)amount.get())) + ")"
-                ));
+                Call.sendChatMessage(js(getPlayer()));
+                Call.sendChatMessage(js("player.team().core().items.add("+getItem(item)+","+String.valueOf(fix(item, (int)amount.get()))+")"));
             });
         };
         Runnable server = () -> {
@@ -169,7 +170,11 @@ public class SchemeUtils{
 
     // js helpfull methods
     private static String js(String code){
-        return "/js var player = Groups.player.find(p => p.name == \"" + player.name + "\");" + code;
+        return "/js " + code;
+    }
+
+    private static String getPlayer(){
+        return "var player = Groups.player.find(p => p.name == \"" + player.name + "\")";
     }
 
     private static String getUnit(UnitType unit){
