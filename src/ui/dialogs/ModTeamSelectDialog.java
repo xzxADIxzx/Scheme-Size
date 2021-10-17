@@ -31,7 +31,7 @@ public class ModTeamSelectDialog extends BaseDialog{
 		template("status-wet-ui", Team.blue);
 
 		cont.add(list).padRight(16f);
-		cont.add(team).padRight(16f);
+		cont.add(team);
 	}
 
 	private void rebuild(){
@@ -52,7 +52,7 @@ public class ModTeamSelectDialog extends BaseDialog{
                 }
             };
             icon.add(new Image(player.icon()).setScaling(Scaling.bounded)).grow();
-            icon.padRight(16f)
+            icon.padRight(16f);
 
             check.add(icon).size(74f);
 			list.add(check).checked(t -> this.player == player).row();

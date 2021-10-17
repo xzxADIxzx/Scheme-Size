@@ -37,13 +37,13 @@ public class ModContentSelectDialog<T extends UnlockableContent> extends BaseDia
 			table.button(drawable, () -> { 
 				callback.get(item, () -> slider.getValue());
 				hide(); 
-			}).size(64);
+			}).size(64f);
 			if (item.id % 10 == 9) table.row();
 		});
 
 		cont.add(table).row();
 		this.label = cont.add(label);
-		this.label.center().padTop(16).row();
+		this.label.center().padTop(16f).row();
 		this.slider = cont.add(slider);
 		this.slider.fillX().row();
 	}
