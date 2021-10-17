@@ -46,7 +46,7 @@ public class ModTeamSelectDialog extends BaseDialog{
             icon.add(new Image(player.icon()).setScaling(Scaling.bounded)).grow();
 
             check.add(icon).size(74);
-            check.label(() => player.name);
+            check.label(() -> player.name);
 
 			list.add(check).row();
 		});
