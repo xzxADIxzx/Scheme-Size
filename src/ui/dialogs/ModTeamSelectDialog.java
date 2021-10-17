@@ -37,7 +37,7 @@ public class ModTeamSelectDialog extends BaseDialog{
 	private void rebuild(){
 		list.clear();
 		Groups.player.each(player -> {
-			CheckBox check = new CheckBox(player.name, new CheckBox.CheckBoxStyle());
+			TextButton check = new TextButton(player.name, Styles.cleart);
 			check.changed(() -> this.player = player);
 
 			Table icon = new Table(){
