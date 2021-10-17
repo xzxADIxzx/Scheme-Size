@@ -63,7 +63,7 @@ public class ModTeamSelectDialog extends BaseDialog{
 
 	private void template(String icon, Team team){
 		Drawable draw = Core.atlas.drawable(icon);
-		team.button(draw, () => {
+		team.button(draw, () -> {
 			callback.get(team, player);
 			dialog.hide();
 		}).size(64).row();
