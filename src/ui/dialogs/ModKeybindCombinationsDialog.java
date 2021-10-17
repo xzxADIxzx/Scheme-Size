@@ -14,7 +14,6 @@ public class ModKeybindCombinationsDialog extends BaseDialog{
 
 		main = Core.bundle.get("keycomb.main");
 
-		// bad code, but I`m too lazy
 		template("@keycomb.view_comb", "keybind.block_info.name");
 		template("@keycomb.teleport", "keybind.select.name");
 		template("@keycomb.self_dest", "keybind.respawn.name");

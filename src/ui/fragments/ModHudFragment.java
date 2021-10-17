@@ -195,7 +195,7 @@ public class ModHudFragment extends Fragment{
                     Drawable hist = Icon.info;
 
                     select.button(core, style, isize, SchemeUtils::placeCore).name("core");
-                    select.button(team, style, isize, SchemeUtils::switchTeam).name("team");
+                    select.button(team, style, isize, SchemeUtils::changeTeam).name("team");
                     select.button(kill, style, isize, SchemeUtils::selfDest).name("kill");
                     select.button(hist, style, isize, SchemeUtils::history).name("hist").get(
                     ).image().color(Pal.gray).width(4).height(bsize).padRight(-dsize + 1.5f + isize);
