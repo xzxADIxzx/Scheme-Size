@@ -284,9 +284,10 @@ public class ModSettingsMenuDialog extends SettingsMenuDialog{
         mod.sliderPref("breaksize", 512, 32, 512, 32, i -> Core.bundle.format("setting.blocks", i));
         mod.checkPref("copyshow", true);
         mod.checkPref("breakshow", true);
-        mod.checkPref("adminssecret", false);
         mod.checkPref("checkupdate", true);
         mod.checkPref("secret", false);
+        mod.checkPref("adminssecret", false);
+        mod.checkPref("usejs", false);
 
         sound.sliderPref("musicvol", 100, 0, 100, 1, i -> i + "%");
         sound.sliderPref("sfxvol", 100, 0, 100, 1, i -> i + "%");

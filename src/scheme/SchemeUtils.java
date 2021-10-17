@@ -42,8 +42,8 @@ public class SchemeUtils{
         Runnable js = () -> {
             SchemeSize.unit.select(false, (unit, amount) -> {
                 Call.sendChatMessage(js(
-                    "player.unit().kill()\n" +
-                    "var newUnit = " + getUnit(unit) + ".spawn(player.team(), player.x, player.y);\n" +
+                    "player.unit().kill();" +
+                    "var newUnit = " + getUnit(unit) + ".spawn(player.team(), player.x, player.y);" +
                     "Call.unitControl(player, newUnit);"
                 ));
                 updatefrag();
@@ -74,7 +74,7 @@ public class SchemeUtils{
             });
         };
         Runnable js = () -> {
-            SchemeSize.item.select(false, (item, amount) -> {
+            SchemeSize.item.select(true, (item, amount) -> {
                 Call.sendChatMessage(js(
                     "player.team().core().items.add(" + getItem(item) + ", " + String.valueOf(fix(item, (int)amount.get())) + ");"
                 ));
@@ -157,7 +157,7 @@ public class SchemeUtils{
 
     // js helpfull methods
     private static String js(String code){
-        return "/js var player = Groups.player.find(p => p.name == \"" + player.name + "\");\n" + code;
+        return "/js var player = Groups.player.find(p => p.name == \"" + player.name + "\");" + code;
     }
 
     private static String getUnit(UnitType unit){
