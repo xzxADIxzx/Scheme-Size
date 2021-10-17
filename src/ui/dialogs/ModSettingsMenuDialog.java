@@ -499,7 +499,7 @@ public class ModSettingsMenuDialog extends SettingsMenuDialog{
     }
 
     private void clearOld(){
-        removeListener(getListeners().get(2));
+        removeListener(getListeners().get(4));
         getChildren().get(1).clear();
         getChildren().get(1).remove();
         buttons.clear();
