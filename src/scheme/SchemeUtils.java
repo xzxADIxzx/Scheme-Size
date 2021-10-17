@@ -11,17 +11,16 @@ import static mindustry.Vars.*;
 
 // all the helper functions here ...
 // also this class makes it easy to add admin`s commands
+// oh no /js looks so bad
 public class SchemeUtils{
 
-    public static void template(Runnable admins, Runnable server){
+    public static void template(Runnable admins, Runnable js, Runnable server){
         if(settings.getBool("adminssecret")){
-            admins.run();
+            if(settings.getBool("usejs")) js.run();
+            else admins.run();
         }else {
-            if(net.client()){
-                ui.showInfoFade("@feature.serveronly");
-            }else{
-                server.run();
-            }
+            if(net.client()) ui.showInfoFade("@feature.serveronly");
+            else server.run();
         }
     }
 
@@ -40,16 +39,25 @@ public class SchemeUtils{
                 updatefrag();
             });
         };
-        Runnable server = () -> {
-            SchemeSize.unit.select(false, (unit, amount) -> { // I think there is an easier way, but I do not know it
-                var oldUnit = player.unit();
-                var newUnit = unit.spawn(player.team(), player.x, player.y);
-                Call.unitControl(player, newUnit);
-                oldUnit.kill(); // oof... remove does work in multiplayer, so I use kill
+        Runnable js = () -> {
+            SchemeSize.unit.select(false, (unit, amount) -> {
+                Call.sendChatMessage(js(
+                    "player.unit().kill()\n" +
+                    "var newUnit = " + getUnit(unit) + ".spawn(player.team(), player.x, player.y);\n" +
+                    "Call.unitControl(player, newUnit);"
+                ));
                 updatefrag();
             });
         };
-        template(admins, server);
+        Runnable server = () -> {
+            SchemeSize.unit.select(false, (unit, amount) -> { // I think there is an easier way, but I do not know it
+                player.unit().kill(); // remove does work in multiplayer, so I use kill
+                var newUnit = unit.spawn(player.team(), player.x, player.y);
+                Call.unitControl(player, newUnit);
+                updatefrag();
+            });
+        };
+        template(admins, js, server);
     }
 
     public static void changeEffect(){
@@ -65,12 +73,19 @@ public class SchemeUtils{
                 Call.sendChatMessage("/give " + item.name + " " + String.valueOf(fix(item, (int)amount.get())));
             });
         };
+        Runnable js = () -> {
+            SchemeSize.unit.select(false, (item, amount) -> {
+                Call.sendChatMessage(js(
+                    "player.team().core().items.add(" + getItem(item) + ", " + String.valueOf(fix(item, (int)amount.get())) + ");"
+                ));
+            });
+        };
         Runnable server = () -> {
             SchemeSize.item.select(true, (item, amount) -> {
                 player.team().core().items.add(item, fix(item, (int)amount.get()));
             });
         };
-        template(admins, server);
+        template(admins, js, server);
     }
 
 	public static void changeTeam(){
@@ -84,7 +99,7 @@ public class SchemeUtils{
                 plr.team(team);
             });
         };
-        template(admins, server);
+        template(admins, admins, server);
     }
 
 	public static void placeCore(){
@@ -95,7 +110,7 @@ public class SchemeUtils{
             var tile = world.tiles.get(player.tileX(), player.tileY());
             if(tile != null) tile.setNet(tile.block() != Blocks.coreShard ? Blocks.coreShard : Blocks.air, player.team(), 0);
         };
-        template(admins, server);
+        template(admins, admins, server);
     }
 
     public static void lookAt(){
@@ -123,13 +138,14 @@ public class SchemeUtils{
                     unit.spawn(player.team(), player.x, player.y);
             });
         };
-        template(admins, server);
+        template(admins, admins, server);
     }
 
     public static void showInfo(){
         SchemeSize.keycomb.show();
     }
 
+    // helpfull methods
     private static void updatefrag(){
         SchemeSize.hudfrag.updateShield(player.unit());
     }
@@ -137,5 +153,18 @@ public class SchemeUtils{
     private static int fix(Item item, int amount){
         var items = player.team().core().items;
         return amount == 0 ? -items.get(item) : (items.get(item) + amount < 0 ? -items.get(item) : amount);
+    }
+
+    // js helpfull methods
+    private static String js(String code){
+        return "/js var player = Groups.player.find(p => p.name == \"" + Vars.player.name + "\");\n" + js;
+    }
+
+    private static String getUnit(UnitType unit){
+        return "Vars.content.units().find(u => u.name == \"" + unit.name + "\")";
+    }
+
+    private static String getItem(Item item){
+        return "Vars.content.items().find(i => i.name == \"" + item.name + "\")";
     }
 }

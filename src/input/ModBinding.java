@@ -5,7 +5,6 @@ import arc.KeyBinds.*;
 import arc.input.InputDevice.*;
 import arc.input.*;
 
-// may be I will just add alt button & desc to them
 public enum ModBinding implements KeyBind{
     history(KeyCode.f9, "mod"),
     toggle_core_items(KeyCode.f7),
