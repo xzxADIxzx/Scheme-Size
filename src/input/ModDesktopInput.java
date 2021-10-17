@@ -632,12 +632,8 @@ public class ModDesktopInput extends ModInputHandler{
             SchemeUtils.changeItem();
         }
 
-        if(input.keyTap(ModBinding.switch_team)){
-            SchemeUtils.switchTeam();
-        }
-
-        if(input.keyTap(ModBinding.switch_team_btw)){
-            SchemeUtils.switchTeamBtw();
+        if(input.keyTap(ModBinding.change_team)){
+            SchemeUtils.changeTeam();
         }
 
         if(input.keyTap(ModBinding.place_core)){

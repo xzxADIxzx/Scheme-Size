@@ -1,7 +1,6 @@
 package mindustry.scheme;
 
 import arc.math.geom.*;
-import arc.struct.*;
 import mindustry.gen.*;
 import mindustry.type.*;
 import mindustry.game.*;
@@ -74,25 +73,16 @@ public class SchemeUtils{
         template(admins, server);
     }
 
-	public static void switchTeam(){
-        var index = new Seq(Team.baseTeams).indexOf(player.team());
-        var team = Team.baseTeams[++index < 6 ? index : 0];
+	public static void changeTeam(){
         Runnable admins = () -> {
-            Call.sendChatMessage("/team " + team.name);
+            SchemeSize.team.select((team, plr) -> {
+                Call.sendChatMessage("/team " + team.name + " " + plr.name);
+            });
         };
         Runnable server = () -> {
-            player.team(team);
-        };
-        template(admins, server);
-    }
-
-    public static void switchTeamBtw(){
-        var team = player.team() != Team.sharded ? Team.sharded : Team.crux;
-        Runnable admins = () -> {
-            Call.sendChatMessage("/team " + team.name);
-        };
-        Runnable server = () -> {
-            player.team(team);
+            SchemeSize.team.select((team, plr) -> {
+                plr.team(team);
+            });
         };
         template(admins, server);
     }

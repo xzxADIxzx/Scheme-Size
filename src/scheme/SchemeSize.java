@@ -27,6 +27,7 @@ public class SchemeSize extends Mod{
     public static ModHudFragment hudfrag;
     public static ModPlayerListFragment listfrag;
 
+    public static ModTeamSelectDialog team;
     public static ModContentSelectDialog<UnitType> unit;
     public static ModContentSelectDialog<StatusEffect> effect;
     public static ModContentSelectDialog<Item> item;
@@ -39,6 +40,7 @@ public class SchemeSize extends Mod{
             hudfrag = new ModHudFragment();
             listfrag = new ModPlayerListFragment();
 
+            team = new ModTeamSelectDialog("@teamselect");
             unit = new ModContentSelectDialog("@unitselect", content.units(), 1, 20, 1, value -> {
                 return Core.bundle.format("unit.zero.units", value);
             });
