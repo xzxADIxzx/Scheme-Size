@@ -51,8 +51,7 @@ public class ModTeamSelectDialog extends BaseDialog{
                     Draw.reset();
                 }
             };
-            icon.add(new Image(player.icon()).setScaling(Scaling.bounded)).grow();
-            icon.padRight(16f);
+            icon.add(new Image(player.icon()).setScaling(Scaling.bounded)).padRight(16f).grow();
 
             check.add(icon).size(74f);
 			list.add(check).checked(t -> this.player == player).row();
