@@ -12,9 +12,10 @@ import mindustry.game.*;
 public class ModTeamSelectDialog extends BaseDialog{
 
 	public Cons2<Team, Player> callback;
-	public Player player
+	public Player player;
 
 	private Table list = new Table();
+	private Table team = new Table();
 
 	public ModContentSelectDialog(String name){
 		super(name);
@@ -25,10 +26,10 @@ public class ModTeamSelectDialog extends BaseDialog{
 
 	private void rebuild(){
 		list.clear();
-		Groups.player.each(player => {
+		Groups.player.each(player -> {
 			CheckBox check = new CheckBox(player.name, Styles.cleart);
-			check.checked(() => this.player == player);
-			check.changed(() => this.player = player);
+			check.checked(() -> this.player == player);
+			check.changed(() -> this.player = player);
 
 			Table icon = new Table(){
                 @Override
