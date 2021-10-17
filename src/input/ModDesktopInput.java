@@ -11,7 +11,6 @@ import arc.scene.*;
 import arc.scene.ui.*;
 import arc.scene.ui.layout.*;
 import arc.util.*;
-import arc.struct.*;
 import mindustry.*;
 import mindustry.core.*;
 import mindustry.entities.units.*;
@@ -20,9 +19,7 @@ import mindustry.game.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.ui.*;
-import mindustry.ui.fragments.*;
 import mindustry.world.*;
-import mindustry.input.Placement.*;
 import mindustry.scheme.*;
 
 import static arc.Core.*;
@@ -30,19 +27,29 @@ import static mindustry.Vars.net;
 import static mindustry.Vars.*;
 import static mindustry.input.PlaceMode.*;
 
-// Last Update - Aug 22, 2021
+// Last Update - Oct 3, 2021
 public class ModDesktopInput extends ModInputHandler{
-    
+
     public Vec2 movement = new Vec2();
+    /** Current cursor type. */
     public Cursor cursorType = SystemCursor.arrow;
+    /** Position where the player started dragging a line. */
     public int selectX = -1, selectY = -1, schemX = -1, schemY = -1;
+    /** Last known line positions.*/
     public int lastLineX, lastLineY, schematicX, schematicY;
+    /** Whether selecting mode is active. */
     public PlaceMode mode;
+    /** Animation scale for line. */
     public float selectScale;
+    /** Selected build request for movement. */
     public @Nullable BuildPlan sreq;
+    /** Whether player is currently deleting removal requests. */
     public boolean deleting = false, shouldShoot = false, panning = false;
+    /** Mouse pan speed. */
     public float panScale = 0.005f, panSpeed = 4.5f, panBoostSpeed = 15f;
+    /** Delta time between consecutive clicks. */
     public long selectMillis = 0;
+    /** Previously selected tile. */
     public Tile prevSelected;
 
     public void changePanSpeed(float value){
@@ -105,6 +112,7 @@ public class ModDesktopInput extends ModInputHandler{
         int cursorX = tileXMod(Core.input.mouseX());
         int cursorY = tileYMod(Core.input.mouseY());
 
+        //draw break selection
         if(mode == breaking){
             int size = Core.input.keyDown(Binding.schematic_select) ? settings.getInt("copysize") : settings.getInt("breaksize");
             drawBreakSelectionMod(selectX, selectY, cursorX, cursorY, size - 1);
@@ -192,6 +200,7 @@ public class ModDesktopInput extends ModInputHandler{
             ui.listfrag.toggle();
         }
 
+        boolean locked = locked();
         boolean panCam = false;
         float camSpeed = (!Core.input.keyDown(Binding.boost) ? panSpeed : panBoostSpeed) * Time.delta;
 
@@ -204,24 +213,27 @@ public class ModDesktopInput extends ModInputHandler{
             panning = false;
         }
 
-        if(((player.dead() || state.isPaused()) && !ui.chatfrag.shown()) && !scene.hasField() && !scene.hasDialog()){
-            if(input.keyDown(Binding.mouse_move)){
-                panCam = true;
+        if(!locked){
+            if(((player.dead() || state.isPaused()) && !ui.chatfrag.shown()) && !scene.hasField() && !scene.hasDialog()){
+                if(input.keyDown(Binding.mouse_move)){
+                    panCam = true;
+                }
+
+                Core.camera.position.add(Tmp.v1.setZero().add(Core.input.axis(Binding.move_x), Core.input.axis(Binding.move_y)).nor().scl(camSpeed));
+            }else if(!player.dead() && !panning){
+                Core.camera.position.lerpDelta(player, Core.settings.getBool("smoothcamera") ? 0.08f : 1f);
             }
 
-            Core.camera.position.add(Tmp.v1.setZero().add(Core.input.axis(Binding.move_x), Core.input.axis(Binding.move_y)).nor().scl(camSpeed));
-        }else if(!player.dead() && !panning){
-            Core.camera.position.lerpDelta(player, Core.settings.getBool("smoothcamera") ? 0.08f : 1f);
+            if(panCam){
+                Core.camera.position.x += Mathf.clamp((Core.input.mouseX() - Core.graphics.getWidth() / 2f) * panScale, -1, 1) * camSpeed;
+                Core.camera.position.y += Mathf.clamp((Core.input.mouseY() - Core.graphics.getHeight() / 2f) * panScale, -1, 1) * camSpeed;
+            }
+
         }
 
-        if(panCam){
-            Core.camera.position.x += Mathf.clamp((Core.input.mouseX() - Core.graphics.getWidth() / 2f) * panScale, -1, 1) * camSpeed;
-            Core.camera.position.y += Mathf.clamp((Core.input.mouseY() - Core.graphics.getHeight() / 2f) * panScale, -1, 1) * camSpeed;
-        }
+        shouldShoot = !scene.hasMouse() && !locked;
 
-        shouldShoot = !scene.hasMouse();
-
-        if(!scene.hasMouse()){
+        if(!scene.hasMouse() && !locked){
             if(Core.input.keyDown(Binding.control) && Core.input.keyTap(Binding.select)){
                 Unit on = selectedUnit();
                 var build = selectedControlBuild();
@@ -238,7 +250,7 @@ public class ModDesktopInput extends ModInputHandler{
             }
         }
 
-        if(!player.dead() && !state.isPaused() && !scene.hasField() && !renderer.isCutscene()){
+        if(!player.dead() && !state.isPaused() && !scene.hasField() && !locked){
             updateMovement(player.unit());
 
             if(Core.input.keyTap(Binding.respawn) && !Core.input.keyDown(ModBinding.alternative)){
@@ -275,7 +287,7 @@ public class ModDesktopInput extends ModInputHandler{
             }
         }
 
-        if(player.dead()){
+        if(player.dead() || locked){
             cursorType = SystemCursor.arrow;
             return;
         }
@@ -563,7 +575,8 @@ public class ModDesktopInput extends ModInputHandler{
                 lineRequests.clear();
                 Events.fire(new LineConfirmEvent());
             }else if(mode == breaking){ //touch up while breaking, break everything in selection
-                removeSelection(selectX, selectY, cursorX, cursorY, Core.input.keyDown(Binding.schematic_select) ? settings.getInt("copysize") - 1 : settings.getInt("breaksize") - 1);
+                int size = Core.input.keyDown(Binding.schematic_select) ? settings.getInt("copysize") - 1 : settings.getInt("breaksize") - 1;
+                removeSelection(selectX, selectY, cursorX, cursorY, size);
                 if(lastSchematic != null){
                     useSchematic(lastSchematic);
                     lastSchematic = null;

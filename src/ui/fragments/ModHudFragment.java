@@ -32,7 +32,7 @@ import mindustry.ui.*;
 
 import static mindustry.Vars.*;
 
-// Last Update - Sep 30, 2021
+// Last Update - Oct 12, 2021
 public class ModHudFragment extends Fragment{
 
     private static final float dsize = 65f;
@@ -369,7 +369,7 @@ public class ModHudFragment extends Fragment{
 
                 float stroke = width * 0.35f;
                 float bh = height/2f;
-                Draw.color(color);
+                Draw.color(color, parentAlpha);
 
                 float f1 = Math.min(fract * 2f, 1f), f2 = (fract - 0.5f) * 2f;
 
@@ -432,7 +432,7 @@ public class ModHudFragment extends Fragment{
                 if(Float.isNaN(value) || Float.isInfinite(value)) value = 1f;
 
                 drawInner(Tmp.c1.set(color).lerp(Color.white, blink), value);
-                Drawf.shadow(x + width/2f, y + height/2f, height * 1.13f); // bar draw over shadow... so it's look bad
+                Drawf.shadow(x + width/2f, y + height/2f, height * 1.13f, parentAlpha); // bar draw over shadow... so it's look bad
                 super.draw();
             }
 
@@ -441,7 +441,7 @@ public class ModHudFragment extends Fragment{
                 fract = Mathf.clamp(fract);
 
                 float bh = height/2f;
-                Draw.color(color);
+                Draw.color(color, parentAlpha);
 
                 float f1 = Math.min(fract * 2f, 1f), f2 = (fract - 0.5f) * 2f;
                 float stroke = width - (width * 0.35f);
@@ -472,10 +472,9 @@ public class ModHudFragment extends Fragment{
         new Element(){
             @Override
             public void draw(){
-                Draw.color(Pal.darkerGray);
+                Draw.color(Pal.darkerGray, parentAlpha);
                 Fill.poly(x + width/2f, y + height/2f, 6, height / Mathf.sqrt3);
                 Draw.reset();
-                // Drawf.shadow(x + width/2f, y + height/2f, height * 1.13f);
             }
         },
         new Table(t -> {

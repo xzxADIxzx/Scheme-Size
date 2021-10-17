@@ -17,6 +17,7 @@ import mindustry.ui.*;
 
 import static mindustry.Vars.*;
 
+// Last Update - Aug 17, 2021
 public class ModPlayerListFragment extends PlayerListFragment{
     private boolean visible = false;
     private Interval timer = new Interval();
