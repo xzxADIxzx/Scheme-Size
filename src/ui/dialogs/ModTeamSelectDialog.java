@@ -6,6 +6,7 @@ import arc.func.*;
 import arc.scene.ui.*;
 import arc.scene.ui.layout.*;
 import arc.graphics.g2d.*;
+import mindustry.*;
 import mindustry.ui.*;
 import mindustry.gen.*;
 import mindustry.game.*;
@@ -53,10 +54,10 @@ public class ModTeamSelectDialog extends BaseDialog{
             };
             icon.margin(8);
             icon.add(new Image(player.icon()).setScaling(Scaling.bounded)).padRight(16f).grow();
-            icon.name = user.name();
+            icon.name = player.name();
 
             check.add(icon).size(74f);
-            check.button.labelWrap("[#" + player.color().toString().toUpperCase() + "]" + player.name()).width(170f).pad(10);
+            check.labelWrap("[#" + player.color().toString().toUpperCase() + "]" + player.name()).width(170f).pad(10);
 
 			list.add(check).checked(t -> this.player == player).size(350f, 74f).padBottom(16f).row();
 		});
