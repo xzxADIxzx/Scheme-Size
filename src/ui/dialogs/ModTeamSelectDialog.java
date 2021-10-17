@@ -17,7 +17,7 @@ public class ModTeamSelectDialog extends BaseDialog{
 	private Table list = new Table();
 	private Table team = new Table();
 
-	public ModContentSelectDialog(String name){
+	public ModTeamSelectDialog(String name){
 		super(name);
 		addCloseButton();
 
