@@ -57,7 +57,7 @@ public class ModTeamSelectDialog extends BaseDialog{
             check.add(icon).size(74);
             check.label(() -> player.name);
 
-			list.add(check).checked(() -> this.player == player).row();
+			list.add(check).row(); //.checked(() -> this.player == player)
 		});
 	}
 
