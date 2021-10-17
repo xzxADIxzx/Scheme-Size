@@ -26,18 +26,18 @@ public class ModTeamSelectDialog extends BaseDialog{
 		template("team-derelict", Team.derelict);
 		template("team-sharded", Team.sharded);
 		template("team-crux", Team.crux);
-		template("team-green", Team.green);
-		template("team-purple", Team.purple);
-		template("team-blue", Team.blue);
+		template("status-electrified-ui", Team.green);
+		template("status-spore-slowed-ui", Team.purple);
+		template("status-wet-ui", Team.blue);
 
-		cont.add(list).padRight(16);
-		cont.add(team).padRight(16);
+		cont.add(list).padRight(16f);
+		cont.add(team).padRight(16f);
 	}
 
 	private void rebuild(){
 		list.clear();
 		Groups.player.each(player -> {
-			TextButton check = new TextButton(player.name, Styles.cleart);
+			TextButton check = new TextButton(player.name, Styles.transt);
 			check.changed(() -> this.player = player);
 
 			Table icon = new Table(){
@@ -51,13 +51,11 @@ public class ModTeamSelectDialog extends BaseDialog{
                     Draw.reset();
                 }
             };
-            icon.margin(8);
             icon.add(new Image(player.icon()).setScaling(Scaling.bounded)).grow();
+            icon.padRight(16f)
 
-            check.add(icon).size(74);
-            check.label(() -> player.name);
-
-			list.add(check).row(); //.checked(() -> this.player == player)
+            check.add(icon).size(74f);
+			list.add(check).checked(t -> this.player == player).row();
 		});
 	}
 

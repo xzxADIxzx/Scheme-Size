@@ -114,7 +114,7 @@ public class SchemeUtils{
     public static void spawnUnit(){
         Runnable admins = () -> {
             SchemeSize.unit.select(true, (unit, amount) -> {
-                Call.sendChatMessage("/spawn " + unit.name + " " + String.valueOf(amount.get()) + " " + player.team().name);
+                Call.sendChatMessage("/spawn " + unit.name + " " + String.valueOf((int)amount.get()) + " " + player.team().name);
             });
         };
         Runnable server = () -> {
