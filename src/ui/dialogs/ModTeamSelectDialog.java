@@ -38,7 +38,7 @@ public class ModTeamSelectDialog extends BaseDialog{
 	private void rebuild(){
 		list.clear();
 		Groups.player.each(player -> {
-			Button check = new Button(Styles.waveb );
+			Button check = new Button(Styles.transt);
 			check.changed(() -> this.player = player);
 
 			Table icon = new Table(){
@@ -59,7 +59,7 @@ public class ModTeamSelectDialog extends BaseDialog{
             check.add(icon).size(74f);
             check.labelWrap("[#" + player.color().toString().toUpperCase() + "]" + player.name()).width(170f).pad(10);
 
-			list.add(check).checked(t -> this.player == player).size(350f, 74f).padBottom(16f).row();
+			list.add(check).checked(t -> this.player == player).size(244f, 74f).padBottom(16f).row();
 		});
 	}
 
