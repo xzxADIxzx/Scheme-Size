@@ -21,7 +21,6 @@ public class PlayerSelectFragment{
 
     public void build(Table parent){
     	pane = parent.pane(list).size(288f, 540f).scrollX(false);
-    	list.width(288f);
     }
 
 	public void rebuild(){
@@ -52,7 +51,7 @@ public class PlayerSelectFragment{
             	t.image().height(4f).color(player.team().color).growX().bottom().padTop(4f);
             }).size(170f, 74f).pad(10f);
 
-			list.add(check).checked(t -> this.player == player).size(264f, 74f).padBottom(16f).left().row();
+			list.add(check).checked(t -> this.player == player).size(264f, 74f).padBottom(16f).row();
 		});
 	}
 
