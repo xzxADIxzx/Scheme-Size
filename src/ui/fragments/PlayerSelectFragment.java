@@ -3,6 +3,7 @@ package mindustry.ui.fragments;
 import arc.*;
 import arc.util.*;
 import arc.func.*;
+import arc.scene.*;
 import arc.scene.ui.*;
 import arc.scene.ui.layout.*;
 import arc.graphics.g2d.*;
@@ -10,6 +11,7 @@ import mindustry.*;
 import mindustry.ui.*;
 import mindustry.gen.*;
 import mindustry.game.*;
+import mindustry.graphics.*;
 
 public class PlayerSelectFragment extends Fragment{
 
