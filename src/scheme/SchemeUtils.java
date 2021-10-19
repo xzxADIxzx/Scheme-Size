@@ -87,13 +87,13 @@ public class SchemeUtils{
     public static void changeItem(){
         Runnable admins = () -> {
             SchemeSize.item.select(true, (item, amount) -> {
-                Call.sendChatMessage("/give " + item.name + " " + String.valueOf(fix(item, (int)amount.get())));
+                Call.sendChatMessage("/give " + item.name + " " + fix(item, (int)amount.get()));
             });
         };
         Runnable js = () -> {
             SchemeSize.item.select(true, (item, amount) -> {
                 Call.sendChatMessage(js(getPlayer(player)));
-                Call.sendChatMessage(js("player.core().items.add(" + getItem(item) + ", " + String.valueOf(fix(item, (int)amount.get())) + ")"));
+                Call.sendChatMessage(js("player.core().items.add(" + getItem(item) + ", " + fix(item, (int)amount.get())) + ")");
             });
         };
         Runnable server = () -> {
@@ -145,17 +145,7 @@ public class SchemeUtils{
     }
 
     public static void teleport(Vec2 pos){
-        Runnable admins = () -> {
-            ui.showInfoFade("@feature.jsonly");
-        };
-        Runnable js = () -> {
-            Call.sendChatMessage(js(getPlayer(player)));
-            Call.sendChatMessage(js("player.unit().set(" + pos.getX() + ", " + pos.getY() + ")"));
-        };
-        Runnable server = () -> {
-            player.unit().set(pos);
-        };
-        template(admins, js, server);
+        player.unit().set(pos);
     }
 
     public static void selfDest(){
@@ -176,14 +166,14 @@ public class SchemeUtils{
     public static void spawnUnit(){
         Runnable admins = () -> {
             SchemeSize.unit.select(true, (unit, amount) -> {
-                Call.sendChatMessage("/spawn " + unit.name + " " + String.valueOf((int)amount.get()) + " " + player.team().name);
+                Call.sendChatMessage("/spawn " + unit.name + " " + (int)amount.get() + " " + player.team().name);
             });
         };
         Runnable js = () -> {
             SchemeSize.unit.select(true, (unit, amount) -> {
                 Call.sendChatMessage(js(getPlayer(player)));
                 Call.sendChatMessage(js("var unit = " + getUnit(unit)));
-                Call.sendChatMessage(js("for(var i = 0; i < " + String.valueOf(amount.get()) + "; i++) unit.spawn(player.team(), player.x, player.y)"));
+                Call.sendChatMessage(js("for(var i = 0; i < " + amount.get() + "; i++) unit.spawn(player.team(), player.x, player.y)"));
             });
         };
         Runnable server = () -> {
@@ -198,6 +188,7 @@ public class SchemeUtils{
     public static void showInfo(){
         SchemeSize.keycomb.show();
     }
+
 
     // helpfull methods
     private static void updatefrag(){
@@ -214,6 +205,7 @@ public class SchemeUtils{
         if(!has) ui.showInfoFade("@nocore");
         return has;
     }
+
 
     // js helpfull methods
     private static String js(String code){

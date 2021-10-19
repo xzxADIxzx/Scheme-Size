@@ -31,7 +31,7 @@ public class ModTeamSelectDialog extends BaseDialog{
 		template("status-spore-slowed-ui", Team.purple);
 		template("status-wet-ui", Team.blue);
 
-		cont.add(list).padRight(16f);
+		cont.pane(list).grow().scrollX(false).padRight(16f);
 		cont.add(team);
 	}
 
@@ -58,7 +58,7 @@ public class ModTeamSelectDialog extends BaseDialog{
             check.add(icon).size(74f);
             check.table(t -> {
             	t.labelWrap("[#" + player.color().toString().toUpperCase() + "]" + player.name()).growX().row();
-            	t.image().height(4f).color(player.team().color).growX().bottom();
+            	t.image().height(4f).color(player.team().color).growX().bottom().padTop(4f);
             }).size(170f, 74f).pad(10f);
 
 			list.add(check).checked(t -> this.player == player).size(264f, 74f).padBottom(16f).row();
