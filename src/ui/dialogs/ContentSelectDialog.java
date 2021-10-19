@@ -17,6 +17,7 @@ public class ContentSelectDialog<T extends UnlockableContent> extends BaseDialog
 
 	private Cell label;
 	private Cell slider;
+	private PlayerSelectFragment list = new PlayerSelectFragment();
 
 	public ContentSelectDialog(String name, Seq<T> content, float min, float max, float step, Stringf format){
 		super(name);
@@ -40,6 +41,9 @@ public class ContentSelectDialog<T extends UnlockableContent> extends BaseDialog
 			}).size(64f);
 			if (item.id % 10 == 9) table.row();
 		});
+
+		list.build(cont);
+		list.get().left();
 
 		cont.add(table).row();
 		this.label = cont.add(label);
