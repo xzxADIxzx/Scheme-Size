@@ -72,7 +72,7 @@ public class SchemeUtils{
             SchemeSize.effect.select(true, (effect, amount) -> {
                 Call.sendChatMessage(js(getPlayer(player)));
                 if(amount.get() == 0) Call.sendChatMessage(js("player.unit().unapply(" + getEffect(effect) + ")"));
-                else Call.sendChatMessage(js("player.unit().apply(" + getEffect(effect) + ", " + String.valueOf(amount.get()) + ")"));
+                else Call.sendChatMessage(js("player.unit().apply(" + getEffect(effect) + ", " + amount.get() + ")"));
             });
         };
         Runnable server = () -> {
@@ -145,12 +145,22 @@ public class SchemeUtils{
     }
 
     public static void teleport(Vec2 pos){
-    	player.unit().set(pos);
+        Runnable admins = () -> {
+            ui.showInfoFade("@feature.jsonly");
+        };
+        Runnable js = () -> {
+            Call.sendChatMessage(js(getPlayer(player)));
+            Call.sendChatMessage(js("player.unit().set(" + pos.getX() + ", " + pos.getY() + ")"));
+        };
+        Runnable server = () -> {
+            player.unit().set(pos);
+        };
+        template(admins, js, server);
     }
 
     public static void selfDest(){
         Runnable admins = () -> {
-            ui.showInfoFade("@feature.jsonly");
+            Call.sendChatMessage("/despw");
         };
         Runnable js = () -> {
             Call.sendChatMessage(js(getPlayer(player)));
@@ -173,7 +183,7 @@ public class SchemeUtils{
             SchemeSize.unit.select(true, (unit, amount) -> {
                 Call.sendChatMessage(js(getPlayer(player)));
                 Call.sendChatMessage(js("var unit = " + getUnit(unit)));
-                Call.sendChatMessage(js("for(var i = 0; i < "+String.valueOf(amount.get())+"; i++) unit.spawn(player.team(), player.x, player.y)"));
+                Call.sendChatMessage(js("for(var i = 0; i < " + String.valueOf(amount.get()) + "; i++) unit.spawn(player.team(), player.x, player.y)"));
             });
         };
         Runnable server = () -> {

@@ -52,14 +52,14 @@ public class ModTeamSelectDialog extends BaseDialog{
                     Draw.reset();
                 }
             };
-            icon.add(new Image(player.icon()).setScaling(Scaling.bounded)).grow();
+            icon.add(new Image(player.icon()).setScaling(Scaling.bounded).pad(8f)).grow();
             icon.name = player.name();
 
             check.add(icon).size(74f);
             check.table(t -> {
-            	t.labelWrap("[#" + player.color().toString().toUpperCase() + "]" + player.name()).growX().pad(10).row();
-            	t.image().height(4f).color(player.team().color).growX().pad(0, 10f, 0, 10f).bottom();
-            }).size(190f, 74f);
+            	t.labelWrap("[#" + player.color().toString().toUpperCase() + "]" + player.name()).growX().row();
+            	t.image().height(4f).color(player.team().color).growX().bottom();
+            }).size(170f, 74f).pad(10f);
 
 			list.add(check).checked(t -> this.player == player).size(264f, 74f).padBottom(16f).row();
 		});
