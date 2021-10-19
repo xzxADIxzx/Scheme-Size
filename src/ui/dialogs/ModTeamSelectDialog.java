@@ -1,13 +1,12 @@
 package mindustry.ui.dialogs;
 
 import arc.*;
-import arc.util.*;
-import arc.func.*;
 import arc.scene.ui.*;
 import arc.scene.ui.layout.*;
 import arc.graphics.g2d.*;
 import mindustry.*;
 import mindustry.ui.*;
+import mindustry.ui.fragments.*;
 import mindustry.gen.*;
 import mindustry.game.*;
 import mindustry.graphics.*;
@@ -15,10 +14,9 @@ import mindustry.graphics.*;
 public class ModTeamSelectDialog extends BaseDialog{
 
 	public Cons2<Team, Player> callback;
-	public Player player;
 
-	private Table list = new Table();
 	private Table team = new Table();
+	private MiniListFragment list = new MiniListFragment();
 
 	public ModTeamSelectDialog(String name){
 		super(name);
@@ -31,38 +29,9 @@ public class ModTeamSelectDialog extends BaseDialog{
 		template("status-spore-slowed-ui", Team.purple);
 		template("status-wet-ui", Team.blue);
 
-		cont.pane(list).grow().scrollX(false).padRight(16f);
+		list.build(cont);
+		list.get().padRight(16f);
 		cont.add(team);
-	}
-
-	private void rebuild(){
-		list.clear();
-		Groups.player.each(player -> {
-			Button check = new Button(Styles.transt);
-			check.changed(() -> this.player = player);
-
-			Table icon = new Table(){
-                @Override
-                public void draw(){
-                    super.draw();
-                    Draw.color(check.isChecked() ? Pal.accent : Pal.gray);
-                    Draw.alpha(parentAlpha);
-                    Lines.stroke(Scl.scl(4f));
-                    Lines.rect(x, y, width, height);
-                    Draw.reset();
-                }
-            };
-            icon.add(new Image(player.icon()).setScaling(Scaling.bounded)).pad(8f).grow();
-            icon.name = player.name();
-
-            check.add(icon).size(74f);
-            check.table(t -> {
-            	t.labelWrap("[#" + player.color().toString().toUpperCase() + "]" + player.name()).growX().row();
-            	t.image().height(4f).color(player.team().color).growX().bottom().padTop(4f);
-            }).size(170f, 74f).pad(10f);
-
-			list.add(check).checked(t -> this.player == player).size(264f, 74f).padBottom(16f).row();
-		});
 	}
 
 	private void template(String icon, Team team){
@@ -76,7 +45,7 @@ public class ModTeamSelectDialog extends BaseDialog{
 	public void select(Cons2<Team, Player> callback){
 		this.callback = callback;
 		this.player = Vars.player;
-		rebuild();
+		list.rebuild();
 		show();
 	}
 }
