@@ -14,7 +14,7 @@ import mindustry.game.*;
 
 public class TeamSelectDialog extends BaseDialog{
 
-	public Cons2<Team, Player> callback;
+	public Cons2<Player, Team> callback;
 
 	private Table team = new Table();
 	private PlayerSelectFragment list = new PlayerSelectFragment();
@@ -42,7 +42,7 @@ public class TeamSelectDialog extends BaseDialog{
 		}).size(64).row();
 	}
 
-	public void select(Cons2<Team, Player> callback){
+	public void select(Cons2<Player, Team> callback){
 		this.callback = callback;
 		list.rebuild();
 		show();

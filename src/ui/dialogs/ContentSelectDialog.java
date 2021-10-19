@@ -13,7 +13,7 @@ import static mindustry.Vars.*;
 
 public class ContentSelectDialog<T extends UnlockableContent> extends BaseDialog{
 
-	public Cons2<T, Floatp> callback;
+	public Cons2<Player, T, Floatp> callback;
 	public Stringf format;
 
 	private Cell label;
@@ -37,7 +37,7 @@ public class ContentSelectDialog<T extends UnlockableContent> extends BaseDialog
 			if (item.isHidden()) return;
 			var drawable = new TextureRegionDrawable(item.icon(Cicon.tiny));
 			table.button(drawable, () -> { 
-				callback.get(item, () -> slider.getValue());
+				callback.get(list.select(), item, () -> slider.getValue());
 				hide(); 
 			}).size(64f);
 			if (item.id % 10 == 9) table.row();
@@ -55,10 +55,11 @@ public class ContentSelectDialog<T extends UnlockableContent> extends BaseDialog
 		cont.table().width(288f).right();
 	}
 
-	public void select(boolean show, Cons2<T, Floatp> callback){
+	public void select(boolean showSL, boolean showP, Cons2<Player, T, Floatp> callback){
 		this.callback = callback;
-		label.visible(show);
-		slider.visible(show);
+		label.visible(showSL);
+		slider.visible(showSL);
+		list.get().visible(showP);
 		list.rebuild();
 		show();
 	}
