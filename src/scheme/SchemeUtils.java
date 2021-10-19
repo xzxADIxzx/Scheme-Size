@@ -33,6 +33,7 @@ public class SchemeUtils{
 	}
 
     public static void changeUnit(){
+        if(!hasCore(player)) return;
         Runnable admins = () -> {
             SchemeSize.unit.select(false, (unit, amount) -> {
                 Call.sendChatMessage("/units change " + unit.name);
@@ -90,12 +91,12 @@ public class SchemeUtils{
         Runnable js = () -> {
             SchemeSize.item.select(true, (item, amount) -> {
                 Call.sendChatMessage(js(getPlayer()));
-                Call.sendChatMessage(js("player.team().core().items.add(" + getItem(item) + ", " + String.valueOf(fix(item, (int)amount.get())) + ")"));
+                Call.sendChatMessage(js("player.core().items.add(" + getItem(item) + ", " + String.valueOf(fix(item, (int)amount.get())) + ")"));
             });
         };
         Runnable server = () -> {
             SchemeSize.item.select(true, (item, amount) -> {
-                player.team().core().items.add(item, fix(item, (int)amount.get()));
+                player.core().items.add(item, fix(item, (int)amount.get()));
             });
         };
         template(admins, js, server);
@@ -195,6 +196,12 @@ public class SchemeUtils{
     private static int fix(Item item, int amount){
         var items = player.team().core().items;
         return amount == 0 ? -items.get(item) : (items.get(item) + amount < 0 ? -items.get(item) : amount);
+    }
+
+    private static boolean hasCore(Player plr){
+        boolean has = plr.core() == null;
+        if(!has) ui.showInfoFade("@nocore");
+        return has;
     }
 
     // js helpfull methods

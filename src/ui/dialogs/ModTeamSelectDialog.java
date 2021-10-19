@@ -56,7 +56,10 @@ public class ModTeamSelectDialog extends BaseDialog{
             icon.name = player.name();
 
             check.add(icon).size(74f);
-            check.labelWrap("[#" + player.color().toString().toUpperCase() + "]" + player.name()).width(170f).pad(10);
+            check.table(t -> {
+            	t.labelWrap("[#" + player.color().toString().toUpperCase() + "]" + player.name()).growX().pad(10).row();
+            	t.image().height(4f).color(player.team().color).growX().pad(10);
+            }).width(190f);
 
 			list.add(check).checked(t -> this.player == player).size(264f, 74f).padBottom(16f).row();
 		});
