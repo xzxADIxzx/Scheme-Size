@@ -42,18 +42,20 @@ public class SchemeUtils{
         };
         Runnable js = () -> {
             SchemeSize.unit.select(false, (unit, amount) -> {
-                Call.sendChatMessage(js(getPlayer()));
-                Call.sendChatMessage(js("player.unit().kill()"));
-                Call.sendChatMessage(js("var unit = " + getUnit(unit) + ".spawn(player.team(), player.x, player.y)"));
-                Call.sendChatMessage(js("Call.unitControl(player, unit)"));
+                Call.sendChatMessage(js(getPlayer(player)));
+                Call.sendChatMessage(js("var oldUnit = player.unit()"));
+                Call.sendChatMessage(js("var newUnit = " + getUnit(unit) + ".spawn(player.team(), player.x, player.y)"));
+                Call.sendChatMessage(js("Call.unitControl(player, newUnit)"));
+                Call.sendChatMessage(js("oldUnit.kill()"));
                 updatefrag();
             });
         };
         Runnable server = () -> {
             SchemeSize.unit.select(false, (unit, amount) -> { // I think there is an easier way, but I do not know it
-                player.unit().kill(); // remove does work in multiplayer, so I use kill
-                var unit_ = unit.spawn(player.team(), player.x, player.y);
-                Call.unitControl(player, unit_);
+                var oldUnit = player.unit();
+                var newUnit = unit.spawn(player.team(), player.x, player.y);
+                Call.unitControl(player, newUnit);
+                oldUnit.kill(); // remove does work in multiplayer, so I use kill
                 updatefrag();
             });
         };
@@ -63,12 +65,12 @@ public class SchemeUtils{
     public static void changeEffect(){
         Runnable admins = () -> {
             SchemeSize.effect.select(true, (effect, amount) -> {
-                Call.sendChatMessage("/nothing"); // crutch
+                ui.showInfoFade("@feature.jsonly");
             });
         };
         Runnable js = () -> {
             SchemeSize.effect.select(true, (effect, amount) -> {
-                Call.sendChatMessage(js(getPlayer()));
+                Call.sendChatMessage(js(getPlayer(player)));
                 if(amount.get() == 0) Call.sendChatMessage(js("player.unit().unapply(" + getEffect(effect) + ")"));
                 else Call.sendChatMessage(js("player.unit().apply(" + getEffect(effect) + ", " + String.valueOf(amount.get()) + ")"));
             });
@@ -90,7 +92,7 @@ public class SchemeUtils{
         };
         Runnable js = () -> {
             SchemeSize.item.select(true, (item, amount) -> {
-                Call.sendChatMessage(js(getPlayer()));
+                Call.sendChatMessage(js(getPlayer(player)));
                 Call.sendChatMessage(js("player.core().items.add(" + getItem(item) + ", " + String.valueOf(fix(item, (int)amount.get())) + ")"));
             });
         };
@@ -127,7 +129,7 @@ public class SchemeUtils{
             Call.sendChatMessage("/core small");
         };
         Runnable js = () -> {
-            Call.sendChatMessage(js(getPlayer()));
+            Call.sendChatMessage(js(getPlayer(player)));
             Call.sendChatMessage(js("var tile = Vars.world.tiles.get(player.tileX(), player.tileY())"));
             Call.sendChatMessage(js("if(tile != null){ tile.setNet(tile.block() != Blocks.coreShard ? Blocks.coreShard : Blocks.air, player.team(), 0) }"));
         };
@@ -148,18 +150,17 @@ public class SchemeUtils{
 
     public static void selfDest(){
         Runnable admins = () -> {
-            Call.sendChatMessage("/nothing"); // crutch
+            ui.showInfoFade("@feature.jsonly");
         };
         Runnable js = () -> {
-            Call.sendChatMessage(js(getPlayer()));
+            Call.sendChatMessage(js(getPlayer(player)));
             Call.sendChatMessage(js("player.unit().kill()"));
-            updatefrag();
         };
         Runnable server = () -> {
             player.unit().kill();
-            updatefrag();
         };
         template(admins, js, server);
+        updatefrag();
     }
 
     public static void spawnUnit(){
@@ -170,7 +171,7 @@ public class SchemeUtils{
         };
         Runnable js = () -> {
             SchemeSize.unit.select(true, (unit, amount) -> {
-                Call.sendChatMessage(js(getPlayer()));
+                Call.sendChatMessage(js(getPlayer(player)));
                 Call.sendChatMessage(js("var unit = " + getUnit(unit)));
                 Call.sendChatMessage(js("for(var i = 0; i < "+String.valueOf(amount.get())+"; i++) unit.spawn(player.team(), player.x, player.y)"));
             });
@@ -199,7 +200,7 @@ public class SchemeUtils{
     }
 
     private static boolean hasCore(Player plr){
-        boolean has = plr.core() == null;
+        boolean has = plr.core() != null;
         if(!has) ui.showInfoFade("@nocore");
         return has;
     }
@@ -207,10 +208,6 @@ public class SchemeUtils{
     // js helpfull methods
     private static String js(String code){
         return "/js " + code;
-    }
-
-    private static String getPlayer(){
-        return "var player = Groups.player.find(p => p.name == \"" + player.name + "\")";
     }
 
     private static String getPlayer(Player plr){
