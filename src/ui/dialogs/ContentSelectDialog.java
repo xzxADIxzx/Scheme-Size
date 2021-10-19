@@ -51,7 +51,7 @@ public class ContentSelectDialog<T extends UnlockableContent> extends BaseDialog
 			this.label = t.add(label).center().padTop(16f);
 			t.row();
 			this.slider = t.add(slider).fillX();
-		}).growX().padRight(list.get().width);
+		}).growX().padRight(288f);
 	}
 
 	public void select(boolean show, Cons2<T, Floatp> callback){
