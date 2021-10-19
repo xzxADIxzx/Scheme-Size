@@ -3,7 +3,6 @@ package mindustry.ui.fragments;
 import arc.*;
 import arc.util.*;
 import arc.func.*;
-import arc.scene.*;
 import arc.scene.ui.*;
 import arc.scene.ui.layout.*;
 import arc.graphics.g2d.*;
@@ -13,14 +12,13 @@ import mindustry.gen.*;
 import mindustry.game.*;
 import mindustry.graphics.*;
 
-public class PlayerSelectFragment extends Fragment{
+public class PlayerSelectFragment{
 
 	private Player player;
 	private Cell pane;
 	private Table list = new Table();
 
-	@Override
-    public void build(Group parent){
+    public void build(Table parent){
     	pane = parent.pane(list).scrollX(false);
     }
 
