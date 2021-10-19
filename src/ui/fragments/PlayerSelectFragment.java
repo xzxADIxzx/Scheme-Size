@@ -21,7 +21,7 @@ public class PlayerSelectFragment{
 
     public void build(Table parent){
     	pane = parent.pane(list).size(288f, 540f).scrollX(false);
-    	list.size(288f, 540f);
+    	list.width(288f);
     }
 
 	public void rebuild(){
