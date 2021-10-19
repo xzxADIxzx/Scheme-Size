@@ -241,8 +241,6 @@ public class ModDesktopInput extends ModInputHandler{
                     Call.unitControl(player, on);
                     shouldShoot = false;
                     recentRespawnTimer = 1f;
-
-                    SchemeSize.hudfrag.updateShield(player.unit());
                 }else if(build != null){
                     Call.buildingControlSelect(player, build);
                     recentRespawnTimer = 1f;
@@ -257,8 +255,6 @@ public class ModDesktopInput extends ModInputHandler{
                 controlledType = null;
                 recentRespawnTimer = 1f;
                 Call.unitClear(player);
-
-                SchemeSize.hudfrag.updateShield(player.unit());
             }
         }
 

@@ -25,7 +25,6 @@ import mindustry.type.*;
 import mindustry.ui.*;
 import mindustry.world.*;
 import mindustry.world.blocks.*;
-import mindustry.scheme.*;
 
 import static mindustry.Vars.*;
 import static mindustry.input.PlaceMode.*;
@@ -619,8 +618,6 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
                     if(unitTapped != null){
                         Call.unitControl(player, unitTapped);
                         recentRespawnTimer = 1f;
-
-                        SchemeSize.hudfrag.updateShield(player.unit());
                     }else if(buildingTapped != null){
                         Call.buildingControlSelect(player, buildingTapped);
                         recentRespawnTimer = 1f;

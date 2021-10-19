@@ -59,7 +59,6 @@ public class SchemeUtils{
             });
         };
         template(admins, js, server);
-        updatefrag();
     }
 
     public static void changeEffect(){
@@ -161,7 +160,6 @@ public class SchemeUtils{
             player.unit().kill();
         };
         template(admins, js, server);
-        updatefrag();
     }
 
     public static void spawnUnit(){
@@ -183,7 +181,7 @@ public class SchemeUtils{
             SchemeSize.unit.select(true, true, (ppl, unit, amount) -> {
                 if(!hasCore(ppl)) return;
                 for (int i = 0; i < amount.get(); i++)
-                    unit.spawn(player.team(), player.x, player.y);
+                    unit.spawn(ppl.team(), ppl.x, ppl.y);
             });
         };
         template(admins, js, server);
@@ -195,10 +193,6 @@ public class SchemeUtils{
 
 
     // helpfull methods
-    private static void updatefrag(){
-        SchemeSize.hudfrag.updateShield(player.unit());
-    }
-
     private static int fix(Item item, int amount){
         var items = player.team().core().items;
         return amount == 0 ? -items.get(item) : (items.get(item) + amount < 0 ? -items.get(item) : amount);
