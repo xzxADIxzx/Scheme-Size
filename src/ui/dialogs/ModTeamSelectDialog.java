@@ -9,7 +9,6 @@ import mindustry.ui.*;
 import mindustry.ui.fragments.*;
 import mindustry.gen.*;
 import mindustry.game.*;
-import mindustry.graphics.*;
 
 public class ModTeamSelectDialog extends BaseDialog{
 
@@ -30,21 +29,20 @@ public class ModTeamSelectDialog extends BaseDialog{
 		template("status-wet-ui", Team.blue);
 
 		list.build(cont);
-		list.get().padRight(16f);
+		list.getCell().padRight(16f);
 		cont.add(team);
 	}
 
 	private void template(String icon, Team team){
 		var draw = Core.atlas.drawable(icon);
 		this.team.button(draw, () -> {
-			callback.get(team, player);
+			callback.get(team, list.get());
 			hide();
 		}).size(64).row();
 	}
 
 	public void select(Cons2<Team, Player> callback){
 		this.callback = callback;
-		this.player = Vars.player;
 		list.rebuild();
 		show();
 	}

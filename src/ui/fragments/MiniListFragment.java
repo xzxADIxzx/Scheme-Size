@@ -2,9 +2,12 @@ package mindustry.ui.fragments;
 
 import arc.util.*;
 import arc.func.*;
+import arc.graphics.g2d.*;
 import arc.scene.ui.*;
 import arc.scene.ui.layout.*;
+import mindustry.*;
 import mindustry.gen.*;
+import mindustry.graphics.*;
 
 public class MiniListFragment extends Fragment{
 
@@ -19,6 +22,8 @@ public class MiniListFragment extends Fragment{
     }
 
 	public void rebuild(){
+		player = Vars.player;
+
 		list.clear();
 		Groups.player.each(player -> {
 			Button check = new Button(Styles.transt);
@@ -48,7 +53,11 @@ public class MiniListFragment extends Fragment{
 		});
 	}
 
-	public Cell get(){
+	public Player get(){
+		return player;
+	}
+
+	public Cell getCell(){
 		return pane;
 	}
 }
