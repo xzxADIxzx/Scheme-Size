@@ -37,7 +37,7 @@ public class TeamSelectDialog extends BaseDialog{
 	private void template(String icon, Team team){
 		var draw = Core.atlas.drawable(icon);
 		this.team.button(draw, () -> {
-			callback.get(team, list.select());
+			callback.get(list.select(), team);
 			hide();
 		}).size(64).row();
 	}

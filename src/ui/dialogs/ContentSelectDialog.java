@@ -7,13 +7,14 @@ import arc.scene.style.*;
 import arc.struct.*;
 import mindustry.ui.*;
 import mindustry.ui.fragments.*;
+import mindustry.gen.*;
 import mindustry.ctype.*;
 
 import static mindustry.Vars.*;
 
 public class ContentSelectDialog<T extends UnlockableContent> extends BaseDialog{
 
-	public Cons2<Player, T, Floatp> callback;
+	public Cons3<Player, T, Floatp> callback;
 	public Stringf format;
 
 	private Cell label;
@@ -55,7 +56,7 @@ public class ContentSelectDialog<T extends UnlockableContent> extends BaseDialog
 		cont.table().width(288f).right();
 	}
 
-	public void select(boolean showSL, boolean showP, Cons2<Player, T, Floatp> callback){
+	public void select(boolean showSL, boolean showP, Cons3<Player, T, Floatp> callback){
 		this.callback = callback;
 		label.visible(showSL);
 		slider.visible(showSL);
