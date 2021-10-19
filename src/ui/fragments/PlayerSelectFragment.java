@@ -1,18 +1,19 @@
 package mindustry.ui.fragments;
 
+import arc.*;
 import arc.util.*;
 import arc.func.*;
-import arc.graphics.g2d.*;
 import arc.scene.ui.*;
 import arc.scene.ui.layout.*;
+import arc.graphics.g2d.*;
 import mindustry.*;
+import mindustry.ui.*;
 import mindustry.gen.*;
-import mindustry.graphics.*;
+import mindustry.game.*;
 
-public class MiniListFragment extends Fragment{
+public class PlayerSelectFragment extends Fragment{
 
-	public Player player;
-
+	private Player player;
 	private Cell pane;
 	private Table list = new Table();
 
@@ -57,7 +58,7 @@ public class MiniListFragment extends Fragment{
 		return player;
 	}
 
-	public Cell getCell(){
+	public Cell getPane(){
 		return pane;
 	}
 }

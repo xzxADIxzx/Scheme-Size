@@ -1,6 +1,8 @@
 package mindustry.ui.dialogs;
 
 import arc.*;
+import arc.util.*;
+import arc.func.*;
 import arc.scene.ui.*;
 import arc.scene.ui.layout.*;
 import arc.graphics.g2d.*;
@@ -15,7 +17,7 @@ public class ModTeamSelectDialog extends BaseDialog{
 	public Cons2<Team, Player> callback;
 
 	private Table team = new Table();
-	private MiniListFragment list = new MiniListFragment();
+	private PlayerSelectFragment list = new PlayerSelectFragment();
 
 	public ModTeamSelectDialog(String name){
 		super(name);
@@ -29,8 +31,7 @@ public class ModTeamSelectDialog extends BaseDialog{
 		template("status-wet-ui", Team.blue);
 
 		list.build(cont);
-		list.getCell().padRight(16f);
-		cont.add(team);
+		cont.add(team).padLeft(16f);
 	}
 
 	private void template(String icon, Team team){
