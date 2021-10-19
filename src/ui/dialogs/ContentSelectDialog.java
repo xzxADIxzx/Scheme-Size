@@ -6,6 +6,7 @@ import arc.scene.ui.layout.*;
 import arc.scene.style.*;
 import arc.struct.*;
 import mindustry.ui.*;
+import mindustry.ui.fragments.*;
 import mindustry.ctype.*;
 
 import static mindustry.Vars.*;
