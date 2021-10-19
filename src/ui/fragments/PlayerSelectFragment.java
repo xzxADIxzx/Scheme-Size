@@ -20,7 +20,8 @@ public class PlayerSelectFragment{
 	private Table list = new Table();
 
     public void build(Table parent){
-    	pane = parent.pane(list).size(264f + 24f, 90f * 6f).scrollX(false);
+    	pane = parent.pane(list).size(288f, 540f).scrollX(false);
+    	list.size(288f, 540f);
     }
 
 	public void rebuild(){
