@@ -12,14 +12,14 @@ import mindustry.ui.fragments.*;
 import mindustry.gen.*;
 import mindustry.game.*;
 
-public class ModTeamSelectDialog extends BaseDialog{
+public class TeamSelectDialog extends BaseDialog{
 
 	public Cons2<Team, Player> callback;
 
 	private Table team = new Table();
 	private PlayerSelectFragment list = new PlayerSelectFragment();
 
-	public ModTeamSelectDialog(String name){
+	public TeamSelectDialog(String name){
 		super(name);
 		addCloseButton();
 
@@ -37,7 +37,7 @@ public class ModTeamSelectDialog extends BaseDialog{
 	private void template(String icon, Team team){
 		var draw = Core.atlas.drawable(icon);
 		this.team.button(draw, () -> {
-			callback.get(team, list.get());
+			callback.get(team, list.select());
 			hide();
 		}).size(64).row();
 	}

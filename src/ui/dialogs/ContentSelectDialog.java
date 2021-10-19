@@ -10,7 +10,7 @@ import mindustry.ctype.*;
 
 import static mindustry.Vars.*;
 
-public class ModContentSelectDialog<T extends UnlockableContent> extends BaseDialog{
+public class ContentSelectDialog<T extends UnlockableContent> extends BaseDialog{
 
 	public Cons2<T, Floatp> callback;
 	public Stringf format;
@@ -18,7 +18,7 @@ public class ModContentSelectDialog<T extends UnlockableContent> extends BaseDia
 	private Cell label;
 	private Cell slider;
 
-	public ModContentSelectDialog(String name, Seq<T> content, float min, float max, float step, Stringf format){
+	public ContentSelectDialog(String name, Seq<T> content, float min, float max, float step, Stringf format){
 		super(name);
 		this.format = format;
 		addCloseButton();

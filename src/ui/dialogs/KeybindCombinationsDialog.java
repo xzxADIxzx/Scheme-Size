@@ -4,11 +4,11 @@ import arc.*;
 import arc.graphics.*;
 import mindustry.graphics.*;
 
-public class ModKeybindCombinationsDialog extends BaseDialog{
+public class KeybindCombinationsDialog extends BaseDialog{
 
 	public String main;
 
-	public ModKeybindCombinationsDialog(){
+	public KeybindCombinationsDialog(){
 		super("@keycomb.name");
 		addCloseButton();
 

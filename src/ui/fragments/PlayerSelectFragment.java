@@ -14,12 +14,13 @@ import mindustry.graphics.*;
 
 public class PlayerSelectFragment{
 
-	private Player player;
+	public Player player;
+
 	private Cell pane;
 	private Table list = new Table();
 
     public void build(Table parent){
-    	pane = parent.pane(list).scrollX(false);
+    	pane = parent.pane(list).minWidth(264f).scrollX(false);
     }
 
 	public void rebuild(){
@@ -54,11 +55,11 @@ public class PlayerSelectFragment{
 		});
 	}
 
-	public Player get(){
+	public Player select(){
 		return player;
 	}
 
-	public Cell getPane(){
+	public Cell get(){
 		return pane;
 	}
 }
