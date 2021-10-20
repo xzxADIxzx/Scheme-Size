@@ -290,7 +290,7 @@ public class ModHudFragment extends Fragment{
                     ctrl.button(Icon.up, () -> input.btResize(1)).row();
                     ctrl.image(Icon.resize).row();
                     ctrl.button(Icon.down, () -> input.btResize(-1)).row();
-                })
+                });
 
                 pad.image().color(Pal.gray).width(4f).pad(4f).fillY();
 
