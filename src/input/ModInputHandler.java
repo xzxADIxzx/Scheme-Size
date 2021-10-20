@@ -45,7 +45,7 @@ public class ModInputHandler extends InputHandler{
     final static Rect r1 = new Rect(), r2 = new Rect();
 
     protected BTMode btmode = BTMode.none;
-    protected int btSize = 8;
+    protected int btsize = 8;
 
     public boolean mobilePanCam = false;
     public boolean mobileDisWpn = false;
@@ -253,12 +253,12 @@ public class ModInputHandler extends InputHandler{
 
 
     // Building Tools
-    public void btIsPlacing(){
+    public boolean btIsPlacing(){
         return true; //TEMP TRUE
     }
 
     public void btResize(int amount){
-        btSize += amount;
+        btsize += amount;
     }
 
     public BTMode btMode(){
