@@ -258,7 +258,7 @@ public class ModInputHandler extends InputHandler{
     }
 
     public void btRotate(){
-        btRoation += 1;
+        btRotation += 1;
     }
 
     public void btResize(int amount){
