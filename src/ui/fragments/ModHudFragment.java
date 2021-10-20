@@ -276,8 +276,15 @@ public class ModHudFragment extends Fragment{
             cont.name = "buildingtools";
             cont.bottom().right();
 
-            float bsize = 50f;
+            float bsize = 48f;
             var input = SchemeSize.input;
+
+            ImageButtonStyle style = new ImageButtonStyle(){{
+                down = Styles.flatDown;
+                checked = Styles.flatDown;
+                up = Styles.none;
+                over = Styles.flatOver;
+            }};
 
             cont.table(Tex.buttonEdge2, pad -> {
                 pad.name = "padding";
@@ -287,7 +294,6 @@ public class ModHudFragment extends Fragment{
                     ctrl.defaults().size(bsize).bottom().right();
 
                     ctrl.button(Icon.rotate, input::btRotate).name("rotate").padBottom(bsize).row();
-
                     ctrl.button(Icon.up, () -> input.btResize(1)).row();
                     ctrl.image(Icon.resize).row();
                     ctrl.button(Icon.down, () -> input.btResize(-1)).row();
@@ -298,8 +304,6 @@ public class ModHudFragment extends Fragment{
                 pad.table(mode -> {
                     mode.name = "modes";
                     mode.defaults().size(bsize).bottom().right();
-
-                    ImageButtonStyle style = Styles.clearToggleTransi;
 
                     mode.button(Icon.fill, style, input::btFill).checked(t -> input.btMode() == BTMode.fill).name("fill").row();
                     mode.button(Icon.grid, style, input::btSquare).checked(t -> input.btMode() == BTMode.square).name("square").row();
