@@ -282,13 +282,17 @@ public class ModHudFragment extends Fragment{
             cont.bottom().right();
 
             cont.table(Tex.buttonEdge2, pad -> {
+                pad.name = "padding";
                 pad.table(main -> {
+                    main.name = "buttons";
+                    main.defaults().size(dsize).bottom().right();
+
                     ImageButtonStyle style = Styles.clearTransi;
 
-                    main.button(Icon.fill, style, SchemeSize.input::btFill).checked(b -> SchemeSize.input.btmode == BTMode.fill).name("fill").row();
-                });
-                pad.image().color(Pal.gray).height(4f).fillX();
-            }).height(254f).padRight(314f);
+                    main.button(Icon.fill, style, SchemeSize.input::btFill).checked(t -> SchemeSize.input.btmode == BTMode.fill).name("fill").row();
+                }).row();
+                pad.image().color(Pal.gray).height(4f).bottom().fillX();
+            }).height(254f).padRight(309f);
         });
     }
 
