@@ -45,6 +45,7 @@ public class ModInputHandler extends InputHandler{
     final static Rect r1 = new Rect(), r2 = new Rect();
 
     protected BTMode btmode = BTMode.none;
+    protected int btRotation = 0;
     protected int btSize = 8;
 
     public boolean mobilePanCam = false;
@@ -252,6 +253,14 @@ public class ModInputHandler extends InputHandler{
     }
 
     // Building Tools
+    public BTMode btMode(){
+        return btmode;
+    }
+
+    public void btRotate(){
+        btRoation += 1;
+    }
+
     public void btResize(int amount){
         btSize += amount;
     }
@@ -274,10 +283,6 @@ public class ModInputHandler extends InputHandler{
 
     public void btWall(){
         btmode = btmode == BTMode.wall ? BTMode.none : BTMode.wall;
-    }
-
-    public BTMode btMode(){
-        return btmode;
     }
 
     public enum BTMode{
