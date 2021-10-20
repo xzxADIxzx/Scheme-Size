@@ -281,6 +281,13 @@ public class ModHudFragment extends Fragment{
             cont.table(Tex.buttonEdge2, pad -> {
                 pad.name = "padding";
 
+                if(mobile){
+                    pad.labelWrap("i hate mobile mindustry");
+                }else{
+                    pad.labelWrap("Use [accent]Scroll Wheel[] to rotate").name("helpinfo").row()
+                    pad.labelWrap("Use [accent]Alternate + Scroll Wheel[] to resize").name("helpinfo").row()
+                }
+
                 pad.image().color(Pal.gray).width(4f).fillY();
                 pad.table(main -> {
                     main.name = "buttons";
@@ -289,13 +296,12 @@ public class ModHudFragment extends Fragment{
                     ImageButtonStyle style = Styles.selecti;
 
                     main.button(Icon.fill, style, input::btFill).checked(t -> input.btmode == BTMode.fill).name("fill").row();
+                    main.button(Icon.grid, style, input::btSquare).checked(t -> input.btmode == BTMode.square).name("square").row();
                     main.button(Icon.commandRally, style, input::btCircle).checked(t -> input.btmode == BTMode.circle).name("circle").row();
-                    main.button(Icon.none, style, input::btSquare).checked(t -> input.btmode == BTMode.square).name("square").row();
-                    main.button(Icon.none, style, input::btSquare).checked(t -> input.btmode == BTMode.square).name("square").row();
+                    main.button(Icon.link, style, input::btReplace).checked(t -> input.btmode == BTMode.replace).name("replace").row();
                     main.button(Icon.none, style, input::btSquare).checked(t -> input.btmode == BTMode.square).name("square").row();
                 }).growY().row();
             }).height(254f).padRight(309.5f).row();
-            cont.image().color(Pal.gray).width(bsize + 10f).height(4f).padRight(309.5f);
         });
     }
 

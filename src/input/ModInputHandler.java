@@ -262,10 +262,15 @@ public class ModInputHandler extends InputHandler{
         btmode = btmode == BTMode.circle ? BTMode.none : BTMode.circle;
     }
 
+    public void btReplace(){
+        btmode = btmode == BTMode.replace ? BTMode.none : BTMode.replace;
+    }
+
     public enum BTMode{
         none,
         fill,
         square,
-        circle;
+        circle,
+        replace;
     }
 }
