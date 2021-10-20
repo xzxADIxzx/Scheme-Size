@@ -44,7 +44,7 @@ public class ModDesktopInput extends ModInputHandler{
     /** Selected build request for movement. */
     public @Nullable BuildPlan sreq;
     /** Whether player is currently deleting removal requests. */
-    public boolean deleting = false, shouldShoot = false, panning = false;
+    public boolean deleting = false, shouldShoot = false, panning = false, usingbt;
     /** Mouse pan speed. */
     public float panScale = 0.005f, panSpeed = 4.5f, panBoostSpeed = 15f;
     /** Delta time between consecutive clicks. */
@@ -663,17 +663,22 @@ public class ModDesktopInput extends ModInputHandler{
     }
 
     void btInput(){
-        if(btmode == BTMode.none) return;
-        // if(btIsPlacing()) btplan.each(bp -> drawOverRequest(bp));
+        if(btmode == BTMode.none || block == null) return;
+        btClear();
 
-        if(btmode == BTMode.fill){
-            if(input.keyDown(Binding.select)){
+        if(btmode == BTMode.fill && !input.keyDown(Binding.break_block)){
+            if(input.keyTap(Binding.select)) usingbt = true;
+            if(input.keyTap(Binding.deselect)) usingbt = false;
+            if(usingbt){
                 btFill(selectX, selectY, tileXMod(getMouseX()), tileYMod(getMouseY()));
             }
-            if(input.keyRelease(Binding.select)){
+            if(usingbt && input.keyRelease(Binding.select)){
                 btApply();
+                usingbt = false;
             }
         }
+
+        if(btIsPlacing()) btplan.each(bp -> drawOverRequest(bp));
     }
 
     @Override

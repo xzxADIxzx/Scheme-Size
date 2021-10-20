@@ -255,7 +255,7 @@ public class ModInputHandler extends InputHandler{
 
     // building tools
     public boolean btIsPlacing(){
-        return !btplan.isEmpty();
+        return !btplan.isEmpty() && block != null;
     }
 
     public void btApply(){
@@ -298,8 +298,8 @@ public class ModInputHandler extends InputHandler{
     protected void btFill(int startX, int startY, int endX, int endY){
         NormalizeResult normalized = Placement.normalizeArea(startX, startY, endX, endY, 0, false, 512);
 
-        for(int x = normalized.x; x < normalized.x2; x++){
-            for(int y = normalized.y; y < normalized.y2; y++){
+        for(int x = normalized.x; x <= normalized.x2; x++){
+            for(int y = normalized.y; y <= normalized.y2; y++){
                 BuildPlan build = new BuildPlan(x, y, 0, block);
                 btplan.add(build);
             }
