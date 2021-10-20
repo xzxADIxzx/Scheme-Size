@@ -251,8 +251,7 @@ public class ModInputHandler extends InputHandler{
 
     // Building Tools
     public void btFill(){
-        if(btmode == BTMode.fill) btmode = BTMode.none;
-        else btmode = BTMode.fill;
+        btmode = btmode == BTMode.fill ? BTMode.none : BTMode.fill;
     }
 
     public enum BTMode{
