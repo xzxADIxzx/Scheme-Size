@@ -42,6 +42,7 @@ public class ModHudFragment extends Fragment{
     private float maxShield;
     public boolean shown = true;
     public boolean shownMobile = false;
+    public boolean shownBT = false;
 
     @Override
     public void build(Group parent){
@@ -275,36 +276,38 @@ public class ModHudFragment extends Fragment{
             cont.name = "buildingtools";
             cont.bottom().right();
 
-            float bsize = 46f;
+            float bsize = 50f;
             var input = SchemeSize.input;
 
             cont.table(Tex.buttonEdge2, pad -> {
                 pad.name = "padding";
 
-                pad.table(info -> {
-                    if(mobile){
-                        info.labelWrap("i hate mobile mindustry");
-                    }else{
-                        info.labelWrap("Use [accent]Scroll Wheel[] to rotate").name("helpinfo").row();
-                        info.labelWrap("Use [accent]Alternate + Scroll Wheel[] to resize").name("helpinfo").row();
-                    }
-                }).pad(10f);
+                pad.table(ctrl -> {
+                    ctrl.defaults().size(bsize).bottom().right();
 
-                pad.image().color(Pal.gray).width(4f).fillY();
+                    ctrl.button(Icon.rotate, input::btRotate).name("rotate").padBottom(bsize).row();
+
+                    ctrl.button(Icon.up, () -> input.btResize(1)).row();
+                    ctrl.image(Icon.resize).row();
+                    ctrl.button(Icon.down, () -> input.btResize(-1)).row();
+                })
+
+                pad.image().color(Pal.gray).width(4f).pad(4f).fillY();
+
                 pad.table(mode -> {
                     mode.name = "modes";
                     mode.defaults().size(bsize).bottom().right();
 
-                    ImageButtonStyle style = Styles.selecti;
+                    ImageButtonStyle style = Styles.clearToggleTransi;
 
                     mode.button(Icon.fill, style, input::btFill).checked(t -> input.btmode == BTMode.fill).name("fill").row();
                     mode.button(Icon.grid, style, input::btSquare).checked(t -> input.btmode == BTMode.square).name("square").row();
                     mode.button(Icon.commandRally, style, input::btCircle).checked(t -> input.btmode == BTMode.circle).name("circle").row();
                     mode.button(Icon.link, style, input::btReplace).checked(t -> input.btmode == BTMode.replace).name("replace").row();
-                    mode.button(Icon.none, style, input::btSquare).checked(t -> input.btmode == BTMode.square).name("square").row();
-                }).growY().row();
-            }).height(254f).padRight(309.5f).row();
-        });
+                    mode.button(Icon.none, style, input::btSquare).checked(t -> input.btmode == BTMode.none).name("square").row();
+                }).row();
+            }).height(254f).padRight(310f).row();
+        }).visible(() -> shownBT);
     }
 
     private void toggleMenus(){
@@ -322,6 +325,10 @@ public class ModHudFragment extends Fragment{
         }
 
         shownMobile = !shownMobile;
+    }
+
+    public void toggleBT(){
+        shownBT = !shownBT;
     }
 
     private Table makeStatusTable(){

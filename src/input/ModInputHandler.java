@@ -44,7 +44,9 @@ public class ModInputHandler extends InputHandler{
 	final static float playerSelectRange = mobile ? 17f : 11f;
     final static Rect r1 = new Rect(), r2 = new Rect();
 
-    public BTMode btmode = BTMode.none;
+    protected BTMode btmode = BTMode.none;
+    protected int btSize = 8;
+
     public boolean mobilePanCam = false;
     public boolean mobileDisWpn = false;
 
@@ -250,6 +252,10 @@ public class ModInputHandler extends InputHandler{
     }
 
     // Building Tools
+    public void btResize(int amount){
+        btSize += amount;
+    }
+
     public void btFill(){
         btmode = btmode == BTMode.fill ? BTMode.none : BTMode.fill;
     }
@@ -266,11 +272,20 @@ public class ModInputHandler extends InputHandler{
         btmode = btmode == BTMode.replace ? BTMode.none : BTMode.replace;
     }
 
+    public void btWall(){
+        btmode = btmode == BTMode.wall ? BTMode.none : BTMode.wall;
+    }
+
+    public BTMode btMode(){
+        return btmode;
+    }
+
     public enum BTMode{
         none,
         fill,
         square,
         circle,
-        replace;
+        replace,
+        wall;
     }
 }
