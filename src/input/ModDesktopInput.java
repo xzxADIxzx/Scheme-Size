@@ -664,9 +664,15 @@ public class ModDesktopInput extends ModInputHandler{
 
     void btInput(){
         if(btmode == BTMode.none) return;
+        drawOverRequest(btplan);
 
-        if(btmode == BTMode.fill && input.keyDown(Binding.select)){
-            btFill(selectX, selectY, tileXMod(getMouseX()), tileYMod(getMouseY()));
+        if(btmode == BTMode.fill){
+            if(input.keyDown(Binding.select)){
+                btFill(selectX, selectY, tileXMod(getMouseX()), tileYMod(getMouseY()));
+            }
+            if(input.keyRelease(Binding.select)){
+                btApply();
+            }
         }
     }
 

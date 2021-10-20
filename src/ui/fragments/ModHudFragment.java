@@ -292,7 +292,7 @@ public class ModHudFragment extends Fragment{
                         over = Styles.flatOver;
                     }};
 
-                    ctrl.button(Icon.cancel, style, input::btClear).name("cancel").visible(input::btIsPlacing).row();
+                    ctrl.button(Icon.cancel, style, input::btClear).padBottom(bsize).visible(input::btIsPlacing).name("cancel").row();
                     ctrl.button(Icon.up, style, () -> input.btResize(1)).name("sizeup").row();
                     ctrl.image(Icon.resize).name("resize").row();
                     ctrl.button(Icon.down, style, () -> input.btResize(-1)).name("sizedown").row();

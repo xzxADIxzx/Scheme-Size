@@ -44,6 +44,7 @@ public class ModInputHandler extends InputHandler{
 	final static float playerSelectRange = mobile ? 17f : 11f;
     final static Rect r1 = new Rect(), r2 = new Rect();
 
+    protected Seq<BuildPlan> btplan = new Seq<>();
     protected BTMode btmode = BTMode.none;
     protected int btsize = 8;
 
@@ -252,13 +253,17 @@ public class ModInputHandler extends InputHandler{
     }
 
 
-    // Building Tools
+    // building tools
     public boolean btIsPlacing(){
-        return true; //TEMP TRUE
+        return !btplan.isEmpty();
+    }
+
+    public void btApply(){
+        flushRequests(btplan);
     }
 
     public void btClear(){
-        // em... clear?
+        btplan.clear();
     }
 
     public void btResize(int amount){
@@ -291,12 +296,11 @@ public class ModInputHandler extends InputHandler{
 
     protected void btFill(int startX, int startY, int endX, int endY){
         NormalizeResult normalized = Placement.normalizeArea(startX, startY, endX, endY, 0, false, 512);
-        Unit unit = player.unit();
 
         for(int x = normalized.x; x < normalized.x2; x++){
             for(int y = normalized.y; y < normalized.y2; y++){
                 BuildPlan build = new BuildPlan(x, y, 0, block);
-                unit.plans.add(build);
+                btplan.add(build);
             }
         }
     }
