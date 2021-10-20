@@ -281,25 +281,27 @@ public class ModHudFragment extends Fragment{
             cont.table(Tex.buttonEdge2, pad -> {
                 pad.name = "padding";
 
-                if(mobile){
-                    pad.labelWrap("i hate mobile mindustry");
-                }else{
-                    pad.labelWrap("Use [accent]Scroll Wheel[] to rotate").name("helpinfo").row();
-                    pad.labelWrap("Use [accent]Alternate + Scroll Wheel[] to resize").name("helpinfo").row();
-                }
+                pad.table(info -> {
+                    if(mobile){
+                        info.labelWrap("i hate mobile mindustry");
+                    }else{
+                        info.labelWrap("Use [accent]Scroll Wheel[] to rotate").name("helpinfo").row();
+                        info.labelWrap("Use [accent]Alternate + Scroll Wheel[] to resize").name("helpinfo").row();
+                    }
+                }).pad(10f);
 
                 pad.image().color(Pal.gray).width(4f).fillY();
-                pad.table(main -> {
-                    main.name = "buttons";
-                    main.defaults().size(bsize).bottom().right();
+                pad.table(mode -> {
+                    mode.name = "modes";
+                    mode.defaults().size(bsize).bottom().right();
 
                     ImageButtonStyle style = Styles.selecti;
 
-                    main.button(Icon.fill, style, input::btFill).checked(t -> input.btmode == BTMode.fill).name("fill").row();
-                    main.button(Icon.grid, style, input::btSquare).checked(t -> input.btmode == BTMode.square).name("square").row();
-                    main.button(Icon.commandRally, style, input::btCircle).checked(t -> input.btmode == BTMode.circle).name("circle").row();
-                    main.button(Icon.link, style, input::btReplace).checked(t -> input.btmode == BTMode.replace).name("replace").row();
-                    main.button(Icon.none, style, input::btSquare).checked(t -> input.btmode == BTMode.square).name("square").row();
+                    mode.button(Icon.fill, style, input::btFill).checked(t -> input.btmode == BTMode.fill).name("fill").row();
+                    mode.button(Icon.grid, style, input::btSquare).checked(t -> input.btmode == BTMode.square).name("square").row();
+                    mode.button(Icon.commandRally, style, input::btCircle).checked(t -> input.btmode == BTMode.circle).name("circle").row();
+                    mode.button(Icon.link, style, input::btReplace).checked(t -> input.btmode == BTMode.replace).name("replace").row();
+                    mode.button(Icon.none, style, input::btSquare).checked(t -> input.btmode == BTMode.square).name("square").row();
                 }).growY().row();
             }).height(254f).padRight(309.5f).row();
         });
