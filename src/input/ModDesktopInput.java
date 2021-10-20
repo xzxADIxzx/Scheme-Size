@@ -666,14 +666,14 @@ public class ModDesktopInput extends ModInputHandler{
         if(btmode == BTMode.none || block == null) return;
         btClear();
 
-        if(btmode == BTMode.fill && !input.keyDown(Binding.break_block)){
+        if(btmode == BTMode.fill){
             if(input.keyTap(Binding.select)) usingbt = true;
             if(input.keyTap(Binding.deselect)) usingbt = false;
             if(usingbt){
                 btFill(selectX, selectY, tileXMod(getMouseX()), tileYMod(getMouseY()));
             }
             if(usingbt && input.keyRelease(Binding.select)){
-                btApply();
+                if(selectX != -1 && selectY != -1) btApply();
                 usingbt = false;
             }
         }
