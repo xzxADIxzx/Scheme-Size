@@ -44,6 +44,7 @@ public class ModInputHandler extends InputHandler{
 	final static float playerSelectRange = mobile ? 17f : 11f;
     final static Rect r1 = new Rect(), r2 = new Rect();
 
+    public BTMode btmode = BTMode.none;
     public boolean mobilePanCam = false;
     public boolean mobileDisWpn = false;
 
@@ -246,5 +247,17 @@ public class ModInputHandler extends InputHandler{
 
     public void toggleMobileDisWpn(){
         mobileDisWpn = !mobileDisWpn;
+    }
+
+    // Building Tools
+    public void btFill(){
+        if(btmode == BTMode.fill) btmode = BTMode.none;
+        else btmode = BTMode.fill;
+    }
+
+    public enum BTMode{
+        none,
+        fill,
+        circle;
     }
 }

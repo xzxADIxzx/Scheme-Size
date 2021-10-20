@@ -26,6 +26,7 @@ import mindustry.game.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.input.*;
+import mindustry.input.ModInputHandler.*;
 import mindustry.net.Packets.*;
 import mindustry.type.*;
 import mindustry.ui.*;
@@ -48,11 +49,11 @@ public class ModHudFragment extends Fragment{
             updateShield(player.unit());
         });
 
-        Events.on(WorldLoadEvent.class, e -> {
-            Time.runTask(10f, () -> {
-                updateShield(player.unit());
-            });
-        });
+        // Events.on(WorldLoadEvent.class, e -> {
+        //     Time.runTask(10f, () -> {
+        //         updateShield(player.unit());
+        //     });
+        // });
 
         Events.on(ClientLoadEvent.class, e -> {
             var child = parent.getChildren();
@@ -273,6 +274,21 @@ public class ModHudFragment extends Fragment{
                 info.label(() -> tps.get(state.serverTps == -1 ? 60 : state.serverTps)).visible(net::client).left().style(Styles.outlineLabel).name("tps").row();
 
             }).top().left();
+        });
+
+        // building tools
+        parent.fill(cont -> {
+            cont.name = "buildingtools";
+            cont.bottom().right();
+
+            cont.table(Tex.buttonEdge2, pad -> {
+                pad.table(main -> {
+                    ImageButtonStyle style = Styles.clearTransi;
+
+                    main.button(Icon.fill, style, SchemeSize.input::btFill).enabled(SchemeSize.input.btmode == BTMode.fill).name("fill").row();
+                });
+                pad.image().color(Pal.gray).height(4f).fillX();
+            }).height(254f).padRight(314f);
         });
     }
 
