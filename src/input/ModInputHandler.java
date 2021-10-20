@@ -260,6 +260,7 @@ public class ModInputHandler extends InputHandler{
 
     public void btApply(){
         flushRequests(btplan);
+        btClear();
     }
 
     public void btClear(){
