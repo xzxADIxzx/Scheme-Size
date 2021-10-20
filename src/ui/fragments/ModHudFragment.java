@@ -283,6 +283,7 @@ public class ModHudFragment extends Fragment{
                 pad.name = "padding";
 
                 pad.table(ctrl -> {
+                    ctrl.name = "controls"
                     ctrl.defaults().size(bsize).bottom().right();
 
                     ctrl.button(Icon.rotate, input::btRotate).name("rotate").padBottom(bsize).row();
@@ -300,14 +301,14 @@ public class ModHudFragment extends Fragment{
 
                     ImageButtonStyle style = Styles.clearToggleTransi;
 
-                    mode.button(Icon.fill, style, input::btFill).checked(t -> input.btmode == BTMode.fill).name("fill").row();
-                    mode.button(Icon.grid, style, input::btSquare).checked(t -> input.btmode == BTMode.square).name("square").row();
-                    mode.button(Icon.commandRally, style, input::btCircle).checked(t -> input.btmode == BTMode.circle).name("circle").row();
-                    mode.button(Icon.link, style, input::btReplace).checked(t -> input.btmode == BTMode.replace).name("replace").row();
-                    mode.button(Icon.none, style, input::btSquare).checked(t -> input.btmode == BTMode.none).name("square").row();
+                    mode.button(Icon.fill, style, input::btFill).checked(t -> input.btMode() == BTMode.fill).name("fill").row();
+                    mode.button(Icon.grid, style, input::btSquare).checked(t -> input.btMode() == BTMode.square).name("square").row();
+                    mode.button(Icon.commandRally, style, input::btCircle).checked(t -> input.btMode() == BTMode.circle).name("circle").row();
+                    mode.button(Icon.link, style, input::btReplace).checked(t -> input.btMode() == BTMode.replace).name("replace").row();
+                    mode.button(Icon.none, style, input::btSquare).checked(t -> input.btMode() == BTMode.none).name("square").row();
                 }).row();
-            }).height(254f).padRight(310f).row();
-        }).visible(() -> shownBT);
+            }).height(254f).padRight(310f).visible(() -> shownBT);
+        });
     }
 
     private void toggleMenus(){
