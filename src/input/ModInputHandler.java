@@ -257,6 +257,10 @@ public class ModInputHandler extends InputHandler{
         return true; //TEMP TRUE
     }
 
+    public void btClear(){
+        // em... clear?
+    }
+
     public void btResize(int amount){
         btsize += amount;
     }
