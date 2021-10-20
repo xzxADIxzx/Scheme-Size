@@ -284,8 +284,8 @@ public class ModHudFragment extends Fragment{
                 if(mobile){
                     pad.labelWrap("i hate mobile mindustry");
                 }else{
-                    pad.labelWrap("Use [accent]Scroll Wheel[] to rotate").name("helpinfo").row()
-                    pad.labelWrap("Use [accent]Alternate + Scroll Wheel[] to resize").name("helpinfo").row()
+                    pad.labelWrap("Use [accent]Scroll Wheel[] to rotate").name("helpinfo").row();
+                    pad.labelWrap("Use [accent]Alternate + Scroll Wheel[] to resize").name("helpinfo").row();
                 }
 
                 pad.image().color(Pal.gray).width(4f).fillY();
