@@ -285,7 +285,7 @@ public class ModHudFragment extends Fragment{
                 pad.table(main -> {
                     ImageButtonStyle style = Styles.clearTransi;
 
-                    main.button(Icon.fill, style, SchemeSize.input::btFill).checked(() -> SchemeSize.input.btmode == BTMode.fill).name("fill").row();
+                    main.button(Icon.fill, style, SchemeSize.input::btFill).checked(b -> SchemeSize.input.btmode == BTMode.fill).name("fill").row();
                 });
                 pad.image().color(Pal.gray).height(4f).fillX();
             }).height(254f).padRight(314f);
