@@ -275,22 +275,27 @@ public class ModHudFragment extends Fragment{
             cont.name = "buildingtools";
             cont.bottom().right();
 
+            float bsize = 46f;
+            var input = SchemeSize.input;
+
             cont.table(Tex.buttonEdge2, pad -> {
                 pad.name = "padding";
 
                 pad.image().color(Pal.gray).width(4f).fillY();
                 pad.table(main -> {
                     main.name = "buttons";
-                    main.defaults().size(dsize).bottom().right();
+                    main.defaults().size(bsize).bottom().right();
 
                     ImageButtonStyle style = Styles.clearTransi;
 
-                    main.button(Icon.fill, style, SchemeSize.input::btFill).checked(t -> SchemeSize.input.btmode == BTMode.fill).name("fill").row();
-                    main.button(Icon.commandRally, style, SchemeSize.input::btCircle).checked(t -> SchemeSize.input.btmode == BTMode.circle).name("circle").row();
-                }).fillY().row();
-
-                pad.image().color(Pal.gray).height(4f).bottom().fillX();
-            }).height(254f).padRight(310f);
+                    main.button(Icon.fill, style, input::btFill).checked(t -> input.btmode == BTMode.fill).name("fill").row();
+                    main.button(Icon.commandRally, style, input::btCircle).checked(t -> input.btmode == BTMode.circle).name("circle").row();
+                    main.button(Icon.none, style, input::btSquare).checked(t -> input.btmode == BTMode.square).name("square").row();
+                    main.button(Icon.none, style, input::btSquare).checked(t -> input.btmode == BTMode.square).name("square").row();
+                    main.button(Icon.none, style, input::btSquare).checked(t -> input.btmode == BTMode.square).name("square").row();
+                }).growY().row();
+            }).height(254f).padRight(309.5f);
+            cont.image().color(Pal.gray).width(bsize).height(4f).padRight(309.5f);
         });
     }
 

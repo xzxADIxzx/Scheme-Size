@@ -254,6 +254,10 @@ public class ModInputHandler extends InputHandler{
         btmode = btmode == BTMode.fill ? BTMode.none : BTMode.fill;
     }
 
+    public void btSquare(){
+        btmode = btmode == BTMode.square ? BTMode.none : BTMode.square;
+    }
+
     public void btCircle(){
         btmode = btmode == BTMode.circle ? BTMode.none : BTMode.circle;
     }
@@ -261,6 +265,7 @@ public class ModInputHandler extends InputHandler{
     public enum BTMode{
         none,
         fill,
+        square,
         circle;
     }
 }
