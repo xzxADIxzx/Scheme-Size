@@ -42,7 +42,7 @@ public class ModHudFragment extends Fragment{
     private float maxShield;
     public boolean shown = true;
     public boolean shownMobile = false;
-    public boolean shownBT = false;
+    public boolean shownBT = true; //TEMP true
 
     @Override
     public void build(Group parent){
@@ -276,7 +276,7 @@ public class ModHudFragment extends Fragment{
             cont.name = "buildingtools";
             cont.bottom().right();
 
-            float bsize = 48f;
+            float bsize = 46f;
             var input = SchemeSize.input;
 
             ImageButtonStyle style = new ImageButtonStyle(){{
@@ -293,10 +293,10 @@ public class ModHudFragment extends Fragment{
                     ctrl.name = "controls";
                     ctrl.defaults().size(bsize).bottom().right();
 
-                    ctrl.button(Icon.rotate, input::btRotate).name("rotate").padBottom(bsize).row();
-                    ctrl.button(Icon.up, () -> input.btResize(1)).row();
+                    ctrl.button(Icon.rotate, style, input::btRotate).name("rotate").padBottom(bsize).row();
+                    ctrl.button(Icon.up, style, () -> input.btResize(1)).row();
                     ctrl.image(Icon.resize).row();
-                    ctrl.button(Icon.down, () -> input.btResize(-1)).row();
+                    ctrl.button(Icon.down, style, () -> input.btResize(-1)).row();
                 });
 
                 pad.image().color(Pal.gray).width(4f).pad(4f).fillY();
