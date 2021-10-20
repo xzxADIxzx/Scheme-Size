@@ -49,12 +49,6 @@ public class ModHudFragment extends Fragment{
             updateShield(player.unit());
         });
 
-        // Events.on(WorldLoadEvent.class, e -> {
-        //     Time.runTask(10f, () -> {
-        //         updateShield(player.unit());
-        //     });
-        // });
-
         Events.on(ClientLoadEvent.class, e -> {
             var child = parent.getChildren();
             var table = child.get(5);
@@ -283,6 +277,8 @@ public class ModHudFragment extends Fragment{
 
             cont.table(Tex.buttonEdge2, pad -> {
                 pad.name = "padding";
+
+                pad.image().color(Pal.gray).width(4f).fillY();
                 pad.table(main -> {
                     main.name = "buttons";
                     main.defaults().size(dsize).bottom().right();
@@ -290,9 +286,11 @@ public class ModHudFragment extends Fragment{
                     ImageButtonStyle style = Styles.clearTransi;
 
                     main.button(Icon.fill, style, SchemeSize.input::btFill).checked(t -> SchemeSize.input.btmode == BTMode.fill).name("fill").row();
-                }).row();
+                    main.button(Icon.commandRally, style, SchemeSize.input::btCircle).checked(t -> SchemeSize.input.btmode == BTMode.circle).name("circle").row();
+                }).fillY().row();
+
                 pad.image().color(Pal.gray).height(4f).bottom().fillX();
-            }).height(254f).padRight(309f);
+            }).height(254f).padRight(310f);
         });
     }
 
