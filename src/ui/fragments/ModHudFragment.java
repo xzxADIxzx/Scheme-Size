@@ -286,7 +286,7 @@ public class ModHudFragment extends Fragment{
                     main.name = "buttons";
                     main.defaults().size(bsize).bottom().right();
 
-                    ImageButtonStyle style = Styles.clearTransi;
+                    ImageButtonStyle style = Styles.selecti;
 
                     main.button(Icon.fill, style, input::btFill).checked(t -> input.btmode == BTMode.fill).name("fill").row();
                     main.button(Icon.commandRally, style, input::btCircle).checked(t -> input.btmode == BTMode.circle).name("circle").row();
@@ -294,8 +294,8 @@ public class ModHudFragment extends Fragment{
                     main.button(Icon.none, style, input::btSquare).checked(t -> input.btmode == BTMode.square).name("square").row();
                     main.button(Icon.none, style, input::btSquare).checked(t -> input.btmode == BTMode.square).name("square").row();
                 }).growY().row();
-            }).height(254f).padRight(309.5f);
-            cont.image().color(Pal.gray).width(bsize).height(4f).padRight(309.5f);
+            }).height(254f).padRight(309.5f).row();
+            cont.image().color(Pal.gray).width(bsize + 10f).height(4f).padRight(309.5f);
         });
     }
 
