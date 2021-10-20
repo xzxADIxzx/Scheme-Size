@@ -42,7 +42,7 @@ public class ModHudFragment extends Fragment{
     private float maxShield;
     public boolean shown = true;
     public boolean shownMobile = false;
-    public boolean shownBT = true; //TEMP true
+    public boolean shownBT = false;
 
     @Override
     public void build(Group parent){
@@ -279,13 +279,6 @@ public class ModHudFragment extends Fragment{
             float bsize = 46f;
             var input = SchemeSize.input;
 
-            ImageButtonStyle style = new ImageButtonStyle(){{
-                down = Styles.flatDown;
-                checked = Styles.flatDown;
-                up = Styles.none;
-                over = Styles.flatOver;
-            }};
-
             cont.table(Tex.buttonEdge2, pad -> {
                 pad.name = "padding";
 
@@ -293,10 +286,16 @@ public class ModHudFragment extends Fragment{
                     ctrl.name = "controls";
                     ctrl.defaults().size(bsize).bottom().right();
 
-                    ctrl.button(Icon.rotate, style, input::btRotate).name("rotate").padBottom(bsize).row();
-                    ctrl.button(Icon.up, style, () -> input.btResize(1)).row();
-                    ctrl.image(Icon.resize).row();
-                    ctrl.button(Icon.down, style, () -> input.btResize(-1)).row();
+                    ImageButtonStyle style = new ImageButtonStyle(){{
+                        down = Styles.flatDown;
+                        up = Styles.none;
+                        over = Styles.flatOver;
+                    }};
+
+                    ctrl.button(Icon.cancel, style, () -> input::btClear).name("cancel").visible(input::btIsPlacing).row();
+                    ctrl.button(Icon.up, style, () -> input.btResize(1)).name("sizeup").row();
+                    ctrl.image(Icon.resize).name("resize").row();
+                    ctrl.button(Icon.down, style, () -> input.btResize(-1)).name("sizedown").row();
                 });
 
                 pad.image().color(Pal.gray).width(4f).pad(4f).fillY();
@@ -305,11 +304,18 @@ public class ModHudFragment extends Fragment{
                     mode.name = "modes";
                     mode.defaults().size(bsize).bottom().right();
 
-                    mode.button(Icon.fill, style, input::btFill).checked(t -> input.btMode() == BTMode.fill).name("fill").row();
-                    mode.button(Icon.grid, style, input::btSquare).checked(t -> input.btMode() == BTMode.square).name("square").row();
-                    mode.button(Icon.commandRally, style, input::btCircle).checked(t -> input.btMode() == BTMode.circle).name("circle").row();
-                    mode.button(Icon.link, style, input::btReplace).checked(t -> input.btMode() == BTMode.replace).name("replace").row();
-                    mode.button(Icon.defense, style, input::btWall).checked(t -> input.btMode() == BTMode.wall).name("wall").row();
+                    ImageButtonStyle style = new ImageButtonStyle(){{
+                        down = Styles.flatDown;
+                        checked = Styles.flatDown;
+                        up = Styles.none;
+                        over = Styles.flatOver;
+                    }};
+
+                    mode.button(Icon.fill, style, input::btModeFill).checked(t -> input.btMode() == BTMode.fill).name("fill").row();
+                    mode.button(Icon.grid, style, input::btModeSquare).checked(t -> input.btMode() == BTMode.square).name("square").row();
+                    mode.button(Icon.commandRally, style, input::btModeCircle).checked(t -> input.btMode() == BTMode.circle).name("circle").row();
+                    mode.button(Icon.link, style, input::btModeReplace).checked(t -> input.btMode() == BTMode.replace).name("replace").row();
+                    mode.button(Icon.defense, style, input::btModeWall).checked(t -> input.btMode() == BTMode.wall).name("wall").row();
                 }).row();
             }).height(254f).padRight(310f).visible(() -> shownBT);
         });

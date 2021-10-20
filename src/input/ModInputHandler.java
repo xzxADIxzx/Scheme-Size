@@ -45,7 +45,6 @@ public class ModInputHandler extends InputHandler{
     final static Rect r1 = new Rect(), r2 = new Rect();
 
     protected BTMode btmode = BTMode.none;
-    protected int btRotation = 0;
     protected int btSize = 8;
 
     public boolean mobilePanCam = false;
@@ -252,37 +251,50 @@ public class ModInputHandler extends InputHandler{
         mobileDisWpn = !mobileDisWpn;
     }
 
-    // Building Tools
-    public BTMode btMode(){
-        return btmode;
-    }
 
-    public void btRotate(){
-        btRotation += 1;
+    // Building Tools
+    public void btIsPlacing(){
+        return true; //TEMP TRUE
     }
 
     public void btResize(int amount){
         btSize += amount;
     }
 
-    public void btFill(){
+    public BTMode btMode(){
+        return btmode;
+    }
+
+    public void btModeFill(){
         btmode = btmode == BTMode.fill ? BTMode.none : BTMode.fill;
     }
 
-    public void btSquare(){
+    public void btModeSquare(){
         btmode = btmode == BTMode.square ? BTMode.none : BTMode.square;
     }
 
-    public void btCircle(){
+    public void btModeCircle(){
         btmode = btmode == BTMode.circle ? BTMode.none : BTMode.circle;
     }
 
-    public void btReplace(){
+    public void btModeReplace(){
         btmode = btmode == BTMode.replace ? BTMode.none : BTMode.replace;
     }
 
-    public void btWall(){
+    public void btModeWall(){
         btmode = btmode == BTMode.wall ? BTMode.none : BTMode.wall;
+    }
+
+    protected void btFill(int startX, int startY, int endX, int endY){
+        NormalizeResult normalized = Placement.normalizeArea(startX, startY, endX, endY, 0, false, 512);
+        Unit unit = player.unit();
+
+        for(int x = normalized.x; x < normalized.x2; x++){
+            for(int y = normalized.y; y < normalized.y2; y++){
+                BuildPlan build = new BuildPlan(x, y, 0, block);
+                unit.plans.add(build);
+            }
+        }
     }
 
     public enum BTMode{

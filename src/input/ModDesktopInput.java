@@ -398,6 +398,7 @@ public class ModDesktopInput extends ModInputHandler{
         if(scene.getKeyboardFocus() instanceof TextField) return;
 
         modInput();
+        btInput();
 
         Tile selected = tileAtMod(Core.input.mouseX(), Core.input.mouseY());
         int cursorX = tileXMod(Core.input.mouseX());
@@ -607,7 +608,7 @@ public class ModDesktopInput extends ModInputHandler{
         }
     }
 
-    public void modInput(){
+    void modInput(){
         if(input.keyTap(ModBinding.history)){
             SchemeUtils.history();
         }
@@ -654,6 +655,18 @@ public class ModDesktopInput extends ModInputHandler{
 
         if(input.keyTap(Binding.block_info) && input.keyDown(ModBinding.alternative)){
             SchemeUtils.showInfo();
+        }
+
+        if(input.keyTap(Binding.deselect) && input.keyDown(ModBinding.alternative)){
+            SchemeSize.hudfrag.toggleBT();
+        }
+    }
+
+    void btInput(){
+        if(btMode == BTMode.none) return;
+
+        if(btMode == BTMode.fill && input.keyDown(Binding.select)){
+            btFill(selectX, selectY, tileXMod(getMouseX()), tileYMod(getMouseY()));
         }
     }
 
