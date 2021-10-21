@@ -255,7 +255,7 @@ public class ModInputHandler extends InputHandler{
 
     // building tools
     public boolean btIsPlacing(){
-        return !btplan.isEmpty() && btmode != btMode.none;
+        return !btplan.isEmpty() && btmode != BTMode.none;
     }
 
     public void btApply(){
