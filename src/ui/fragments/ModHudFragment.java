@@ -279,18 +279,25 @@ public class ModHudFragment extends Fragment{
             float bsize = 46f;
             var input = SchemeSize.input;
 
+            ImageButtonStyle style = new ImageButtonStyle(){{
+                down = Styles.flatDown;
+                up = Styles.none;
+                over = Styles.flatOver;
+            }};
+
+            ImageButtonStyle check = new ImageButtonStyle(){{
+                down = Styles.flatDown;
+                checked = Styles.flatDown;
+                up = Styles.none;
+                over = Styles.flatOver;
+            }};
+
             cont.table(Tex.buttonEdge2, pad -> {
                 pad.name = "padding";
 
                 pad.table(ctrl -> {
                     ctrl.name = "controls";
                     ctrl.defaults().size(bsize).bottom().right();
-
-                    ImageButtonStyle style = new ImageButtonStyle(){{
-                        down = Styles.flatDown;
-                        up = Styles.none;
-                        over = Styles.flatOver;
-                    }};
 
                     ctrl.button(Icon.cancel, style, input::btClear).padBottom(bsize).visible(input::btIsPlacing).name("cancel").row();
                     ctrl.button(Icon.up, style, () -> input.btResize(1)).name("sizeup").row();
@@ -300,22 +307,25 @@ public class ModHudFragment extends Fragment{
 
                 pad.image().color(Pal.gray).width(4f).pad(4f).fillY();
 
+                pad.table(edit -> {
+                    edit.name = "mapeditor";
+                    edit.defaults().size(bsize).bottom().right();
+
+                    edit.button(Icon.pencil, style, () -> {}).name("select").row();
+                    edit.button(Icon.editor, check, () -> {}).height(bsize * 4).name("edit").row();
+                });
+
+                pad.image().color(Pal.gray).width(4f).pad(4f).fillY();
+
                 pad.table(mode -> {
                     mode.name = "modes";
                     mode.defaults().size(bsize).bottom().right();
 
-                    ImageButtonStyle style = new ImageButtonStyle(){{
-                        down = Styles.flatDown;
-                        checked = Styles.flatDown;
-                        up = Styles.none;
-                        over = Styles.flatOver;
-                    }};
-
-                    mode.button(Icon.fill, style, input::btModeFill).checked(t -> input.btMode() == BTMode.fill).name("fill").row();
-                    mode.button(Icon.grid, style, input::btModeSquare).checked(t -> input.btMode() == BTMode.square).name("square").row();
-                    mode.button(Icon.commandRally, style, input::btModeCircle).checked(t -> input.btMode() == BTMode.circle).name("circle").row();
-                    mode.button(Icon.link, style, input::btModeReplace).checked(t -> input.btMode() == BTMode.replace).name("replace").row();
-                    mode.button(Icon.defense, style, input::btModeWall).checked(t -> input.btMode() == BTMode.wall).name("wall").row();
+                    mode.button(Icon.fill, check, input::btModeFill).checked(t -> input.btMode() == BTMode.fill).name("fill").row();
+                    mode.button(Icon.grid, check, input::btModeSquare).checked(t -> input.btMode() == BTMode.square).name("square").row();
+                    mode.button(Icon.commandRally, check, input::btModeCircle).checked(t -> input.btMode() == BTMode.circle).name("circle").row();
+                    mode.button(Icon.link, check, input::btModeReplace).checked(t -> input.btMode() == BTMode.replace).name("replace").row();
+                    mode.button(Icon.defense, check, input::btModeWall).checked(t -> input.btMode() == BTMode.wall).name("wall").row();
                 }).row();
             }).height(254f).padRight(310f).visible(() -> shownBT);
         });
