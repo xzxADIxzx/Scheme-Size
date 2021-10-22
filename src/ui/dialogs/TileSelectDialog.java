@@ -105,12 +105,12 @@ public class TileSelectDialog extends BaseDialog{
 	}
 
 	private void updateimg(){
-		var fimg = floor == null ? Icon.none : floor == Blocks.air ? Icon.line : floor.icon(Cicon.full);
-		floorImg.setDrawable(fimg);
-		var bimg = block == null ? Icon.none : block == Blocks.air ? Icon.line : block.icon(Cicon.full);
-		blockImg.setDrawable(bimg);
-		var oimg = overlay == null ? Icon.none : overlay == Blocks.air ? Icon.line : overlay.icon(Cicon.full);
-		overlayImg.setDrawable(oimg);
+		// var fimg = floor == null ? Icon.none : floor == Blocks.air ? Icon.line : floor.icon(Cicon.full);
+		// var bimg = block == null ? Icon.none : block == Blocks.air ? Icon.line : block.icon(Cicon.full);
+		// var oimg = overlay == null ? Icon.none : overlay == Blocks.air ? Icon.line : overlay.icon(Cicon.full);
+		floorImg.setDrawable(floor == Blocks.air ? Icon.line : floor.icon(Cicon.full));
+		blockImg.setDrawable(block == Blocks.air ? Icon.line : block.icon(Cicon.full));
+		overlayImg.setDrawable(overlay == Blocks.air ? Icon.line : overlay.icon(Cicon.full));
 	}
 
 	public void select(boolean show, Cons3<Floor, Block, Floor> callback){
