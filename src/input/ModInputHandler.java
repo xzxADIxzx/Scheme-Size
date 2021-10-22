@@ -34,6 +34,7 @@ import mindustry.world.blocks.ConstructBlock.*;
 import mindustry.world.blocks.*;
 import mindustry.world.blocks.distribution.*;
 import mindustry.world.blocks.payloads.*;
+import mindustry.world.blocks.environment.*;
 import mindustry.world.meta.*;
 
 import static mindustry.Vars.*;
@@ -255,7 +256,7 @@ public class ModInputHandler extends InputHandler{
 
     // building tools
     public boolean btIsPlacing(){
-        return !btplan.isEmpty() && btmode != BTMode.none;
+        return !btplan.isEmpty() && btmode != BTMode.none && block != null;
     }
 
     public void btApply(){
@@ -295,6 +296,10 @@ public class ModInputHandler extends InputHandler{
         btmode = btmode == BTMode.wall ? BTMode.none : BTMode.wall;
     }
 
+    public void btModeEdit(){
+        btmode = btmode == BTMode.edit ? BTMode.none : BTMode.edit;
+    }
+
     protected void btFill(int startX, int startY, int endX, int endY){
         if(block == null) return;
         NormalizeResult normalized = Placement.normalizeArea(startX, startY, endX, endY, 0, false, 64); // 64 - for optimization
@@ -307,12 +312,17 @@ public class ModInputHandler extends InputHandler{
         }
     }
 
+    public btTileSelect(Floor floor, Block block, Floor overlay){
+
+    }
+
     public enum BTMode{
         none,
         fill,
         square,
         circle,
         replace,
-        wall;
+        wall,
+        edit;
     }
 }
