@@ -24,9 +24,9 @@ public class TileSelectDialog extends BaseDialog{
 	private Table category = new Table();
 	private Table content = new Table();
 
-	private Floor floor = Blocks.air;
+	private Floor floor = Blocks.air.asFloor();
 	private Block block = Blocks.air;
-	private Floor overlay = Blocks.air;
+	private Floor overlay = Blocks.air.asFloor();
 
 	private Image floorImg;
 	private Image blockImg;
