@@ -43,19 +43,17 @@ public class SchemeUtils{
             SchemeSize.unit.select(false, true, (ppl, unit, amount) -> {
                 if(!hasCore(ppl)) return;
                 Call.sendChatMessage(js(getPlayer(ppl)));
-                Call.sendChatMessage(js("var oldUnit = player.unit()"));
+                Call.sendChatMessage(js("player.unit().spawnedByCore = true"));
                 Call.sendChatMessage(js("var newUnit = " + getUnit(unit) + ".spawn(player.team(), player.x, player.y)"));
                 Call.sendChatMessage(js("Call.unitControl(player, newUnit)"));
-                Call.sendChatMessage(js("oldUnit.kill()"));
             });
         };
         Runnable server = () -> {
-            SchemeSize.unit.select(false, true, (ppl, unit, amount) -> { // I think there is an easier way, but I do not know it
+            SchemeSize.unit.select(false, true, (ppl, unit, amount) -> {
                 if(!hasCore(ppl)) return;
-                var oldUnit = ppl.unit();
+                ppl.unit().spawnedByCore = true;
                 var newUnit = unit.spawn(ppl.team(), ppl.x, ppl.y);
                 Call.unitControl(ppl, newUnit);
-                oldUnit.kill(); // remove does work in multiplayer, so I use kill
             });
         };
         template(admins, js, server);

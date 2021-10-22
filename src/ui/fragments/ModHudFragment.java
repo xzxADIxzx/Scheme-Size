@@ -311,7 +311,7 @@ public class ModHudFragment extends Fragment{
                     edit.name = "mapeditor";
                     edit.defaults().size(bsize).bottom().right();
 
-                    edit.button(Icon.pencil, style, () -> SchemeSize.tile.select(false, null)).name("select").row();
+                    edit.button(Icon.pencil, style, () -> SchemeSize.tile.select(true, null)).name("select").row();
                     edit.button(Icon.editor, check, () -> input.btMode(BTMode.edit)).height(bsize * 4).name("edit").row();
                 });
 
