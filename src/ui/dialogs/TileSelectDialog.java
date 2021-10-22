@@ -66,7 +66,7 @@ public class TileSelectDialog extends BaseDialog{
 					updateimg();
 				}).size(64f);
 
-				if(table.getChildren().count(i -> true) % 10 == 9) table.row();
+				if(table.getChildren().count(i -> true) - 1 % 10 == 9) table.row();
 			});
 		});
 	}
