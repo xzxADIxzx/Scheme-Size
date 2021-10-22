@@ -40,51 +40,23 @@ public class TileSelectDialog extends BaseDialog{
 		cont.add(content).growX();
 		cont.table().width(288f).right();
 
-		floorImg = template("@tile.floor", 0, b -> !(b instanceof Floor) || b instanceof OreBlock ||  b.id < 2, b -> floor = b.asFloor());
-		blockImg = template("@tile.block", 1, b -> !(b instanceof StaticWall), b -> block = b);
-		overlayImg = template("@tile.overlay", 2, b -> !(b instanceof OreBlock), b -> overlay = b.asFloor());
-
-		// content.table(floor -> {
-		// 	Vars.content.blocks().each(b -> {
-		// 		if(!(b instanceof Floor) || b instanceof OreBlock ||  b.id < 1) return;
-		// 		var drawable = new TextureRegionDrawable(b.icon(Cicon.full));
-		// 		floor.button(drawable, () -> { 
-		// 			this.floor = b.asFloor();
-		// 		}).size(64f);
-
-		// 		if(floor.getChildren().count(i -> true) % 10 == 9) floor.row();
-		// 	});
-		// }).visible(() -> cat == 0);
-
-		// content.table(block -> {
-		// 	Vars.content.blocks().each(b -> {
-		// 		if(!(b instanceof StaticWall)) return;
-		// 		var drawable = new TextureRegionDrawable(b.icon(Cicon.full));
-		// 		block.button(drawable, () -> { 
-		// 			this.block = b;
-		// 		}).size(64f);
-
-		// 		if(block.getChildren().count(i -> true) % 10 == 9) block.row();
-		// 	});
-		// }).visible(() -> cat == 1);
-
-		// content.table(overlay -> {
-		// 	Vars.content.blocks().each(b -> {
-		// 		if(!(b instanceof OreBlock)) return;
-		// 		var drawable = new TextureRegionDrawable(b.icon(Cicon.full));
-		// 		overlay.button(drawable, () -> { 
-		// 			this.overlay = b.asFloor();
-		// 		}).size(64f);
-
-		// 		if(overlay.getChildren().count(i -> true) % 10 == 9) overlay.row();
-		// 	});
-		// }).visible(() -> cat == 2);
+		floorImg = template("@tile.floor", 0, b -> !(b instanceof Floor) || b instanceof OreBlock, b -> { floor = b.asFloor(); updateimg(); });
+		blockImg = template("@tile.block", 1, b -> !(b instanceof StaticWall), b -> { block = b; updateimg(); });
+		overlayImg = template("@tile.overlay", 2, b -> !(b instanceof OreBlock), b -> { overlay = b.asFloor(); updateimg(); });
 	}
 
 	private void rebuild(Boolf<Block> skip, Cons<Block> callback){
+		content.clear();
 		content.table(table -> {
+			table.button(Icon.none, () -> { 
+				callback.get(null);
+			}).size(64f);
+			table.button(Icon, () -> { 
+				callback.get(Blocks.air);
+			}).size(64f);
+
 			Vars.content.blocks().each(block -> {
-				if(skip.get(block)) return;
+				if(skip.get(block) || block.isHidden()) return;
 
 				var drawable = new TextureRegionDrawable(block.icon(Cicon.full));
 				table.button(drawable, () -> { 
@@ -102,7 +74,6 @@ public class TileSelectDialog extends BaseDialog{
 			selected = select;
 			rebuild(skip, callback);
 		});
-		Image img;
 
 		Table icon = new Table(){
 			@Override
@@ -115,7 +86,7 @@ public class TileSelectDialog extends BaseDialog{
 				Draw.reset();
 			}
 		};
-		icon.add(img = new Image().setScaling(Scaling.bounded)).pad(8f).grow();
+		icon.add(Image img = new Image().setScaling(Scaling.bounded)).pad(8f).grow();
 
 		check.add(icon).size(74f);
 		check.table(t -> {
@@ -127,13 +98,16 @@ public class TileSelectDialog extends BaseDialog{
 		return img;
 	}
 
+	private void updateimg(){
+		floorImg.setDrawable(floor.icon(Cicon.full));
+		blockImg.setDrawable(block.icon(Cicon.full));
+		overlayImg.setDrawable(overlay.icon(Cicon.full));
+	}
+
 	public void select(boolean show, Cons3<Floor, Block, Floor> callback){
 		this.callback = callback;
 		if(show) show();
 		else callback.get(floor, block, overlay);
-
-		floorImg.setDrawable(floor.icon(Cicon.full));
-		blockImg.setDrawable(block.icon(Cicon.full));
-		overlayImg.setDrawable(overlay.icon(Cicon.full));
+		updateimg();
 	}
 }
