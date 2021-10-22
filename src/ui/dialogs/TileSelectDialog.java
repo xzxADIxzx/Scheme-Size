@@ -47,7 +47,7 @@ public class TileSelectDialog extends BaseDialog{
 				if(!block instanceof OreBlock) return;
 				overlay.button(block.icon(Cicon.full), () -> { 
 					this.overlay = block.asFloor();
-					callback.get(floor, block, overlay);
+					callback.get(floor, block, this.overlay);
 				}).size(64f);
 				if (block.id % 10 == 9) overlay.row();
 			});
