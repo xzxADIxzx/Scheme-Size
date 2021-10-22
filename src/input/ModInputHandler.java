@@ -312,7 +312,7 @@ public class ModInputHandler extends InputHandler{
         }
     }
 
-    public btTileSelect(Floor floor, Block block, Floor overlay){
+    public void btTileSelect(Floor floor, Block block, Floor overlay){
 
     }
 

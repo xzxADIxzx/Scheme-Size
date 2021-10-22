@@ -27,7 +27,7 @@ public class TileSelectDialog extends BaseDialog{
 	private Image blockImg;
 	private Image overlayImg;
 
-	public TeamSelectDialog(String name){
+	public TileSelectDialog(String name){
 		super(name);
 		addCloseButton();
 
