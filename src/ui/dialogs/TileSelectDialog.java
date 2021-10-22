@@ -105,9 +105,9 @@ public class TileSelectDialog extends BaseDialog{
 	}
 
 	private void updateimg(){
-		floorImg.setDrawable(floor == null ? Icon.none : floor == Blocks.air ? Icon.line : floor.icon(Cicon.full));
-		blockImg.setDrawable(block == null ? Icon.none : block == Blocks.air ? Icon.line : block.icon(Cicon.full));
-		overlayImg.setDrawable(overlay == null ? Icon.none : overlay == Blocks.air ? Icon.line : overlay.icon(Cicon.full));
+		floorImg.setDrawable(floor == null ? Icon.none : ( floor == Blocks.air ? Icon.line : floor.icon(Cicon.full) ));
+		blockImg.setDrawable(block == null ? Icon.none : ( block == Blocks.air ? Icon.line : block.icon(Cicon.full) ));
+		overlayImg.setDrawable(overlay == null ? Icon.none : ( overlay == Blocks.air ? Icon.line : overlay.icon(Cicon.full) ));
 	}
 
 	public void select(boolean show, Cons3<Floor, Block, Floor> callback){
