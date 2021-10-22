@@ -20,7 +20,7 @@ public class TileSelectDialog extends BaseDialog{
 
 	public Cons3<Floor, Block, Floor> callback;
 
-	private int cat = 0;
+	private int selected = 0;
 	private Table category = new Table();
 	private Table content = new Table();
 
@@ -40,50 +40,68 @@ public class TileSelectDialog extends BaseDialog{
 		cont.add(content).growX();
 		cont.table().width(288f).right();
 
-		floorImg = template("@tile.floor", 0);
-		blockImg = template("@tile.block", 1);
-		overlayImg = template("@tile.overlay", 2);
+		floorImg = template("@tile.floor", 0, b -> !(b instanceof Floor) || b instanceof OreBlock ||  b.id < 2, b -> floor = b.asFloor());
+		blockImg = template("@tile.block", 1, b -> !(b instanceof StaticWall), b -> block = b);
+		overlayImg = template("@tile.overlay", 2, b -> !(b instanceof OreBlock), b -> overlay = b.asFloor());
 
-		content.table(floor -> {
-			Vars.content.blocks().each(b -> {
-				if(!(b instanceof Floor) || b instanceof OreBlock ||  b.id < 1) return;
-				var drawable = new TextureRegionDrawable(b.icon(Cicon.full));
-				floor.button(drawable, () -> { 
-					this.floor = b.asFloor();
-				}).size(64f);
+		// content.table(floor -> {
+		// 	Vars.content.blocks().each(b -> {
+		// 		if(!(b instanceof Floor) || b instanceof OreBlock ||  b.id < 1) return;
+		// 		var drawable = new TextureRegionDrawable(b.icon(Cicon.full));
+		// 		floor.button(drawable, () -> { 
+		// 			this.floor = b.asFloor();
+		// 		}).size(64f);
 
-				if(floor.getChildren().count(i -> true) % 10 == 9) floor.row();
-			});
-		}).visible(() -> cat == 0);
+		// 		if(floor.getChildren().count(i -> true) % 10 == 9) floor.row();
+		// 	});
+		// }).visible(() -> cat == 0);
 
-		content.table(block -> {
-			Vars.content.blocks().each(b -> {
-				if(!(b instanceof StaticWall)) return;
-				var drawable = new TextureRegionDrawable(b.icon(Cicon.full));
-				block.button(drawable, () -> { 
-					this.block = b;
-				}).size(64f);
+		// content.table(block -> {
+		// 	Vars.content.blocks().each(b -> {
+		// 		if(!(b instanceof StaticWall)) return;
+		// 		var drawable = new TextureRegionDrawable(b.icon(Cicon.full));
+		// 		block.button(drawable, () -> { 
+		// 			this.block = b;
+		// 		}).size(64f);
 
-				if(block.getChildren().count(i -> true) % 10 == 9) block.row();
-			});
-		}).visible(() -> cat == 1);
+		// 		if(block.getChildren().count(i -> true) % 10 == 9) block.row();
+		// 	});
+		// }).visible(() -> cat == 1);
 
-		content.table(overlay -> {
-			Vars.content.blocks().each(b -> {
-				if(!(b instanceof OreBlock)) return;
-				var drawable = new TextureRegionDrawable(b.icon(Cicon.full));
-				overlay.button(drawable, () -> { 
-					this.overlay = b.asFloor();
-				}).size(64f);
+		// content.table(overlay -> {
+		// 	Vars.content.blocks().each(b -> {
+		// 		if(!(b instanceof OreBlock)) return;
+		// 		var drawable = new TextureRegionDrawable(b.icon(Cicon.full));
+		// 		overlay.button(drawable, () -> { 
+		// 			this.overlay = b.asFloor();
+		// 		}).size(64f);
 
-				if(overlay.getChildren().count(i -> true) % 10 == 9) overlay.row();
-			});
-		}).visible(() -> cat == 2);
+		// 		if(overlay.getChildren().count(i -> true) % 10 == 9) overlay.row();
+		// 	});
+		// }).visible(() -> cat == 2);
 	}
 
-	private Image template(String name, int cat){
+	private void rebuild(Boolf<Block> skip, Cons<Block> callback){
+		content.table(table -> {
+			Vars.content.blocks().each(block -> {
+				if(skip.get(block)) return;
+
+				var drawable = new TextureRegionDrawable(block.icon(Cicon.full));
+				table.button(drawable, () -> { 
+					callback.get(block);
+				}).size(64f);
+
+				if(table.getChildren().count(i -> true) % 10 == 9) table.row();
+			});
+		});
+	}
+
+	private Image template(String name, int select, Boolf<Block> skip, Cons<Block> callback){
 		Button check = new Button(Styles.transt);
-		check.changed(() -> this.cat = cat);
+		check.changed(() -> {
+			selected = select;
+			rebuild(skip, callback);
+		});
 		Image img;
 
 		Table icon = new Table(){
@@ -105,7 +123,7 @@ public class TileSelectDialog extends BaseDialog{
 			t.image().height(4f).color(Pal.gray).growX().bottom().padTop(4f);
 		}).size(170f, 74f).pad(10f);
 
-		category.add(check).checked(t -> this.cat == cat).size(264f, 74f).padBottom(16f).row();
+		category.add(check).checked(t -> selected == select).size(264f, 74f).padBottom(16f).row();
 		return img;
 	}
 

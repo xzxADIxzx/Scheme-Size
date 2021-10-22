@@ -312,7 +312,7 @@ public class ModHudFragment extends Fragment{
                     edit.defaults().size(bsize).bottom().right();
 
                     edit.button(Icon.pencil, style, () -> SchemeSize.tile.select(true, null)).name("select").row();
-                    edit.button(Icon.editor, check, () -> input.btMode(BTMode.edit)).height(bsize * 4).name("edit").row();
+                    edit.button(Icon.editor, check, () -> input.btMode(BTMode.edit)).checked(t -> input.btMode() == BTMode.edit).height(bsize * 4).name("edit").row();
                 });
 
                 pad.image().color(Pal.gray).width(4f).pad(4f).fillY();

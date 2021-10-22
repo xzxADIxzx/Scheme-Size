@@ -43,7 +43,6 @@ public class PlayerSelectFragment{
                 }
             };
             icon.add(new Image(player.icon()).setScaling(Scaling.bounded)).pad(8f).grow();
-            icon.name = player.name();
 
             check.add(icon).size(74f);
             check.table(t -> {

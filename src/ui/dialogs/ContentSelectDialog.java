@@ -36,6 +36,7 @@ public class ContentSelectDialog<T extends UnlockableContent> extends BaseDialog
 		var table = new Table();
 		content.each(item -> {
 			if (item.isHidden()) return;
+
 			var drawable = new TextureRegionDrawable(item.icon(Cicon.tiny));
 			table.button(drawable, () -> { 
 				callback.get(list.select(), item, () -> slider.getValue());
