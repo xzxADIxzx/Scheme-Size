@@ -40,9 +40,9 @@ public class TileSelectDialog extends BaseDialog{
 		cont.add(content).growX();
 		cont.table().width(288f).right();
 
-		floorImg = template("@tile.floor", 0, b -> !(b instanceof Floor) || b instanceof OreBlock, b -> { floor = b.asFloor(); updateimg(); });
-		blockImg = template("@tile.block", 1, b -> !(b instanceof StaticWall), b -> { block = b; updateimg(); });
-		overlayImg = template("@tile.overlay", 2, b -> !(b instanceof OreBlock), b -> { overlay = b.asFloor(); updateimg(); });
+		floorImg = template("@tile.floor", 0, b -> !(b instanceof Floor) || b instanceof OreBlock, b -> floor = b.asFloor());
+		blockImg = template("@tile.block", 1, b -> !(b instanceof StaticWall), b -> block = b);
+		overlayImg = template("@tile.overlay", 2, b -> !(b instanceof OreBlock), b -> overlay = b.asFloor());
 	}
 
 	private void rebuild(Boolf<Block> skip, Cons<Block> callback){
@@ -50,17 +50,20 @@ public class TileSelectDialog extends BaseDialog{
 		content.table(table -> {
 			table.button(Icon.none, () -> { 
 				callback.get(null);
+				updateimg();
 			}).size(64f);
 			table.button(Icon.line, () -> { 
 				callback.get(Blocks.air);
+				updateimg();
 			}).size(64f);
 
 			Vars.content.blocks().each(block -> {
-				if(skip.get(block) || block.isHidden()) return;
+				if(skip.get(block)) return;
 
 				var drawable = new TextureRegionDrawable(block.icon(Cicon.full));
 				table.button(drawable, () -> { 
 					callback.get(block);
+					updateimg();
 				}).size(64f);
 
 				if(table.getChildren().count(i -> true) % 10 == 9) table.row();
@@ -96,6 +99,8 @@ public class TileSelectDialog extends BaseDialog{
 		}).size(170f, 74f).pad(10f);
 
 		category.add(check).checked(t -> selected == select).size(264f, 74f).padBottom(16f).row();
+
+		if(selected == select) check.toggle();
 		return img;
 	}
 
