@@ -40,9 +40,9 @@ public class TileSelectDialog extends BaseDialog{
 		cont.add(content).growX();
 		cont.table().width(288f).right();
 
-		template(floorImg, "@tile.floor", 0);
-		template(blockImg, "@tile.block", 1);
-		template(overlayImg, "@tile.overlay", 2);
+		floorImg = template("@tile.floor", 0);
+		blockImg = template("@tile.block", 1);
+		overlayImg = template("@tile.overlay", 2);
 
 		content.table(floor -> {
 			Vars.content.blocks().each(b -> {
@@ -81,9 +81,10 @@ public class TileSelectDialog extends BaseDialog{
 		}).visible(() -> cat == 2);
 	}
 
-	private void template(Image img, String name, int cat){
+	private Image template(String name, int cat){
 		Button check = new Button(Styles.transt);
 		check.changed(() -> this.cat = cat);
+		Image img;
 
 		Table icon = new Table(){
 			@Override
@@ -105,6 +106,7 @@ public class TileSelectDialog extends BaseDialog{
 		}).size(170f, 74f).pad(10f);
 
 		category.add(check).checked(t -> this.cat == cat).size(264f, 74f).padBottom(16f).row();
+		return img;
 	}
 
 	public void select(boolean show, Cons3<Floor, Block, Floor> callback){
