@@ -24,9 +24,9 @@ public class TileSelectDialog extends BaseDialog{
 	private Table category = new Table();
 	private Table content = new Table();
 
-	private Floor floor = BLocks.air;
-	private Block block = BLocks.air;
-	private Floor overlay = BLocks.air;
+	private Floor floor = Blocks.air;
+	private Block block = Blocks.air;
+	private Floor overlay = Blocks.air;
 
 	private Image floorImg;
 	private Image blockImg;
@@ -51,7 +51,7 @@ public class TileSelectDialog extends BaseDialog{
 				overlay.button(drawable, () -> { 
 					this.overlay = block.asFloor();
 				}).size(64f);
-				if(overlay.getChildren().count(i -> true)) overlay.row();
+				if(overlay.getChildren().count(i -> true) % 10 == 9) overlay.row();
 			});
 		}).visible(() -> cat == 2);
 	}
