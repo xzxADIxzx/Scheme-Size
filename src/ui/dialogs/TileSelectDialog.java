@@ -13,6 +13,7 @@ import mindustry.gen.*;
 import mindustry.game.*;
 import mindustry.world.*;
 import mindustry.world.blocks.environment.*;
+import mindustry.content.*;
 import mindustry.graphics.*;
 
 public class TileSelectDialog extends BaseDialog{
@@ -23,9 +24,9 @@ public class TileSelectDialog extends BaseDialog{
 	private Table category = new Table();
 	private Table content = new Table();
 
-	private Floor floor;
-	private Block block;
-	private Floor overlay;
+	private Floor floor = BLocks.air;
+	private Block block = BLocks.air;
+	private Floor overlay = BLocks.air;
 
 	private Image floorImg;
 	private Image blockImg;
@@ -36,7 +37,7 @@ public class TileSelectDialog extends BaseDialog{
 		addCloseButton();
 
 		cont.add(category).size(288f, 270f).left();
-		cont.add(content);
+		cont.add(content).growX();
 		cont.table().width(288f).right();
 
 		template(floorImg, "@tile.floor", 0);
@@ -49,9 +50,8 @@ public class TileSelectDialog extends BaseDialog{
 				var drawable = new TextureRegionDrawable(block.icon(Cicon.full));
 				overlay.button(drawable, () -> { 
 					this.overlay = block.asFloor();
-					callback.get(floor, block, this.overlay);
 				}).size(64f);
-				if (block.id % 10 == 9) overlay.row();
+				if(overlay.getChildren().count(i -> true)) overlay.row();
 			});
 		}).visible(() -> cat == 2);
 	}
@@ -82,8 +82,13 @@ public class TileSelectDialog extends BaseDialog{
 		category.add(check).checked(t -> this.cat == cat).size(264f, 74f).padBottom(16f).row();
 	}
 
-	public void select(Cons3<Floor, Block, Floor> callback){
+	public void select(boolean show, Cons3<Floor, Block, Floor> callback){
 		this.callback = callback;
-		show();
+		if(show) show();
+		else callback.get(floor, block, overlay);
+
+		floorImg.setDrawable(floor.icon(Cicon.full));
+		blockImg.setDrawable(block.icon(Cicon.full));
+		overlayImg.setDrawable(overlay.icon(Cicon.full));
 	}
 }

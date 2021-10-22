@@ -276,28 +276,8 @@ public class ModInputHandler extends InputHandler{
         return btmode;
     }
 
-    public void btModeFill(){
-        btmode = btmode == BTMode.fill ? BTMode.none : BTMode.fill;
-    }
-
-    public void btModeSquare(){
-        btmode = btmode == BTMode.square ? BTMode.none : BTMode.square;
-    }
-
-    public void btModeCircle(){
-        btmode = btmode == BTMode.circle ? BTMode.none : BTMode.circle;
-    }
-
-    public void btModeReplace(){
-        btmode = btmode == BTMode.replace ? BTMode.none : BTMode.replace;
-    }
-
-    public void btModeWall(){
-        btmode = btmode == BTMode.wall ? BTMode.none : BTMode.wall;
-    }
-
-    public void btModeEdit(){
-        btmode = btmode == BTMode.edit ? BTMode.none : BTMode.edit;
+    public void btMode(BTMode mode){
+        btmode = btmode == mode ? BTMode.none : mode;
     }
 
     protected void btFill(int startX, int startY, int endX, int endY){
@@ -310,10 +290,6 @@ public class ModInputHandler extends InputHandler{
                 btplan.add(build);
             }
         }
-    }
-
-    public void btTileSelect(Floor floor, Block block, Floor overlay){
-
     }
 
     public enum BTMode{

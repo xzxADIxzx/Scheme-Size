@@ -311,8 +311,8 @@ public class ModHudFragment extends Fragment{
                     edit.name = "mapeditor";
                     edit.defaults().size(bsize).bottom().right();
 
-                    edit.button(Icon.pencil, style, () -> SchemeSize.tile.select((f, b, o) -> input.btTileSelect(f, b, o))).name("select").row();
-                    edit.button(Icon.editor, check, input::btModeEdit).height(bsize * 4).name("edit").row();
+                    edit.button(Icon.pencil, style, () -> SchemeSize.tile.select(false, null)).name("select").row();
+                    edit.button(Icon.editor, check, () -> input.btMode(BTMode.edit)).height(bsize * 4).name("edit").row();
                 });
 
                 pad.image().color(Pal.gray).width(4f).pad(4f).fillY();
@@ -321,11 +321,11 @@ public class ModHudFragment extends Fragment{
                     mode.name = "modes";
                     mode.defaults().size(bsize).bottom().right();
 
-                    mode.button(Icon.fill, check, input::btModeFill).checked(t -> input.btMode() == BTMode.fill).name("fill").row();
-                    mode.button(Icon.grid, check, input::btModeSquare).checked(t -> input.btMode() == BTMode.square).name("square").row();
-                    mode.button(Icon.commandRally, check, input::btModeCircle).checked(t -> input.btMode() == BTMode.circle).name("circle").row();
-                    mode.button(Icon.link, check, input::btModeReplace).checked(t -> input.btMode() == BTMode.replace).name("replace").row();
-                    mode.button(Icon.defense, check, input::btModeWall).checked(t -> input.btMode() == BTMode.wall).name("wall").row();
+                    mode.button(Icon.fill, check, () -> input.btMode(BTMode.fill)).checked(t -> input.btMode() == BTMode.fill).name("fill").row();
+                    mode.button(Icon.grid, check, () -> input.btMode(BTMode.square)).checked(t -> input.btMode() == BTMode.square).name("square").row();
+                    mode.button(Icon.commandRally, check, () -> input.btMode(BTMode.circle)).checked(t -> input.btMode() == BTMode.circle).name("circle").row();
+                    mode.button(Icon.link, check, () -> input.btMode(BTMode.replace)).checked(t -> input.btMode() == BTMode.replace).name("replace").row();
+                    mode.button(Icon.defense, check, () -> input.btMode(BTMode.wall)).checked(t -> input.btMode() == BTMode.wall).name("wall").row();
                 }).row();
             }).height(254f).padRight(310f).visible(() -> shownBT);
         });
