@@ -44,13 +44,38 @@ public class TileSelectDialog extends BaseDialog{
 		template(blockImg, "@tile.block", 1);
 		template(overlayImg, "@tile.overlay", 2);
 
-		content.table(overlay -> {
-			Vars.content.blocks().each(block -> {
-				if(block instanceof OreBlock == false) return;
-				var drawable = new TextureRegionDrawable(block.icon(Cicon.full));
-				overlay.button(drawable, () -> { 
-					this.overlay = block.asFloor();
+		content.table(floor -> {
+			Vars.content.blocks().each(b -> {
+				if(!(b instanceof Floor) || b instanceof OreBlock ||  b.id < 1) return;
+				var drawable = new TextureRegionDrawable(b.icon(Cicon.full));
+				floor.button(drawable, () -> { 
+					this.floor = b.asFloor();
 				}).size(64f);
+
+				if(floor.getChildren().count(i -> true) % 10 == 9) floor.row();
+			});
+		}).visible(() -> cat == 0);
+
+		content.table(block -> {
+			Vars.content.blocks().each(b -> {
+				if(!(b instanceof StaticWall)) return;
+				var drawable = new TextureRegionDrawable(b.icon(Cicon.full));
+				block.button(drawable, () -> { 
+					this.block = b;
+				}).size(64f);
+
+				if(block.getChildren().count(i -> true) % 10 == 9) block.row();
+			});
+		}).visible(() -> cat == 1);
+
+		content.table(overlay -> {
+			Vars.content.blocks().each(b -> {
+				if(!(b instanceof OreBlock)) return;
+				var drawable = new TextureRegionDrawable(b.icon(Cicon.full));
+				overlay.button(drawable, () -> { 
+					this.overlay = b.asFloor();
+				}).size(64f);
+
 				if(overlay.getChildren().count(i -> true) % 10 == 9) overlay.row();
 			});
 		}).visible(() -> cat == 2);

@@ -41,6 +41,7 @@ public class ContentSelectDialog<T extends UnlockableContent> extends BaseDialog
 				callback.get(list.select(), item, () -> slider.getValue());
 				hide(); 
 			}).size(64f);
+
 			if (item.id % 10 == 9) table.row();
 		});
 
