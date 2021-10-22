@@ -51,7 +51,7 @@ public class TileSelectDialog extends BaseDialog{
 			table.button(Icon.none, () -> { 
 				callback.get(null);
 			}).size(64f);
-			table.button(Icon, () -> { 
+			table.button(Icon.line, () -> { 
 				callback.get(Blocks.air);
 			}).size(64f);
 
@@ -75,6 +75,7 @@ public class TileSelectDialog extends BaseDialog{
 			rebuild(skip, callback);
 		});
 
+		Image img;
 		Table icon = new Table(){
 			@Override
 			public void draw(){
@@ -86,7 +87,7 @@ public class TileSelectDialog extends BaseDialog{
 				Draw.reset();
 			}
 		};
-		icon.add(Image img = new Image().setScaling(Scaling.bounded)).pad(8f).grow();
+		icon.add(img = new Image().setScaling(Scaling.bounded)).pad(8f).grow();
 
 		check.add(icon).size(74f);
 		check.table(t -> {
