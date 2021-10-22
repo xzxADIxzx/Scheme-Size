@@ -5,6 +5,7 @@ import arc.func.*;
 import arc.scene.ui.*;
 import arc.scene.ui.layout.*;
 import arc.graphics.g2d.*;
+import mindustry.*;
 import mindustry.ui.*;
 import mindustry.ui.dialogs.*;
 import mindustry.gen.*;
@@ -48,7 +49,7 @@ public class TileSelectDialog extends BaseDialog{
 					this.overlay = block.asFloor();
 					callback.get(floor, block, overlay);
 				}).size(64f);
-				if (item.id % 10 == 9) overlay.row();
+				if (block.id % 10 == 9) overlay.row();
 			});
 		}).visible(() -> cat == 2);
 	}
