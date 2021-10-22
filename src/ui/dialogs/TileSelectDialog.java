@@ -114,7 +114,8 @@ public class TileSelectDialog extends BaseDialog{
 	}
 
 	private TextureRegionDrawable getIcon(Block block){
-		return block == Blocks.air ? new TextureRegionDrawable(Icon.line) : new TextureRegionDrawable(block.icon(Cicon.full));
+		// bruh
+		return block == null ? new TextureRegionDrawable(Icon.none) : block == Blocks.air ? new TextureRegionDrawable(Icon.line) : new TextureRegionDrawable(block.icon(Cicon.full));
 	}
 
 	public void select(boolean show, Cons3<Floor, Block, Floor> callback){
