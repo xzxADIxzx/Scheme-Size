@@ -44,8 +44,9 @@ public class TileSelectDialog extends BaseDialog{
 
 		content.table(overlay -> {
 			Vars.content.blocks().each(block -> {
-				if(!block instanceof OreBlock) return;
-				overlay.button(block.icon(Cicon.full), () -> { 
+				if(block instanceof OreBlock == false) return;
+				var drawable = new TextureRegionDrawable(block.icon(Cicon.full));
+				overlay.button(drawable, () -> { 
 					this.overlay = block.asFloor();
 					callback.get(floor, block, this.overlay);
 				}).size(64f);
