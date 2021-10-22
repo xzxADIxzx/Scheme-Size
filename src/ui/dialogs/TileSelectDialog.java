@@ -1,9 +1,11 @@
 package mindustry.ui.dialogs;
 
+import arc.util.*;
 import arc.func.*;
 import arc.scene.ui.*;
 import arc.scene.ui.layout.*;
 import arc.graphics.g2d.*;
+import mindustry.ui.*;
 import mindustry.ui.dialogs.*;
 import mindustry.gen.*;
 import mindustry.game.*;
