@@ -33,9 +33,24 @@ public class TileSelectDialog extends BaseDialog{
 		super(name);
 		addCloseButton();
 
+		cont.add(category).size(288f, 270f).left();
+		cont.add(content);
+		cont.table().width(288f).right();
+
 		template(floorImg, "@tile.floor", 0);
 		template(blockImg, "@tile.block", 1);
 		template(overlayImg, "@tile.overlay", 2);
+
+		content.table(overlay -> {
+			Vars.content.blocks().each(block -> {
+				if(!block instanceof OreBlock) return;
+				overlay.button(block.icon(Cicon.full), () -> { 
+					this.overlay = block.asFloor();
+					callback.get(floor, block, overlay);
+				}).size(64f);
+				if (item.id % 10 == 9) overlay.row();
+			});
+		}).visible(() -> cat == 2);
 	}
 
 	private void template(Image img, String name, int cat){
