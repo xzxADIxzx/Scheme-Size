@@ -40,9 +40,9 @@ public class TileSelectDialog extends BaseDialog{
 		cont.add(content).growX();
 		cont.table().width(288f).right();
 
-		floorImg = template("@tile.floor", 0, b -> !(b instanceof Floor) || b instanceof OreBlock || b.id < 3, b -> floor = b.asFloor());
+		floorImg = template("@tile.floor", 0, b -> !(b instanceof Floor) || b instanceof OverlayFloor || b.id < 2, b -> floor = b.asFloor());
 		blockImg = template("@tile.block", 1, b -> !(b instanceof StaticWall), b -> block = b);
-		overlayImg = template("@tile.overlay", 2, b -> !(b instanceof OreBlock), b -> overlay = b.asFloor());
+		overlayImg = template("@tile.overlay", 2, b -> !(b instanceof OverlayFloor), b -> overlay = b.asFloor());
 	}
 
 	private void rebuild(Boolf<Block> skip, Cons<Block> callback){
@@ -100,7 +100,7 @@ public class TileSelectDialog extends BaseDialog{
 
 		category.add(check).checked(t -> selected == select).size(264f, 74f).padBottom(16f).row();
 
-		if(selected == select) check.toggle();
+		if(selected == select) check.change();
 		return img;
 	}
 
