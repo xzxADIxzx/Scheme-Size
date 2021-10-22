@@ -40,7 +40,7 @@ public class TileSelectDialog extends BaseDialog{
 		cont.add(content).growX();
 		cont.table().width(288f).right();
 
-		floorImg = template("@tile.floor", 0, b -> !(b instanceof Floor) || b instanceof OreBlock, b -> floor = b.asFloor());
+		floorImg = template("@tile.floor", 0, b -> !(b instanceof Floor) || b instanceof OreBlock || b.id < 3, b -> floor = b.asFloor());
 		blockImg = template("@tile.block", 1, b -> !(b instanceof StaticWall), b -> block = b);
 		overlayImg = template("@tile.overlay", 2, b -> !(b instanceof OreBlock), b -> overlay = b.asFloor());
 	}
@@ -105,9 +105,9 @@ public class TileSelectDialog extends BaseDialog{
 	}
 
 	private void updateimg(){
-		floorImg.setDrawable(floor.icon(Cicon.full));
-		blockImg.setDrawable(block.icon(Cicon.full));
-		overlayImg.setDrawable(overlay.icon(Cicon.full));
+		floorImg.setDrawable(floor == null ? Icon.none : floor == Blocks.air ? Icon.line : floor.icon(Cicon.full));
+		blockImg.setDrawable(block == null ? Icon.none : block == Blocks.air ? Icon.line : block.icon(Cicon.full));
+		overlayImg.setDrawable(overlay == null ? Icon.none : overlay == Blocks.air ? Icon.line : overlay.icon(Cicon.full));
 	}
 
 	public void select(boolean show, Cons3<Floor, Block, Floor> callback){
