@@ -118,7 +118,7 @@ public class ModDesktopInput extends ModInputHandler{
             drawBreakSelectionMod(selectX, selectY, cursorX, cursorY, size - 1);
         }
 
-        if(Core.input.keyDown(Binding.schematic_select) && !Core.scene.hasKeyboard() && mode != breaking && btIsEdit()){
+        if(Core.input.keyDown(Binding.schematic_select) && !Core.scene.hasKeyboard() && mode != breaking){
             drawSelectionMod(schemX, schemY, cursorX, cursorY, settings.getInt("copysize") - 1);
         }
 
@@ -299,7 +299,7 @@ public class ModDesktopInput extends ModInputHandler{
             mode = none;
         }
 
-        if(player.shooting && (!canShoot() || Core.input.keyDown(ModBinding.alternative) || btIsEdit())){
+        if(player.shooting && (!canShoot() || Core.input.keyDown(ModBinding.alternative))){
             player.shooting = false;
         }
 
@@ -357,6 +357,12 @@ public class ModDesktopInput extends ModInputHandler{
         }
 
         cursorType = SystemCursor.arrow;
+
+        if(btmode == BTMode.edit){
+            player.shooting = false;
+            block = null;
+            mode = none;
+        }
     }
 
     @Override
@@ -507,7 +513,7 @@ public class ModDesktopInput extends ModInputHandler{
                 mode = none;
             }else if(!selectRequests.isEmpty()){
                 flushRequests(selectRequests);
-            }else if(isPlacing()){
+            }else if(isPlacing() || btmode == BTMode.edit){
                 selectX = cursorX;
                 selectY = cursorY;
                 lastLineX = cursorX;
@@ -535,7 +541,7 @@ public class ModDesktopInput extends ModInputHandler{
         }else if(Core.input.keyTap(Binding.deselect) && !selectRequests.isEmpty()){
             selectRequests.clear();
             lastSchematic = null;
-        }else if(Core.input.keyTap(Binding.break_block) && !Core.scene.hasMouse() && player.isBuilder() && btIsEdit()){
+        }else if(Core.input.keyTap(Binding.break_block) && !Core.scene.hasMouse() && player.isBuilder()){
             //is recalculated because setting the mode to breaking removes potential multiblock cursor offset
             deleting = false;
             mode = breaking;
@@ -687,12 +693,8 @@ public class ModDesktopInput extends ModInputHandler{
         }
 
         if(btmode == BTMode.edit){
-            if(usingbt){
-                mode = none;
-                block = null;
-            }
             if(usingbt && input.keyRelease(Binding.select)){
-                SchemeUtils.edit(selectX, selectY, cursorX, cursorY);
+                if(selectX != -1 && selectY != -1) SchemeUtils.edit(selectX, selectY, cursorX, cursorY);
                 usingbt = false;
             }
         }
