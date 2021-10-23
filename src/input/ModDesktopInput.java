@@ -34,7 +34,7 @@ public class ModDesktopInput extends ModInputHandler{
     /** Current cursor type. */
     public Cursor cursorType = SystemCursor.arrow;
     /** Position where the player started dragging a line. */
-    public int selectX = -1, selectY = -1, schemX = -1, schemY = -1;
+    public int selectX = -1, selectY = -1, schemX = -1, schemY = -1, btX = -1, btY = -1;
     /** Last known line positions.*/
     public int lastLineX, lastLineY, schematicX, schematicY;
     /** Whether selecting mode is active. */
@@ -352,17 +352,18 @@ public class ModDesktopInput extends ModInputHandler{
             }
         }
 
+        if(btmode == BTMode.edit){
+            cursorType = SystemCursor.hand;
+            player.shooting = false;
+            block = null;
+            mode = none;
+        }
+
         if(!Core.scene.hasMouse()){
             Core.graphics.cursor(cursorType);
         }
 
         cursorType = SystemCursor.arrow;
-
-        if(btmode == BTMode.edit){
-            player.shooting = false;
-            block = null;
-            mode = none;
-        }
     }
 
     @Override
@@ -513,13 +514,13 @@ public class ModDesktopInput extends ModInputHandler{
                 mode = none;
             }else if(!selectRequests.isEmpty()){
                 flushRequests(selectRequests);
-            }else if(isPlacing() || btmode == BTMode.edit){
+            }else if(isPlacing()){
                 selectX = cursorX;
                 selectY = cursorY;
                 lastLineX = cursorX;
                 lastLineY = cursorY;
                 mode = placing;
-                if(block != null) updateLine(selectX, selectY);
+                updateLine(selectX, selectY);
             }else if(req != null && !req.breaking && mode == none && !req.initialized){
                 sreq = req;
             }else if(req != null && req.breaking){
@@ -676,30 +677,34 @@ public class ModDesktopInput extends ModInputHandler{
         if(btmode == BTMode.none || block == null) return;
         btClear();
 
-        if(input.keyTap(Binding.select)) usingbt = true;
-        if(input.keyTap(Binding.deselect)) usingbt = false;
-
         int cursorX = tileXMod(Core.input.mouseX());
         int cursorY = tileYMod(Core.input.mouseY());
 
         if(btmode == BTMode.fill){
             if(usingbt){
-                btFill(selectX, selectY, cursorX, cursorY, 64); // 64 - for optimization
+                btFill(btX, btY, cursorX, cursorY, 64); // 64 - for optimization
             }
             if(usingbt && input.keyRelease(Binding.select)){
-                if(selectX != -1 && selectY != -1) btApply();
+                btApply();
                 usingbt = false;
             }
         }
 
         if(btmode == BTMode.edit){
             if(usingbt && input.keyRelease(Binding.select)){
-                if(selectX != -1 && selectY != -1) SchemeUtils.edit(selectX, selectY, cursorX, cursorY);
+                SchemeUtils.edit(selectX, selectY, cursorX, cursorY);
                 usingbt = false;
             }
         }
 
-        if(btIsPlacing()) btplan.each(bp -> drawOverRequest(bp));
+        if(input.keyTap(Binding.deselect)) usingbt = false;
+        if(input.keyTap(Binding.select)){
+            btX = cursorX;
+            btY = cursorY;
+            usingbt = true;
+        }
+
+        // if(btIsPlacing()) btplan.each(bp -> drawOverRequest(bp));
     }
 
     @Override
