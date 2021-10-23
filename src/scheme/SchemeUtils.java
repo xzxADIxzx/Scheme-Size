@@ -205,7 +205,7 @@ public class SchemeUtils{
                 Call.sendChatMessage(js("var setf = (tile) => { tile.setFloorNet(floor==null?tile.floor():floor.asFloor(),overlay==null?tile.overlay():overlay.asFloor());setb(tile) }"));
                 Call.sendChatMessage(js("var nulc = (tile) => { if(tile != null) setf(tile) }"));
                 Call.sendChatMessage(js("var tile = (x, y) => { nulc(tile = world.tiles.get(x, y)) }"));
-                Call.sendChatMessage(js("for(var x = " + sx +"; x <= " + ex + "; x++){ for(var y = " + sy + "; y <= " + ey + "; y++){ todo(x, y) } }"));
+                Call.sendChatMessage(js("for(var x = " + sx +"; x <= " + ex + "; x++){ for(var y = " + sy + "; y <= " + ey + "; y++){ tile(x, y) } }"));
             });
         };
         Runnable server = () -> {
