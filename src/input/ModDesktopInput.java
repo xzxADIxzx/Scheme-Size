@@ -519,7 +519,7 @@ public class ModDesktopInput extends ModInputHandler{
                 lastLineX = cursorX;
                 lastLineY = cursorY;
                 mode = placing;
-                updateLine(selectX, selectY);
+                if(block != null) updateLine(selectX, selectY);
             }else if(req != null && !req.breaking && mode == none && !req.initialized){
                 sreq = req;
             }else if(req != null && req.breaking){
