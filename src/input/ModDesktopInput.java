@@ -697,7 +697,7 @@ public class ModDesktopInput extends ModInputHandler{
             }
         }
 
-        if(input.keyTap(Binding.select)){
+        if(input.keyTap(Binding.select) && !scene.hasMouse()){
             btX = isAdmin() ? player.tileX() : cursorX;
             btY = isAdmin() ? player.tileY() : cursorY;
             usingbt = true;

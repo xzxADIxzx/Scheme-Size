@@ -115,10 +115,14 @@ public class TileSelectDialog extends BaseDialog{
 		return block == null ? new TextureRegionDrawable(Icon.none) : block == Blocks.air ? new TextureRegionDrawable(Icon.line) : new TextureRegionDrawable(block.icon(Cicon.full));
 	}
 
+	private Floor asFloor(Block block){
+		return block == null ? null : block.asFloor()
+	}
+
 	public void select(boolean show, Cons3<Floor, Block, Floor> callback){
 		this.callback = callback;
 		if(show) show();
-		else callback.get(floor.asFloor(), block, overlay.asFloor());
+		else callback.get(asFloor(floor), block, asFloor(overlay));
 		updateimg();
 	}
 }
