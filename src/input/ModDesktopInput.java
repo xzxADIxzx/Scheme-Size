@@ -122,7 +122,7 @@ public class ModDesktopInput extends ModInputHandler{
             drawSelectionMod(schemX, schemY, cursorX, cursorY, settings.getInt("copysize") - 1);
         }
 
-        if(btmode == BTMode.edit && useingbt){
+        if(btmode == BTMode.edit && usingbt){
             drawEditSelectionMod(selectX, selectY, cursorX, cursorY, 64);
         }
 
