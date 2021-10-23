@@ -84,6 +84,17 @@ public class ModInputHandler extends InputHandler{
         }
     }
 
+    public void drawEditSelectionMod(int x1, int y1, int x2, int y2, int size){
+        NormalizeDrawResult normalized = Placement.normalizeDrawArea(Blocks.air, x1, y1, x2, y2, false, size, 1f);
+
+        Lines.stroke(2f);
+
+        Draw.color(Pal.darkerMetal);
+        Lines.rect(result.x, result.y - 1, result.x2 - result.x, result.y2 - result.y);
+        Draw.color(Pal.darkMetal);
+        Lines.rect(result.x, result.y, result.x2 - result.x, result.y2 - result.y);
+    }
+
     public void drawOverRequestMod(BuildPlan request){
         boolean valid = validPlace(request.x, request.y, request.block, request.rotation);
 
@@ -259,6 +270,10 @@ public class ModInputHandler extends InputHandler{
         return !btplan.isEmpty() && btmode != BTMode.none && block != null;
     }
 
+    public boolean btIsNone(){
+        return btmode == BTMode.none;
+    }
+
     public void btApply(){
         flushRequests(btplan);
         btClear();
@@ -280,9 +295,9 @@ public class ModInputHandler extends InputHandler{
         btmode = btmode == mode ? BTMode.none : mode;
     }
 
-    protected void btFill(int startX, int startY, int endX, int endY){
+    protected void btFill(int startX, int startY, int endX, int endY, int size){
         if(block == null) return;
-        NormalizeResult normalized = Placement.normalizeArea(startX, startY, endX, endY, 0, false, 64); // 64 - for optimization
+        NormalizeResult normalized = Placement.normalizeArea(startX, startY, endX, endY, 0, false, size);
 
         for(int x = normalized.x; x <= normalized.x2; x++){
             for(int y = normalized.y; y <= normalized.y2; y++){

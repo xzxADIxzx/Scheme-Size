@@ -189,6 +189,12 @@ public class SchemeUtils{
         SchemeSize.keycomb.show();
     }
 
+    public static void edit(int sx, int sy, int ex, int ey){
+        SchemeSize.tile.select(false, (floor, block, overlay) -> {
+            // TODO: template
+        });
+    }
+
 
     // helpfull methods
     private static int fix(Item item, int amount){

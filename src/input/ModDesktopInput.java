@@ -44,7 +44,7 @@ public class ModDesktopInput extends ModInputHandler{
     /** Selected build request for movement. */
     public @Nullable BuildPlan sreq;
     /** Whether player is currently deleting removal requests. */
-    public boolean deleting = false, shouldShoot = false, panning = false, usingbt;
+    public boolean deleting = false, shouldShoot = false, panning = false, usingbt = false;
     /** Mouse pan speed. */
     public float panScale = 0.005f, panSpeed = 4.5f, panBoostSpeed = 15f;
     /** Delta time between consecutive clicks. */
@@ -118,7 +118,7 @@ public class ModDesktopInput extends ModInputHandler{
             drawBreakSelectionMod(selectX, selectY, cursorX, cursorY, size - 1);
         }
 
-        if(Core.input.keyDown(Binding.schematic_select) && !Core.scene.hasKeyboard() && mode != breaking){
+        if(Core.input.keyDown(Binding.schematic_select) && !Core.scene.hasKeyboard() && mode != breaking && btIsNone()){
             drawSelectionMod(schemX, schemY, cursorX, cursorY, settings.getInt("copysize") - 1);
         }
 
@@ -531,7 +531,7 @@ public class ModDesktopInput extends ModInputHandler{
         }else if(Core.input.keyTap(Binding.deselect) && !selectRequests.isEmpty()){
             selectRequests.clear();
             lastSchematic = null;
-        }else if(Core.input.keyTap(Binding.break_block) && !Core.scene.hasMouse() && player.isBuilder()){
+        }else if(Core.input.keyTap(Binding.break_block) && !Core.scene.hasMouse() && player.isBuilder() && btIsNone()){
             //is recalculated because setting the mode to breaking removes potential multiblock cursor offset
             deleting = false;
             mode = breaking;
@@ -666,14 +666,28 @@ public class ModDesktopInput extends ModInputHandler{
         if(btmode == BTMode.none || block == null) return;
         btClear();
 
+        if(input.keyTap(Binding.select)) usingbt = true;
+        if(input.keyTap(Binding.deselect)) usingbt = false;
+
+        int cursorX = tileXMod(Core.input.mouseX());
+        int cursorY = tileYMod(Core.input.mouseY());
+
         if(btmode == BTMode.fill){
-            if(input.keyTap(Binding.select)) usingbt = true;
-            if(input.keyTap(Binding.deselect)) usingbt = false;
             if(usingbt){
-                btFill(selectX, selectY, tileXMod(getMouseX()), tileYMod(getMouseY()));
+                btFill(selectX, selectY, cursorX, cursorY, 64); // 64 - for optimization
             }
             if(usingbt && input.keyRelease(Binding.select)){
                 if(selectX != -1 && selectY != -1) btApply();
+                usingbt = false;
+            }
+        }
+
+        if(btmode == BTMode.edit){
+            if(usingbt){
+                drawEditSelectionMod(selectX, selectY, cursorX, cursorY, 64);
+            }
+            if(usingbt && input.keyRelease(Binding.select)){
+                SchemeUtils.edit(selectX, selectY, cursorX, cursorY);
                 usingbt = false;
             }
         }
