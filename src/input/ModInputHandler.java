@@ -270,8 +270,8 @@ public class ModInputHandler extends InputHandler{
         return !btplan.isEmpty() && btmode != BTMode.none && block != null;
     }
 
-    public boolean btIsNone(){
-        return btmode == BTMode.none;
+    public boolean btIsEdit(){
+        return btmode == BTMode.edit;
     }
 
     public void btApply(){

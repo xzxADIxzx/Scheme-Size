@@ -118,7 +118,7 @@ public class ModDesktopInput extends ModInputHandler{
             drawBreakSelectionMod(selectX, selectY, cursorX, cursorY, size - 1);
         }
 
-        if(Core.input.keyDown(Binding.schematic_select) && !Core.scene.hasKeyboard() && mode != breaking && btIsNone()){
+        if(Core.input.keyDown(Binding.schematic_select) && !Core.scene.hasKeyboard() && mode != breaking && btIsEdit()){
             drawSelectionMod(schemX, schemY, cursorX, cursorY, settings.getInt("copysize") - 1);
         }
 
@@ -295,7 +295,7 @@ public class ModDesktopInput extends ModInputHandler{
             mode = none;
         }
 
-        if(player.shooting && (!canShoot() || Core.input.keyDown(ModBinding.alternative))){
+        if(player.shooting && (!canShoot() || Core.input.keyDown(ModBinding.alternative) || btIsEdit())){
             player.shooting = false;
         }
 
@@ -531,7 +531,7 @@ public class ModDesktopInput extends ModInputHandler{
         }else if(Core.input.keyTap(Binding.deselect) && !selectRequests.isEmpty()){
             selectRequests.clear();
             lastSchematic = null;
-        }else if(Core.input.keyTap(Binding.break_block) && !Core.scene.hasMouse() && player.isBuilder() && btIsNone()){
+        }else if(Core.input.keyTap(Binding.break_block) && !Core.scene.hasMouse() && player.isBuilder() && btIsEdit()){
             //is recalculated because setting the mode to breaking removes potential multiblock cursor offset
             deleting = false;
             mode = breaking;
@@ -685,6 +685,7 @@ public class ModDesktopInput extends ModInputHandler{
         if(btmode == BTMode.edit){
             if(usingbt){
                 drawEditSelectionMod(selectX, selectY, cursorX, cursorY, 64);
+                block = null;
             }
             if(usingbt && input.keyRelease(Binding.select)){
                 SchemeUtils.edit(selectX, selectY, cursorX, cursorY);

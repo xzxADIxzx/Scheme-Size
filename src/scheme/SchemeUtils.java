@@ -192,6 +192,7 @@ public class SchemeUtils{
     public static void edit(int sx, int sy, int ex, int ey){
         SchemeSize.tile.select(false, (floor, block, overlay) -> {
             // TODO: template
+            placeCore();
         });
     }
 
