@@ -116,7 +116,7 @@ public class TileSelectDialog extends BaseDialog{
 	}
 
 	private Floor asFloor(Block block){
-		return block == null ? null : block.asFloor()
+		return block == null ? null : block.asFloor();
 	}
 
 	public void select(boolean show, Cons3<Floor, Block, Floor> callback){
