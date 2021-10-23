@@ -193,19 +193,19 @@ public class SchemeUtils{
     public static void edit(int sx, int sy, int ex, int ey){
         Runnable admins = () -> {
             SchemeSize.tile.select(false, (floor, block, overlay) -> {
-                Call.sendChatMessage("/fill " + (ex - sx + 1) + " " + (ey - sy + 1) + " " + floor == null ? "" : floor.name + " " + overlay == null ? "" : overlay.name);
+                Call.sendChatMessage("/fill " + (ex - sx + 1) + " " + (ey - sy + 1) + " " + (floor == null ? "" : floor.name) + " " + (overlay == null ? "" : overlay.name));
             });
         };
         Runnable js = () -> {
             SchemeSize.tile.select(false, (floor, block, overlay) -> {
-                Call.sendChatMessage(js("var floor = " + getBlock(floor) + ".asFloor()"));
+                Call.sendChatMessage(js("var floor = " + getBlock(floor)));
                 Call.sendChatMessage(js("var block = " + getBlock(block)));
-                Call.sendChatMessage(js("var overlay = " + getBlock(overlay) + ".asFloor()"));
+                Call.sendChatMessage(js("var overlay = " + getBlock(overlay)));
                 Call.sendChatMessage(js("var setb = (tile) => { tile.setNet(block == null ? tile.block() : block) }"));
-                Call.sendChatMessage(js("var setf = (tile) => { tile.setFloorNet(floor == null ? tile.floor() : floor, overlay == null ? tile.overlay() : overlay); setb(tile) }"));
+                Call.sendChatMessage(js("var setf = (tile) => { tile.setFloorNet(floor==null?tile.floor():floor.asFloor(),overlay==null?tile.overlay():overlay.asFloor());setb(tile) }"));
                 Call.sendChatMessage(js("var nulc = (tile) => { if(tile != null) setf(tile) }"));
                 Call.sendChatMessage(js("var tile = (x, y) => { nulc(tile = world.tiles.get(x, y)) }"));
-                Call.sendChatMessage(js("for(int x = " + sx +"; x <= " + ex + "; x++){ for(int y = " + sy + "; y <= " + ey + "; y++){ todo(x, y) } }"));
+                Call.sendChatMessage(js("for(var x = " + sx +"; x <= " + ex + "; x++){ for(var y = " + sy + "; y <= " + ey + "; y++){ todo(x, y) } }"));
             });
         };
         Runnable server = () -> {
