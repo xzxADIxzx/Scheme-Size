@@ -57,7 +57,7 @@ public class ModInputHandler extends InputHandler{
 
         // Show Size
         if(Core.settings.getBool("copyshow")){
-            NormalizeResult result = normalizeArea(x1, y1, x2, y2, 0, false, size);
+            NormalizeResult result = Placement.normalizeArea(x1, y1, x2, y2, 0, false, size);
 
             int sizeX = result.x2 - result.x;
             int sizeY = result.y2 - result.y;
@@ -73,7 +73,7 @@ public class ModInputHandler extends InputHandler{
 
         // Show Size
         if(Core.settings.getBool("breakshow")){
-            NormalizeResult result = normalizeArea(x1, y1, x2, y2, 0, false, size);
+            NormalizeResult result = Placement.normalizeArea(x1, y1, x2, y2, 0, false, size);
 
             int sizeX = result.x2 - result.x;
             int sizeY = result.y2 - result.y;
@@ -85,7 +85,7 @@ public class ModInputHandler extends InputHandler{
     }
 
     public void drawEditSelectionMod(int x1, int y1, int x2, int y2, int size){
-        NormalizeDrawResult result = normalizeDrawArea(Blocks.air, x1, y1, x2, y2, false, size, 1f);
+        NormalizeDrawResult result = Placement.normalizeDrawArea(Blocks.air, x1, y1, x2, y2, false, size, 1f);
 
         Lines.stroke(2f);
 
