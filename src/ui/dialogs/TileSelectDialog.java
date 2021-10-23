@@ -24,9 +24,9 @@ public class TileSelectDialog extends BaseDialog{
 	private Table category = new Table();
 	private Table content = new Table();
 
-	private Block floor = Blocks.air;
-	private Block block = Blocks.air;
-	private Block overlay = Blocks.air;
+	private Block floor;
+	private Block block;
+	private Block overlay;
 
 	private Image floorImg;
 	private Image blockImg;
@@ -40,7 +40,7 @@ public class TileSelectDialog extends BaseDialog{
 		cont.add(content).growX();
 		cont.table().width(288f).right();
 
-		floorImg = template("@tile.floor", 0, b -> !(b instanceof Floor) || b instanceof OverlayFloor || b.id < 2, b -> floor = b);
+		floorImg = template("@tile.floor", 0, b -> !(b instanceof Floor) || b instanceof OverlayFloor, b -> floor = b);
 		blockImg = template("@tile.block", 1, b -> !(b instanceof StaticWall), b -> block = b);
 		overlayImg = template("@tile.overlay", 2, b -> !(b instanceof OverlayFloor), b -> overlay = b);
 	}
@@ -58,7 +58,7 @@ public class TileSelectDialog extends BaseDialog{
 			}).size(64f);
 
 			Vars.content.blocks().each(block -> {
-				if(skip.get(block)) return;
+				if(skip.get(block) || block.id < 2) return;
 
 				var drawable = new TextureRegionDrawable(block.icon(Cicon.full));
 				table.button(drawable, () -> { 

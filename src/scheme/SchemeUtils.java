@@ -192,14 +192,26 @@ public class SchemeUtils{
 
     public static void edit(int sx, int sy, int ex, int ey){
         Runnable admins = () -> {
+            SchemeSize.tile.select(false, (floor, block, overlay) -> {
+                Call.sendChatMessage("/fill " + ex - sx + " " + ey - sy + " " + floor.name)
+            });
         };
         Runnable js = () -> {
+            SchemeSize.tile.select(false, (floor, block, overlay) -> {
+                Call.sendChatMessage(js("var floor = " + getBlock(floor) + ".asFloor()"));
+                Call.sendChatMessage(js("var block = " + getBlock(block)));
+                Call.sendChatMessage(js("var overlay = " + getBlock(overlay) + ".asFloor()"));
+                Call.sendChatMessage(js("var todo = (x, y) => { var tile = world.tiles.get(x, y); if(tile == null) return; tile.setFloorNet(floor == null ? tile.floor() : floor, overlay == null ? tile.overlay() : overlay); tile.setNet(block == null ? tile.block() : block); }"));
+                Call.sendChatMessage(js("for(int x = " + sx +"; x <= " + ex + "; x++){ for(int y = " + sy + "; y <= " + ey + "; y++){ todo(x, y) } }"));
+            });
         };
         Runnable server = () -> {
             SchemeSize.tile.select(false, (floor, block, overlay) -> {
                 for(int x = sx; x <= ex; x++){
                     for(int y = sy; y <= ey; y++){
                         Tile tile = world.tiles.get(x, y);
+                        if(tile == null) continue;
+
                         tile.setFloorNet(floor == null ? tile.floor() : floor, overlay == null ? tile.overlay() : overlay);
                         tile.setNet(block == null ? tile.block() : block);
                     }
@@ -246,5 +258,9 @@ public class SchemeUtils{
 
     private static String getTeam(Team team){
         return "Team." + team.name;
+    }
+
+    private static String getBlock(Block block){
+        return "Vars.content.blocks().find(i => i.name == \"" + block.name + "\")";
     }
 }
