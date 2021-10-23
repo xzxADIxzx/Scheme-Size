@@ -201,7 +201,7 @@ public class SchemeUtils{
                     for(int y = sy; y <= ey; y++){
                         Tile tile = world.tiles.get(x, y);
                         tile.setFloorNet(floor == null ? tile.floor() : floor, overlay == null ? tile.overlay() : overlay);
-                        tile.setNet(block == null ? tile.block() ? block);
+                        tile.setNet(block == null ? tile.block() : block);
                     }
                 }
             });
