@@ -57,10 +57,10 @@ public class ModInputHandler extends InputHandler{
 
         // Show Size
         if(Core.settings.getBool("copyshow")){
-            NormalizeResult normalized = Placement.normalizeArea(x1, y1, x2, y2, 0, false, size);
+            NormalizeResult result = Placement.normalizeArea(x1, y1, x2, y2, 0, false, size);
 
-            int sizeX = normalized.x2 - normalized.x;
-            int sizeY = normalized.y2 - normalized.y;
+            int sizeX = result.x2 - result.x;
+            int sizeY = result.y2 - result.y;
             String strSizeX = sizeX == size ? "[accent]" + String.valueOf(++sizeX) + "[]" : String.valueOf(++sizeX);
             String strSizeY = sizeY == size ? "[accent]" + String.valueOf(++sizeY) + "[]" : String.valueOf(++sizeY);
             String info = strSizeX + ", " + strSizeY;
@@ -73,10 +73,10 @@ public class ModInputHandler extends InputHandler{
 
         // Show Size
         if(Core.settings.getBool("breakshow")){
-            NormalizeResult normalized = Placement.normalizeArea(x1, y1, x2, y2, 0, false, size);
+            NormalizeResult result = Placement.normalizeArea(x1, y1, x2, y2, 0, false, size);
 
-            int sizeX = normalized.x2 - normalized.x;
-            int sizeY = normalized.y2 - normalized.y;
+            int sizeX = result.x2 - result.x;
+            int sizeY = result.y2 - result.y;
             String strSizeX = sizeX == size ? "[accent]" + String.valueOf(++sizeX) + "[]" : String.valueOf(++sizeX);
             String strSizeY = sizeY == size ? "[accent]" + String.valueOf(++sizeY) + "[]" : String.valueOf(++sizeY);
             String info = strSizeX + ", " + strSizeY;
@@ -85,7 +85,7 @@ public class ModInputHandler extends InputHandler{
     }
 
     public void drawEditSelectionMod(int x1, int y1, int x2, int y2, int size){
-        NormalizeDrawResult normalized = Placement.normalizeDrawArea(Blocks.air, x1, y1, x2, y2, false, size, 1f);
+        NormalizeDrawResult result = Placement.normalizeDrawArea(Blocks.air, x1, y1, x2, y2, false, size, 1f);
 
         Lines.stroke(2f);
 
