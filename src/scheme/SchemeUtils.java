@@ -193,7 +193,7 @@ public class SchemeUtils{
     public static void edit(int sx, int sy, int ex, int ey){
         Runnable admins = () -> {
             SchemeSize.tile.select(false, (floor, block, overlay) -> {
-                Call.sendChatMessage("/fill " + (ex - sx + 1) + " " + (ey - sy + 1) + " " + floor == null ? "" : floor.name + " " overlay == null ? "" : overlay.name);
+                Call.sendChatMessage("/fill " + (ex - sx + 1) + " " + (ey - sy + 1) + " " + floor == null ? "" : floor.name + " " + overlay == null ? "" : overlay.name);
             });
         };
         Runnable js = () -> {
