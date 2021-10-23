@@ -57,7 +57,7 @@ public class ModInputHandler extends InputHandler{
 
         // Show Size
         if(Core.settings.getBool("copyshow")){
-            NormalizeResult result = Placement.normalizeArea(x1, y1, x2, y2, 0, false, size);
+            NormalizeResult result = normalizeArea(x1, y1, x2, y2, 0, false, size);
 
             int sizeX = result.x2 - result.x;
             int sizeY = result.y2 - result.y;
@@ -73,7 +73,7 @@ public class ModInputHandler extends InputHandler{
 
         // Show Size
         if(Core.settings.getBool("breakshow")){
-            NormalizeResult result = Placement.normalizeArea(x1, y1, x2, y2, 0, false, size);
+            NormalizeResult result = normalizeArea(x1, y1, x2, y2, 0, false, size);
 
             int sizeX = result.x2 - result.x;
             int sizeY = result.y2 - result.y;
@@ -85,7 +85,7 @@ public class ModInputHandler extends InputHandler{
     }
 
     public void drawEditSelectionMod(int x1, int y1, int x2, int y2, int size){
-        NormalizeDrawResult result = Placement.normalizeDrawArea(Blocks.air, x1, y1, x2, y2, false, size, 1f);
+        NormalizeDrawResult result = normalizeDrawArea(Blocks.air, x1, y1, x2, y2, false, size, 1f);
 
         Lines.stroke(2f);
 
@@ -264,6 +264,10 @@ public class ModInputHandler extends InputHandler{
         mobileDisWpn = !mobileDisWpn;
     }
 
+    public static boolean isAdmin(){
+        return Core.settings.getBool("adminssecret") && !Core.settings.getBool("usejs");
+    }
+
 
     // building tools
     public boolean btIsPlacing(){
@@ -293,10 +297,10 @@ public class ModInputHandler extends InputHandler{
 
     protected void btFill(int startX, int startY, int endX, int endY, int size){
         if(block == null) return;
-        NormalizeResult normalized = Placement.normalizeArea(startX, startY, endX, endY, 0, false, size);
+        NormalizeResult result = Placement.normalizeArea(startX, startY, endX, endY, 0, false, size);
 
-        for(int x = normalized.x; x <= normalized.x2; x++){
-            for(int y = normalized.y; y <= normalized.y2; y++){
+        for(int x = result.x; x <= result.x2; x++){
+            for(int y = result.y; y <= result.y2; y++){
                 BuildPlan build = new BuildPlan(x, y, 0, block);
                 btplan.add(build);
             }

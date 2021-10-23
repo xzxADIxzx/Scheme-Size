@@ -4,6 +4,7 @@ import arc.math.geom.*;
 import mindustry.gen.*;
 import mindustry.type.*;
 import mindustry.game.*;
+import mindustry.world.*;
 import mindustry.content.*;
 
 import static arc.Core.*;
@@ -190,11 +191,22 @@ public class SchemeUtils{
     }
 
     public static void edit(int sx, int sy, int ex, int ey){
-        showInfo();
-        SchemeSize.tile.select(false, (floor, block, overlay) -> {
-            // TODO: template
-            placeCore();
-        });
+        Runnable admins = () -> {
+        };
+        Runnable js = () -> {
+        };
+        Runnable server = () -> {
+            SchemeSize.tile.select(false, (floor, block, overlay) -> {
+                for(int x = sx; x <= ex; x++){
+                    for(int y = sy; y <= ey; y++){
+                        Tile tile = world.tiles.get(x, y);
+                        tile.setFloorNet(floor == null ? tile.floor() : floor, overlay == null ? tile.overlay() : overlay);
+                        tile.setNet(block == null ? tile.block() ? block);
+                    }
+                }
+            });
+        };
+        template(admins, js, server);
     }
 
 
