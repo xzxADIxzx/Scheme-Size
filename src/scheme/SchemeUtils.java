@@ -193,7 +193,7 @@ public class SchemeUtils{
     public static void edit(int sx, int sy, int ex, int ey){
         Runnable admins = () -> {
             SchemeSize.tile.select(false, (floor, block, overlay) -> {
-                Call.sendChatMessage("/fill " + (ex - sx) + " " + (ey - sy) + " " + floor.name);
+                Call.sendChatMessage("/fill " + (ex - sx + 1) + " " + (ey - sy + 1) + " " + floor.name);
             });
         };
         Runnable js = () -> {
@@ -261,6 +261,6 @@ public class SchemeUtils{
     }
 
     private static String getBlock(Block block){
-        return "Vars.content.blocks().find(i => i.name == \"" + block.name + "\")";
+        return block == null ? "null" : "Vars.content.blocks().find(i => i.name == \"" + block.name + "\")";
     }
 }

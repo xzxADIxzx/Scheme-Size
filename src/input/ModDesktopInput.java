@@ -124,7 +124,7 @@ public class ModDesktopInput extends ModInputHandler{
         }
 
         if(btmode == BTMode.edit && usingbt){
-            drawEditSelectionMod(btX, btY, cursorX, cursorY, isAdmin() ? 49 : maxSchematicSize);
+            drawEditSelectionMod(isAdmin() ? player.tileX() : btX, isAdmin() ? player.tileY() : btY, cursorX, cursorY, isAdmin() ? 49 : maxSchematicSize);
         }
 
         Draw.reset();
@@ -692,14 +692,14 @@ public class ModDesktopInput extends ModInputHandler{
 
         if(btmode == BTMode.edit){
             if(usingbt && input.keyRelease(Binding.select)){
-                NormalizeResult result = Placement.normalizeArea(btX, btY, cursorX, cursorY, 0, false, isAdmin() ? 49 : maxSchematicSize);
+                NormalizeResult result = Placement.normalizeArea(isAdmin() ? player.tileX() : btX, isAdmin() ? player.tileY() : btY, cursorX, cursorY, 0, false, isAdmin() ? 49 : maxSchematicSize);
                 SchemeUtils.edit(result.x, result.y, result.x2, result.y2);
             }
         }
 
         if(input.keyTap(Binding.select) && !scene.hasMouse()){
-            btX = isAdmin() ? player.tileX() : cursorX;
-            btY = isAdmin() ? player.tileY() : cursorY;
+            btX = cursorX;
+            btY = cursorY;
             usingbt = true;
         }
         if(input.keyRelease(Binding.select)){
