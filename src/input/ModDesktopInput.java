@@ -123,7 +123,7 @@ public class ModDesktopInput extends ModInputHandler{
         }
 
         if(btmode == BTMode.edit && usingbt){
-            drawEditSelectionMod(selectX, selectY, cursorX, cursorY, 64);
+            drawEditSelectionMod(btX, btY, cursorX, cursorY, maxSchematicSize);
         }
 
         Draw.reset();
@@ -682,7 +682,8 @@ public class ModDesktopInput extends ModInputHandler{
 
         if(btmode == BTMode.fill){
             if(usingbt){
-                btFill(btX, btY, cursorX, cursorY, 64); // 64 - for optimization
+                // maxSchematicSize - for optimization
+                btFill(btX, btY, cursorX, cursorY, maxSchematicSize);
             }
             if(usingbt && input.keyRelease(Binding.select)){
                 btApply();
@@ -697,11 +698,15 @@ public class ModDesktopInput extends ModInputHandler{
             }
         }
 
-        if(input.keyTap(Binding.deselect)) usingbt = false;
         if(input.keyTap(Binding.select)){
             btX = cursorX;
             btY = cursorY;
             usingbt = true;
+        }
+        if(input.keyTap(Binding.deselect)){
+            btX = -1;
+            btY = -1;
+            usingbt = false;
         }
 
         // if(btIsPlacing()) btplan.each(bp -> drawOverRequest(bp));
