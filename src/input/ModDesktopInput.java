@@ -353,7 +353,7 @@ public class ModDesktopInput extends ModInputHandler{
         }
 
         if(btmode == BTMode.edit){
-            cursorType = SystemCursor.hand;
+            cursorType = SystemCursor.arrow;
             player.shooting = false;
             block = null;
             mode = none;
@@ -674,27 +674,24 @@ public class ModDesktopInput extends ModInputHandler{
     }
 
     void btInput(){
-        if(btmode == BTMode.none || block == null) return;
+        if(btmode == BTMode.none) return;
         btClear();
 
         int cursorX = tileXMod(Core.input.mouseX());
         int cursorY = tileYMod(Core.input.mouseY());
 
-        if(btmode == BTMode.fill){
+        if(btmode == BTMode.fill && isPlacing()){
             if(usingbt){
-                // maxSchematicSize - for optimization
                 btFill(btX, btY, cursorX, cursorY, maxSchematicSize);
             }
             if(usingbt && input.keyRelease(Binding.select)){
                 btApply();
-                usingbt = false;
             }
         }
 
         if(btmode == BTMode.edit){
             if(usingbt && input.keyRelease(Binding.select)){
-                SchemeUtils.edit(selectX, selectY, cursorX, cursorY);
-                usingbt = false;
+                SchemeUtils.edit(btX, btY, cursorX, cursorY);
             }
         }
 
@@ -702,6 +699,11 @@ public class ModDesktopInput extends ModInputHandler{
             btX = cursorX;
             btY = cursorY;
             usingbt = true;
+        }
+        if(input.keyRelease(Binding.select)){
+            btX = -1;
+            btY = -1;
+            usingbt = false;
         }
         if(input.keyTap(Binding.deselect)){
             btX = -1;
