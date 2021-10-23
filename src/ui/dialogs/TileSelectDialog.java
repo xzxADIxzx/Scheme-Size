@@ -24,9 +24,9 @@ public class TileSelectDialog extends BaseDialog{
 	private Table category = new Table();
 	private Table content = new Table();
 
-	private Floor floor = Blocks.air.asFloor();
+	private Block floor = Blocks.air;
 	private Block block = Blocks.air;
-	private Floor overlay = Blocks.air.asFloor();
+	private Block overlay = Blocks.air;
 
 	private Image floorImg;
 	private Image blockImg;
@@ -40,9 +40,9 @@ public class TileSelectDialog extends BaseDialog{
 		cont.add(content).growX();
 		cont.table().width(288f).right();
 
-		floorImg = template("@tile.floor", 0, b -> !(b instanceof Floor) || b instanceof OverlayFloor || b.id < 2, b -> floor = b.asFloor());
+		floorImg = template("@tile.floor", 0, b -> !(b instanceof Floor) || b instanceof OverlayFloor || b.id < 2, b -> floor = b);
 		blockImg = template("@tile.block", 1, b -> !(b instanceof StaticWall), b -> block = b);
-		overlayImg = template("@tile.overlay", 2, b -> !(b instanceof OverlayFloor), b -> overlay = b.asFloor());
+		overlayImg = template("@tile.overlay", 2, b -> !(b instanceof OverlayFloor), b -> overlay = b);
 	}
 
 	private void rebuild(Boolf<Block> skip, Cons<Block> callback){
@@ -105,9 +105,6 @@ public class TileSelectDialog extends BaseDialog{
 	}
 
 	private void updateimg(){
-		// var fimg = floor == null ? Icon.none : floor == Blocks.air ? Icon.line : floor.icon(Cicon.full);
-		// var bimg = block == null ? Icon.none : block == Blocks.air ? Icon.line : block.icon(Cicon.full);
-		// var oimg = overlay == null ? Icon.none : overlay == Blocks.air ? Icon.line : overlay.icon(Cicon.full);
 		floorImg.setDrawable(getIcon(floor));
 		blockImg.setDrawable(getIcon(block));
 		overlayImg.setDrawable(getIcon(overlay));
@@ -121,7 +118,7 @@ public class TileSelectDialog extends BaseDialog{
 	public void select(boolean show, Cons3<Floor, Block, Floor> callback){
 		this.callback = callback;
 		if(show) show();
-		else callback.get(floor, block, overlay);
+		else callback.get(floor.asFloor(), block, overlay.asFloor());
 		updateimg();
 	}
 }
