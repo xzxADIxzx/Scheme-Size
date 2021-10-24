@@ -675,7 +675,7 @@ public class ModDesktopInput extends ModInputHandler{
     }
 
     void btInput(){
-        if(btmode == BTMode.none) return;
+        if(btmode == BTMode.none || !SchemeSize.hudfrag.shownBT) return;
         btClear();
 
         int cursorX = tileXMod(Core.input.mouseX());
@@ -684,6 +684,15 @@ public class ModDesktopInput extends ModInputHandler{
         if(btmode == BTMode.fill && isPlacing()){
             if(usingbt){
                 btFill(btX, btY, cursorX, cursorY, maxSchematicSize);
+            }
+            if(usingbt && input.keyRelease(Binding.select)){
+                btApply();
+            }
+        }
+
+        if(btmode == BTMode.circle && isPlacing()){
+            if(usingbt){
+                btCirclie(cursorX, cursorY);
             }
             if(usingbt && input.keyRelease(Binding.select)){
                 btApply();
@@ -713,7 +722,8 @@ public class ModDesktopInput extends ModInputHandler{
             usingbt = false;
         }
 
-        // if(btIsPlacing()) btplan.each(bp -> drawOverRequest(bp));
+        if(btIsPlacing()) btplan.each(this::drawOverRequest);
+        draw.reset();
     }
 
     @Override

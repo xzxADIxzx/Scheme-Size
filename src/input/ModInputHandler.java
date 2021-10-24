@@ -295,15 +295,29 @@ public class ModInputHandler extends InputHandler{
         btmode = btmode == mode ? BTMode.none : mode;
     }
 
-    protected void btFill(int startX, int startY, int endX, int endY, int size){
+    protected void btFill(int sx, int sy, int ex, int ey, int size){
         if(block == null) return;
-        NormalizeResult result = Placement.normalizeArea(startX, startY, endX, endY, 0, false, size);
 
+        NormalizeResult result = Placement.normalizeArea(sx, sy, ex, ey, 0, false, size);
         for(int x = result.x; x <= result.x2; x++){
             for(int y = result.y; y <= result.y2; y++){
-                BuildPlan build = new BuildPlan(x, y, 0, block);
+                BuildPlan build = new BuildPlan(x, y, 0, block, block.nextConfig());
                 btplan.add(build);
             }
+        }
+    }
+
+    protected void btCircle(int cx, int cy){
+        if(block == null) return;
+
+        for (int deg = 0; deg <= 360; deg++) {
+            if(deg % 90 == 0) continue;
+
+            float x = cx + Mathf.cosDeg(deg) * size;
+            float y = cy + Mathf.sinDeg(deg) * size;
+
+            BuildPlan build = new BuildPlan(Mathf.round(x, block.size), Mathf.round(y, block.size), 0, block, block.nextConfig());
+            btplan.add(build);
         }
     }
 
