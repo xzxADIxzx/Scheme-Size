@@ -36,6 +36,11 @@ public class SchemeSize extends Mod{
     public SchemeSize(){
         Events.on(ClientLoadEvent.class, e -> {
             schematic = new ModSchematics();
+            schematics = schematic;
+            schematics.loadSync();
+
+            control.setInput(input = mobile ? new ModMobileInput() : new ModDesktopInput());
+
             keycomb = new KeybindCombinationsDialog();
             setting = new ModSettingsMenuDialog();
             hudfrag = new ModHudFragment();
@@ -52,11 +57,6 @@ public class SchemeSize extends Mod{
             item = new ContentSelectDialog("@itemselect", content.items(), -10000, 10000, 200, value -> {
                 return value == 0 ? "@clearitem" : Core.bundle.format("unit.zero.items", UI.formatAmount((long)value));
             });
-
-            schematics = schematic;
-            schematics.loadSync();
-
-            control.setInput(input = mobile ? new ModMobileInput() : new ModDesktopInput());
 
             ui.settings = setting;
             ui.listfrag = listfrag;

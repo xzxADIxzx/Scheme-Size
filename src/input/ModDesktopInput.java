@@ -353,11 +353,13 @@ public class ModDesktopInput extends ModInputHandler{
             }
         }
 
-        if(btmode == BTMode.edit){
+        if(btmode != BTMode.none){
             cursorType = SystemCursor.arrow;
-            player.shooting = false;
-            block = null;
             mode = none;
+            if(btmode == BTMode.edit){
+                player.shooting = false;
+                block = null;
+            }
         }
 
         if(!Core.scene.hasMouse()){
@@ -711,7 +713,7 @@ public class ModDesktopInput extends ModInputHandler{
             btY = cursorY;
             usingbt = true;
         }
-        if(input.keyTap(Binding.deselect) || input.keyRelease(Binding.select)){
+        if(input.keyTap(Binding.break_block) || input.keyRelease(Binding.select)){
             btX = -1;
             btY = -1;
             usingbt = false;
@@ -763,7 +765,7 @@ public class ModDesktopInput extends ModInputHandler{
         }
 
         float mouseAngle = Angles.mouseAngle(unit.x, unit.y);
-        boolean aimCursor = omni && (player.shooting || Core.input.keyDown(ModBinding.look_at)) && unit.type.hasWeapons() && unit.type.faceTarget && !boosted && unit.type.rotateShooting;
+        boolean aimCursor = (omni && player.shooting && unit.type.hasWeapons() && unit.type.faceTarget && !boosted && unit.type.rotateShooting) || Core.input.keyDown(ModBinding.look_at);
 
         if(aimCursor){
             unit.lookAt(mouseAngle);
