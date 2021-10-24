@@ -327,7 +327,7 @@ public class ModHudFragment extends Fragment{
                     mode.button(Icon.link, check, () -> input.btMode(BTMode.replace)).checked(t -> input.btMode() == BTMode.replace).name("replace").row();
                     mode.button(Icon.defense, check, () -> input.btMode(BTMode.wall)).checked(t -> input.btMode() == BTMode.wall).name("wall").row();
                 }).row();
-            }).height(254f).padRight(310f).visible(() -> shownBT);
+            }).height(254f).padRight(310f).visible(() -> shownBT && shown);
         });
     }
 

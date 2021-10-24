@@ -711,18 +711,13 @@ public class ModDesktopInput extends ModInputHandler{
             btY = cursorY;
             usingbt = true;
         }
-        if(input.keyRelease(Binding.select)){
-            btX = -1;
-            btY = -1;
-            usingbt = false;
-        }
-        if(input.keyTap(Binding.deselect)){
+        if(input.keyTap(Binding.deselect) || input.keyRelease(Binding.select)){
             btX = -1;
             btY = -1;
             usingbt = false;
         }
 
-        if(btIsPlacing()) btplan.each(this::drawOverRequest);
+        if(btIsPlacing()) btplan.each(this::drawRequest);
         Draw.reset();
     }
 

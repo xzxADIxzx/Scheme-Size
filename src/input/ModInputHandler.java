@@ -313,10 +313,10 @@ public class ModInputHandler extends InputHandler{
         for (int deg = 0; deg <= 360; deg++) {
             if(deg % 90 == 0) continue;
 
-            float x = cx + Mathf.cosDeg(deg) * btsize;
-            float y = cy + Mathf.sinDeg(deg) * btsize;
+            float x = cx + Mathf.round(Mathf.cosDeg(deg) * btsize, block.size);
+            float y = cy + Mathf.round(Mathf.sinDeg(deg) * btsize, block.size);
 
-            BuildPlan build = new BuildPlan(Mathf.round(x, block.size), Mathf.round(y, block.size), 0, block, block.nextConfig());
+            BuildPlan build = new BuildPlan(x, y, 0, block, block.nextConfig());
             btplan.add(build);
         }
     }
