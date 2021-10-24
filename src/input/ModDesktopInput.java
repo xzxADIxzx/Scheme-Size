@@ -720,7 +720,7 @@ public class ModDesktopInput extends ModInputHandler{
         if(btIsPlacing()){
             btplan.each(build -> {
                 build.animScale = 1f;
-                drawRequest(build)
+                drawRequest(build);
             });
             btplan.each(this::drawOverRequest);
             Draw.reset();
