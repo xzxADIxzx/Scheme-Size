@@ -353,13 +353,11 @@ public class ModDesktopInput extends ModInputHandler{
             }
         }
 
-        if(btmode != BTMode.none){
+        if(btmode == BTMode.edit){
             cursorType = SystemCursor.arrow;
+            player.shooting = false;
             mode = none;
-            if(btmode == BTMode.edit){
-                player.shooting = false;
-                block = null;
-            }
+            block = null;
         }
 
         if(!Core.scene.hasMouse()){
@@ -517,7 +515,7 @@ public class ModDesktopInput extends ModInputHandler{
                 mode = none;
             }else if(!selectRequests.isEmpty()){
                 flushRequests(selectRequests);
-            }else if(isPlacing()){
+            }else if(isPlacing() && btmode == BTMode.none){
                 selectX = cursorX;
                 selectY = cursorY;
                 lastLineX = cursorX;
@@ -719,8 +717,11 @@ public class ModDesktopInput extends ModInputHandler{
             usingbt = false;
         }
 
-        if(btIsPlacing()) btplan.each(this::drawRequest);
-        Draw.reset();
+        if(btIsPlacing()){
+            btplan.each(build -> drawRequest(build));
+            btplan.each(this::drawOverRequest);
+            Draw.reset();
+        }
     }
 
     @Override
