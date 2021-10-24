@@ -194,6 +194,14 @@ public class ModDesktopInput extends ModInputHandler{
             }
         }
 
+        if(btIsPlacing()){
+            btplan.each(build -> {
+                build.animScale = 1f;
+                drawRequest(build);
+            });
+            btplan.each(this::drawOverRequest);
+        }
+
         Draw.reset();
     }
 
@@ -675,11 +683,13 @@ public class ModDesktopInput extends ModInputHandler{
     }
 
     void btInput(){
-        if(btmode == BTMode.none || !SchemeSize.hudfrag.shownBT) return;
-        btClear();
+        if(!SchemeSize.hudfrag.shownBT) btMode(BTMode.none);
+        if(btmode == BTMode.none) return;
 
         int cursorX = tileXMod(Core.input.mouseX());
         int cursorY = tileYMod(Core.input.mouseY());
+
+        btClear();
 
         if(btmode == BTMode.fill && isPlacing()){
             if(usingbt){
@@ -715,15 +725,6 @@ public class ModDesktopInput extends ModInputHandler{
             btX = -1;
             btY = -1;
             usingbt = false;
-        }
-
-        if(btIsPlacing()){
-            btplan.each(build -> {
-                build.animScale = 1f;
-                drawRequest(build);
-            });
-            btplan.each(this::drawOverRequest);
-            Draw.reset();
         }
     }
 
