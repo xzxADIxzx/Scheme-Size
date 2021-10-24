@@ -692,7 +692,7 @@ public class ModDesktopInput extends ModInputHandler{
 
         if(btmode == BTMode.circle && isPlacing()){
             if(usingbt){
-                btCirclie(cursorX, cursorY);
+                btCircle(cursorX, cursorY);
             }
             if(usingbt && input.keyRelease(Binding.select)){
                 btApply();
@@ -723,7 +723,7 @@ public class ModDesktopInput extends ModInputHandler{
         }
 
         if(btIsPlacing()) btplan.each(this::drawOverRequest);
-        draw.reset();
+        Draw.reset();
     }
 
     @Override
