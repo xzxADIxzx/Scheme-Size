@@ -299,8 +299,8 @@ public class ModInputHandler extends InputHandler{
         if(block == null) return;
 
         NormalizeResult result = Placement.normalizeArea(sx, sy, ex, ey, 0, false, size);
-        for(int x = result.x; x <= result.x2; x++){
-            for(int y = result.y; y <= result.y2; y++){
+        for(int x = result.x; x <= result.x2; x + block.size){
+            for(int y = result.y; y <= result.y2; y + block.size){
                 BuildPlan build = new BuildPlan(x, y, 0, block, block.nextConfig());
                 btplan.add(build);
             }
