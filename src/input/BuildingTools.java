@@ -20,7 +20,7 @@ public class BuildingTools{
 	}
 	
 	public boolean isPlacing(){
-		return !plan.isEmpty() && mode != Mode.none && isPlacing();
+		return !plan.isEmpty() && mode != Mode.none && input.isPlacing();
 	}
 
 	public void apply(){
