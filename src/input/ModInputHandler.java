@@ -45,7 +45,7 @@ public class ModInputHandler extends InputHandler{
 	final static float playerSelectRange = mobile ? 17f : 11f;
     final static Rect r1 = new Rect(), r2 = new Rect();
 
-    final protected BuildingTools bt = new BuildingTools();
+    public BuildingTools bt = new BuildingTools();
 
     public boolean mobilePanCam = false;
     public boolean mobileDisWpn = false;

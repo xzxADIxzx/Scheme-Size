@@ -525,7 +525,7 @@ public class ModDesktopInput extends ModInputHandler{
                 mode = none;
             }else if(!selectRequests.isEmpty()){
                 flushRequests(selectRequests);
-            }else if(isPlacing() && bt.mode == BTMode.none){
+            }else if(isPlacing() && bt.mode == Mode.none){
                 selectX = cursorX;
                 selectY = cursorY;
                 lastLineX = cursorX;
@@ -702,7 +702,7 @@ public class ModDesktopInput extends ModInputHandler{
             }
         }
 
-        if(btmode == BTMode.square && isPlacing()){
+        if(btmode == Mode.square && isPlacing()){
             if(usingbt){
                 bt.square(cursorX, cursorY);
             }
@@ -711,7 +711,7 @@ public class ModDesktopInput extends ModInputHandler{
             }
         }
 
-        if(bt.mode == BTMode.circle && isPlacing()){
+        if(bt.mode == Mode.circle && isPlacing()){
             if(usingbt){
                 bt.circle(cursorX, cursorY);
             }
@@ -720,7 +720,7 @@ public class ModDesktopInput extends ModInputHandler{
             }
         }
 
-        if(bt.mode == BTMode.edit){
+        if(bt.mode == Mode.edit){
             if(usingbt && input.keyRelease(Binding.select)){
                 NormalizeResult result = Placement.normalizeArea(isAdmin() ? player.tileX() : btX, isAdmin() ? player.tileY() : btY, cursorX, cursorY, 0, false, isAdmin() ? 49 : maxSchematicSize);
                 SchemeUtils.edit(result.x, result.y, result.x2, result.y2);

@@ -12,7 +12,7 @@ public class BuildingTools{
 	private InputHandler input;
 
 	public Seq<BuildPlan> plan = new Seq<>();
-	public BTMode mode = BTMode.none;
+	public Mode mode = Mode.none;
 	public int size = 8;
 
 	public BuildingTools(InputHandler input){
@@ -24,7 +24,7 @@ public class BuildingTools{
 	}
 
 	public void apply(){
-		flushRequests(plan);
+		input.flushRequests(plan);
 		clear();
 	}
 
@@ -40,8 +40,8 @@ public class BuildingTools{
 		size += amount;
 	}
 
-	public void setMode(BTMode mode){
-		mode = mode == mode ? BTMode.none : mode;
+	public void setMode(Mode mode){
+		mode = mode == mode ? Mode.none : mode;
 	}
 
 	public void fill(int sx, int sy, int ex, int ey, int size){
@@ -88,7 +88,7 @@ public class BuildingTools{
 		return input.block;
 	}
 	
-	public static enum Mode{
+	public enum Mode{
 		none,
 		fill,
 		square,

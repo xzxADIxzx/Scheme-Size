@@ -26,7 +26,7 @@ import mindustry.game.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.input.*;
-import mindustry.input.ModInputHandler.*;
+import mindustry.input.BuldingTools.*;
 import mindustry.net.Packets.*;
 import mindustry.type.*;
 import mindustry.ui.*;
@@ -277,7 +277,7 @@ public class ModHudFragment extends Fragment{
             cont.bottom().right();
 
             float bsize = 46f;
-            var input = SchemeSize.input;
+            BuldingTools bt = SchemeSize.input.bt;
 
             ImageButtonStyle style = new ImageButtonStyle(){{
                 down = Styles.flatDown;
@@ -299,10 +299,10 @@ public class ModHudFragment extends Fragment{
                     ctrl.name = "controls";
                     ctrl.defaults().size(bsize).bottom().right();
 
-                    ctrl.button(Icon.cancel, style, input::btClear).padBottom(bsize).visible(input::btIsPlacing).name("cancel").row();
-                    ctrl.button(Icon.up, style, () -> input.btResize(1)).name("sizeup").row();
+                    ctrl.button(Icon.cancel, style, bt::clear).padBottom(bsize).visible(bt::isPlacing).name("cancel").row();
+                    ctrl.button(Icon.up, style, () -> bt.resize(1)).name("sizeup").row();
                     ctrl.image(Icon.resize).name("resize").row();
-                    ctrl.button(Icon.down, style, () -> input.btResize(-1)).name("sizedown").row();
+                    ctrl.button(Icon.down, style, () -> bt.resize(-1)).name("sizedown").row();
                 });
 
                 pad.image().color(Pal.gray).width(4f).pad(4f).fillY();
@@ -312,7 +312,7 @@ public class ModHudFragment extends Fragment{
                     edit.defaults().size(bsize).bottom().right();
 
                     edit.button(Icon.pencil, style, () -> SchemeSize.tile.select(true, null)).name("select").row();
-                    edit.button(Icon.editor, check, () -> input.btMode(BTMode.edit)).checked(t -> input.btMode() == BTMode.edit).height(bsize * 4).name("edit").row();
+                    edit.button(Icon.editor, check, () -> bt.setMode(Mode.edit)).checked(t -> bt.mode == Mode.edit).height(bsize * 4).name("edit").row();
                 });
 
                 pad.image().color(Pal.gray).width(4f).pad(4f).fillY();
@@ -321,11 +321,11 @@ public class ModHudFragment extends Fragment{
                     mode.name = "modes";
                     mode.defaults().size(bsize).bottom().right();
 
-                    mode.button(Icon.fill, check, () -> input.btMode(BTMode.fill)).checked(t -> input.btMode() == BTMode.fill).name("fill").row();
-                    mode.button(Icon.grid, check, () -> input.btMode(BTMode.square)).checked(t -> input.btMode() == BTMode.square).name("square").row();
-                    mode.button(Icon.commandRally, check, () -> input.btMode(BTMode.circle)).checked(t -> input.btMode() == BTMode.circle).name("circle").row();
-                    mode.button(Icon.link, check, () -> input.btMode(BTMode.replace)).checked(t -> input.btMode() == BTMode.replace).name("replace").row();
-                    mode.button(Icon.defense, check, () -> input.btMode(BTMode.wall)).checked(t -> input.btMode() == BTMode.wall).name("wall").row();
+                    mode.button(Icon.fill, check, () -> bt.setMode(Mode.fill)).checked(t -> bt.mode == Mode.fill).name("fill").row();
+                    mode.button(Icon.grid, check, () -> bt.setMode(Mode.square)).checked(t -> bt.mode == Mode.square).name("square").row();
+                    mode.button(Icon.commandRally, check, () -> bt.setMode(Mode.circle)).checked(t -> bt.mode == Mode.circle).name("circle").row();
+                    mode.button(Icon.link, check, () -> bt.setMode(Mode.replace)).checked(t -> bt.mode == Mode.replace).name("replace").row();
+                    mode.button(Icon.defense, check, () -> bt.setMode(Mode.wall)).checked(t -> bt.mode == Mode.wall).name("wall").row();
                 }).row();
             }).height(254f).padRight(310f).visible(() -> shownBT && shown);
         });
