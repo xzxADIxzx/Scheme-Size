@@ -45,9 +45,7 @@ public class ModInputHandler extends InputHandler{
 	final static float playerSelectRange = mobile ? 17f : 11f;
     final static Rect r1 = new Rect(), r2 = new Rect();
 
-    protected Seq<BuildPlan> btplan = new Seq<>();
-    protected BTMode btmode = BTMode.none;
-    protected int btsize = 8;
+    final protected BuildingTools bt = new BuildingTools();
 
     public boolean mobilePanCam = false;
     public boolean mobileDisWpn = false;
@@ -266,82 +264,5 @@ public class ModInputHandler extends InputHandler{
 
     public static boolean isAdmin(){
         return Core.settings.getBool("adminssecret") && !Core.settings.getBool("usejs");
-    }
-
-
-    // building tools
-    public boolean btIsPlacing(){
-        return !btplan.isEmpty() && btmode != BTMode.none && isPlacing();
-    }
-
-    public void btApply(){
-        flushRequests(btplan);
-        btClear();
-    }
-
-    public void btClear(){
-        btplan.clear();
-    }
-
-    public void btResize(int amount){
-        btsize += amount;
-    }
-
-    public BTMode btMode(){
-        return btmode;
-    }
-
-    public void btMode(BTMode mode){
-        btmode = btmode == mode ? BTMode.none : mode;
-    }
-
-    protected void btFill(int sx, int sy, int ex, int ey, int size){
-        if(block == null) return;
-
-        NormalizeResult result = Placement.normalizeArea(sx, sy, ex, ey, 0, false, size);
-        for(int x = result.x; x <= result.x2; x += block.size){
-            for(int y = result.y; y <= result.y2; y += block.size){
-                BuildPlan build = new BuildPlan(x, y, 0, block, block.nextConfig());
-                btplan.add(build);
-            }
-        }
-    }
-
-    protected void btSquare(int cx, int cy){
-        if(block == null) return;
-
-        Intc4 line = (x, y, r, n) -> {
-            BuildPlan build = new BuildPlan(x, y, r, block, block.nextConfig());
-            btplan.add(build);
-        };
-
-        for(int x = cx - btsize; x <= cx + btsize; x += block.size) line.get(x, cy + btsize, 0, 0);
-        for(int y = cy + btsize; y >= cy - btsize; y -= block.size) line.get(cx + btsize, y, 90, 0);
-        for(int x = cx + btsize; x >= cx - btsize; x -= block.size) line.get(x, cy - btsize, 180, 0);
-        for(int y = cy - btsize; y <= cy + btsize; y += block.size) line.get(cx - btsize, y, 270, 0);
-    }
-
-    protected void btCircle(int cx, int cy){
-        if(block == null) return;
-
-        for (int deg = 0; deg <= 360; deg++) {
-            if(deg % 90 == 0) continue;
-
-            int x = cx + Mathf.round(Mathf.cosDeg(deg) * btsize, block.size);
-            int y = cy + Mathf.round(Mathf.sinDeg(deg) * btsize, block.size);
-
-            BuildPlan build = new BuildPlan(x, y, 0, block, block.nextConfig());
-            btplan.add(build);
-        }
-    }
-
-    public enum BTMode{
-        none,
-        fill,
-        square,
-        circle,
-        replace,
-        wall,
-        edit;
     }
 }

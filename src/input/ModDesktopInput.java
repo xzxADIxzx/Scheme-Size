@@ -14,6 +14,7 @@ import arc.util.*;
 import mindustry.*;
 import mindustry.core.*;
 import mindustry.input.Placement.*;
+import mindustry.input.BuldingTools.*;
 import mindustry.entities.units.*;
 import mindustry.game.EventType.*;
 import mindustry.game.*;
@@ -123,7 +124,7 @@ public class ModDesktopInput extends ModInputHandler{
             drawSelectionMod(schemX, schemY, cursorX, cursorY, settings.getInt("copysize") - 1);
         }
 
-        if(btmode == BTMode.edit && usingbt){
+        if(bt.mode == Mode.edit && usingbt){
             drawEditSelectionMod(isAdmin() ? player.tileX() : btX, isAdmin() ? player.tileY() : btY, cursorX, cursorY, isAdmin() ? 49 : maxSchematicSize);
         }
 
@@ -194,8 +195,8 @@ public class ModDesktopInput extends ModInputHandler{
             }
         }
 
-        if(btIsPlacing()){
-            btplan.each(build -> {
+        if(bt.isPlacing()){
+            bt.plan.each(build -> {
                 build.animScale = 1f;
                 drawRequest(build);
             });
@@ -285,7 +286,9 @@ public class ModDesktopInput extends ModInputHandler{
         //zoom camera
         if((!Core.scene.hasScroll() || Core.input.keyDown(Binding.diagonal_placement)) && !ui.chatfrag.shown() && Math.abs(Core.input.axisTap(Binding.zoom)) > 0
             && !Core.input.keyDown(Binding.rotateplaced) && (Core.input.keyDown(Binding.diagonal_placement) || ((!player.isBuilder() || !isPlacing() || !block.rotate) && selectRequests.isEmpty()))){
-            renderer.scaleCamera(Core.input.axisTap(Binding.zoom));
+
+            if(isPlacing())bt.resize(Core.input.axisTap(Binding.zoom));
+            else renderer.scaleCamera(Core.input.axisTap(Binding.zoom));
         }
 
         if(Core.input.keyTap(Binding.select) && !Core.scene.hasMouse()){
@@ -360,7 +363,7 @@ public class ModDesktopInput extends ModInputHandler{
             }
         }
 
-        if(btmode == BTMode.edit){
+        if(bt.mode == Mode.edit){
             cursorType = SystemCursor.arrow;
             player.shooting = false;
             mode = none;
@@ -522,7 +525,7 @@ public class ModDesktopInput extends ModInputHandler{
                 mode = none;
             }else if(!selectRequests.isEmpty()){
                 flushRequests(selectRequests);
-            }else if(isPlacing() && btmode == BTMode.none){
+            }else if(isPlacing() && bt.mode == BTMode.none){
                 selectX = cursorX;
                 selectY = cursorY;
                 lastLineX = cursorX;
@@ -682,49 +685,46 @@ public class ModDesktopInput extends ModInputHandler{
     }
 
     void btInput(){
-        if(!SchemeSize.hudfrag.shownBT) btMode(BTMode.none);
-        if(btmode == BTMode.none) return;
+        if(!SchemeSize.hudfrag.shownBT) bt.mode(Mode.none);
+        if(bt.mode == Mode.none) return;
 
         int cursorX = tileXMod(Core.input.mouseX());
         int cursorY = tileYMod(Core.input.mouseY());
 
-        btClear();
+        bt.clear();
 
-        if(btmode == BTMode.fill && isPlacing()){
+        if(bt.mode == Mode.fill && isPlacing()){
             if(usingbt){
-                btFill(btX, btY, cursorX, cursorY, maxSchematicSize);
+                bt.fill(btX, btY, cursorX, cursorY, maxSchematicSize);
             }
             if(usingbt && input.keyRelease(Binding.select)){
-                btApply();
+                bt.apply();
             }
         }
 
         if(btmode == BTMode.square && isPlacing()){
             if(usingbt){
-                btSquare(cursorX, cursorY);
+                bt.square(cursorX, cursorY);
             }
             if(usingbt && input.keyRelease(Binding.select)){
-                btApply();
+                bt.apply();
             }
         }
 
-        if(btmode == BTMode.circle && isPlacing()){
+        if(bt.mode == BTMode.circle && isPlacing()){
             if(usingbt){
-                btCircle(cursorX, cursorY);
+                bt.circle(cursorX, cursorY);
             }
             if(usingbt && input.keyRelease(Binding.select)){
-                btApply();
+                bt.apply();
             }
         }
 
-        if(btmode == BTMode.edit){
+        if(bt.mode == BTMode.edit){
             if(usingbt && input.keyRelease(Binding.select)){
                 NormalizeResult result = Placement.normalizeArea(isAdmin() ? player.tileX() : btX, isAdmin() ? player.tileY() : btY, cursorX, cursorY, 0, false, isAdmin() ? 49 : maxSchematicSize);
                 SchemeUtils.edit(result.x, result.y, result.x2, result.y2);
             }
-        }else{
-            float scroll = input.axisTap(Binding.zoom);
-            btResize((int)scroll);
         }
 
         if(input.keyTap(Binding.select) && !scene.hasMouse()){
