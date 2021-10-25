@@ -310,15 +310,20 @@ public class ModInputHandler extends InputHandler{
     protected void btSquare(int cx, int cy){
         if(block == null) return;
 
-        Cons line = l -> {
-            BuildPlan build = new BuildPlan(l.x, l.y,l.rotation, block, block.nextConfig());
+        Cons2<int, int, int> line = (x, y, r) -> {
+            BuildPlan build = new BuildPlan(x, y, r, block, block.nextConfig());
             btplan.add(build);
         };
 
-        iterateLine(cx - btsize, cy + btsize, cx + btsize, cy + btsize, line);
-        iterateLine(cx + btsize, cy + btsize, cx + btsize, cy - btsize, line);
-        iterateLine(cx + btsize, cy - btsize, cx - btsize, cy - btsize, line);
-        iterateLine(cx - btsize, cy - btsize, cx - btsize, cy + btsize, line);
+        // iterateLine(cx - btsize, cy + btsize, cx + btsize, cy + btsize, line);
+        // iterateLine(cx + btsize, cy + btsize, cx + btsize, cy - btsize, line);
+        // iterateLine(cx + btsize, cy - btsize, cx - btsize, cy - btsize, line);
+        // iterateLine(cx - btsize, cy - btsize, cx - btsize, cy + btsize, line);
+
+        for(int x = cx - btsize; x <= cx + btsize; x += block.size) line.get(x, cy + btsize, 90);
+        for(int y = cy + btsize; y >= cy - btsize; y -= block.size) line.get(x + btsize, y, 180);
+        for(int x = cx + btsize; x >= cx - btsize; x -= block.size) line.get(x, cy - btsize, 270);
+        for(int y = cy - btsize; x <= cy + btsize; y += block.size) line.get(x - btsize, y, 0);
     }
 
     protected void btCircle(int cx, int cy){
