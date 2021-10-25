@@ -23,15 +23,6 @@ public class BuildingTools{
 		return !plan.isEmpty() && mode != Mode.none && input.isPlacing();
 	}
 
-	public void apply(){
-		input.flushRequests(plan);
-		clear();
-	}
-
-	public void clear(){
-		plan.clear();
-	}
-
 	public void resize(int amount){
 		size += amount;
 	}

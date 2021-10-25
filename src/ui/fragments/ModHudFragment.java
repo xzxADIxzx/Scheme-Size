@@ -299,7 +299,7 @@ public class ModHudFragment extends Fragment{
                     ctrl.name = "controls";
                     ctrl.defaults().size(bsize).bottom().right();
 
-                    ctrl.button(Icon.cancel, style, bt::clear).padBottom(bsize).visible(bt::isPlacing).name("cancel").row();
+                    ctrl.button(Icon.cancel, style, bt.plan::clear).padBottom(bsize).visible(bt::isPlacing).name("cancel").row();
                     ctrl.button(Icon.up, style, () -> bt.resize(1)).name("sizeup").row();
                     ctrl.image(Icon.resize).name("resize").row();
                     ctrl.button(Icon.down, style, () -> bt.resize(-1)).name("sizedown").row();

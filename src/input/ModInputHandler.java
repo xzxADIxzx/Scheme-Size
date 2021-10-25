@@ -262,7 +262,12 @@ public class ModInputHandler extends InputHandler{
         mobileDisWpn = !mobileDisWpn;
     }
 
-    public static boolean isAdmin(){
+    public boolean isAdmin(){
         return Core.settings.getBool("adminssecret") && !Core.settings.getBool("usejs");
+    }
+
+    public void apply(){
+        flushRequests(bt.plan);
+        bt.plan.clear();
     }
 }
