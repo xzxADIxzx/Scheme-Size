@@ -199,7 +199,7 @@ public class ModDesktopInput extends ModInputHandler{
                 build.animScale = 1f;
                 drawRequest(build);
             });
-            btplan.each(this::drawOverRequest);
+            // btplan.each(this::drawOverRequest);
         }
 
         Draw.reset();
@@ -694,6 +694,15 @@ public class ModDesktopInput extends ModInputHandler{
         if(btmode == BTMode.fill && isPlacing()){
             if(usingbt){
                 btFill(btX, btY, cursorX, cursorY, maxSchematicSize);
+            }
+            if(usingbt && input.keyRelease(Binding.select)){
+                btApply();
+            }
+        }
+
+        if(btmode == BTMode.square && isPlacing()){
+            if(usingbt){
+                btSquare(cursorX, cursorY);
             }
             if(usingbt && input.keyRelease(Binding.select)){
                 btApply();

@@ -307,6 +307,20 @@ public class ModInputHandler extends InputHandler{
         }
     }
 
+    protected void btSquare(int cx, int cy){
+        if(block == null) return;
+
+        Cons<PlaceLine> line = l -> {
+            BuildPlan build = new BuildPlan(l.x, l.y,l.rotation, block, block.nextConfig());
+            btplan.add(build);
+        };
+
+        iterateLine(cx - btsize, cy + btsize, cx + btsize, cy + btsize, line);
+        iterateLine(cx + btsize, cy + btsize, cx + btsize, cy - btsize, line);
+        iterateLine(cx + btsize, cy - btsize, cx - btsize, cy - btsize, line);
+        iterateLine(cx - btsize, cy - btsize, cx - btsize, cy + btsize, line);
+    }
+
     protected void btCircle(int cx, int cy){
         if(block == null) return;
 
