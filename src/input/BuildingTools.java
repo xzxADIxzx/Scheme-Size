@@ -25,15 +25,15 @@ public class BuildingTools{
 
 	public void resize(int amount){
 		size += amount;
+		size = size < 0 ? 0 : size;
 	}
 
 	public void resize(float amount){
-		size += amount;
+		resize((int)amount);
 	}
 
 	public void setMode(Mode set){
 		mode = mode == set ? Mode.none : set;
-		mode = mode < 0 ? 0 : mode;
 	}
 
 	public void fill(int sx, int sy, int ex, int ey, int size){
