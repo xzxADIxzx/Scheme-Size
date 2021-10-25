@@ -722,6 +722,9 @@ public class ModDesktopInput extends ModInputHandler{
                 NormalizeResult result = Placement.normalizeArea(isAdmin() ? player.tileX() : btX, isAdmin() ? player.tileY() : btY, cursorX, cursorY, 0, false, isAdmin() ? 49 : maxSchematicSize);
                 SchemeUtils.edit(result.x, result.y, result.x2, result.y2);
             }
+        }else{
+            float scroll = Core.input.axisTap(Binding.zoom);
+            btResize(btsize - (btsize * (amount / 4) + 1))
         }
 
         if(input.keyTap(Binding.select) && !scene.hasMouse()){
