@@ -14,7 +14,7 @@ import arc.util.*;
 import mindustry.*;
 import mindustry.core.*;
 import mindustry.input.Placement.*;
-import mindustry.input.BuldingTools.*;
+import mindustry.input.BuildingTools.*;
 import mindustry.entities.units.*;
 import mindustry.game.EventType.*;
 import mindustry.game.*;
