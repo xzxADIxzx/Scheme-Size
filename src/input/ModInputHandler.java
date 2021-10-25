@@ -310,7 +310,7 @@ public class ModInputHandler extends InputHandler{
     protected void btSquare(int cx, int cy){
         if(block == null) return;
 
-        Cons<PlaceLine> line = l -> {
+        Cons<InputHandler.PlaceLine> line = l -> {
             BuildPlan build = new BuildPlan(l.x, l.y,l.rotation, block, block.nextConfig());
             btplan.add(build);
         };
