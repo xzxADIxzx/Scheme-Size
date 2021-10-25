@@ -40,8 +40,8 @@ public class BuildingTools{
 		size += amount;
 	}
 
-	public void setMode(Mode mode){
-		mode = mode == mode ? Mode.none : mode;
+	public void setMode(Mode set){
+		mode = mode == set ? Mode.none : set;
 	}
 
 	public void fill(int sx, int sy, int ex, int ey, int size){
