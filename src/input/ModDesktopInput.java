@@ -723,8 +723,8 @@ public class ModDesktopInput extends ModInputHandler{
                 SchemeUtils.edit(result.x, result.y, result.x2, result.y2);
             }
         }else{
-            float scroll = Core.input.axisTap(Binding.zoom);
-            btResize((int)(btsize - (btsize * (scroll / 4) + 1)));
+            float scroll = input.axisTap(Binding.zoom);
+            btResize((int)scroll);
         }
 
         if(input.keyTap(Binding.select) && !scene.hasMouse()){
