@@ -25,6 +25,7 @@ import mindustry.game.Teams.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.input.Placement.*;
+import mindustry.input.InputHandler.*;
 import mindustry.net.Administration.*;
 import mindustry.net.*;
 import mindustry.type.*;
@@ -310,7 +311,7 @@ public class ModInputHandler extends InputHandler{
     protected void btSquare(int cx, int cy){
         if(block == null) return;
 
-        Cons<InputHandler.PlaceLine> line = l -> {
+        Cons<PlaceLine> line = l -> {
             BuildPlan build = new BuildPlan(l.x, l.y,l.rotation, block, block.nextConfig());
             btplan.add(build);
         };
