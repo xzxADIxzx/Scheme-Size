@@ -321,9 +321,9 @@ public class ModInputHandler extends InputHandler{
         // iterateLine(cx - btsize, cy - btsize, cx - btsize, cy + btsize, line);
 
         for(int x = cx - btsize; x <= cx + btsize; x += block.size) line.get(x, cy + btsize, 90);
-        for(int y = cy + btsize; y >= cy - btsize; y -= block.size) line.get(x + btsize, y, 180);
+        for(int y = cy + btsize; y >= cy - btsize; y -= block.size) line.get(cx + btsize, y, 180);
         for(int x = cx + btsize; x >= cx - btsize; x -= block.size) line.get(x, cy - btsize, 270);
-        for(int y = cy - btsize; x <= cy + btsize; y += block.size) line.get(x - btsize, y, 0);
+        for(int y = cy - btsize; y <= cy + btsize; y += block.size) line.get(cx - btsize, y, 0);
     }
 
     protected void btCircle(int cx, int cy){
