@@ -287,7 +287,7 @@ public class ModDesktopInput extends ModInputHandler{
         if((!Core.scene.hasScroll() || Core.input.keyDown(Binding.diagonal_placement)) && !ui.chatfrag.shown() && Math.abs(Core.input.axisTap(Binding.zoom)) > 0
             && !Core.input.keyDown(Binding.rotateplaced) && (Core.input.keyDown(Binding.diagonal_placement) || ((!player.isBuilder() || !isPlacing() || !block.rotate) && selectRequests.isEmpty()))){
 
-            if(isPlacing())bt.resize(Core.input.axisTap(Binding.zoom));
+            if(bt.isPlacing()) bt.resize(Core.input.axisTap(Binding.zoom));
             else renderer.scaleCamera(Core.input.axisTap(Binding.zoom));
         }
 

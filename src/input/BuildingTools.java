@@ -33,6 +33,7 @@ public class BuildingTools{
 
 	public void setMode(Mode set){
 		mode = mode == set ? Mode.none : set;
+		mode = mode < 0 ? 0 : mode;
 	}
 
 	public void fill(int sx, int sy, int ex, int ey, int size){
@@ -56,9 +57,9 @@ public class BuildingTools{
 		};
 
 		for(int x = cx - size; x <= cx + size; x += block().size) line.get(x, cy + size, 0, 0);
-		for(int y = cy + size; y >= cy - size; y -= block().size) line.get(cx + size, y, 1, 0);
+		for(int y = cy + size; y >= cy - size; y -= block().size) line.get(cx + size, y, 3, 0);
 		for(int x = cx + size; x >= cx - size; x -= block().size) line.get(x, cy - size, 2, 0);
-		for(int y = cy - size; y <= cy + size; y += block().size) line.get(cx - size, y, 3, 0);
+		for(int y = cy - size; y <= cy + size; y += block().size) line.get(cx - size, y, 1, 0);
 	}
 
 	public void circle(int cx, int cy){
