@@ -685,7 +685,7 @@ public class ModDesktopInput extends ModInputHandler{
     }
 
     void btInput(){
-        if(!SchemeSize.hudfrag.shownBT) bt.mode(Mode.none);
+        if(!SchemeSize.hudfrag.shownBT) bt.setMode(Mode.none);
         if(bt.mode == Mode.none) return;
 
         int cursorX = tileXMod(Core.input.mouseX());
@@ -702,7 +702,7 @@ public class ModDesktopInput extends ModInputHandler{
             }
         }
 
-        if(btmode == Mode.square && isPlacing()){
+        if(bt.mode == Mode.square && isPlacing()){
             if(usingbt){
                 bt.square(cursorX, cursorY);
             }
