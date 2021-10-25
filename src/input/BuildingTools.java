@@ -60,6 +60,8 @@ public class BuildingTools{
 		for(int y = cy + size; y >= cy - size; y -= block().size) line.get(cx + size, y, 3, 0);
 		for(int x = cx + size; x >= cx - size; x -= block().size) line.get(x, cy - size, 2, 0);
 		for(int y = cy - size; y <= cy + size; y += block().size) line.get(cx - size, y, 1, 0);
+
+		line.get(cx - size, cy - size, 0, 0);
 	}
 
 	public void circle(int cx, int cy){
