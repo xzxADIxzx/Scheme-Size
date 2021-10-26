@@ -740,7 +740,7 @@ public class ModDesktopInput extends ModInputHandler{
     }
 
     public boolean hasMoved(int cx, int cy){
-        return lastbtX != cx && lastbtY != cy;
+        return lastbtX != cx || lastbtY != cy;
     }
 
     @Override
