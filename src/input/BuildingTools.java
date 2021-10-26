@@ -102,10 +102,10 @@ public class BuildingTools{
 		var build = new BuildPlan(bx, by, 0, block());
 		plan.add(build);
 
-		for(int x = bx - bsize + 1; x <= bx + bsize - 1; x += bsize) { trace(world.tiles.get(x, by + bsize)); }
-		for(int y = by + bsize - 1; y >= by - bsize + 1; y -= bsize) { trace(world.tiles.get(bx + bsize, y)); }
-		for(int x = bx + bsize - 1; x >= bx - bsize + 1; x -= bsize) { trace(world.tiles.get(x, by - bsize)); }
-		for(int y = by - bsize + 1; y <= by + bsize - 1; y += bsize) { trace(world.tiles.get(bx - bsize, y)); }
+		for(int x = bx - bsize + 1; x <= bx + bsize - 1; x += bsize) { replace(world.tiles.get(x, by + bsize)); }
+		for(int y = by + bsize - 1; y >= by - bsize + 1; y -= bsize) { replace(world.tiles.get(bx + bsize, y)); }
+		for(int x = bx + bsize - 1; x >= bx - bsize + 1; x -= bsize) { replace(world.tiles.get(x, by - bsize)); }
+		for(int y = by - bsize + 1; y <= by + bsize - 1; y += bsize) { replace(world.tiles.get(bx - bsize, y)); }
 	}
 
 	private Block block(){
