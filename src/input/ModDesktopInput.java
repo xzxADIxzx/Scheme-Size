@@ -715,15 +715,15 @@ public class ModDesktopInput extends ModInputHandler{
                 if(input.keyRelease(Binding.select)){
                     apply();
                 }
+
+                lastbtX = cursorX;
+                lastbtY = cursorY;
             }
 
             if(bt.mode == Mode.edit && input.keyRelease(Binding.select)){
                 NormalizeResult result = Placement.normalizeArea(isAdmin() ? player.tileX() : btX, isAdmin() ? player.tileY() : btY, cursorX, cursorY, 0, false, isAdmin() ? 49 : maxSchematicSize);
                 SchemeUtils.edit(result.x, result.y, result.x2, result.y2);
             }
-
-            lastbtX = cursorX;
-            lastbtY = cursorY;
         }
 
         if(input.keyTap(Binding.select) && !scene.hasMouse()){
@@ -739,7 +739,7 @@ public class ModDesktopInput extends ModInputHandler{
         }
     }
 
-    public boolean hasMoved(float cx, float cy){
+    public boolean hasMoved(int cx, int cy){
         return lastbtX != cx && lastbtY != cy;
     }
 
