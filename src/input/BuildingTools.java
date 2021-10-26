@@ -8,6 +8,8 @@ import mindustry.input.*;
 import mindustry.input.Placement.*;
 import mindustry.entities.units.*;
 
+import static mindustry.Vars.*;
+
 public class BuildingTools{
 	private InputHandler input;
 
@@ -56,12 +58,10 @@ public class BuildingTools{
 			plan.add(build);
 		};
 
-		for(int x = cx - size; x <= cx + size; x += block().size) line.get(x, cy + size, 0, 0);
-		for(int y = cy + size; y >= cy - size; y -= block().size) line.get(cx + size, y, 3, 0);
-		for(int x = cx + size; x >= cx - size; x -= block().size) line.get(x, cy - size, 2, 0);
-		for(int y = cy - size; y <= cy + size; y += block().size) line.get(cx - size, y, 1, 0);
-
-		line.get(cx - size, cy + size, 0, 0);
+		for(int x = cx - size; x <= cx + size - 1; x += block().size) line.get(x, cy + size, 0, 0);
+		for(int y = cy + size; y >= cy - size + 1; y -= block().size) line.get(cx + size, y, 3, 0);
+		for(int x = cx + size; x >= cx - size + 1; x -= block().size) line.get(x, cy - size, 2, 0);
+		for(int y = cy - size; y <= cy + size - 1; y += block().size) line.get(cx - size, y, 1, 0);
 	}
 
 	public void circle(int cx, int cy){
@@ -76,6 +76,13 @@ public class BuildingTools{
 			BuildPlan build = new BuildPlan(x, y, 0, block(), block().nextConfig());
 			plan.add(build);
 		}
+	}
+
+	public void replace(int cx, int cy){
+		if(block() == null) return;
+
+		Tile tile = world.tiles.get(cx, cy);
+		Block selected = tile.block();
 	}
 
 	private Block block(){
