@@ -38,7 +38,7 @@ public class ModDesktopInput extends ModInputHandler{
     /** Position where the player started dragging a line. */
     public int selectX = -1, selectY = -1, schemX = -1, schemY = -1, btX = -1, btY = -1;
     /** Last known line positions.*/
-    public int lastLineX, lastLineY, schematicX, schematicY, lastbtX, lastbtY;
+    public int lastLineX, lastLineY, schematicX, schematicY, lastbtX, lastbtY, lastbtS = 8;
     /** Whether selecting mode is active. */
     public PlaceMode mode;
     /** Animation scale for line. */
@@ -714,6 +714,7 @@ public class ModDesktopInput extends ModInputHandler{
 
                 lastbtX = cursorX;
                 lastbtY = cursorY;
+                lastbtS = bt.size;
             }
 
             if(input.keyRelease(Binding.select)){
@@ -740,7 +741,7 @@ public class ModDesktopInput extends ModInputHandler{
     }
 
     public boolean hasMoved(int cx, int cy){
-        return lastbtX != cx || lastbtY != cy;
+        return lastbtX != cx || lastbtY != cy || lastbtS != bt.size;
     }
 
     @Override
