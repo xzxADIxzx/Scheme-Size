@@ -97,7 +97,7 @@ public class BuildingTools{
 		int bx = tile.build.x / tilesize;
 		int by = tile.build.y / tilesize;
 			
-		if(plan.contains(new Boolf(){ get(build){ return build.x == bx && build.y == by } })) return;
+		if(plan.contains(build -> build.x == bx && build.y == by) return;
 			
 		var build = new BuildPlan(bx, by, 0, block());
 		plan.add(build);
