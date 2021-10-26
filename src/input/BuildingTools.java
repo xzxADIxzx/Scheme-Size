@@ -11,7 +11,10 @@ import mindustry.entities.units.*;
 import static mindustry.Vars.*;
 
 public class BuildingTools{
+
 	private InputHandler input;
+	private Block selected;
+	private int bsize;
 
 	public Seq<BuildPlan> plan = new Seq<>();
 	public Mode mode = Mode.none;
@@ -82,7 +85,27 @@ public class BuildingTools{
 		if(block() == null) return;
 
 		Tile tile = world.tiles.get(cx, cy);
-		Block selected = tile.block();
+		select = tile.block();
+		bsize = select.size;
+
+		if(block().size == bsize && block() != select) replace(tile);
+	}
+
+	private void replace(Tile tile){
+		if(tile.block() != select) return;
+
+		int bx = tile.build.x / tilesize;
+		int by = tile.build.y / tilesize;
+			
+		if(plan.contains(new Boolf(){ get(build){ return build.x == bx && build.y == by } })) return;
+			
+		var build = new BuildPlan(bx, by, 0, block());
+		plan.add(build);
+
+		for(int x = bx - bsize + 1; x <= bx + bsize - 1; x += bsize) { trace(Vars.world.tiles.get(x, by + bsize)); }
+		for(int y = by + bsize - 1; y >= by - bsize + 1; y -= bsize) { trace(Vars.world.tiles.get(bx + bsize, y)); }
+		for(int x = bx + bsize - 1; x >= bx - bsize + 1; x -= bsize) { trace(Vars.world.tiles.get(x, by - bsize)); }
+		for(int y = by - bsize + 1; y <= by + bsize - 1; y += bsize) { trace(Vars.world.tiles.get(bx - bsize, y)); }
 	}
 
 	private Block block(){

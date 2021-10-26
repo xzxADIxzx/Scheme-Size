@@ -707,6 +707,10 @@ public class ModDesktopInput extends ModInputHandler{
                     bt.circle(cursorX, cursorY);
                 }
 
+                if(bt.mode == Mode.replace){
+                    bt.replace(cursorX, cursorY);
+                }
+
                 if(input.keyRelease(Binding.select)){
                     apply();
                 }
