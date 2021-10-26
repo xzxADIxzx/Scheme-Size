@@ -38,7 +38,7 @@ public class ModDesktopInput extends ModInputHandler{
     /** Position where the player started dragging a line. */
     public int selectX = -1, selectY = -1, schemX = -1, schemY = -1, btX = -1, btY = -1;
     /** Last known line positions.*/
-    public int lastLineX, lastLineY, schematicX, schematicY;
+    public int lastLineX, lastLineY, schematicX, schematicY, lastbtX, lastbtY;
     /** Whether selecting mode is active. */
     public PlaceMode mode;
     /** Animation scale for line. */
@@ -691,10 +691,11 @@ public class ModDesktopInput extends ModInputHandler{
         int cursorX = tileXMod(Core.input.mouseX());
         int cursorY = tileYMod(Core.input.mouseY());
 
-        bt.plan.clear();
+        boolean has = hasMoved(cursorX, cursorY);
+        if(has) bt.plan.clear();
 
         if(usingbt){
-            if(isPlacing()){
+            if(isPlacing() && has){
                 if(bt.mode == Mode.fill){
                     bt.fill(btX, btY, cursorX, cursorY, maxSchematicSize);
                 }
@@ -720,6 +721,9 @@ public class ModDesktopInput extends ModInputHandler{
                 NormalizeResult result = Placement.normalizeArea(isAdmin() ? player.tileX() : btX, isAdmin() ? player.tileY() : btY, cursorX, cursorY, 0, false, isAdmin() ? 49 : maxSchematicSize);
                 SchemeUtils.edit(result.x, result.y, result.x2, result.y2);
             }
+
+            lastbtX = cursorX;
+            lastbtY = cursorY;
         }
 
         if(input.keyTap(Binding.select) && !scene.hasMouse()){
@@ -729,10 +733,14 @@ public class ModDesktopInput extends ModInputHandler{
         }
 
         if(input.keyTap(Binding.break_block) || input.keyRelease(Binding.select)){
-            btX = -1;
-            btY = -1;
+            btX = lastbtX = -1;
+            btY = lastbtY = -1;
             usingbt = false;
         }
+    }
+
+    public boolean hasMoved(float cx, float cy){
+        return lastbtX != cx && lastbtY != cy;
     }
 
     @Override

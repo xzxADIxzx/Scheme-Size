@@ -88,7 +88,7 @@ public class BuildingTools{
 		select = tile.block();
 		bsize = select.size;
 
-		if(block().size == bsize && block() != select) replace(tile);
+		if(block().size == bsize && block() != select && tile.build != null) replace(tile);
 	}
 
 	private void replace(Tile tile){
