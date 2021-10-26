@@ -695,7 +695,7 @@ public class ModDesktopInput extends ModInputHandler{
         if(has) bt.plan.clear();
 
         if(usingbt){
-            if(isPlacing() && has){
+            if(has){
                 if(bt.mode == Mode.fill){
                     bt.fill(btX, btY, cursorX, cursorY, maxSchematicSize);
                 }
@@ -712,12 +712,12 @@ public class ModDesktopInput extends ModInputHandler{
                     bt.replace(cursorX, cursorY);
                 }
 
-                if(input.keyRelease(Binding.select)){
-                    apply();
-                }
-
                 lastbtX = cursorX;
                 lastbtY = cursorY;
+            }
+
+            if(input.keyRelease(Binding.select)){
+                apply();
             }
 
             if(bt.mode == Mode.edit && input.keyRelease(Binding.select)){
