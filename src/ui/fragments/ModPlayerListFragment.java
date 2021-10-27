@@ -64,9 +64,14 @@ public class ModPlayerListFragment extends PlayerListFragment{
                     menu.name = "menu";
 
                     menu.check("@list.alwaysshow", s -> show = s).row();
-                    menu.button("@server.bans", ui.bans::show).disabled(b -> net.client());
-                    menu.button("@server.admins", ui.admins::show).disabled(b -> net.client());
-                    menu.button("@close", this::toggle);
+                    menu.table(submenu -> {
+                        submenu.defaults().growX().height(50f).fillY();
+                        submenu.name = "submenu";
+
+                        submenu.button("@server.bans", ui.bans::show).disabled(b -> net.client());
+                        submenu.button("@server.admins", ui.admins::show).disabled(b -> net.client());
+                        submenu.button("@close", this::toggle);
+                    }).padLeft(37f).padRight(37f);
                 }).margin(0f).pad(10f).growX();
 
             }).touchable(Touchable.enabled).margin(14f).minWidth(360f);
