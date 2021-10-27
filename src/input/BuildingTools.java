@@ -40,9 +40,9 @@ public class BuildingTools{
 	}
 
 	public void resize(float amount){
+		if(amount == 0) return;
 		amount = (size / 16) * amount;
-		if(amount > 0) size += Mathf.clamp(amount, 1, 8);
-		else size += Mathf.clamp(amount, -8, -1);
+		size += amount > 0 ? Mathf.clamp(amount, 1, 8) : Mathf.clamp(amount, -8, -1);
 		resize();
 	}
 
