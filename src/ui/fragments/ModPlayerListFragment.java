@@ -60,7 +60,7 @@ public class ModPlayerListFragment extends PlayerListFragment{
                 pane.row();
 
                 pane.table(menu -> {
-                    menu.defaults().growX().height(50f).fillY();
+                    menu.defaults().height(50f);
                     menu.name = "menu";
 
                     menu.check("@list.alwaysshow", s -> show = s).left().row();
@@ -69,7 +69,7 @@ public class ModPlayerListFragment extends PlayerListFragment{
                         submenu.name = "submenu";
 
                         submenu.button("@server.bans", ui.bans::show).disabled(b -> net.client());
-                        submenu.button("@server.admins", ui.admins::show).disabled(b -> net.client()).padLeft(10f).padRight(10f);
+                        submenu.button("@server.admins", ui.admins::show).disabled(b -> net.client()).padLeft(12f).padRight(12f);
                         submenu.button("@close", this::toggle);
                     });
                 }).margin(0f).pad(10f).growX();
