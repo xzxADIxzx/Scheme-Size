@@ -22,6 +22,7 @@ import static mindustry.Vars.*;
 // Last Update - Oct 21, 2021
 public class ModPlayerListFragment extends PlayerListFragment{
     private boolean visible = false;
+    private boolean show = false;
     private Interval timer = new Interval();
     private TextField search;
     private Seq<Player> players = new Seq<>();
@@ -62,6 +63,7 @@ public class ModPlayerListFragment extends PlayerListFragment{
                     menu.defaults().growX().height(50f).fillY();
                     menu.name = "menu";
 
+                    menu.check("@list.alwaysshow", s -> show = s).row();
                     menu.button("@server.bans", ui.bans::show).disabled(b -> net.client());
                     menu.button("@server.admins", ui.admins::show).disabled(b -> net.client());
                     menu.button("@close", this::toggle);
@@ -207,7 +209,7 @@ public class ModPlayerListFragment extends PlayerListFragment{
 
             content.add(button).padBottom(-6).width(350f + h).maxHeight(h + 14);
             content.row();
-            content.image().height(4f).color(state.rules.pvp ? user.team().color : Pal.gray).growX();
+            content.image().height(4f).color(state.rules.pvp || show ? user.team().color : Pal.gray).growX();
             content.row();
         }
 
