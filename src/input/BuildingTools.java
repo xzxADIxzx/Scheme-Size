@@ -41,14 +41,15 @@ public class BuildingTools{
 
 	public void resize(float amount){
 		if(amount == 0) return;
-		amount = (size / 16) * amount;
+		amount = (size / 16f) * amount;
 		size += amount > 0 ? Mathf.clamp(amount, 1, 8) : Mathf.clamp(amount, -8, -1);
 		resize();
 	}
 
 	public void resize(String amount){
-		try { size = Integer.valueOf(amount); }
-		finally { resize(); }
+		if(amount.isEmpty()) return;
+		size = Integer.valueOf(amount);
+		resize();
 	}
 
 	public void setMode(Mode set){
