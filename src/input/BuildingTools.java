@@ -7,7 +7,7 @@ import mindustry.world.*;
 import mindustry.input.*;
 import mindustry.input.Placement.*;
 import mindustry.entities.units.*;
-import mindustry.scheme;
+import mindustry.scheme.*;
 
 import static mindustry.Vars.*;
 
