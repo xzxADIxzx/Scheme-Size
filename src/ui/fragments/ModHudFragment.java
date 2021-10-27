@@ -301,7 +301,7 @@ public class ModHudFragment extends Fragment{
                     ctrl.defaults().size(bsize).bottom().right();
 
                     ctrl.button(Icon.cancel, style, bt.plan::clear).padBottom(bsize).visible(bt::isPlacing).name("cancel").row();
-                    ctrl.field("8", TextFieldFilter.digitsOnly, i -> bt.resize(Integer.valueOf(i))).maxTextLenght(String.valueOf(2)).update(i -> i.setText(bt.size));
+                    ctrl.field("8", TextFieldFilter.digitsOnly, i -> bt.resize(Integer.valueOf(i))).maxTextLength(2).update(i -> i.setText(bt.size));
                     ctrl.button(Icon.up, style, () -> bt.resize(1)).name("sizeup").row();
                     ctrl.image(Icon.resize).name("resize").row();
                     ctrl.button(Icon.down, style, () -> bt.resize(-1)).name("sizedown").row();
