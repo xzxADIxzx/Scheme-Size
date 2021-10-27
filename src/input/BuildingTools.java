@@ -29,14 +29,24 @@ public class BuildingTools{
 		return !plan.isEmpty() && mode != Mode.none && input.isPlacing();
 	}
 
+	public void resize(){
+		size = Mathf.clamp(size, 1, 512);
+		SchemeSize.hudfrag.resize(size);
+	}
+
 	public void resize(int amount){
 		size += amount;
-		size = Mathf.clamp(size, 1, 512);
-		SchemeSize.hudfrag.size.setText(String.valueOf(size));
+		resize();
 	}
 
 	public void resize(float amount){
-		resize((int)amount * (size / 16));
+		size *= (amount / 4) + 1;
+		resize();
+	}
+
+	public void resize(String amount){
+		size = Integer.valueOf(amount);
+		resize();
 	}
 
 	public void setMode(Mode set){

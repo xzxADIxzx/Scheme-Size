@@ -40,8 +40,8 @@ public class ModHudFragment extends Fragment{
     private static final float dsize = 65f;
     private ImageButton flip;
     private ImageButton flipMobile;
+    private TextField size;
     private float maxShield;
-    public TextField size = new TextField();
     public boolean shown = true;
     public boolean shownMobile = false;
     public boolean shownBT = false;
@@ -294,8 +294,16 @@ public class ModHudFragment extends Fragment{
                 over = Styles.flatOver;
             }};
 
+            TextFieldStyle input = new TextFieldStyle(){{
+                font = Fonts.def;
+                fontColor = Color.white;
+                selection = Tex.selection;
+                cursor = Tex.cursor;
+            }};
+
+            size = new TextField("8", input);
             size.setFilter(TextFieldFilter.digitsOnly);
-            size.changed(() -> bt.resize(Integer.valueOf(size.getText())));
+            size.changed(() -> bt.resize(size.getText()));
 
             cont.table(Tex.buttonEdge2, pad -> {
                 pad.name = "padding";
@@ -305,7 +313,7 @@ public class ModHudFragment extends Fragment{
                     ctrl.defaults().size(bsize).bottom().right();
 
                     ctrl.button(Icon.cancel, style, bt.plan::clear).padBottom(bsize).visible(bt::isPlacing).name("cancel").row();
-                    ctrl.add(size).row();
+                    ctrl.add(size).size(bsize).row();
                     ctrl.button(Icon.up, style, () -> bt.resize(1)).name("sizeup").row();
                     ctrl.image(Icon.resize).name("resize").row();
                     ctrl.button(Icon.down, style, () -> bt.resize(-1)).name("sizedown").row();
@@ -335,6 +343,10 @@ public class ModHudFragment extends Fragment{
                 }).row();
             }).height(254f).padRight(310f).visible(() -> shownBT && shown);
         });
+    }
+
+    public void resize(int amount){
+        size.setText(String.valueOf(amount));
     }
 
     private void toggleMenus(){
