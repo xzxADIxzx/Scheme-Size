@@ -41,6 +41,7 @@ public class ModHudFragment extends Fragment{
     private ImageButton flip;
     private ImageButton flipMobile;
     private float maxShield;
+    public TextField size = new TextField();
     public boolean shown = true;
     public boolean shownMobile = false;
     public boolean shownBT = false;
@@ -293,6 +294,9 @@ public class ModHudFragment extends Fragment{
                 over = Styles.flatOver;
             }};
 
+            size.setFilter(TextFieldFilter.digitsOnly);
+            size.changed(() -> bt.resize(Integer.valueOf(size.getText())));
+
             cont.table(Tex.buttonEdge2, pad -> {
                 pad.name = "padding";
 
@@ -301,7 +305,7 @@ public class ModHudFragment extends Fragment{
                     ctrl.defaults().size(bsize).bottom().right();
 
                     ctrl.button(Icon.cancel, style, bt.plan::clear).padBottom(bsize).visible(bt::isPlacing).name("cancel").row();
-                    ctrl.field("", TextFieldFilter.digitsOnly, i -> bt.resize(Integer.valueOf(i))).update(i -> i.setText(String.valueOf(bt.size))).row();
+                    ctrl.add(size).row();
                     ctrl.button(Icon.up, style, () -> bt.resize(1)).name("sizeup").row();
                     ctrl.image(Icon.resize).name("resize").row();
                     ctrl.button(Icon.down, style, () -> bt.resize(-1)).name("sizedown").row();

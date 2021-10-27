@@ -7,6 +7,7 @@ import mindustry.world.*;
 import mindustry.input.*;
 import mindustry.input.Placement.*;
 import mindustry.entities.units.*;
+import mindustry.scheme;
 
 import static mindustry.Vars.*;
 
@@ -31,10 +32,11 @@ public class BuildingTools{
 	public void resize(int amount){
 		size += amount;
 		size = Mathf.clamp(size, 1, 512);
+		SchemeSize.hudfrag.size.setText(String.valueOf(size));
 	}
 
 	public void resize(float amount){
-		resize((int)amount);
+		resize((int)amount * (size / 16));
 	}
 
 	public void setMode(Mode set){
