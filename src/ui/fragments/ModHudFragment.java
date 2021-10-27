@@ -312,8 +312,8 @@ public class ModHudFragment extends Fragment{
                     ctrl.name = "controls";
                     ctrl.defaults().size(bsize).bottom().right();
 
-                    ctrl.button(Icon.cancel, style, bt.plan::clear).padBottom(bsize).visible(bt::isPlacing).name("cancel").row();
-                    ctrl.add(size).height(bsize).row();
+                    ctrl.button(Icon.cancel, style, bt.plan::clear).visible(bt::isPlacing).name("cancel").row();
+                    ctrl.add(size).row();
                     ctrl.button(Icon.up, style, () -> bt.resize(1)).name("sizeup").row();
                     ctrl.image(Icon.resize).name("resize").row();
                     ctrl.button(Icon.down, style, () -> bt.resize(-1)).name("sizedown").row();
@@ -338,8 +338,8 @@ public class ModHudFragment extends Fragment{
                     mode.button(Icon.fill, check, () -> bt.setMode(Mode.fill)).checked(t -> bt.mode == Mode.fill).name("fill").row();
                     mode.button(Icon.grid, check, () -> bt.setMode(Mode.square)).checked(t -> bt.mode == Mode.square).name("square").row();
                     mode.button(Icon.commandRally, check, () -> bt.setMode(Mode.circle)).checked(t -> bt.mode == Mode.circle).name("circle").row();
-                    mode.button(Icon.link, check, () -> bt.setMode(Mode.replace)).checked(t -> bt.mode == Mode.replace).name("replace").row();
-                    mode.button(Icon.defense, check, () -> bt.setMode(Mode.wall)).checked(t -> bt.mode == Mode.wall).name("wall").row();
+                    mode.button(Icon.defense, check, () -> bt.setMode(Mode.replace)).checked(t -> bt.mode == Mode.replace).name("replace").row();
+                    mode.button(Icon.link, check, () -> bt.setMode(Mode.wall)).checked(t -> bt.mode == Mode.wall).name("wall").row();
                 }).row();
             }).height(254f).padRight(310f).visible(() -> shownBT && shown);
         });
