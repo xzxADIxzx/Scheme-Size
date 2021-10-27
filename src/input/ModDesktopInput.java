@@ -164,7 +164,7 @@ public class ModDesktopInput extends ModInputHandler{
 
         selectRequests.each(this::drawOverRequest);
 
-        if(player.isBuilder()){
+        if(player.isBuilder() && !bt.isPlacing()){
             //draw things that may be placed soon
             if(mode == placing && block != null){
                 for(int i = 0; i < lineRequests.size; i++){

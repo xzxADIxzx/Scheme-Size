@@ -30,7 +30,7 @@ public class BuildingTools{
 
 	public void resize(int amount){
 		size += amount;
-		size = size < 0 ? 0 : size;
+		size = size < 1 ? 1 : size;
 	}
 
 	public void resize(float amount){

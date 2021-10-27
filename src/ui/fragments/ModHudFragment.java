@@ -10,6 +10,7 @@ import arc.scene.actions.*;
 import arc.scene.event.*;
 import arc.scene.style.*;
 import arc.scene.ui.*;
+import arc.scene.ui.TextField.*;
 import arc.scene.ui.ImageButton.*;
 import arc.scene.ui.layout.*;
 import arc.struct.*;
@@ -300,6 +301,7 @@ public class ModHudFragment extends Fragment{
                     ctrl.defaults().size(bsize).bottom().right();
 
                     ctrl.button(Icon.cancel, style, bt.plan::clear).padBottom(bsize).visible(bt::isPlacing).name("cancel").row();
+                    ctrl.field("8", TextFieldFilter.digitsOnly, i -> bt.resize(Interger.valueOf(i))).maxTextLenght(2).update(i -> i.setText(bt.size));
                     ctrl.button(Icon.up, style, () -> bt.resize(1)).name("sizeup").row();
                     ctrl.image(Icon.resize).name("resize").row();
                     ctrl.button(Icon.down, style, () -> bt.resize(-1)).name("sizedown").row();
