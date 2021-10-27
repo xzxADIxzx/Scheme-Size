@@ -71,7 +71,7 @@ public class ModPlayerListFragment extends PlayerListFragment{
                         submenu.button("@server.bans", ui.bans::show).disabled(b -> net.client());
                         submenu.button("@server.admins", ui.admins::show).disabled(b -> net.client()).padLeft(12f).padRight(12f);
                         submenu.button("@close", this::toggle);
-                    });
+                    }).growX();
                 }).margin(0f).pad(10f).growX();
 
             }).touchable(Touchable.enabled).margin(14f).minWidth(360f);
