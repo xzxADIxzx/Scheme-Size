@@ -30,7 +30,7 @@ public class BuildingTools{
 
 	public void resize(int amount){
 		size += amount;
-		size = size < 1 ? 1 : size;
+		size = Mathf.clamp(size, 1, 512);
 	}
 
 	public void resize(float amount){
