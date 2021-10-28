@@ -42,17 +42,23 @@ public class ModHudFragment extends Fragment{
     private ImageButton flipMobile;
     private TextField size;
     private float maxShield;
+    private Element block;
     public boolean shown = true;
     public boolean shownMobile = false;
     public boolean shownBT = false;
-
-    public Element e7;
-    public Element e7e0;
 
     @Override
     public void build(Group parent){
         Events.on(UnitChangeEvent.class, e -> {
             updateShield(player.unit());
+        });
+
+        Events.on(WorldLoadEvent.class, event -> {
+            updateBlock();
+        });
+
+        Events.on(UnlockEvent.class, event -> {
+            updateBlock();
         });
 
         Events.on(ClientLoadEvent.class, e -> {
@@ -283,9 +289,6 @@ public class ModHudFragment extends Fragment{
 
             float bsize = 46f;
             BuildingTools bt = SchemeSize.input.bt;
-            var block = ((Group)parent.getChildren().get(7)).getChildren().get(0);
-            e7 = parent.getChildren().get(7);
-            e7e0 = ((Group)e7).getChildren().get(0);
 
             ImageButtonStyle style = new ImageButtonStyle(){{
                 down = Styles.flatDown;
@@ -688,5 +691,9 @@ public class ModHudFragment extends Fragment{
         on.abilities.each((a) -> {
             maxShield = a instanceof ForceFieldAbility ffa ? ffa.max : maxShield;
         });
+    }
+
+    public void updateBlock(){
+        block = ((Table)ui.hudGroup.getChildren().get(9)).getChildren().get(0);
     }
 }
