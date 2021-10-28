@@ -63,7 +63,7 @@ public class ModPlayerListFragment extends PlayerListFragment{
                     menu.defaults().height(50f);
                     menu.name = "menu";
 
-                    menu.check("@list.alwaysshow", s -> show = s).left().row();
+                    menu.check("@playerlist.alwaysshow", s -> show = s).left().row();
                     menu.table(submenu -> {
                         submenu.defaults().growX().height(50f).fillY();
                         submenu.name = "submenu";
@@ -84,9 +84,11 @@ public class ModPlayerListFragment extends PlayerListFragment{
             var table = child.get(12);
             table.clear();
             table.remove();
-            var menu = child.get(12);
+
+            // move building tools under minimap
+            var menu = child.get(13);
             menu.remove();
-            parent.addChildAt(12, menu);
+            parent.addChildAt(11, menu);
         });
     }
 
