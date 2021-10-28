@@ -280,7 +280,7 @@ public class ModHudFragment extends Fragment{
 
             float bsize = 46f;
             BuildingTools bt = SchemeSize.input.bt;
-            var block = parent.getChildren().get(9).getChildren().get(0);
+            var block = ((Group)parent.getChildren().get(9)).getChildren().get(0);
 
             ImageButtonStyle style = new ImageButtonStyle(){{
                 down = Styles.flatDown;
