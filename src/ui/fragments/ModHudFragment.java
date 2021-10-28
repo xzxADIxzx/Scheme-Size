@@ -46,19 +46,6 @@ public class ModHudFragment extends Fragment{
     public boolean shownMobile = false;
     public boolean shownBT = false;
 
-    public Element e0;
-    public Element e1;
-    public Element e2;
-    public Element e3;
-    public Element e4;
-    public Element e5;
-    public Element e6;
-    public Element e7;
-    public Element e8;
-    public Element e9;
-    public Element e10;
-    public Element e11;
-
     @Override
     public void build(Group parent){
         Events.on(UnitChangeEvent.class, e -> {
@@ -293,19 +280,7 @@ public class ModHudFragment extends Fragment{
 
             float bsize = 46f;
             BuildingTools bt = SchemeSize.input.bt;
-            var block = ((Group)parent.getChildren().get(9)).getChildren().get(0);
-            e0 = parent.getChildren().get(0);
-            e1 = parent.getChildren().get(1);
-            e2 = parent.getChildren().get(2);
-            e3 = parent.getChildren().get(3);
-            e4 = parent.getChildren().get(4);
-            e5 = parent.getChildren().get(5);
-            e6 = parent.getChildren().get(6);
-            e7 = parent.getChildren().get(7);
-            e8 = parent.getChildren().get(8);
-            e9 = parent.getChildren().get(9);
-            e10 = parent.getChildren().get(10);
-            e11 = parent.getChildren().get(11);
+            var block = ((Group)parent.getChildren().get(7)).getChildren().get(0);
 
             ImageButtonStyle style = new ImageButtonStyle(){{
                 down = Styles.flatDown;
