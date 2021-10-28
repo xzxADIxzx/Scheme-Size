@@ -114,7 +114,7 @@ public class BuildingTools{
 			
 		if(plan.contains(build -> build.x == bx && build.y == by)) return;
 			
-		var build = new BuildPlan(bx, by, 0, block(), tile.block().nextConfig());
+		var build = new BuildPlan(bx, by, tile.build.rotation, block(), select.nextConfig());
 		plan.add(build);
 
 		for(int x = bx - bsize + 1; x <= bx + bsize - 1; x += bsize) { replace(world.tiles.get(x, by + bsize)); }
