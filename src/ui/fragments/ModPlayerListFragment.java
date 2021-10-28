@@ -84,11 +84,9 @@ public class ModPlayerListFragment extends PlayerListFragment{
             var table = child.get(12);
             table.clear();
             table.remove();
-
-            // move building tools under minimap
-            var menu = child.get(12);
+            var menu = child.get(13);
             menu.remove();
-            parent.addChildAt(8, menu);
+            parent.addChildAt(12, menu);
         });
     }
 
