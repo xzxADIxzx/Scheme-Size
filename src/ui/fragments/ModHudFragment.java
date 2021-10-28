@@ -49,7 +49,7 @@ public class ModHudFragment extends Fragment{
 
     @Override
     public void build(Group parent){
-        Events.on(UnitChangeEvent.class, e -> {
+        Events.on(UnitChangeEvent.class, event -> {
             updateShield(player.unit());
         });
 
@@ -61,7 +61,7 @@ public class ModHudFragment extends Fragment{
             updateBlock();
         });
 
-        Events.on(ClientLoadEvent.class, e -> {
+        Events.on(ClientLoadEvent.class, event -> {
             var child = parent.getChildren();
             var table = child.get(5);
             table.clear();
@@ -696,6 +696,8 @@ public class ModHudFragment extends Fragment{
     }
 
     public void updateBlock(){
-        block = ((Table)ui.hudGroup.getChildren().get(9)).getChildren().get(0);
+        Time.runTask(1f, () -> { // waiting for blockfrag rebuild
+            block = ((Table)ui.hudGroup.getChildren().get(9)).getChildren().get(0);
+        });
     }
 }

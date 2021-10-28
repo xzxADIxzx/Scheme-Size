@@ -79,7 +79,7 @@ public class ModPlayerListFragment extends PlayerListFragment{
 
         rebuild();
 
-        Events.on(ClientLoadEvent.class, e -> {
+        Events.on(ClientLoadEvent.class, event -> {
             var child = parent.getChildren();
             var table = child.get(12);
             table.clear();

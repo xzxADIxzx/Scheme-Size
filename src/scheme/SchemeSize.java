@@ -34,7 +34,7 @@ public class SchemeSize extends Mod{
     public static ContentSelectDialog<Item> item;
 
     public SchemeSize(){
-        Events.on(ClientLoadEvent.class, e -> {
+        Events.on(ClientLoadEvent.class, event -> {
             schematic = new ModSchematics();
             schematics = schematic;
             schematics.loadSync();
