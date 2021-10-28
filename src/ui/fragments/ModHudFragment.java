@@ -280,6 +280,7 @@ public class ModHudFragment extends Fragment{
 
             float bsize = 46f;
             BuildingTools bt = SchemeSize.input.bt;
+            var block = parent.getChildren().get(9).getChildren().get(0);
 
             ImageButtonStyle style = new ImageButtonStyle(){{
                 down = Styles.flatDown;
@@ -341,7 +342,7 @@ public class ModHudFragment extends Fragment{
                     mode.button(Icon.defense, check, () -> bt.setMode(Mode.replace)).checked(t -> bt.mode == Mode.replace).name("replace").row();
                     mode.button(Icon.link, check, () -> bt.setMode(Mode.wall)).checked(t -> bt.mode == Mode.wall).name("wall").row();
                 }).row();
-            }).height(254f).padRight(310f).visible(() -> shownBT && shown && !ui.minimapfrag.shown());
+            }).height(254f).padRight(310f).visible(() -> shownBT && shown && !ui.minimapfrag.shown()).update(t -> t.setTranslation(393 - block.width, 0));
         });
     }
 
