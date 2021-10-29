@@ -130,21 +130,11 @@ public class ModPlayerListFragment extends PlayerListFragment{
             table.add(new Image(user.icon()).setScaling(Scaling.bounded)).grow();
             table.name = user.name();
 
+            String usercolor = "[#" + user.color().toString().toUpperCase() + "]";
+
             button.add(table).size(h);
-            button.labelWrap("[#" + user.color().toString().toUpperCase() + "]" + user.name()).width(170f).pad(10);
+            button.labelWrap(usercolor + user.name()).width(170f).pad(10);
             button.add().grow();
-
-            if(!user.isLocal()){
-                button.add().growY();
-                button.button(Icon.copy, Styles.clearPartiali, () -> {
-                    Core.app.setClipboardText(user.name);
-                    ui.showInfoFade("@copied");
-                }).size(h);
-            }
-
-            if(user.admin && !(!user.isLocal() && net.server())){
-                button.image(Icon.admin).size(h);
-            }
 
             var style = new ImageButtonStyle(){{
                 down = Styles.none;
@@ -162,6 +152,18 @@ public class ModPlayerListFragment extends PlayerListFragment{
                 imageUpColor = Color.white;
                 imageOverColor = Color.lightGray;
             }};
+
+            if(!user.isLocal()){
+                button.add().growY();
+                button.button(Icon.copy, ustyle, () -> {
+                    Core.app.setClipboardText(usercolor + user.name());
+                    ui.showInfoFade("@copied");
+                }).size(h);
+            }
+
+            if(user.admin && !(!user.isLocal() && net.server())){
+                button.image(Icon.admin).size(h);
+            }
 
             if((net.server() || player.admin) && !user.isLocal() && (!user.admin || net.server())){
                 button.add().growY();
