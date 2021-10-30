@@ -241,7 +241,7 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
         });
         
         table.table(cont -> {
-            cont.defaults().fill();
+            cont.defaults().size(48f);
             cont.stack(
                 confirm = new ImageButton(Icon.ok, Styles.clearPartiali),
                 flip = new ImageButton(Icon.downOpen, Styles.clearPartiali)
@@ -348,7 +348,7 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
         Draw.color(Pal.accent);
 
         //Draw lines
-        if(lineMode){
+        if(lineMode && !bt.isPlacing()){
             int tileX = tileXMod(Core.input.mouseX());
             int tileY = tileYMod(Core.input.mouseY());
 
@@ -368,6 +368,13 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
             }
         }
 
+        if(bt.isPlacing()){
+            bt.plan.each(build -> {
+                build.animScale = 1f;
+                drawRequest(build);
+            });
+        }
+
         Draw.reset();
     }
 
@@ -379,7 +386,7 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
         }
 
         if(bt.mode == Mode.edit && usingbt){
-            drawEditSelectionMod(isAdmin() ? player.tileX() : btX, isAdmin() ? player.tileY() : btY, lastLineX, lastLineY, isAdmin() ? 49 : maxSchematicSize);
+            drawEditSelectionMod(isAdmin() ? player.tileX() : btX, isAdmin() ? player.tileY() : btY, lastbtX, lastbtY, isAdmin() ? 49 : maxSchematicSize);
         }
     }
 
@@ -776,7 +783,7 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
             lastBlock = block;
         }
 
-        if(lineMode){
+        if(lineMode bt.mode == BTMode.none){
             lineScale = Mathf.lerpDelta(lineScale, 1f, 0.1f);
 
             //When in line mode, pan when near screen edges automatically
@@ -808,6 +815,12 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
 
         if(player.shooting && (player.unit().activelyBuilding() || player.unit().mining())){
             player.shooting = false;
+        }
+
+        if(bt.mode == Mode.edit){
+            player.shooting = false;
+            mode = none;
+            block = null;
         }
     }
 

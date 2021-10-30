@@ -201,7 +201,7 @@ public class SchemeUtils{
                 Call.sendChatMessage(js("var floor = " + getBlock(floor)));
                 Call.sendChatMessage(js("var block = " + getBlock(block)));
                 Call.sendChatMessage(js("var overlay = " + getBlock(overlay)));
-                Call.sendChatMessage(js("var setb = (tile) => { tile.setNet(block == null ? tile.block() : block) }"));
+                Call.sendChatMessage(js("var setb = (tile) => { tile.setNet(block == null ? tile.block() : block, tile.build.team, tile.build.rotation) }"));
                 Call.sendChatMessage(js("var setf = (tile) => { tile.setFloorNet(floor==null?tile.floor():floor.asFloor(),overlay==null?tile.overlay():overlay.asFloor());setb(tile) }"));
                 Call.sendChatMessage(js("var nulc = (tile) => { if(tile != null) setf(tile) }"));
                 Call.sendChatMessage(js("var todo = (x, y) => { nulc(tile = Vars.world.tiles.get(x, y)) }"));
@@ -216,7 +216,7 @@ public class SchemeUtils{
                         if(tile == null) continue;
 
                         tile.setFloorNet(floor == null ? tile.floor() : floor, overlay == null ? tile.overlay() : overlay);
-                        tile.setNet(block == null ? tile.block() : block);
+                        tile.setNet(block == null ? tile.block() : block, tile.build.team, tile.build.rotation);
                     }
                 }
             });
