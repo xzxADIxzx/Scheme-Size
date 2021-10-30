@@ -854,7 +854,7 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
             }
         }
 
-        if(isTap() && !scene.hasMouse()){
+        if(isTap() && !Core.scene.hasMouse()){
             btX = cursorX;
             btY = cursorY;
             usingbt = true;
