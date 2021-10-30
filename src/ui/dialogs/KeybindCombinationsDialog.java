@@ -18,6 +18,7 @@ public class KeybindCombinationsDialog extends BaseDialog{
 		template("@keycomb.teleport", "keybind.select.name");
 		template("@keycomb.self_dest", "keybind.respawn.name");
 		template("@keycomb.spawn_unit", "keybind.change_unit.name");
+		template("@keycomb.toggle_bt", "keybind.deselect.name");
 	}
 
 	private void template(String name, String comb){

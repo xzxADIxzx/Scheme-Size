@@ -8,6 +8,7 @@ import arc.input.*;
 import arc.math.*;
 import arc.math.geom.*;
 import arc.scene.*;
+import arc.scene.ui.*;
 import arc.scene.ui.ImageButton.*;
 import arc.scene.ui.layout.*;
 import arc.struct.*;
@@ -25,6 +26,7 @@ import mindustry.type.*;
 import mindustry.ui.*;
 import mindustry.world.*;
 import mindustry.world.blocks.*;
+import mindustry.scheme.*;
 
 import static mindustry.Vars.*;
 import static mindustry.input.PlaceMode.*;
@@ -36,6 +38,8 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
     private static final float maxPanSpeed = 1.3f;
     /** Distance to edge of screen to start panning. */
     public final float edgePan = Scl.scl(60f);
+    /** Toggle building tools button. **/
+    public ImageButton flip;
 
     //gesture data
     public Vec2 vector = new Vec2(), movement = new Vec2(), targetPos = new Vec2();
@@ -174,6 +178,14 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
         return mode == breaking && lineMode && Mathf.dst(lineStartX * tilesize, lineStartY * tilesize, Core.input.mouseWorld().x, Core.input.mouseWorld().y) >= 2 * tilesize;
     }
 
+    void toggleBT(){
+        if(flip != null){
+            flip.getStyle().imageUp = SchemeSize.hudfrag.shownBT ? Icon.downOpen : Icon.upOpen;
+        }
+
+        SchemeSize.hudfrag.toggleBT();
+    }
+
     //endregion
     //region UI and drawing
 
@@ -244,6 +256,9 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
             selectRequests.clear();
             selecting = false;
         }).visible(() -> !selectRequests.isEmpty()).name("confirmplace");
+
+        //building tools button
+        flip = table.button(Icon.ok, Styles.clearPartiali, this::toggleBT).visible(() -> selectRequests.isEmpty()).name("togglebt").get();
     }
 
     @Override
