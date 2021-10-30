@@ -783,7 +783,7 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
             lastBlock = block;
         }
 
-        if(lineMode bt.mode == BTMode.none){
+        if(lineMode && bt.mode == BTMode.none){
             lineScale = Mathf.lerpDelta(lineScale, 1f, 0.1f);
 
             //When in line mode, pan when near screen edges automatically
