@@ -42,7 +42,7 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
     public final float edgePan = Scl.scl(60f);
 
     // building tools
-    public boolean usingbt;
+    public boolean usingbt, lastTouched;
     public int btX = -1, btY = -1;
 
     // placement buttons
@@ -192,6 +192,14 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
         }
 
         SchemeSize.hudfrag.toggleBT();
+    }
+
+    boolean isRelease(){
+        return lastTouched && !Core.input.isTouched();
+    }
+
+    boolean isTap(){
+        return !lastTouched && Core.input.isTouched();
     }
 
     //endregion
@@ -836,25 +844,29 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
                 lastbtS = bt.size;
             }
 
-            if(!Core.input.isTouched()){
+            if(isRelease()){
                 apply();
             }
 
-            if(bt.mode == Mode.edit && !Core.input.isTouched()){
+            if(bt.mode == Mode.edit && isRelease()){
                 NormalizeResult result = Placement.normalizeArea(isAdmin() ? player.tileX() : btX, isAdmin() ? player.tileY() : btY, cursorX, cursorY, 0, false, isAdmin() ? 49 : maxSchematicSize);
                 SchemeUtils.edit(result.x, result.y, result.x2, result.y2);
             }
         }
 
-        if(Core.input.isTouched() && !Core.scene.hasMouse()){
+        if(isTap() && !scene.hasMouse()){
             btX = cursorX;
             btY = cursorY;
             usingbt = true;
-        }else{
+        }
+
+        if(isRelease()){
             btX = lastbtX = -1;
             btY = lastbtY = -1;
             usingbt = false;
         }
+
+        lastTouched = Core.input.isTouched();
     }
 
     public boolean hasMoved(int cx, int cy){
@@ -1023,7 +1035,7 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
         if(!mobilePanCam) unit.movePref(movement);
 
         //update shooting if not building + not mining
-        if(!player.unit().activelyBuilding() && player.unit().mineTile == null){
+        if(!player.unit().activelyBuilding() && player.unit().mineTile == null && !mobileDisWpn){
 
             //autofire targeting
             if(manualShooting){
@@ -1056,8 +1068,12 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
             }
         }
 
-        player.shooting = player.shooting && !mobileDisWpn;
         unit.controlWeapons(player.shooting && !boosted && !mobileDisWpn);
+
+        if(mobileDisWpn){
+            player.shooting = false;
+            unit.aim(player.mouseX = Core.input.mouseWorldX(), player.mouseY = Core.input.mouseWorldY());
+        }
     }
 
     //endregion
