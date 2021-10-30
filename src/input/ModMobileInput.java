@@ -38,8 +38,12 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
     private static final float maxPanSpeed = 1.3f;
     /** Distance to edge of screen to start panning. */
     public final float edgePan = Scl.scl(60f);
-    /** Toggle building tools button. **/
+
+    // placement buttons & table
     public ImageButton flip;
+    public ImageButton confirm;
+    public Cell<Table> container;
+
 
     //gesture data
     public Vec2 vector = new Vec2(), movement = new Vec2(), targetPos = new Vec2();
@@ -224,8 +228,17 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
             i.setChecked(!arrow && schematicMode);
         });
 
+        container = table.table().update(t -> {
+            container.clear();
+            if(selectRequests.isEmpty()){
+                container.add(flip).fill();
+            }else{
+                container.add(confirm).fill();
+            }
+        });
+
         //confirm button
-        table.button(Icon.ok, Styles.clearPartiali, () -> {
+        confirm = container.button(Icon.ok, Styles.clearPartiali, () -> {
             for(BuildPlan request : selectRequests){
                 Tile tile = request.tile();
 
@@ -255,10 +268,10 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
             removals.addAll(selectRequests.select(r -> !r.breaking));
             selectRequests.clear();
             selecting = false;
-        }).visible(() -> !selectRequests.isEmpty()).name("confirmplace");
+        }).get();
 
         //building tools button
-        flip = table.button(Icon.ok, Styles.clearPartiali, this::toggleBT).visible(() -> selectRequests.isEmpty()).name("togglebt").get();
+        flip = container.button(Icon.ok, Styles.clearPartiali, this::toggleBT).get();
     }
 
     @Override

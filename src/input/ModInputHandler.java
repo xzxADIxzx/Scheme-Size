@@ -254,6 +254,8 @@ public class ModInputHandler extends InputHandler{
         return false;
     }
 
+
+    // mobile features
     public void toggleMobilePanCam(){
         mobilePanCam = !mobilePanCam;
     }
@@ -262,6 +264,8 @@ public class ModInputHandler extends InputHandler{
         mobileDisWpn = !mobileDisWpn;
     }
 
+
+    // helpfull methods
     public boolean isAdmin(){
         return Core.settings.getBool("adminssecret") && !Core.settings.getBool("usejs");
     }
