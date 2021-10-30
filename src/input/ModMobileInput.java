@@ -227,9 +227,10 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
         });
         
         table.table(cont -> {
+            cont.defaults().fill();
             cont.stack(
                 confirm = new ImageButton(Icon.ok, Styles.clearPartiali),
-                flip = new ImageButton(Icon.ok, Styles.clearPartiali)
+                flip = new ImageButton(Icon.downOpen, Styles.clearPartiali)
             );
 
             // confirm button
