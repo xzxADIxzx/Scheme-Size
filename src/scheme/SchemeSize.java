@@ -39,7 +39,7 @@ public class SchemeSize extends Mod{
             schematics = schematic;
             schematics.loadSync();
 
-            control.setInput(input = mobile ? new ModMobileInput() : new ModDesktopInput());
+            control.setInput(input = !mobile ? new ModMobileInput() : new ModDesktopInput());
 
             keycomb = new KeybindCombinationsDialog();
             setting = new ModSettingsMenuDialog();

@@ -39,6 +39,10 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
     /** Distance to edge of screen to start panning. */
     public final float edgePan = Scl.scl(60f);
 
+    // building tools
+    public boolean usingbt;
+    public int btX = -1, btY = -1;
+
     // placement buttons
     public ImageButton flip;
     public ImageButton confirm;
@@ -48,7 +52,7 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
     public float lastZoom = -1;
 
     /** Position where the player started dragging a line. */
-    public int lineStartX, lineStartY, lastLineX, lastLineY;
+    public int lineStartX, lineStartY, lastLineX, lastLineY, lastbtX, lastbtY, lastbtS = 8;
 
     /** Animation scale for line. */
     public float lineScale;
@@ -362,6 +366,10 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
         //draw schematic selection
         if(mode == schematicSelect){
             drawSelectionMod(lineStartX, lineStartY, lastLineX, lastLineY, Core.settings.getInt("copysize") - 1);
+        }
+
+        if(bt.mode == Mode.edit && usingbt){
+            drawEditSelectionMod(isAdmin() ? player.tileX() : btX, isAdmin() ? player.tileY() : btY, lastLineX, lastLineY, isAdmin() ? 49 : maxSchematicSize);
         }
     }
 
@@ -685,6 +693,8 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
 
         boolean locked = locked();
 
+        if(!locked) btInput();
+
         if(player.dead()){
             mode = none;
             manualShooting = false;
@@ -789,6 +799,64 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
         if(player.shooting && (player.unit().activelyBuilding() || player.unit().mining())){
             player.shooting = false;
         }
+    }
+
+    private void btInput(){
+        if(!SchemeSize.hudfrag.shownBT) bt.setMode(Mode.none);
+        if(bt.mode == Mode.none) return;
+
+        int cursorX = tileXMod(Core.input.mouseX());
+        int cursorY = tileYMod(Core.input.mouseY());
+
+        boolean has = hasMoved(cursorX, cursorY);
+        if(has) bt.plan.clear();
+
+        if(usingbt){
+            if(has){
+                if(bt.mode == Mode.fill){
+                    bt.fill(btX, btY, cursorX, cursorY, maxSchematicSize);
+                }
+
+                if(bt.mode == Mode.square){
+                    bt.square(cursorX, cursorY);
+                }
+
+                if(bt.mode == Mode.circle){
+                    bt.circle(cursorX, cursorY);
+                }
+
+                if(bt.mode == Mode.replace){
+                    bt.replace(cursorX, cursorY);
+                }
+
+                lastbtX = cursorX;
+                lastbtY = cursorY;
+                lastbtS = bt.size;
+            }
+
+            if(!Core.input.isTouched()){
+                apply();
+            }
+
+            if(bt.mode == Mode.edit && !Core.input.isTouched()){
+                NormalizeResult result = Placement.normalizeArea(isAdmin() ? player.tileX() : btX, isAdmin() ? player.tileY() : btY, cursorX, cursorY, 0, false, isAdmin() ? 49 : maxSchematicSize);
+                SchemeUtils.edit(result.x, result.y, result.x2, result.y2);
+            }
+        }
+
+        if(Core.input.isTouched() && !scene.hasMouse()){
+            btX = cursorX;
+            btY = cursorY;
+            usingbt = true;
+        }else{
+            btX = lastbtX = -1;
+            btY = lastbtY = -1;
+            usingbt = false;
+        }
+    }
+
+    public boolean hasMoved(int cx, int cy){
+        return lastbtX != cx || lastbtY != cy || lastbtS != bt.size;
     }
 
     protected void autoPan(){
@@ -907,7 +975,7 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
         float range = unit.hasWeapons() ? unit.range() : 0f;
         float bulletSpeed = unit.hasWeapons() ? type.weapons.first().bullet.speed : 0f;
         float mouseAngle = unit.angleTo(unit.aimX(), unit.aimY());
-        boolean aimCursor = omni && player.shooting && type.hasWeapons() && type.faceTarget && !boosted && type.rotateShooting;
+        boolean aimCursor = (omni && player.shooting && type.hasWeapons() && type.faceTarget && !boosted && type.rotateShooting) || mobileDisWpn;
 
         if(aimCursor){
             unit.lookAt(mouseAngle);
