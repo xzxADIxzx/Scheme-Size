@@ -228,7 +228,43 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
             i.setChecked(!arrow && schematicMode);
         });
 
-        container = table.table().update(t -> {
+        container = table.table(cont -> {
+            //confirm button
+            confirm = container.button(Icon.ok, Styles.clearPartiali, () -> {
+                for(BuildPlan request : selectRequests){
+                    Tile tile = request.tile();
+                    
+                    //actually place/break all selected blocks
+                    if(tile != null){
+                        if(!request.breaking){
+                            if(validPlace(request.x, request.y, request.block, request.rotation)){
+                                BuildPlan other = getRequest(request.x, request.y, request.block.size, null);
+                                BuildPlan copy = request.copy();
+                                
+                                if(other == null){
+                                    player.unit().addBuild(copy);
+                                }else if(!other.breaking && other.x == request.x && other.y == request.y && other.block.size == request.block.size){
+                                    player.unit().plans().remove(other);
+                                    player.unit().addBuild(copy);
+                                }
+                            }
+                            
+                            rotation = request.rotation;
+                        }else{
+                            tryBreakBlock(tile.x, tile.y);
+                        }
+                    }
+                }
+                
+                //move all current requests to removal array so they fade out
+                removals.addAll(selectRequests.select(r -> !r.breaking));
+                selectRequests.clear();
+                selecting = false;
+            }).get();
+
+            //building tools button
+            flip = container.button(Icon.ok, Styles.clearPartiali, this::toggleBT).get();
+        }).update(t -> {
             container.clear();
             if(selectRequests.isEmpty()){
                 container.add(flip).fill();
@@ -236,42 +272,6 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
                 container.add(confirm).fill();
             }
         });
-
-        //confirm button
-        confirm = container.button(Icon.ok, Styles.clearPartiali, () -> {
-            for(BuildPlan request : selectRequests){
-                Tile tile = request.tile();
-
-                //actually place/break all selected blocks
-                if(tile != null){
-                    if(!request.breaking){
-                        if(validPlace(request.x, request.y, request.block, request.rotation)){
-                            BuildPlan other = getRequest(request.x, request.y, request.block.size, null);
-                            BuildPlan copy = request.copy();
-
-                            if(other == null){
-                                player.unit().addBuild(copy);
-                            }else if(!other.breaking && other.x == request.x && other.y == request.y && other.block.size == request.block.size){
-                                player.unit().plans().remove(other);
-                                player.unit().addBuild(copy);
-                            }
-                        }
-
-                        rotation = request.rotation;
-                    }else{
-                        tryBreakBlock(tile.x, tile.y);
-                    }
-                }
-            }
-
-            //move all current requests to removal array so they fade out
-            removals.addAll(selectRequests.select(r -> !r.breaking));
-            selectRequests.clear();
-            selecting = false;
-        }).get();
-
-        //building tools button
-        flip = container.button(Icon.ok, Styles.clearPartiali, this::toggleBT).get();
     }
 
     @Override
