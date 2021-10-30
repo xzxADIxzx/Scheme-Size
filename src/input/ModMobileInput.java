@@ -195,11 +195,11 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
     }
 
     boolean isRelease(){
-        return lastTouched && !Core.input.isTouched();
+        return lastTouched && !Core.input.isTouched(0);
     }
 
     boolean isTap(){
-        return !lastTouched && Core.input.isTouched();
+        return !lastTouched && Core.input.isTouched(0);
     }
 
     //endregion
