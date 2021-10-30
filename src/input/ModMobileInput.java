@@ -230,7 +230,7 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
 
         container = table.table(cont -> {
             //confirm button
-            confirm = container.button(Icon.ok, Styles.clearPartiali, () -> {
+            confirm = cont.button(Icon.ok, Styles.clearPartiali, () -> {
                 for(BuildPlan request : selectRequests){
                     Tile tile = request.tile();
                     
@@ -263,7 +263,7 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
             }).get();
 
             //building tools button
-            flip = container.button(Icon.ok, Styles.clearPartiali, this::toggleBT).get();
+            flip = cont.button(Icon.ok, Styles.clearPartiali, this::toggleBT).get();
         }).update(t -> {
             container.clear();
             if(selectRequests.isEmpty()){
