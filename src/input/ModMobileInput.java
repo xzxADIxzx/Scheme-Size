@@ -228,13 +228,11 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
         
         table.table(cont -> {
             cont.stack(
-                //confirm button
-                confirm = new ImageButton(Icon.ok, Styles.clearPartiali), ).visible().name("confirmplace"),
-                
-                //building tools button
-                flip = new ImageButton(Icon.ok, Styles.clearPartiali).name("togglebt")
+                confirm = new ImageButton(Icon.ok, Styles.clearPartiali),
+                flip = new ImageButton(Icon.ok, Styles.clearPartiali)
             );
-            
+
+            // confirm button
             confirm.visible(() -> !selectRequests.isEmpty());
             confirm.changed(() -> {
                 for(BuildPlan request : selectRequests){
@@ -268,6 +266,7 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
                 selecting = false;
             });
 
+            // building tools button
             flip.visible(() -> selectRequests.isEmpty());
             flip.changed(this::toggleBT);
         });
