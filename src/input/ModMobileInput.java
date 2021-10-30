@@ -39,11 +39,9 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
     /** Distance to edge of screen to start panning. */
     public final float edgePan = Scl.scl(60f);
 
-    // placement buttons & table
+    // placement buttons
     public ImageButton flip;
     public ImageButton confirm;
-    public Cell<Table> container;
-
 
     //gesture data
     public Vec2 vector = new Vec2(), movement = new Vec2(), targetPos = new Vec2();
@@ -227,10 +225,18 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
             i.getStyle().imageUp = arrow ? Icon.right : Icon.copy;
             i.setChecked(!arrow && schematicMode);
         });
-
-        container = table.table(cont -> {
-            //confirm button
-            confirm = cont.button(Icon.ok, Styles.clearPartiali, () -> {
+        
+        table.table(cont -> {
+            cont.stack(
+                //confirm button
+                confirm = new ImageButton(Icon.ok, Styles.clearPartiali), ).visible().name("confirmplace"),
+                
+                //building tools button
+                flip = new ImageButton(Icon.ok, Styles.clearPartiali).name("togglebt")
+            );
+            
+            confirm.visible(() -> !selectRequests.isEmpty());
+            confirm.changed(() -> {
                 for(BuildPlan request : selectRequests){
                     Tile tile = request.tile();
                     
@@ -260,17 +266,10 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
                 removals.addAll(selectRequests.select(r -> !r.breaking));
                 selectRequests.clear();
                 selecting = false;
-            }).get();
+            });
 
-            //building tools button
-            flip = cont.button(Icon.ok, Styles.clearPartiali, this::toggleBT).get();
-        }).update(t -> {
-            container.clear();
-            if(selectRequests.isEmpty()){
-                container.add(flip).fill();
-            }else{
-                container.add(confirm).fill();
-            }
+            flip.visible(() -> selectRequests.isEmpty());
+            flip.changed(this::toggleBT);
         });
     }
 
