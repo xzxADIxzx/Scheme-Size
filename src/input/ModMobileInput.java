@@ -14,6 +14,8 @@ import arc.scene.ui.layout.*;
 import arc.struct.*;
 import arc.util.*;
 import mindustry.*;
+import mindustry.input.Placement.*;
+import mindustry.input.BuildingTools.*;
 import mindustry.content.*;
 import mindustry.core.*;
 import mindustry.entities.*;
@@ -844,7 +846,7 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
             }
         }
 
-        if(Core.input.isTouched() && !scene.hasMouse()){
+        if(Core.input.isTouched() && !Core.scene.hasMouse()){
             btX = cursorX;
             btY = cursorY;
             usingbt = true;
