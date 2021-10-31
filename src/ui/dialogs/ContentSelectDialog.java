@@ -35,15 +35,15 @@ public class ContentSelectDialog<T extends UnlockableContent> extends BaseDialog
 
 		var table = new Table();
 		content.each(item -> {
-			if (item.isHidden()) return;
+			if(item.isHidden()) return;
 
 			var drawable = new TextureRegionDrawable(item.icon(Cicon.tiny));
 			table.button(drawable, () -> { 
 				callback.get(list.select(), item, () -> slider.getValue());
 				hide(); 
-			}).size(mobile ? 48f : 64f);
+			}).size(mobile ? 52f : 64f);
 
-			if (mobile ? item.id % 8 == 7 : item.id % 10 == 9) table.row();
+			if(item.id % mobile ? 5 : 10 == mobile ? 4 : 9) table.row();
 		});
 
 		list.build(cont);
