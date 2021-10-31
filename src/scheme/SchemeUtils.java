@@ -216,7 +216,7 @@ public class SchemeUtils{
                         if(tile == null) continue;
 
                         tile.setFloorNet(floor == null ? tile.floor() : floor, overlay == null ? tile.overlay() : overlay);
-                        if(block == null) tile.setNet(block);
+                        if(block != null) tile.setNet(block);
                     }
                 }
             });
