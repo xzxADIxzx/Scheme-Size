@@ -32,6 +32,8 @@ public class TileSelectDialog extends BaseDialog{
 	private Image blockImg;
 	private Image overlayImg;
 
+	private int row = mobile ? 8 : 10;
+
 	public TileSelectDialog(String name){
 		super(name);
 		addCloseButton();
@@ -66,7 +68,7 @@ public class TileSelectDialog extends BaseDialog{
 					updateimg();
 				}).size(64f);
 
-				if((table.getChildren().count(i -> true) - 1) % mobile ? 5 : 10 == mobile ? 4 : 9) table.row();
+				if((table.getChildren().count(i -> true) - 1) % row == row - 1) table.row();
 			});
 		});
 	}

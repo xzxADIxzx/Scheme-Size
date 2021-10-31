@@ -350,8 +350,8 @@ public class ModHudFragment extends Fragment{
                     mode.button(Icon.link, check, () -> bt.setMode(Mode.replace)).checked(t -> bt.mode == Mode.replace).name("replace").row();
                     mode.button(Icon.defense, check, () -> bt.setMode(Mode.wall)).checked(t -> bt.mode == Mode.wall).name("wall").row();
                 }).row();
-            }).height(254f).padRight(310f).visible(() -> shownBT && shown && !ui.minimapfrag.shown()).update(t -> {
-                if(block != null) t.setTranslation(Scl.scl(314) - block.getWidth(), 0);
+            }).height(254f).visible(() -> shownBT && shown && !ui.minimapfrag.shown()).update(t -> {
+                if(block != null) t.setTranslation(-block.getWidth(), 0);
             });
         });
     }
