@@ -351,7 +351,7 @@ public class ModHudFragment extends Fragment{
                     mode.button(Icon.defense, check, () -> bt.setMode(Mode.wall)).checked(t -> bt.mode == Mode.wall).name("wall").row();
                 }).row();
             }).height(254f).visible(() -> shownBT && shown && !ui.minimapfrag.shown()).update(t -> {
-                if(block != null) t.setTranslation(-block.getWidth(), 0);
+                if(block != null) t.setTranslation(-block.getWidth() + Scl.slc(4), 0);
             });
         });
     }
