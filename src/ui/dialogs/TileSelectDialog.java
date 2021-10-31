@@ -16,6 +16,8 @@ import mindustry.world.blocks.environment.*;
 import mindustry.content.*;
 import mindustry.graphics.*;
 
+import static mindustry.Vars.*;
+
 public class TileSelectDialog extends BaseDialog{
 
 	public Cons3<Floor, Block, Floor> callback;
