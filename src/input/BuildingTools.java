@@ -7,6 +7,7 @@ import mindustry.world.*;
 import mindustry.world.blocks.power.*;
 import mindustry.input.*;
 import mindustry.input.Placement.*;
+import mindustry.content.*;
 import mindustry.entities.units.*;
 import mindustry.scheme.*;
 
@@ -134,7 +135,7 @@ public class BuildingTools{
 	}
 
 	public void power(int cx, int cy, Cons<Tile> callback){
-		if(block() instanceof PowerNode == false) return;
+		if(block() instanceof PowerNode == false && Blocks.powerNode.unlocked()) input.block = Blocks.powerNode;
 
 		Boolf2<Intp, Intp> check = (x, y) -> {
 			Tile tile = world.tiles.get(x.get(), y.get());
@@ -146,10 +147,10 @@ public class BuildingTools{
 		};
 
 		for(int x = 8; s <= 64; s++){
-			for(int x = cx - s; x <= cx + s - 1; x += s) if(check.get(x, cy + size)) return;
-			for(int y = cy + s; y >= cy - s + 1; y -= s) if(check.get(cx + size, y)) return;
-			for(int x = cx + s; x >= cx - s + 1; x -= s) if(check.get(x, cy - size)) return;
-			for(int y = cy - s; y <= cy + s - 1; y += s) if(check.get(cx - size, y)) return;
+			for(int x = cx - s; x <= cx + s - 1; x += s) if(check.get(() -> x, () -> cy + s)) return;
+			for(int y = cy + s; y >= cy - s + 1; y -= s) if(check.get(() -> cx + s, () -> y)) return;
+			for(int x = cx + s; x >= cx - s + 1; x -= s) if(check.get(() -> x, () -> cy - s)) return;
+			for(int y = cy - s; y <= cy + s - 1; y += s) if(check.get(() -> cx - s, () -> y)) return;
 		}
 	}
 
