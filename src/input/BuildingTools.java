@@ -146,7 +146,7 @@ public class BuildingTools{
 			return false;
 		};
 
-		for(int x = 8; s <= 64; s++){
+		for(int s = 8; s <= 64; s++){
 			for(int x = cx - s; x <= cx + s - 1; x += s) if(check.get(() -> x, () -> cy + s)) return;
 			for(int y = cy + s; y >= cy - s + 1; y -= s) if(check.get(() -> cx + s, () -> y)) return;
 			for(int x = cx + s; x >= cx - s + 1; x -= s) if(check.get(() -> x, () -> cy - s)) return;
