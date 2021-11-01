@@ -138,18 +138,19 @@ public class BuildingTools{
 		if(block() instanceof PowerNode == false && Blocks.powerNode.unlocked()) input.block = Blocks.powerNode;
 
 		Boolf<Tile> check = (tile) -> {
-			if(tile.block() != null && tile.block() instanceof PowerBlock){
+			if(tile == null) return;
+			if(tile.block() instanceof PowerBlock){
 				callback.get(tile);
 				return true;
 			}
 			return false;
 		};
 
-		for(int s = 8; s <= 64; s++){
-			for(int x = cx - s; x <= cx + s - 1; x += s) if(check.get(world.tiles.get(x, cy + s))) return;
-			for(int y = cy + s; y >= cy - s + 1; y -= s) if(check.get(world.tiles.get(cx + s, y))) return;
-			for(int x = cx + s; x >= cx - s + 1; x -= s) if(check.get(world.tiles.get(x, cy - s))) return;
-			for(int y = cy - s; y <= cy + s - 1; y += s) if(check.get(world.tiles.get(cx - s, y))) return;
+		for(int s = 8; s <= 128; s++){
+			for(int x = cx - s; x <= cx + s - 1; x += 1) if(check.get(world.tiles.get(x, cy + s))) return;
+			for(int y = cy + s; y >= cy - s + 1; y -= 1) if(check.get(world.tiles.get(cx + s, y))) return;
+			for(int x = cx + s; x >= cx - s + 1; x -= 1) if(check.get(world.tiles.get(x, cy - s))) return;
+			for(int y = cy - s; y <= cy + s - 1; y += 1) if(check.get(world.tiles.get(cx - s, y))) return;
 		}
 	}
 
