@@ -4,6 +4,7 @@ import arc.func.*;
 import arc.math.*;
 import arc.struct.*;
 import mindustry.world.*;
+import mindustry.world.blocks.power.*;
 import mindustry.input.*;
 import mindustry.input.Placement.*;
 import mindustry.entities.units.*;
@@ -117,10 +118,39 @@ public class BuildingTools{
 		var build = new BuildPlan(bx, by, tile.build.rotation, block(), block().nextConfig());
 		plan.add(build);
 
-		for(int x = bx - bsize + 1; x <= bx + bsize - 1; x += bsize) { replace(world.tiles.get(x, by + bsize)); }
-		for(int y = by + bsize - 1; y >= by - bsize + 1; y -= bsize) { replace(world.tiles.get(bx + bsize, y)); }
-		for(int x = bx + bsize - 1; x >= bx - bsize + 1; x -= bsize) { replace(world.tiles.get(x, by - bsize)); }
-		for(int y = by - bsize + 1; y <= by + bsize - 1; y += bsize) { replace(world.tiles.get(bx - bsize, y)); }
+		for(int x = bx - bsize + 1; x <= bx + bsize - 1; x += bsize) replace(world.tiles.get(x, by + bsize));
+		for(int y = by + bsize - 1; y >= by - bsize + 1; y -= bsize) replace(world.tiles.get(bx + bsize, y));
+		for(int x = bx + bsize - 1; x >= bx - bsize + 1; x -= bsize) replace(world.tiles.get(x, by - bsize));
+		for(int y = by - bsize + 1; y <= by + bsize - 1; y += bsize) replace(world.tiles.get(bx - bsize, y));
+	}
+
+	public void power(int cx, int cy){
+		if(block() == null) return;
+
+		power(cx, cy, tile -> {
+			var build = new BuildPlan(tile.x, tile.y, 0, block());
+			plan.add(build);
+		});
+	}
+
+	public void power(int cx, int cy, Cons<Tile> callback){
+		if(block() instanceof PowerNode == false) return;
+
+		Boolf2<Intp, Intp> check = (x, y) -> {
+			Tile tile = world.tiles.get(x.get(), y.get());
+			if(tile.block() instanceof PowerBlock){
+				callback.get(tile);
+				return true;
+			}
+			return false;
+		}
+
+		for(int x = 8; s <= 64; s++){
+			for(int x = cx - s; x <= cx + s - 1; x += s) if(check.get(x, cy + size)) return;
+			for(int y = cy + s; y >= cy - s + 1; y -= s) if(check.get(cx + size, y)) return;
+			for(int x = cx + s; x >= cx - s + 1; x -= s) if(check.get(x, cy - size)) return;
+			for(int y = cy - s; y <= cy + s - 1; y += s) if(check.get(cx - size, y)) return;
+		}
 	}
 
 	private Block block(){
@@ -133,7 +163,7 @@ public class BuildingTools{
 		square,
 		circle,
 		replace,
-		wall,
+		power,
 		edit;
 	}
 }

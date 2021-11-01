@@ -712,6 +712,10 @@ public class ModDesktopInput extends ModInputHandler{
                     bt.replace(cursorX, cursorY);
                 }
 
+                if(bt.mode == Mode.power){
+                    bt.power(cursorX, cursorY);
+                }
+
                 lastbtX = cursorX;
                 lastbtY = cursorY;
                 lastbtS = bt.size;
