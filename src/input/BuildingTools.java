@@ -143,7 +143,7 @@ public class BuildingTools{
 				return true;
 			}
 			return false;
-		}
+		};
 
 		for(int x = 8; s <= 64; s++){
 			for(int x = cx - s; x <= cx + s - 1; x += s) if(check.get(x, cy + size)) return;
