@@ -138,7 +138,7 @@ public class BuildingTools{
 		if(block() instanceof PowerNode == false && Blocks.powerNode.unlocked()) input.block = Blocks.powerNode;
 
 		Boolf<Tile> check = (tile) -> {
-			if(tile.block() instanceof PowerBlock){
+			if(tile.block() != null && tile.block() instanceof PowerBlock){
 				callback.get(tile);
 				return true;
 			}
