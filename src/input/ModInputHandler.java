@@ -39,7 +39,7 @@ import mindustry.world.meta.*;
 
 import static mindustry.Vars.*;
 
-// Last Update - Oct 13, 2021
+// Last Update - Oct 31, 2021
 public class ModInputHandler extends InputHandler{
 
 	final static float playerSelectRange = mobile ? 17f : 11f;

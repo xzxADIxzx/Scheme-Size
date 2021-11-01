@@ -42,7 +42,7 @@ public class ContentSelectDialog<T extends UnlockableContent> extends BaseDialog
 			table.button(drawable, () -> { 
 				callback.get(list.select(), item, () -> slider.getValue());
 				hide(); 
-			}).size(mobile ? 52f : 64f);
+			}).size(mobile ? 58f : 64f);
 
 			if(item.id % row == row - 1) table.row();
 		});

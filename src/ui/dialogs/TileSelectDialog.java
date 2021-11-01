@@ -68,7 +68,7 @@ public class TileSelectDialog extends BaseDialog{
 				table.button(drawable, () -> { 
 					callback.get(block);
 					updateimg();
-				}).size(64f);
+				}).size(mobile ? 58f : 64f);
 
 				if((table.getChildren().count(i -> true) - 1) % row == row - 1) table.row();
 			});

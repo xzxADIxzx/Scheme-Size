@@ -35,9 +35,9 @@ public class SchemeUtils{
 
     public static void changeUnit(){
         Runnable admins = () -> {
-            SchemeSize.unit.select(false, false, (ppl, unit, amount) -> {
+            SchemeSize.unit.select(false, true, (ppl, unit, amount) -> {
                 if(!hasCore(ppl)) return;
-                Call.sendChatMessage("/units change " + unit.name);
+                Call.sendChatMessage("/units change " + unit.name + " " + ppl.name);
             });
         };
         Runnable js = () -> {
