@@ -129,7 +129,7 @@ public class BuildingTools{
 
 		Boolf<Tile> check = (tile) -> {
 			if(tile == null) return false;
-			if(tile.block() instanceof PowerBlock && tile.build.team = player.team()){
+			if(tile.block() instanceof PowerBlock && tile.build.team == player.team()){
 				int bx = tile.x;
 				int by = tile.y;
 				callback.get(() -> cx > bx ? bx - 1 : bx + 1, () -> cy > by ? by - 1 : by + 1);
