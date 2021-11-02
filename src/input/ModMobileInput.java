@@ -857,7 +857,7 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
                 }
 
                 if(bt.mode == Mode.power){
-                    bt.power(cursorX, cursorY);
+                    // bt.power(cursorX, cursorY);
                 }
 
                 lastbtX = cursorX;
