@@ -125,12 +125,14 @@ public class BuildingTools{
 		for(int y = by - bsize + 1; y <= by + bsize - 1; y += bsize) replace(world.tiles.get(bx - bsize, y));
 	}
 
-	public void power(int cx, int cy){
+	public void power(int cx, int cy, Cons2<Intp, Intp> callback){
 		if(block() == null) return;
 
 		power(cx, cy, tile -> {
-			var build = new BuildPlan(tile.x, tile.y, 0, block());
-			plan.add(build);
+			int bx = tile.x;
+			int by = tile.y;
+			int br = block() instanceof PowerNode ? laserRange : 0;
+			callback.get(cx > bx ? bx + br : bx - br, cy > by ? by + br : by - br);
 		});
 	}
 

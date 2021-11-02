@@ -128,8 +128,8 @@ public class ModDesktopInput extends ModInputHandler{
             drawEditSelectionMod(isAdmin() ? player.tileX() : btX, isAdmin() ? player.tileY() : btY, cursorX, cursorY, isAdmin() ? 49 : maxSchematicSize);
         }
 
-        if(bt.mode == Mode.power && usingbt){
-            drawEditSelectionMod(cursorX - bt.size, cursorY - bt.size, cursorX + bt.size, cursorY + bt.size, 128);
+        if(bt.mode == Mode.power && usingbt && isPlacing()){
+            drawEditSelectionMod(cursorX - bt.size - 1, cursorY - bt.size - 1, cursorX + bt.size - 1, cursorY + bt.size - 1, 128);
         }
 
         Draw.reset();
@@ -717,7 +717,9 @@ public class ModDesktopInput extends ModInputHandler{
                 }
 
                 if(bt.mode == Mode.power){
-                    bt.power(cursorX, cursorY);
+                    bt.power(cursorX, cursorY, (x, y) -> {
+                        updateLine(cursorX, cursorY, x, y);
+                    });
                 }
 
                 lastbtX = cursorX;

@@ -389,8 +389,8 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
             drawEditSelectionMod(isAdmin() ? player.tileX() : btX, isAdmin() ? player.tileY() : btY, lastbtX, lastbtY, isAdmin() ? 49 : maxSchematicSize);
         }
 
-        if(bt.mode == Mode.power && usingbt){
-            drawEditSelectionMod(lastbtX - bt.size, lastbtY - bt.size, lastbtX + bt.size, lastbtY + bt.size, 128);
+        if(bt.mode == Mode.power && usingbt && isPlacing()){
+            drawEditSelectionMod(lastbtX - bt.size - 1, lastbtY - bt.size - 1, lastbtX + bt.size - 1, lastbtY + bt.size - 1, 128);
         }
     }
 
