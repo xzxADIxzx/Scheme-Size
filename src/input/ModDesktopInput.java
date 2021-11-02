@@ -131,7 +131,7 @@ public class ModDesktopInput extends ModInputHandler{
         }
 
         if(bt.mode == Mode.power && usingbt && isPlacing()){
-            drawEditSelectionMod(cursorX - bt.size + 1, cursorY - bt.size + 1, cursorX + bt.size - 1, cursorY + bt.size - 1, 128);
+            drawEditSelectionMod(cursorX - bt.size + 1, cursorY - bt.size + 1, cursorX + bt.size - 1, cursorY + bt.size - 1, 256);
         }
 
         Draw.reset();

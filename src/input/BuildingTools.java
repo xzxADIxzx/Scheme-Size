@@ -129,7 +129,7 @@ public class BuildingTools{
 
 		Boolf<Tile> check = (tile) -> {
 			if(tile == null) return false;
-			if(tile.block() instanceof PowerBlock){
+			if(tile.block() instanceof PowerBlock && tile.build.team = player.team()){
 				int bx = tile.x;
 				int by = tile.y;
 				callback.get(() -> cx > bx ? bx - 1 : bx + 1, () -> cy > by ? by - 1 : by + 1);
@@ -138,7 +138,7 @@ public class BuildingTools{
 			return false;
 		};
 
-		for(int s = size; s <= 128; s++){
+		for(int s = size; s <= 256; s++){
 			for(int x = cx - s; x <= cx + s - 1; x += 1) if(check.get(world.tiles.get(x, cy + s))) return;
 			for(int y = cy + s; y >= cy - s + 1; y -= 1) if(check.get(world.tiles.get(cx + s, y))) return;
 			for(int x = cx + s; x >= cx - s + 1; x -= 1) if(check.get(world.tiles.get(x, cy - s))) return;

@@ -392,7 +392,7 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
         }
 
         if(bt.mode == Mode.power && usingbt && isPlacing()){
-            drawEditSelectionMod(lastbtX - bt.size + 1, lastbtY - bt.size + 1, lastbtX + bt.size - 1, lastbtY + bt.size - 1, 128);
+            drawEditSelectionMod(lastbtX - bt.size + 1, lastbtY - bt.size + 1, lastbtX + bt.size - 1, lastbtY + bt.size - 1, 256);
         }
     }
 
