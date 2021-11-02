@@ -719,6 +719,8 @@ public class ModDesktopInput extends ModInputHandler{
                 if(bt.mode == Mode.power){
                     bt.power(cursorX, cursorY, (x, y) -> {
                         updateLine(x.get(), y.get());
+                        bt.plan.addAll(lineRequests);
+                        lineRequests.clear();
                     });
                 }
 
