@@ -721,6 +721,7 @@ public class ModDesktopInput extends ModInputHandler{
                         updateLine(x.get(), y.get());
                         bt.plan.addAll(lineRequests);
                         lineRequests.clear();
+                        bt.plan.remove(0);
                     });
                 }
 

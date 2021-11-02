@@ -128,13 +128,7 @@ public class BuildingTools{
 	public void power(int cx, int cy, Cons2<Intp, Intp> callback){
 		if(block() == null) return;
 
-		power(cx, cy, tile -> {
-			int bx = tile.x;
-			int by = tile.y;
-			int br = block() instanceof PowerNode pw ? (int)pw.laserRange : 0;
-			// callback.get(() -> cx > bx ? bx + br : bx - br, () -> cy > by ? by + br : by - br);
-			callback.get(() -> bx, () -> by);
-		});
+		power(cx, cy, tile -> callback.get(() -> tile.x, () -> tile.y));
 	}
 
 	private void power(int cx, int cy, Cons<Tile> callback){
