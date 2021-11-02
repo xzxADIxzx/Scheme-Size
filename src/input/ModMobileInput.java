@@ -859,7 +859,7 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
                 }
 
                 if(bt.mode == Mode.power){
-                    if(block instanceof PowerNode == false) block = Blocks.powerNode
+                    if(block instanceof PowerNode == false) block = Blocks.powerNode;
                     bt.power(cursorX, cursorY, (x, y) -> {
                         updateLine(x.get(), y.get());
                         bt.plan.addAll(lineRequests);
