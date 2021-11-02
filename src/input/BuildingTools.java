@@ -131,7 +131,7 @@ public class BuildingTools{
 		power(cx, cy, tile -> {
 			int bx = tile.x;
 			int by = tile.y;
-			int br = block() instanceof PowerNode pw ? pw.laserRange : 0;
+			int br = block() instanceof PowerNode pw ? (int)pw.laserRange : 0;
 			callback.get(() -> cx > bx ? bx + br : bx - br, () -> cy > by ? by + br : by - br);
 		});
 	}
