@@ -19,9 +19,11 @@ import mindustry.entities.units.*;
 import mindustry.game.EventType.*;
 import mindustry.game.*;
 import mindustry.gen.*;
+import mindustry.content.*;
 import mindustry.graphics.*;
 import mindustry.ui.*;
 import mindustry.world.*;
+import mindustry.world.blocks.power.*;
 import mindustry.scheme.*;
 
 import static arc.Core.*;
@@ -129,7 +131,7 @@ public class ModDesktopInput extends ModInputHandler{
         }
 
         if(bt.mode == Mode.power && usingbt && isPlacing()){
-            drawEditSelectionMod(cursorX - bt.size - 1, cursorY - bt.size - 1, cursorX + bt.size - 1, cursorY + bt.size - 1, 128);
+            drawEditSelectionMod(cursorX - bt.size + 1, cursorY - bt.size + 1, cursorX + bt.size - 1, cursorY + bt.size - 1, 128);
         }
 
         Draw.reset();
@@ -717,6 +719,7 @@ public class ModDesktopInput extends ModInputHandler{
                 }
 
                 if(bt.mode == Mode.power){
+                    if(block instanceof PowerNode == false) block = Blocks.powerNode;
                     bt.power(cursorX, cursorY, (x, y) -> {
                         updateLine(x.get(), y.get());
                         bt.plan.addAll(lineRequests);

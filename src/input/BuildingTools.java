@@ -7,7 +7,6 @@ import mindustry.world.*;
 import mindustry.world.blocks.power.*;
 import mindustry.input.*;
 import mindustry.input.Placement.*;
-import mindustry.content.*;
 import mindustry.entities.units.*;
 import mindustry.scheme.*;
 
@@ -128,16 +127,12 @@ public class BuildingTools{
 	public void power(int cx, int cy, Cons2<Intp, Intp> callback){
 		if(block() == null) return;
 
-		power(cx, cy, tile -> callback.get(() -> tile.x, () -> tile.y));
-	}
-
-	private void power(int cx, int cy, Cons<Tile> callback){
-		if(block() instanceof PowerNode == false && Blocks.powerNode.unlocked()) input.block = Blocks.powerNode;
-
 		Boolf<Tile> check = (tile) -> {
 			if(tile == null) return false;
 			if(tile.block() instanceof PowerBlock){
-				callback.get(tile);
+				int bx = tile.x;
+				int by = tile.y;
+				callback.get(() -> cx > bx ? bx - 1 : bx + 1, () -> cy > by ? by - 1 : by + 1);
 				return true;
 			}
 			return false;

@@ -23,11 +23,13 @@ import mindustry.entities.units.*;
 import mindustry.game.EventType.*;
 import mindustry.game.*;
 import mindustry.gen.*;
+import mindustry.content.*;
 import mindustry.graphics.*;
 import mindustry.type.*;
 import mindustry.ui.*;
 import mindustry.world.*;
 import mindustry.world.blocks.*;
+import mindustry.world.blocks.power.*;
 import mindustry.scheme.*;
 
 import static mindustry.Vars.*;
@@ -390,7 +392,7 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
         }
 
         if(bt.mode == Mode.power && usingbt && isPlacing()){
-            drawEditSelectionMod(lastbtX - bt.size - 1, lastbtY - bt.size - 1, lastbtX + bt.size - 1, lastbtY + bt.size - 1, 128);
+            drawEditSelectionMod(lastbtX - bt.size + 1, lastbtY - bt.size + 1, lastbtX + bt.size - 1, lastbtY + bt.size - 1, 128);
         }
     }
 
@@ -857,6 +859,7 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
                 }
 
                 if(bt.mode == Mode.power){
+                    if(block instanceof PowerNode == false) block = Blocks.powerNode
                     bt.power(cursorX, cursorY, (x, y) -> {
                         updateLine(x.get(), y.get());
                         bt.plan.addAll(lineRequests);
