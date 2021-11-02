@@ -132,7 +132,7 @@ public class BuildingTools{
 			int bx = tile.x;
 			int by = tile.y;
 			int br = block() instanceof PowerNode ? laserRange : 0;
-			callback.get(cx > bx ? bx + br : bx - br, cy > by ? by + br : by - br);
+			callback.get(() -> cx > bx ? bx + br : bx - br, () -> cy > by ? by + br : by - br);
 		});
 	}
 
