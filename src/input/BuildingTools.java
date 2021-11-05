@@ -7,6 +7,7 @@ import arc.struct.*;
 import mindustry.game.EventType.*;
 import mindustry.world.*;
 import mindustry.world.blocks.power.*;
+import mindustry.world.blocks.power.PowerNode.*;
 import mindustry.input.*;
 import mindustry.input.Placement.*;
 import mindustry.entities.units.*;
@@ -155,15 +156,14 @@ public class BuildingTools{
 		node = requests.select(bp -> bp instanceof PowerNode);
 
 		if(listener != null) Events.on(ConfigEvent.class, listener = event -> {
-			PowerNode.PowerNodeBuild build;
-			if(event.tile.build instanceof PowerNode.PowerNodeBuild pnb == false) return;
-			else build = pnb;
+			PowerNodeBuild build = event.tile instanceof PowerNodeBuild pnb ? pnb : null;
+			if(build == null) return;
 			
-			BuildPlan plan = node.find(bp -> bp.build.x == build.x && bp.build.y == build.y);
+			BuildPlan plan = node.find(bp -> bp.block.x == build.x && bp.block.y == build.y);
 			if(plan == null) return;
 
 			build.dropped();
-			plan.build.config().forEach(point -> {
+			plan.build().config().forEach(point -> {
 				Tile tile = world.tiles.get(build.x + point.x, build.y + point.y);
 				build.onConfigureTileTapped(tile.build);
 			});
