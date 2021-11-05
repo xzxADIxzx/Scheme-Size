@@ -26,6 +26,8 @@ public class BuildingTools{
 	public Mode mode = Mode.none;
 	public int size = 8;
 
+	public Seq<BuildPlan> ofte = new Seq<>();
+	public Seq<BuildPlan> test = new Seq<>();
 	public Seq<BuildPlan> node = new Seq<>();
 
 	public BuildingTools(InputHandler input){
@@ -171,6 +173,8 @@ public class BuildingTools{
 	}
 
 	public void node(Seq<BuildPlan> requests){
+		ofte = requests;
+		test = requests.select(bp -> bp.block instanceof PowerNode);
 		node.addAll(requests.select(bp -> bp.block instanceof PowerNode));
 	}
 
