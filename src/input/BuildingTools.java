@@ -153,17 +153,17 @@ public class BuildingTools{
 	}
 
 	public void node(Seq<BuildPlan> requests){
-		node = requests.select(bp -> bp instanceof PowerNode);
+		node = requests.select(bp -> bp.block instanceof PowerNode);
 
 		if(listener != null) Events.on(ConfigEvent.class, listener = event -> {
 			PowerNodeBuild build = event.tile instanceof PowerNodeBuild pnb ? pnb : null;
 			if(build == null) return;
 			
-			BuildPlan plan = node.find(bp -> bp.block.x == build.x && bp.block.y == build.y);
+			BuildPlan plan = node.find(bp -> bp.build().x == build.x && bp.build().y == build.y);
 			if(plan == null) return;
 
 			build.dropped();
-			plan.build().config().forEach(point -> {
+			plan.config.forEach(point -> {
 				Tile tile = world.tiles.get(build.x + point.x, build.y + point.y);
 				build.onConfigureTileTapped(tile.build);
 			});
