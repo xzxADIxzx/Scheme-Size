@@ -96,8 +96,8 @@ public class BuildingTools{
 		for (int deg = 0; deg <= 360; deg++) {
 			if(deg % 90 == 0) continue;
 
-			int x = cx + Mathf.round(Mathf.cosDeg(deg) * size / 2, block().size);
-			int y = cy + Mathf.round(Mathf.sinDeg(deg) * size / 2, block().size);
+			int x = cx + Mathf.round(Mathf.cosDeg(deg) / 2 * size, block().size);
+			int y = cy + Mathf.round(Mathf.sinDeg(deg) / 2 * size, block().size);
 
 			BuildPlan build = new BuildPlan(x, y, 0, block(), block().nextConfig());
 			plan.add(build);
@@ -156,7 +156,7 @@ public class BuildingTools{
 	public void node(Seq<BuildPlan> requests){
 		node = requests.select(bp -> bp.block instanceof PowerNode);
 
-		if(listener != null) Events.on(ConfigEvent.class, listener = event -> {
+		if(listener == null) Events.on(ConfigEvent.class, listener = event -> {
 			PowerNodeBuild build = event.tile instanceof PowerNodeBuild pnb ? pnb : null;
 			if(build == null) return;
 			
