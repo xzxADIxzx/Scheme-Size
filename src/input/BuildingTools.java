@@ -156,8 +156,8 @@ public class BuildingTools{
 
 		if(listener != null) Events.on(ConfigEvent.class, listener = event -> {
 			PowerNode.PowerNodeBuild build;
-			if(event.tile.build instanceof PowerNode.PowerNodeBuild pnb == false) return
-			else build = pnb
+			if(event.tile.build instanceof PowerNode.PowerNodeBuild pnb == false) return;
+			else build = pnb;
 			
 			BuildPlan plan = node.find(bp -> bp.build.x == build.x && bp.build.y == build.y);
 			if(plan == null) return;
