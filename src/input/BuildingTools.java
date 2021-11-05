@@ -1,8 +1,10 @@
 package mindustry.input;
 
+import arc.*;
 import arc.func.*;
 import arc.math.*;
 import arc.struct.*;
+import mindustry.game.EventType.*;
 import mindustry.world.*;
 import mindustry.world.blocks.power.*;
 import mindustry.input.*;
@@ -21,6 +23,9 @@ public class BuildingTools{
 	public Seq<BuildPlan> plan = new Seq<>();
 	public Mode mode = Mode.none;
 	public int size = 8;
+
+	public Seq<BuildPlan> node = new Seq<>();
+	public Cons<ConfigEvent> listener;
 
 	public BuildingTools(InputHandler input){
 		this.input = input;
@@ -89,8 +94,8 @@ public class BuildingTools{
 		for (int deg = 0; deg <= 360; deg++) {
 			if(deg % 90 == 0) continue;
 
-			int x = cx + Mathf.round(Mathf.cosDeg(deg) * size, block().size);
-			int y = cy + Mathf.round(Mathf.sinDeg(deg) * size, block().size);
+			int x = cx + Mathf.round(Mathf.cosDeg(deg) * size / 2, block().size);
+			int y = cy + Mathf.round(Mathf.sinDeg(deg) * size / 2, block().size);
 
 			BuildPlan build = new BuildPlan(x, y, 0, block(), block().nextConfig());
 			plan.add(build);
@@ -115,7 +120,7 @@ public class BuildingTools{
 			
 		if(plan.contains(build -> build.x == bx && build.y == by)) return;
 			
-		var build = new BuildPlan(bx, by, tile.build.rotation, block(), block().nextConfig());
+		BuildPlan build = new BuildPlan(bx, by, tile.build.rotation, block(), block().nextConfig());
 		plan.add(build);
 
 		for(int x = bx - bsize + 1; x <= bx + bsize - 1; x += bsize) replace(world.tiles.get(x, by + bsize));
@@ -144,6 +149,26 @@ public class BuildingTools{
 			for(int x = cx + s; x >= cx - s + 1; x -= 1) if(check.get(world.tiles.get(x, cy - s))) return;
 			for(int y = cy - s; y <= cy + s - 1; y += 1) if(check.get(world.tiles.get(cx - s, y))) return;
 		}
+	}
+
+	public void node(Seq<BuildPlan> requests){
+		node = requests.select(bp -> bp instanceof PowerNode);
+
+		if(listener != null) Events.on(ConfigEvent.class, listener = event ->{
+			if(event.tile.build instanceof PowerNode.PowerNodeBuild build == false) return;
+
+			BuildPlan plan = node.find(bp -> bp.build.x == build.x && bp.build.y == build.y);
+			if(plan == null) return;
+
+			build.dropped();
+			plan.build.config().forEach(point -> {
+				Tile tile = world.tiles.get(build.x + point.x, build.y + point.y);
+				build.onConfigureTileTapped(tile.build);
+			});
+
+			node.remove(plan);
+			if(node.isEmpty()) Events.remove(ConfigEvent.class, listener);
+		});
 	}
 
 	private Block block(){
