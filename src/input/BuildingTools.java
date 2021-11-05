@@ -27,10 +27,27 @@ public class BuildingTools{
 	public int size = 8;
 
 	public Seq<BuildPlan> node = new Seq<>();
-	public Cons<ConfigEvent> listener;
 
 	public BuildingTools(InputHandler input){
 		this.input = input;
+
+		Events.on(ConfigEvent.class, event -> {
+			if(node.isEmpty()) return;
+
+			PowerNodeBuild build = event.tile instanceof PowerNodeBuild pnb ? pnb : null;
+			if(build == null) return;
+			
+			BuildPlan plan = node.find(bp -> bp.x == build.tileX() && bp.y == build.tileY());
+			if(plan == null) return;
+
+			build.dropped();
+			new Seq<Point2>((Point2[])plan.config).each(point -> {
+				Tile tile = world.tiles.get(build.tileX() + point.x, build.tileY() + point.y);
+				build.onConfigureTileTapped(tile.build);
+			});
+
+			if(player.unit().plans.isEmpty()) node.clear();
+		});
 	}
 	
 	public boolean isPlacing(){
@@ -96,8 +113,8 @@ public class BuildingTools{
 		for (int deg = 0; deg <= 360; deg++) {
 			if(deg % 90 == 0) continue;
 
-			int x = Mathf.round(((float)cx) + Mathf.cosDeg(deg) * size / 2, block().size);
-			int y = Mathf.round(((float)cy) + Mathf.sinDeg(deg) * size / 2, block().size);
+			int x = cx + Mathf.round(Mathf.cosDeg(deg) * size, block().size);
+			int y = cy + Mathf.round(Mathf.sinDeg(deg) * size, block().size);
 
 			BuildPlan build = new BuildPlan(x, y, 0, block(), block().nextConfig());
 			plan.add(build);
@@ -155,25 +172,6 @@ public class BuildingTools{
 
 	public void node(Seq<BuildPlan> requests){
 		node.addAll(requests.select(bp -> bp.block instanceof PowerNode));
-
-		Events.on(ConfigEvent.class, listener = event -> {
-			PowerNodeBuild build = event.tile instanceof PowerNodeBuild pnb ? pnb : null;
-			if(build == null) return;
-			
-			BuildPlan plan = node.find(bp -> bp.x == build.tileX() && bp.y == build.tileY());
-			if(plan == null) return;
-
-			build.dropped();
-			new Seq<Point2>((Point2[])plan.config).each(point -> {
-				Tile tile = world.tiles.get(build.tileX() + point.x, build.tileY() + point.y);
-				build.onConfigureTileTapped(tile.build);
-			});
-
-			if(player.unit().plans.isEmpty()){
-				Events.remove(ConfigEvent.class, listener);
-				node.clear();
-			};
-		});
 	}
 
 	private Block block(){
