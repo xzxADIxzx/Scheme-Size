@@ -40,11 +40,19 @@ public class BuildingTools{
 			BuildPlan plan = node.find(bp -> bp.x == build.tileX() && bp.y == build.tileY());
 			if(plan == null) return;
 
-			build.dropped();
-			new Seq<Point2>((Point2[])plan.config).each(point -> {
+			Seq config = new Seq<Point2>((Point2[])plan.config);
+			new Seq<Point2>(build.config()).each(point -> {
+				if(config.contains(point)) return;
+
 				Tile tile = world.tiles.get(build.tileX() + point.x, build.tileY() + point.y);
 				build.onConfigureTileTapped(tile.build);
 			});
+
+			// build.dropped();
+			// new Seq<Point2>((Point2[])plan.config).each(point -> {
+				// Tile tile = world.tiles.get(build.tileX() + point.x, build.tileY() + point.y);
+				// build.onConfigureTileTapped(tile.build);
+			// });
 
 			if(player.unit().plans.isEmpty()) node.clear();
 		});
