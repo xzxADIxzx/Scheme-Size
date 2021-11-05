@@ -96,8 +96,8 @@ public class BuildingTools{
 		for (int deg = 0; deg <= 360; deg++) {
 			if(deg % 90 == 0) continue;
 
-			int x = Mathf.round(cx + Mathf.cosDeg(deg) * size / 2, block().size);
-			int y = Mathf.round(cy + Mathf.sinDeg(deg) * size / 2, block().size);
+			int x = Mathf.round(((float)cx) + Mathf.cosDeg(deg) * size / 2, block().size);
+			int y = Mathf.round(((float)cy) + Mathf.sinDeg(deg) * size / 2, block().size);
 
 			BuildPlan build = new BuildPlan(x, y, 0, block(), block().nextConfig());
 			plan.add(build);
@@ -154,9 +154,9 @@ public class BuildingTools{
 	}
 
 	public void node(Seq<BuildPlan> requests){
-		node = requests.select(bp -> bp.block instanceof PowerNode);
+		node.addAll(requests.select(bp -> bp.block instanceof PowerNode));
 
-		if(listener == null) Events.on(ConfigEvent.class, listener = event -> {
+		Events.on(ConfigEvent.class, listener = event -> {
 			PowerNodeBuild build = event.tile instanceof PowerNodeBuild pnb ? pnb : null;
 			if(build == null) return;
 			
@@ -169,8 +169,10 @@ public class BuildingTools{
 				build.onConfigureTileTapped(tile.build);
 			});
 
-			node.remove(plan);
-			if(node.isEmpty()) Events.remove(ConfigEvent.class, listener);
+			if(player.unit().plans.isEmpty()){
+				Events.remove(ConfigEvent.class, listener);
+				node.clear();
+			};
 		});
 	}
 
