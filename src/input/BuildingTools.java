@@ -164,7 +164,7 @@ public class BuildingTools{
 			if(plan == null) return;
 
 			build.dropped();
-			new Seq((Point2[])plan.config).each(point -> {
+			new Seq<Point2>((Point2[])plan.config).each(point -> {
 				Tile tile = world.tiles.get(build.x + point.x, build.y + point.y);
 				build.onConfigureTileTapped(tile.build);
 			});
