@@ -96,8 +96,8 @@ public class BuildingTools{
 		for (int deg = 0; deg <= 360; deg++) {
 			if(deg % 90 == 0) continue;
 
-			int x = cx + Mathf.round(Mathf.cosDeg(deg) / 2 * size, block().size);
-			int y = cy + Mathf.round(Mathf.sinDeg(deg) / 2 * size, block().size);
+			int x = Mathf.round(cx + Mathf.cosDeg(deg) * size / 2, block().size);
+			int y = Mathf.round(cy + Mathf.sinDeg(deg) * size / 2, block().size);
 
 			BuildPlan build = new BuildPlan(x, y, 0, block(), block().nextConfig());
 			plan.add(build);
@@ -160,7 +160,7 @@ public class BuildingTools{
 			PowerNodeBuild build = event.tile instanceof PowerNodeBuild pnb ? pnb : null;
 			if(build == null) return;
 			
-			BuildPlan plan = node.find(bp -> bp.build().x == build.x && bp.build().y == build.y);
+			BuildPlan plan = node.find(bp -> bp.x == build.tileX() && bp.y == build.tileY());
 			if(plan == null) return;
 
 			build.dropped();
