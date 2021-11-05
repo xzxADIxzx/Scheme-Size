@@ -179,7 +179,7 @@ public class BuildingTools{
 	}
 
 	public void save(Seq<BuildPlan> requests){
-		node.addAll(requests.select(bp -> bp.block instanceof PowerNode));
+		node.addAll(requests.select(bp -> bp.block instanceof PowerNode).copy());
 	}
 
 	private Block block(){
