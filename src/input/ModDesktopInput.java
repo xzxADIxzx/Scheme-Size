@@ -530,7 +530,7 @@ public class ModDesktopInput extends ModInputHandler{
             if(Core.input.keyDown(Binding.break_block)){
                 mode = none;
             }else if(!selectRequests.isEmpty()){
-                bp.node(selectRequests)
+                bp.node(selectRequests); // <-- THERE
                 flushRequests(selectRequests);
             }else if(isPlacing() && bt.mode == Mode.none){
                 selectX = cursorX;
