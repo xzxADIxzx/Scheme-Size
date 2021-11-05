@@ -154,9 +154,11 @@ public class BuildingTools{
 	public void node(Seq<BuildPlan> requests){
 		node = requests.select(bp -> bp instanceof PowerNode);
 
-		if(listener != null) Events.on(ConfigEvent.class, listener = event ->{
-			if(event.tile.build instanceof PowerNode.PowerNodeBuild build == false) return;
-
+		if(listener != null) Events.on(ConfigEvent.class, listener = event -> {
+			PowerNode.PowerNodeBuild build;
+			if(event.tile.build instanceof PowerNode.PowerNodeBuild pnb == false) return
+			else build = pnb
+			
 			BuildPlan plan = node.find(bp -> bp.build.x == build.x && bp.build.y == build.y);
 			if(plan == null) return;
 
