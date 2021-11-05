@@ -76,7 +76,7 @@ public class ModHudFragment extends Fragment{
             cont.name = "overlaymarker";
             cont.top().left();
 
-            if(mobile){
+            if(mobile || Core.settings.getBool("mobilemode")){
                 cont.table(select -> {
                     select.name = "mobile buttons";
                     select.left();
