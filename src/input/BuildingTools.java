@@ -32,6 +32,7 @@ public class BuildingTools{
 		this.input = input;
 
 		Events.on(ConfigEvent.class, event -> {
+			if(player.unit().plans.isEmpty()) node.clear();
 			if(node.isEmpty()) return;
 
 			PowerNodeBuild build = event.tile instanceof PowerNodeBuild pnb ? pnb : null;
@@ -47,14 +48,6 @@ public class BuildingTools{
 				Tile tile = world.tiles.get(build.tileX() + point.x, build.tileY() + point.y);
 				build.onConfigureTileTapped(tile.build);
 			});
-
-			// build.dropped();
-			// new Seq<Point2>((Point2[])plan.config).each(point -> {
-				// Tile tile = world.tiles.get(build.tileX() + point.x, build.tileY() + point.y);
-				// build.onConfigureTileTapped(tile.build);
-			// });
-
-			if(player.unit().plans.isEmpty()) node.clear();
 		});
 	}
 	
