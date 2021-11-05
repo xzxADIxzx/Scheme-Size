@@ -3,7 +3,7 @@ package mindustry.input;
 import arc.*;
 import arc.func.*;
 import arc.math.*;
-import arc.math.geom.*;
+// import arc.math.geom.*;
 import arc.struct.*;
 import mindustry.game.EventType.*;
 import mindustry.world.*;
@@ -164,7 +164,7 @@ public class BuildingTools{
 			if(plan == null) return;
 
 			build.dropped();
-			((Point2[])plan.config).forEach(point -> {
+			new Seq(plan.config).each(point -> {
 				Tile tile = world.tiles.get(build.x + point.x, build.y + point.y);
 				build.onConfigureTileTapped(tile.build);
 			});
