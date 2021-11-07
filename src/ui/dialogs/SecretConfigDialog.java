@@ -32,7 +32,7 @@ public class SecretConfigDialog extends BaseDialog{
 			slider.setValue(enabled ? 1 : 0);
 			slider.change();
 
-			cont.stack(lever, table).width(320).row()
+			cont.stack(lever, table).width(320).row()ж
 		});
 
 		cont.label("@secret.who.name").padTop(16f).row();
