@@ -32,7 +32,6 @@ public class SecretConfigDialog extends BaseDialog{
 			lever.moved(value -> {
 				enabled = value == 1;
 				text.setText(bundle.format("@secret.use.name", enabled ? "@secret.use.enabled" : "@secret.use.disabled"));
-				update();
 			});
 			lever.setValue(enabled ? 1 : 0);
 			lever.change();
