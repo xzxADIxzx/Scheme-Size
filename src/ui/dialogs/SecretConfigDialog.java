@@ -27,7 +27,7 @@ public class SecretConfigDialog extends BaseDialog{
 			Label text = table.labelWrap("").style(Styles.outlineLabel).padLeft(33f).growX().left().get();
 			Slider lever = new Slider(0, 1, 1, false);
 			lever.moved(value -> {
-				enabled = value.get() == 1;
+				enabled = value == 1;
 				text.setText(bundle.format("@secret.use.name", enabled ? "@secret.use.enabled" : "@secret.use.disabled"));
 			});
 			lever.setValue(enabled ? 1 : 0);
@@ -38,14 +38,14 @@ public class SecretConfigDialog extends BaseDialog{
 
 		cont.label(() -> "@secret.who.name").padTop(16f).row();
 		cont.table(table -> {
-			table.check("@secret.who.server", value -> isAdmin = !value).disabled(t -> !enabled).checked(() -> !isAdmin).left().row();
-			table.check("@secret.who.admin", value -> isAdmin = value).disabled(t -> !enabled).checked(() -> isAdmin).left().row();
+			table.check("@secret.who.server", value -> isAdmin = !value).disabled(t -> !enabled).checked(t -> !isAdmin).left().row();
+			table.check("@secret.who.admin", value -> isAdmin = value).disabled(t -> !enabled).checked(t -> isAdmin).left().row();
 		}).left().row();
 
 		cont.label(() -> "@secret.way.name").padTop(16f).row();
 		cont.table(table -> {
-			table.check("@secret.way.js", value -> { usejs = value; update(); }).disabled(t -> !enabled || !isAdmin).checked(() -> usejs).left().row();
-			table.check("@secret.way.secret", value -> { usejs = !value; update(); }).disabled(t -> !enabled || !isAdmin).checked(() -> !usejs).left().row();
+			table.check("@secret.way.js", value -> { usejs = value; update(); }).disabled(t -> !enabled || !isAdmin).checked(t -> usejs).left().row();
+			table.check("@secret.way.secret", value -> { usejs = !value; update(); }).disabled(t -> !enabled || !isAdmin).checked(t -> !usejs).left().row();
 		}).left().row();
 
 		description = cont.labelWrap("").labelAlign(2, 8).padTop(16f).size(320f, 120f).get();
