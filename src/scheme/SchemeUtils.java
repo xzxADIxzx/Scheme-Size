@@ -12,15 +12,14 @@ import static mindustry.Vars.*;
 
 // all the helper functions here ...
 // also this class makes it easy to add admin`s commands
-// oh no /js looks so bad
 public class SchemeUtils{
 
     public static void template(Runnable admins, Runnable js, Runnable server){
-        if(!settings.getBool("enabledsecret")) return;
+        if(!settings.getBool("enabledsecret")) return ui.showInfoFade("@feature.secretonly");
         if(settings.getBool("adminssecret")){
             if(settings.getBool("usejs")) js.run();
             else admins.run();
-        }else {
+        } else {
             if(net.client()) ui.showInfoFade("@feature.serveronly");
             else server.run();
         }

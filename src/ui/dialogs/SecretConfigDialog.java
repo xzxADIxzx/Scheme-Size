@@ -10,8 +10,6 @@ import static arc.Core.*;
 
 public class SecretConfigDialog extends BaseDialog{
 	
-	private Label description;
-	
 	public boolean enabled = settings.getBool("enabledsecret", false);
 	public boolean isAdmin = settings.getBool("adminssecret", false);
 	public boolean usejs = settings.getBool("usejs", true);
@@ -19,7 +17,12 @@ public class SecretConfigDialog extends BaseDialog{
 	public SecretConfigDialog(){
 		super("@secret.name");
 		addCloseButton();
-		closeOnBack(() -> callback());
+
+		closeOnBack(() -> {
+			settings.put("enabledsecret", enabled);
+			settings.put("adminssecret", isAdmin);
+			settings.put("usejs", usejs);
+		});
 
 		new Table(table -> {
 			table.touchable = Touchable.disabled;
@@ -29,6 +32,7 @@ public class SecretConfigDialog extends BaseDialog{
 			lever.moved(value -> {
 				enabled = value == 1;
 				text.setText(bundle.format("@secret.use.name", enabled ? "@secret.use.enabled" : "@secret.use.disabled"));
+				update();
 			});
 			lever.setValue(enabled ? 1 : 0);
 			lever.change();
@@ -44,22 +48,12 @@ public class SecretConfigDialog extends BaseDialog{
 
 		cont.label(() -> "@secret.way.name").padTop(16f).row();
 		cont.table(table -> {
-			table.check("@secret.way.js", value -> { usejs = value; update(); }).disabled(t -> !enabled || !isAdmin).checked(t -> usejs).left().row();
-			table.check("@secret.way.secret", value -> { usejs = !value; update(); }).disabled(t -> !enabled || !isAdmin).checked(t -> !usejs).left().row();
+			table.check("@secret.way.js", value -> usejs = value).disabled(t -> !enabled || !isAdmin).checked(t -> usejs).left().row();
+			table.check("@secret.way.secret", value -> usejs = !value).disabled(t -> !enabled || !isAdmin).checked(t -> !usejs).left().row();
 		}).left().row();
 
-		description = cont.labelWrap("").labelAlign(2, 8).padTop(16f).size(320f, 120f).get();
-		description.getStyle().fontColor = Color.lightGray;
-		update();
-	}
-	
-	private void callback(){
-		settings.put("enabledsecret", enabled);
-		settings.put("adminssecret", isAdmin);
-		settings.put("usejs", usejs);
-	}
-
-	private void update(){
-		description.setText(enabled && isAdmin ? (usejs ? "@secret.way.js.description" : "@secret.way.secret.description") : "");
+		cont.labelWrap("").labelAlign(2, 8).padTop(16f).size(320f, 120f).update(t -> {
+			t.setText(enabled && isAdmin ? (usejs ? "@secret.way.js.description" : "@secret.way.secret.description") : "");
+		}).get().getStyle().fontColor = Color.lightGray;;
 	}
 }

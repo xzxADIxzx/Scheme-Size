@@ -638,6 +638,10 @@ public class ModDesktopInput extends ModInputHandler{
     }
 
     void modInput(){
+        if(input.keyTap(ModBinding.secret)){
+            SchemeUtils.showSecret();
+        }
+
         if(input.keyTap(ModBinding.history)){
             SchemeUtils.history();
         }
