@@ -288,8 +288,6 @@ public class ModSettingsMenuDialog extends SettingsMenuDialog{
         mod.checkPref("mobilemode", false);
         mod.checkPref("checkupdate", true);
         mod.checkPref("secret", false);
-        mod.checkPref("adminssecret", false);
-        mod.checkPref("usejs", false);
 
         sound.sliderPref("musicvol", 100, 0, 100, 1, i -> i + "%");
         sound.sliderPref("sfxvol", 100, 0, 100, 1, i -> i + "%");

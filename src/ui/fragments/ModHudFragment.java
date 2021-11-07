@@ -182,7 +182,7 @@ public class ModHudFragment extends Fragment{
                     select.defaults().size(bsize).left();
 
                     Drawable flip = Icon.downOpen;
-                    Drawable crtm = Icon.eye;
+                    Drawable scrt = Icon.admin;
                     Drawable look = Core.atlas.drawable("status-disarmed");
                     Drawable tele = Core.atlas.drawable("status-overdrive");
                     Drawable port = Icon.lock;
@@ -190,7 +190,7 @@ public class ModHudFragment extends Fragment{
                     flipMobile = select.button(flip, style, this::toggleMobile).get();
                     flipMobile.name = "flip";
 
-                    select.button(crtm, style, isize - 12f, SchemeUtils::toggleCoreItems).name("crtm");
+                    select.button(scrt, style, isize - 12f, SchemeUtils::showSecret).name("scrt");
                     select.button(look, style, isize, SchemeSize.input::toggleMobileDisWpn).name("look");
                     select.button(tele, style, isize, () -> SchemeUtils.teleport(Core.camera.position)).name("tele");
                     select.button(port, style, isize, SchemeSize.input::toggleMobilePanCam).name("port").get(

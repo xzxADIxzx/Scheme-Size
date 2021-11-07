@@ -16,6 +16,7 @@ import static mindustry.Vars.*;
 public class SchemeUtils{
 
     public static void template(Runnable admins, Runnable js, Runnable server){
+        if(!settings.getBool("enabledsecret")) return;
         if(settings.getBool("adminssecret")){
             if(settings.getBool("usejs")) js.run();
             else admins.run();
@@ -186,8 +187,12 @@ public class SchemeUtils{
         template(admins, js, server);
     }
 
-    public static void showInfo(){
+    public static void showComb(){
         SchemeSize.keycomb.show();
+    }
+
+    public static void showSecret(){
+        SchemeSize.secret.show();
     }
 
     public static void edit(int sx, int sy, int ex, int ey){

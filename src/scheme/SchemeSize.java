@@ -22,6 +22,7 @@ public class SchemeSize extends Mod{
     public static ModSchematics schematic;
     public static ModInputHandler input;
 
+    public static SecretConfigDialog secret;
     public static KeybindCombinationsDialog keycomb;
     public static ModSettingsMenuDialog setting;
     public static ModHudFragment hudfrag;
@@ -41,6 +42,7 @@ public class SchemeSize extends Mod{
 
             control.setInput(input = mobile ? new ModMobileInput() : new ModDesktopInput());
 
+            secret = new SecretConfigDialog();
             keycomb = new KeybindCombinationsDialog();
             setting = new ModSettingsMenuDialog();
             hudfrag = new ModHudFragment();

@@ -683,7 +683,7 @@ public class ModDesktopInput extends ModInputHandler{
         }
 
         if(input.keyTap(Binding.block_info) && input.keyDown(ModBinding.alternative)){
-            SchemeUtils.showInfo();
+            SchemeUtils.showComb();
         }
 
         if(input.keyTap(Binding.deselect) && input.keyDown(ModBinding.alternative)){
