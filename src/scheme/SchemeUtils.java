@@ -15,8 +15,8 @@ import static mindustry.Vars.*;
 public class SchemeUtils{
 
     public static void template(Runnable admins, Runnable js, Runnable server){
-        if(!settings.getBool("enabledsecret")) return ui.showInfoFade("@feature.secretonly");
-        if(settings.getBool("adminssecret")){
+        if(!settings.getBool("enabledsecret")) ui.showInfoFade("@feature.secretonly");
+        else if(settings.getBool("adminssecret")){
             if(settings.getBool("usejs")) js.run();
             else admins.run();
         } else {
