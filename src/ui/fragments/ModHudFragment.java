@@ -360,7 +360,8 @@ public class ModHudFragment extends Fragment{
             });
         });
 
-        getCoreItems().table(test2 = cont -> {
+        getCoreItems().table(cont -> {
+            test2 = cont;
             cont.name = "energydisplay";
             cont.background(Styles.black6).margin(8f, 8f, 8f, 0f);
 
