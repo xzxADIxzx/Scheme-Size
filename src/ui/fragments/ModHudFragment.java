@@ -43,7 +43,7 @@ public class ModHudFragment extends Fragment{
     private TextField size;
     private float maxShield;
     private Element block;
-    private Build node;
+    private Building node;
 
     public boolean shown = true;
     public boolean shownMobile = false;
@@ -373,7 +373,7 @@ public class ModHudFragment extends Fragment{
                 () -> Pal.powerBar,
                 () -> node != null ? node.power.Mathf.clamp(node.power.graph.getLastPowerStored() / node.power.graph.getLastCapacity()) : 0);
 
-            ImageButtonStyle check = new ImageButtonStyle(){{
+            ImageButtonStyle style = new ImageButtonStyle(){{
                 down = Styles.flatDown;
                 up = Styles.none;
                 over = Styles.flatOver;
@@ -385,7 +385,7 @@ public class ModHudFragment extends Fragment{
                 bars.add(stored).height(19f).growX().padTop(8f).row();
             }).growX();
             cont.button(Icon.edit, style, () -> checked = !checked).checked(t -> checked).size(44f, 44f).padLeft(8f);
-        }).fillX().margin(8f, 8f, 8f, 0f).visible(() -> Core.settings.getBool("coreitems") && !Vars.mobile && shown);
+        }).fillX().margin(8f, 8f, 8f, 0f).visible(() -> Core.settings.getBool("coreitems") && mobile && shown);
     }
 
     public void resize(int amount){
@@ -721,7 +721,7 @@ public class ModHudFragment extends Fragment{
     }
 
     private Table getCoreItems(){
-        return ((Table)ui.hudGroup.getChildren().get(6)).getChildren().get(1);
+        return (Table)((Table)ui.hudGroup.getChildren().get(6)).getChildren().get(1);
     }
 
     public void updateShield(Unit on){
@@ -737,7 +737,7 @@ public class ModHudFragment extends Fragment{
         });
     }
 
-    public void updateNode(Build node){
+    public void updateNode(Building node){
         if(checked){
             checked = !checked;
             this.node = node;
