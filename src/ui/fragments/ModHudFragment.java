@@ -49,8 +49,6 @@ public class ModHudFragment extends Fragment{
     public boolean shownMobile = false;
     public boolean shownBT = false;
     public boolean checked = false;
-    public Table test = getCoreItems();
-    public Table test2;
 
     @Override
     public void build(Group parent){
@@ -361,7 +359,6 @@ public class ModHudFragment extends Fragment{
         });
 
         getCoreItems().table(cont -> {
-            test2 = cont;
             cont.name = "energydisplay";
             cont.background(Styles.black6).margin(8f, 8f, 8f, 0f);
 
@@ -724,7 +721,7 @@ public class ModHudFragment extends Fragment{
     }
 
     private Table getCoreItems(){
-        return (Table)((Table)ui.hudGroup.getChildren().get(3)).getChildren().get(1);
+        return (Table)((Table)ui.hudGroup.getChildren().get(4)).getChildren().get(1);
     }
 
     public void updateShield(Unit on){
