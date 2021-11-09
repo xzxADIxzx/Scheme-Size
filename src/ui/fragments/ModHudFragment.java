@@ -360,18 +360,18 @@ public class ModHudFragment extends Fragment{
 
         getCoreItems().table(cont -> {
             cont.name = "energydisplay";
-            cont.background(Styles.black6);
+            cont.background(Styles.black6).margin(8f, 8f, 8f, 0f);
 
             Bar power = new Bar(
-                () -> Core.bundle.format("bar.powerbalance", node != null ? (node.power.graph.powerBalance >= 0 ? "+" : "") + UI.formatAmount(graph.powerBalance * 60) : "+0"),
+                () -> Core.bundle.format("bar.powerbalance", node != null ? (node.power.graph.getPowerBalance() >= 0 ? "+" : "") + UI.formatAmount((long)(node.power.graph.getPowerBalance() * 60)) : "+0"),
                 () -> Pal.powerBar,
                 () -> node != null ? node.power.graph.getSatisfaction() : 0);
 
             Bar stored = new Bar(
-                () -> Core.bundle.format("bar.powerstored", node != null ? UI.formatAmount(node.power.graph.getLastPowerStored()) : 0,
-                                                            node != null ? UI.formatAmount(node.power.graph.getLastCapacity()) : 0),
+                () -> Core.bundle.format("bar.powerstored", node != null ? UI.formatAmount((long)node.power.graph.getLastPowerStored()) : 0,
+                                                            node != null ? UI.formatAmount((long)node.power.graph.getLastCapacity()) : 0),
                 () -> Pal.powerBar,
-                () -> node != null ? node.power.Mathf.clamp(node.power.graph.getLastPowerStored() / node.power.graph.getLastCapacity()) : 0);
+                () -> node != null ? Mathf.clamp(node.power.graph.getLastPowerStored() / node.power.graph.getLastCapacity()) : 0);
 
             ImageButtonStyle style = new ImageButtonStyle(){{
                 down = Styles.flatDown;
@@ -385,7 +385,7 @@ public class ModHudFragment extends Fragment{
                 bars.add(stored).height(19f).growX().padTop(8f).row();
             }).growX();
             cont.button(Icon.edit, style, () -> checked = !checked).checked(t -> checked).size(44f, 44f).padLeft(8f);
-        }).fillX().margin(8f, 8f, 8f, 0f).visible(() -> Core.settings.getBool("coreitems") && mobile && shown);
+        }).fillX().visible(() -> Core.settings.getBool("coreitems") && mobile && shown);
     }
 
     public void resize(int amount){
