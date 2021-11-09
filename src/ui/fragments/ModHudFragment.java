@@ -384,7 +384,7 @@ public class ModHudFragment extends Fragment{
                 bars.add(power).height(18f).growX().row();
                 bars.add(stored).height(19f).growX().padTop(8f).row();
             }).growX();
-            cont.button(Icon.edit, style, () -> checked = !checked).checked(t => checked).size(44f, 44f).padLeft(8);
+            cont.button(Icon.edit, style, () -> checked = !checked).checked(t -> checked).size(44f, 44f).padLeft(8f);
         }).fillX().margin(8f, 8f, 8f, 0f).visible(() -> Core.settings.getBool("coreitems") && !Vars.mobile && shown);
     }
 
