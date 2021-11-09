@@ -693,6 +693,11 @@ public class ModDesktopInput extends ModInputHandler{
         if(input.keyTap(Binding.deselect) && input.keyDown(ModBinding.alternative)){
             SchemeSize.hudfrag.toggleBT();
         }
+
+        if(Core.input.keyTap(Binding.select) && !scene.hasMouse()){
+            Tile tile = tileAtMod(Core.input.mouseX(), Core.input.mouseY());
+            if(tile.block() instanceof PowerNode) SchemeSize.hudfrag.updateNode(tile.build);
+        }
     }
 
     void btInput(){

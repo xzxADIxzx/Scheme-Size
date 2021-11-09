@@ -18,7 +18,6 @@ import arc.util.*;
 // import mindustry.annotations.Annotations.*;
 import mindustry.entities.abilities.*;
 import mindustry.content.*;
-import mindustry.scheme.*;
 import mindustry.core.GameState.*;
 import mindustry.core.*;
 import mindustry.ctype.*;
@@ -31,6 +30,7 @@ import mindustry.input.BuildingTools.*;
 import mindustry.net.Packets.*;
 import mindustry.type.*;
 import mindustry.ui.*;
+import mindustry.scheme.*;
 
 import static mindustry.Vars.*;
 
@@ -43,9 +43,12 @@ public class ModHudFragment extends Fragment{
     private TextField size;
     private float maxShield;
     private Element block;
+    private Build node;
+
     public boolean shown = true;
     public boolean shownMobile = false;
     public boolean shownBT = false;
+    public boolean checked = false;
 
     @Override
     public void build(Group parent){
@@ -298,9 +301,9 @@ public class ModHudFragment extends Fragment{
 
             ImageButtonStyle check = new ImageButtonStyle(){{
                 down = Styles.flatDown;
-                checked = Styles.flatDown;
                 up = Styles.none;
                 over = Styles.flatOver;
+                checked = Styles.flatDown;
             }};
 
             TextFieldStyle input = new TextFieldStyle(){{
@@ -354,6 +357,35 @@ public class ModHudFragment extends Fragment{
                 if(block != null) t.setTranslation(-block.getWidth() + Scl.scl(4), 0);
             });
         });
+
+        getCoreItems().table(cont -> {
+            cont.name = "energydisplay";
+            cont.background(Styles.black6);
+
+            Bar power = new Bar(
+                () -> Core.bundle.format("bar.powerbalance", node != null ? (node.power.graph.powerBalance >= 0 ? "+" : "") + UI.formatAmount(graph.powerBalance * 60) : "+0"),
+                () -> Pal.powerBar,
+                () -> node != null ? node.power.graph.getSatisfaction() : 0);
+
+            Bar stored = new Bar(
+                () -> Core.bundle.format("bar.powerstored", node != null ? UI.formatAmount(node.power.graph.getLastPowerStored()) : 0,
+                                                            node != null ? UI.formatAmount(node.power.graph.getLastCapacity()) : 0),
+                () -> Pal.powerBar,
+                () -> node != null ? node.power.Mathf.clamp(node.power.graph.getLastPowerStored() / node.power.graph.getLastCapacity()) : 0);
+
+            ImageButtonStyle check = new ImageButtonStyle(){{
+                down = Styles.flatDown;
+                up = Styles.none;
+                over = Styles.flatOver;
+                checked = Styles.flatDown;
+            }};
+
+            cont.table(bars -> {
+                bars.add(power).height(18f).growX().row();
+                bars.add(stored).height(19f).growX().padTop(8f).row();
+            }).growX();
+            cont.button(Icon.edit, style, () -> checked = !checked).checked(t => checked).size(44f, 44f).padLeft(8);
+        }).fillX().margin(8f, 8f, 8f, 0f).visible(() -> Core.settings.getBool("coreitems") && !Vars.mobile && shown);
     }
 
     public void resize(int amount){
@@ -688,6 +720,10 @@ public class ModHudFragment extends Fragment{
         return state.rules.waves && ((net.server() || player.admin) || !net.active()) && state.enemies == 0 && !spawner.isSpawning();
     }
 
+    private Table getCoreItems(){
+        return ((Table)ui.hudGroup.getChildren().get(6)).getChildren().get(1);
+    }
+
     public void updateShield(Unit on){
         maxShield = -1;
         on.abilities.each((a) -> {
@@ -699,5 +735,12 @@ public class ModHudFragment extends Fragment{
         Time.runTask(1f, () -> { // waiting for blockfrag rebuild
             block = ((Table)ui.hudGroup.getChildren().get(9)).getChildren().get(0);
         });
+    }
+
+    public void updateNode(Build node){
+        if(checked){
+            checked = !checked;
+            this.node = node;
+        }
     }
 }

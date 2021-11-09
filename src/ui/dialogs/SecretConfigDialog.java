@@ -18,7 +18,7 @@ public class SecretConfigDialog extends BaseDialog{
 		super("@secret.name");
 		addCloseButton();
 
-		closeOnBack(() -> {
+		hidden(() -> {
 			settings.put("enabledsecret", enabled);
 			settings.put("adminssecret", isAdmin);
 			settings.put("usejs", usejs);
