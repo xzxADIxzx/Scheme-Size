@@ -49,6 +49,8 @@ public class ModHudFragment extends Fragment{
     public boolean shownMobile = false;
     public boolean shownBT = false;
     public boolean checked = false;
+    public Table test = getCoreItems();
+    public Table test2;
 
     @Override
     public void build(Group parent){
@@ -358,7 +360,7 @@ public class ModHudFragment extends Fragment{
             });
         });
 
-        getCoreItems().table(cont -> {
+        getCoreItems().table(test2 = cont -> {
             cont.name = "energydisplay";
             cont.background(Styles.black6).margin(8f, 8f, 8f, 0f);
 
@@ -385,7 +387,7 @@ public class ModHudFragment extends Fragment{
                 bars.add(stored).height(19f).growX().padTop(8f).row();
             }).growX();
             cont.button(Icon.edit, style, () -> checked = !checked).checked(t -> checked).size(44f, 44f).padLeft(8f);
-        }).fillX().visible(() -> Core.settings.getBool("coreitems") && mobile && shown);
+        }).fillX().visible(() -> Core.settings.getBool("coreitems") && !mobile && shown);
     }
 
     public void resize(int amount){
