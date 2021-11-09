@@ -721,7 +721,7 @@ public class ModHudFragment extends Fragment{
     }
 
     private Table getCoreItems(){
-        return (Table)((Table)ui.hudGroup.getChildren().get(6)).getChildren().get(0);
+        return (Table)((Table)ui.hudGroup.getChildren().get(3)).getChildren().get(1);
     }
 
     public void updateShield(Unit on){
