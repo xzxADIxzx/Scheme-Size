@@ -5,6 +5,8 @@ import arc.scene.ui.layout.*;
 import mindustry.gen.*;
 import mindustry.net.Administration.*;
 
+import static mindustry.Vars.*;
+
 // Last Update - Mar 3, 2021
 public class ModTraceDialog extends TraceDialog{
 
