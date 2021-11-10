@@ -1,7 +1,9 @@
 package mindustry.ui.dialogs;
 
 import arc.*;
+import arc.scene.ui.ImageButton.*;
 import arc.scene.ui.layout.*;
+import mindustry.ui.*;
 import mindustry.gen.*;
 import mindustry.net.Administration.*;
 
@@ -13,18 +15,24 @@ public class ModTraceDialog extends TraceDialog{
     public void show(Player player, TraceInfo info){
         cont.clear();
 
+        ImageButtonStyle style = new ImageButtonStyle(){{
+            down = Styles.flatDown;
+            up = Styles.none;
+            over = Styles.flatOver;
+        }};
+
         Table table = new Table(Tex.clear);
         table.margin(14);
         table.defaults().pad(1);
 
         table.defaults().left();
-        table.button(Icon.copy, () -> copy(player.name));
+        table.button(Icon.copy, style, 20f, () -> copy(player.name)).size(24f, 24f);
         table.add(Core.bundle.format("trace.playername", player.name));
         table.row();
-        table.button(Icon.copy, () -> copy(info.ip));
+        table.button(Icon.copy, style, 20f, () -> copy(info.ip)).size(24f, 24f);
         table.add(Core.bundle.format("trace.ip", info.ip));
         table.row();
-        table.button(Icon.copy, () -> copy(info.uuid));
+        table.button(Icon.copy, style, 20f, () -> copy(info.uuid)).size(24f, 24f);
         table.add(Core.bundle.format("trace.id", info.uuid));
         table.row();
         table.add(Core.bundle.format("trace.modclient", info.modded));

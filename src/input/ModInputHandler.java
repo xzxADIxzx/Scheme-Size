@@ -276,9 +276,9 @@ public class ModInputHandler extends InputHandler{
     }
 
     public void flushLastRemoved(){
+        if(Core.settings.getBool("hardconnect")) bt.save(bt.removed);
+
         flushRequests(bt.removed);
         bt.removed.clear();
-
-        if(Core.settings.getBool("hardconnect")) bt.save(bt.removed);
     }
 }
