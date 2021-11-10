@@ -19,7 +19,7 @@ public class KeybindCombinationsDialog extends BaseDialog{
 		template("@keycomb.self_dest", "keybind.respawn.name");
 		template("@keycomb.spawn_unit", "keybind.change_unit.name");
 
-		cont.label("@category.bt.name").color(Color.gray).padTop(10f).row();
+		cont.label(() -> "@category.bt.name").color(Color.gray).padTop(10f).row();
 		cont.image().color(Color.gray).fillX().height(4f).padBottom(6f).row();
 		template("@keycomb.toggle_bt", "keybind.deselect.name");
 		template("@keycomb.return", "keybind.schematic_menu.name");
