@@ -464,7 +464,7 @@ public class ModDesktopInput extends ModInputHandler{
             schemY = rawCursorY;
         }
 
-        if(Core.input.keyTap(Binding.schematic_menu) && !Core.scene.hasKeyboard()){
+        if(Core.input.keyTap(Binding.schematic_menu) && !Core.scene.hasKeyboard() && !input.keyDown(ModBinding.alternative)){
             if(ui.schematics.isShown()){
                 ui.schematics.hide();
             }else{
