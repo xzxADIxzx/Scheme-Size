@@ -27,15 +27,19 @@ public class ModTraceDialog extends TraceDialog{
         table.defaults().pad(1);
 
         table.defaults().left();
-        table.button(Icon.copy, style, 10f, () -> copy(player.name)).size(24f, 24f).padRight(4f);
-        table.add(Core.bundle.format("trace.playername", player.name));
-        table.row();
-        table.button(Icon.copy, style, 10f, () -> copy(info.ip)).size(24f, 24f).padRight(4f);
-        table.add(Core.bundle.format("trace.ip", info.ip));
-        table.row();
-        table.button(Icon.copy, style, 10f, () -> copy(info.uuid)).size(24f, 24f).padRight(4f);
-        table.add(Core.bundle.format("trace.id", info.uuid));
-        table.row();
+        table.table(stack -> {
+            stack.button(Icon.copy, style, 24f, () -> copy(player.name)).padRight(4f);
+            stack.add(Core.bundle.format("trace.playername", player.name));
+        }).row();
+        table.table(stack -> {
+            stack.button(Icon.copy, style, 24f, () -> copy(info.ip)).padRight(4f);
+            stack.add(Core.bundle.format("trace.ip", info.ip));
+        }).row();
+        table.table(stack -> {
+            stack.button(Icon.copy, style, 24f, () -> copy(info.uuid)).padRight(4f);
+            stack.add(Core.bundle.format("trace.id", info.uuid));
+        }).row();
+
         table.add(Core.bundle.format("trace.modclient", info.modded));
         table.row();
         table.add(Core.bundle.format("trace.mobile", info.mobile));
