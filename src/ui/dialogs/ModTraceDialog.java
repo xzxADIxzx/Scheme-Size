@@ -28,15 +28,15 @@ public class ModTraceDialog extends TraceDialog{
 
         table.defaults().left();
         table.table(stack -> {
-            stack.button(Icon.copy, style, 24f, () -> copy(player.name)).padRight(4f);
+            stack.button(Icon.rotate, style, 24f, () -> copy(player.name)).padRight(4f);
             stack.add(Core.bundle.format("trace.playername", player.name));
         }).row();
         table.table(stack -> {
-            stack.button(Icon.copy, style, 24f, () -> copy(info.ip)).padRight(4f);
+            stack.button(Icon.rotate, style, 24f, () -> copy(info.ip)).padRight(4f);
             stack.add(Core.bundle.format("trace.ip", info.ip));
         }).row();
         table.table(stack -> {
-            stack.button(Icon.copy, style, 24f, () -> copy(info.uuid)).padRight(4f);
+            stack.button(Icon.rotate, style, 24f, () -> copy(info.uuid)).padRight(4f);
             stack.add(Core.bundle.format("trace.id", info.uuid));
         }).row();
 
