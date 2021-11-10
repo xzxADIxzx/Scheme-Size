@@ -606,6 +606,8 @@ public class ModDesktopInput extends ModInputHandler{
                 if(lastSchematic != null){
                     useSchematic(lastSchematic);
                     lastSchematic = null;
+                }else{
+                    bt.save(selectX, selectY, cursorX, cursorY, size);
                 }
             }
             selectX = -1;
@@ -701,6 +703,10 @@ public class ModDesktopInput extends ModInputHandler{
     }
 
     void btInput(){
+        if(input.keyTap(Binding.schematic_menu) && input.keyDown(ModBinding.alternative)){
+            flushLastRemoved();
+        }
+
         if(!SchemeSize.hudfrag.shownBT) bt.setMode(Mode.none);
         if(bt.mode == Mode.none) return;
 

@@ -5,6 +5,7 @@ import arc.func.*;
 import arc.math.*;
 import arc.math.geom.*;
 import arc.struct.*;
+import mindustry.gen.*;
 import mindustry.game.EventType.*;
 import mindustry.world.*;
 import mindustry.world.blocks.power.*;
@@ -22,6 +23,7 @@ public class BuildingTools{
 	private Block select;
 	private int bsize;
 
+	public Seq<BuildPlan> removed;
 	public Seq<BuildPlan> plan = new Seq<>();
 	public Mode mode = Mode.none;
 	public int size = 8;
@@ -45,7 +47,7 @@ public class BuildingTools{
 			new Seq<Point2>(build.config()).each(point -> {
 				if(config.contains(point)) return;
 
-				Tile tile = world.tiles.get(build.tileX() + point.x, build.tileY() + point.y);
+				Tile tile = world.tile(build.tileX() + point.x, build.tileY() + point.y);
 				build.onConfigureTileTapped(tile.build);
 			});
 		});
@@ -125,7 +127,9 @@ public class BuildingTools{
 	public void replace(int cx, int cy){
 		if(block() == null) return;
 
-		Tile tile = world.tiles.get(cx, cy);
+		Tile tile = world.tile(cx, cy);
+		if(tile == null) return;
+
 		select = tile.block();
 		bsize = select.size;
 
@@ -143,10 +147,10 @@ public class BuildingTools{
 		BuildPlan build = new BuildPlan(bx, by, tile.build.rotation, block(), block().nextConfig());
 		plan.add(build);
 
-		for(int x = bx - bsize + 1; x <= bx + bsize - 1; x += bsize) replace(world.tiles.get(x, by + bsize));
-		for(int y = by + bsize - 1; y >= by - bsize + 1; y -= bsize) replace(world.tiles.get(bx + bsize, y));
-		for(int x = bx + bsize - 1; x >= bx - bsize + 1; x -= bsize) replace(world.tiles.get(x, by - bsize));
-		for(int y = by - bsize + 1; y <= by + bsize - 1; y += bsize) replace(world.tiles.get(bx - bsize, y));
+		for(int x = bx - bsize + 1; x <= bx + bsize - 1; x += bsize) replace(world.tile(x, by + bsize));
+		for(int y = by + bsize - 1; y >= by - bsize + 1; y -= bsize) replace(world.tile(bx + bsize, y));
+		for(int x = bx + bsize - 1; x >= bx - bsize + 1; x -= bsize) replace(world.tile(x, by - bsize));
+		for(int y = by - bsize + 1; y <= by + bsize - 1; y += bsize) replace(world.tile(bx - bsize, y));
 	}
 
 	public void power(int cx, int cy, Cons2<Intp, Intp> callback){
@@ -164,15 +168,28 @@ public class BuildingTools{
 		};
 
 		for(int s = size; s <= 256; s++){
-			for(int x = cx - s; x <= cx + s - 1; x += 1) if(check.get(world.tiles.get(x, cy + s))) return;
-			for(int y = cy + s; y >= cy - s + 1; y -= 1) if(check.get(world.tiles.get(cx + s, y))) return;
-			for(int x = cx + s; x >= cx - s + 1; x -= 1) if(check.get(world.tiles.get(x, cy - s))) return;
-			for(int y = cy - s; y <= cy + s - 1; y += 1) if(check.get(world.tiles.get(cx - s, y))) return;
+			for(int x = cx - s; x <= cx + s - 1; x += 1) if(check.get(world.tile(x, cy + s))) return;
+			for(int y = cy + s; y >= cy - s + 1; y -= 1) if(check.get(world.tile(cx + s, y))) return;
+			for(int x = cx + s; x >= cx - s + 1; x -= 1) if(check.get(world.tile(x, cy - s))) return;
+			for(int y = cy - s; y <= cy + s - 1; y += 1) if(check.get(world.tile(cx - s, y))) return;
 		}
 	}
 
 	public void save(Seq<BuildPlan> requests){
 		requests.select(bp -> bp.block instanceof PowerNode).each(bp -> node.add(bp.copy()));
+	}
+
+	public void save(int sx, int sy, int ex, int ey, int size){
+		NormalizeResult result = Placement.normalizeArea(sx, sy, ex, ey, 0, false, size);
+		for(int x = result.x; x <= result.x2; x++){
+			for(int y = result.y; y <= result.y2; y++){
+				Building build = world.build(x, y);
+                if(build == null) continue;
+
+				BuildPlan build = new BuildPlan(build.x, build.y, build.rotation, build.block, build.config());
+				removed.add(build);
+			}
+		}
 	}
 
 	private Block block(){

@@ -274,4 +274,9 @@ public class ModInputHandler extends InputHandler{
         flushRequests(bt.plan);
         bt.plan.clear();
     }
+
+    public void flushLastRemoved(){
+        flushRequests(bt.removed);
+        bt.removed.clear();
+    }
 }
