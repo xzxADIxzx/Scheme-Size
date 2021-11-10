@@ -12,6 +12,7 @@ import static mindustry.Vars.*;
 // Last Update - Mar 3, 2021
 public class ModTraceDialog extends TraceDialog{
 
+    @Override
     public void show(Player player, TraceInfo info){
         cont.clear();
 
@@ -26,13 +27,13 @@ public class ModTraceDialog extends TraceDialog{
         table.defaults().pad(1);
 
         table.defaults().left();
-        table.button(Icon.copy, style, 20f, () -> copy(player.name)).size(24f, 24f);
+        table.button(Icon.copy, style, 10f, () -> copy(player.name)).size(24f, 24f).padRight(4f);
         table.add(Core.bundle.format("trace.playername", player.name));
         table.row();
-        table.button(Icon.copy, style, 20f, () -> copy(info.ip)).size(24f, 24f);
+        table.button(Icon.copy, style, 10f, () -> copy(info.ip)).size(24f, 24f).padRight(4f);
         table.add(Core.bundle.format("trace.ip", info.ip));
         table.row();
-        table.button(Icon.copy, style, 20f, () -> copy(info.uuid)).size(24f, 24f);
+        table.button(Icon.copy, style, 10f, () -> copy(info.uuid)).size(24f, 24f).padRight(4f);
         table.add(Core.bundle.format("trace.id", info.uuid));
         table.row();
         table.add(Core.bundle.format("trace.modclient", info.modded));
