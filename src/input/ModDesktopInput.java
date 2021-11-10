@@ -698,7 +698,7 @@ public class ModDesktopInput extends ModInputHandler{
 
         if(Core.input.keyTap(Binding.select) && !scene.hasMouse()){
             Tile tile = tileAtMod(Core.input.mouseX(), Core.input.mouseY());
-            if(tile.block() instanceof PowerNode) SchemeSize.hudfrag.updateNode(tile.build);
+            if(tile != null && tile.block() instanceof PowerNode) SchemeSize.hudfrag.updateNode(tile.build);
         }
     }
 

@@ -180,6 +180,8 @@ public class BuildingTools{
 	}
 
 	public void save(int sx, int sy, int ex, int ey, int size){
+		removed.clear();
+
 		NormalizeResult result = Placement.normalizeArea(sx, sy, ex, ey, 0, false, size);
 		for(int x = result.x; x <= result.x2; x++){
 			for(int y = result.y; y <= result.y2; y++){
