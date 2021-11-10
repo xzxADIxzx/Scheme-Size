@@ -23,7 +23,7 @@ public class BuildingTools{
 	private Block select;
 	private int bsize;
 
-	public Seq<BuildPlan> removed;
+	public Seq<BuildPlan> removed = new Seq<>();
 	public Seq<BuildPlan> plan = new Seq<>();
 	public Mode mode = Mode.none;
 	public int size = 8;
