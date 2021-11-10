@@ -183,10 +183,10 @@ public class BuildingTools{
 		NormalizeResult result = Placement.normalizeArea(sx, sy, ex, ey, 0, false, size);
 		for(int x = result.x; x <= result.x2; x++){
 			for(int y = result.y; y <= result.y2; y++){
-				Building build = world.build(x, y);
-                if(build == null) continue;
+				Building tile = world.build(x, y);
+                if(tile == null) continue;
 
-				BuildPlan build = new BuildPlan(build.x, build.y, build.rotation, build.block, build.config());
+				BuildPlan build = new BuildPlan(tile.x, tile.y, tile.rotation, tile.block, tile.config());
 				removed.add(build);
 			}
 		}
