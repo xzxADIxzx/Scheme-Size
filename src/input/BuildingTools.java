@@ -186,7 +186,7 @@ public class BuildingTools{
 				Building tile = world.build(x, y);
                 if(tile == null) continue;
 
-				BuildPlan build = new BuildPlan(tile.x, tile.y, tile.rotation, tile.block, tile.config());
+				BuildPlan build = new BuildPlan(tile.tileX(), tile.tileY(), tile.rotation, tile.block, tile.config());
 				removed.add(build);
 			}
 		}
