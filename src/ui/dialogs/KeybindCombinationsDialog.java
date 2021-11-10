@@ -19,16 +19,17 @@ public class KeybindCombinationsDialog extends BaseDialog{
 		template("@keycomb.self_dest", "keybind.respawn.name");
 		template("@keycomb.spawn_unit", "keybind.change_unit.name");
 
-		cont.label(() -> "@category.bt.name").color(Color.gray).padTop(10f).row();
-		cont.image().color(Color.gray).fillX().height(4f).padBottom(6f).row();
+		cont.label(() -> "@category.bt.name").color(Color.gray).padTop(10f).padLeft(90f).row();
+		cont.image().color(Color.gray).fillX().height(3f).padBottom(6f);
+		cont.image().color(Color.gray).fillX().height(3f).padBottom(6f).row();
+
 		template("@keycomb.toggle_bt", "keybind.deselect.name");
 		template("@keycomb.return", "keybind.schematic_menu.name");
 	}
 
 	private void template(String name, String comb){
 		String sec = Core.bundle.get(comb);
-		cont.add(name, Color.white).left().padRight(20).padLeft(8);
-		cont.add(main + " + " + sec, Pal.accent).left().minWidth(90).padRight(20);
-		cont.row();
+		cont.add(name, Color.white).left().padRight(20f).padLeft(8f);
+		cont.add(main + " + " + sec, Pal.accent).left().minWidth(90f).padRight(20f).row();
 	}
 }

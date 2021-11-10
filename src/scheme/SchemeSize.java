@@ -25,6 +25,7 @@ public class SchemeSize extends Mod{
     public static SecretConfigDialog secret;
     public static KeybindCombinationsDialog keycomb;
     public static ModSettingsMenuDialog setting;
+    public static ModTraceDialog trace;
     public static ModHudFragment hudfrag;
     public static ModPlayerListFragment listfrag;
 
@@ -45,6 +46,7 @@ public class SchemeSize extends Mod{
             secret = new SecretConfigDialog();
             keycomb = new KeybindCombinationsDialog();
             setting = new ModSettingsMenuDialog();
+            trace = new ModTraceDialog();
             hudfrag = new ModHudFragment();
             listfrag = new ModPlayerListFragment();
 
@@ -61,6 +63,7 @@ public class SchemeSize extends Mod{
             });
 
             ui.settings = setting;
+            ui.traces = trace;
             ui.listfrag = listfrag;
             hudfrag.build(ui.hudGroup);
             listfrag.build(ui.hudGroup);
