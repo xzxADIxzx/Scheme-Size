@@ -12,6 +12,7 @@ import arc.scene.ui.*;
 import arc.scene.ui.layout.*;
 import arc.util.*;
 import mindustry.*;
+import mindustry.ai.types.*;
 import mindustry.core.*;
 import mindustry.input.Placement.*;
 import mindustry.input.BuildingTools.*;
@@ -55,6 +56,8 @@ public class ModDesktopInput extends ModInputHandler{
     public long selectMillis = 0;
     /** Previously selected tile. */
     public Tile prevSelected;
+
+    public MinerAI miner = new MinerAI();
 
     public void changePanSpeed(float value){
         panSpeed = 4.5f * value / 4f;
@@ -811,6 +814,11 @@ public class ModDesktopInput extends ModInputHandler{
         float xa = Core.input.axis(Binding.move_x);
         float ya = Core.input.axis(Binding.move_y);
         boolean boosted = (unit instanceof Mechc && unit.isFlying());
+
+        if(input.keyDown(KeyCode.i)){
+            miner.updateUnit();
+            return;
+        }
 
         movement.set(xa, ya).nor().scl(speed);
         if(Core.input.keyDown(Binding.mouse_move)){
