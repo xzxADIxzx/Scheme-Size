@@ -63,7 +63,8 @@ public class ModDesktopInput extends ModInputHandler{
         panSpeed = 4.5f * value / 4f;
 
         Events.on(UnitChangeEvent.class, () -> {
-            miner.unit(player.unit());
+            Unit unt = player.unit();
+            miner.unit(unt);
         });
     }
 
