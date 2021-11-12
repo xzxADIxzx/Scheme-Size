@@ -815,7 +815,7 @@ public class ModDesktopInput extends ModInputHandler{
         float ya = Core.input.axis(Binding.move_y);
         boolean boosted = (unit instanceof Mechc && unit.isFlying());
 
-        if(input.keyDown(KeyCode.i)){
+        if(input.keyDown(ModBinding.look_at)){
             miner.updateUnit();
             return;
         }
