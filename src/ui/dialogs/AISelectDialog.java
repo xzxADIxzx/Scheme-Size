@@ -29,7 +29,7 @@ public class AISelectDialog extends BaseDialog{
 		addCloseButton();
 
         content.button(Icon.none, () -> ai = null).size(64).row();
-		template(UnitTypes.mono, new MinerAI());
+		template(UnitTypes.mono, new MinerAI(), false);
 
 		list.build(cont);
 		cont.add(content).padLeft(16f);
@@ -39,9 +39,12 @@ public class AISelectDialog extends BaseDialog{
         });
 	}
 
-	private void template(UnitType icon, AIController ai){
-		var draw = new TextureRegionDrawable(item.icon(Cicon.tiny));
-		content.button(draw, () -> this.ai = ai).size(64).row();
+	private void template(UnitType icon, AIController ai, boolean show){
+		var draw = new TextureRegionDrawable(icon.icon(Cicon.tiny));
+		content.button(draw, () -> {
+            list.get().visible(show);
+            this.ai = ai;
+        }).size(64).row();
 	}
 
 	public void select(boolean show, Cons2<Player, AIController> callback){
