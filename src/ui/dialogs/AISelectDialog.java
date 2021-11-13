@@ -5,13 +5,16 @@ import arc.util.*;
 import arc.func.*;
 import arc.scene.ui.*;
 import arc.scene.ui.layout.*;
+import arc.scene.style.*;
 import arc.graphics.g2d.*;
 import mindustry.*;
 import mindustry.ui.*;
 import mindustry.ui.fragments.*;
 import mindustry.ai.types.*;
 import mindustry.gen.*;
+import mindustry.type.*;
 import mindustry.game.*;
+import mindustry.game.EventType.*;
 import mindustry.content.*;
 import mindustry.entities.units.*;
 
@@ -29,7 +32,7 @@ public class AISelectDialog extends BaseDialog{
 		template(UnitTypes.mono, new MinerAI());
 
 		list.build(cont);
-		cont.add(table).padLeft(16f);
+		cont.add(content).padLeft(16f);
 
         Events.on(UnitChangeEvent.class, event -> {
             ai.unit(Vars.player.unit());
@@ -37,7 +40,7 @@ public class AISelectDialog extends BaseDialog{
 	}
 
 	private void template(UnitType icon, AIController ai){
-		var draw = icon.getIcon(Cicon.full);
+		var draw = new TextureRegionDrawable(item.icon(Cicon.tiny));
 		content.button(draw, () -> this.ai = ai).size(64).row();
 	}
 

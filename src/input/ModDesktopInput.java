@@ -672,7 +672,7 @@ public class ModDesktopInput extends ModInputHandler{
         }
 
         if(input.keyTap(ModBinding.change_ai)){
-            SchemeSize.ai.show(true, null);
+            SchemeSize.ai.select(true, null);
         }
 
         if(input.keyTap(ModBinding.place_core)){
