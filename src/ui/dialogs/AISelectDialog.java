@@ -28,25 +28,25 @@ public class AISelectDialog extends BaseDialog{
 		super(name);
 		addCloseButton();
 
-		template(null, null, false);
-		template(UnitTypes.mono, new MinerAI(), false);
-
+		template(null, null);
+		template(UnitTypes.mono, new MinerAI());
+		template(UnitTypes.poly, new BuilderAI());
+		template(UnitTypes.oct, new DefenderAI());
+		
 		list.build(cont);
 		cont.add(content).padLeft(16f);
 
-		list.get().visible(false);
+		Events.on(WorldLoadEvent.class, event -> ai = null);
 		Events.on(UnitChangeEvent.class, event -> {
 			if(ai != null) ai.unit(Vars.player.unit());
 		});
 	}
 
-	private void template(UnitType icon, AIController ai, boolean show){
+	private void template(UnitType icon, AIController ai){
 		var draw = icon != null ? new TextureRegionDrawable(icon.icon(Cicon.tiny)) : Icon.none;
 		content.button(draw, () -> {
-			list.get().visible(show);
-			this.ai = ai;
-
 			if(ai != null) ai.unit(Vars.player.unit());
+			this.ai = ai;
 		}).size(64).row();
 	}
 
@@ -54,7 +54,7 @@ public class AISelectDialog extends BaseDialog{
 		if(show){
 			list.rebuild();
 			show();
-		}else return callback.get(list.select(), ai);
+		}else return ai != null ? callback.get(list.select(), ai) : false;
 		return false;
 	}
 }
