@@ -823,6 +823,7 @@ public class ModDesktopInput extends ModInputHandler{
         if(xa != 0 && ya != 0) SchemeSize.ai.select(false, (ppl, ai) -> {
             if(ai == null) return;
             ai.updateUnit();
+            omit = true;
         });
         if(omit) return;
 

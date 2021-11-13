@@ -20,7 +20,7 @@ import mindustry.entities.units.*;
 
 public class AISelectDialog extends BaseDialog{
 
-    private AIController ai;
+	private AIController ai;
 	private Table content = new Table();
 	private PlayerSelectFragment list = new PlayerSelectFragment();
 
@@ -28,29 +28,29 @@ public class AISelectDialog extends BaseDialog{
 		super(name);
 		addCloseButton();
 
-        content.button(Icon.none, () -> ai = null).size(64).row();
+		template(null, null, false);
 		template(UnitTypes.mono, new MinerAI(), false);
 
 		list.build(cont);
 		cont.add(content).padLeft(16f);
 
-        Events.on(UnitChangeEvent.class, event -> {
-            ai.unit(Vars.player.unit());
-        });
+		Events.on(UnitChangeEvent.class, event -> {
+			if(ai != null) ai.unit(Vars.player.unit());
+		});
 	}
 
 	private void template(UnitType icon, AIController ai, boolean show){
-		var draw = new TextureRegionDrawable(icon.icon(Cicon.tiny));
+		var draw = icon != null ? new TextureRegionDrawable(icon.icon(Cicon.tiny)) : Icon.none;
 		content.button(draw, () -> {
-            list.get().visible(show);
-            this.ai = ai;
-        }).size(64).row();
+			list.get().visible(show);
+			this.ai = ai;
+		}).size(64).row();
 	}
 
 	public void select(boolean show, Cons2<Player, AIController> callback){
 		if(show){
-            list.rebuild();
-            show();
-        }else callback.get(list.select(), ai);
+			list.rebuild();
+			show();
+		}else callback.get(list.select(), ai);
 	}
 }
