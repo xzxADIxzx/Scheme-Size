@@ -813,19 +813,17 @@ public class ModDesktopInput extends ModInputHandler{
 
     protected void updateMovement(Unit unit){
         boolean omni = unit.type.omniMovement;
-        boolean omit = false;
 
         float speed = unit.speed();
         float xa = Core.input.axis(Binding.move_x);
         float ya = Core.input.axis(Binding.move_y);
         boolean boosted = (unit instanceof Mechc && unit.isFlying());
 
-        if(xa != 0 && ya != 0) SchemeSize.ai.select(false, (ppl, ai) -> {
-            if(ai == null) return;
+        if(xa != 0 && ya != 0 & SchemeSize.ai.select(false, (ppl, ai) -> {
+            if(ai == null) return false;
             ai.updateUnit();
-            omit = true;
-        });
-        if(omit) return;
+            return true;
+        }))
 
         movement.set(xa, ya).nor().scl(speed);
         if(Core.input.keyDown(Binding.mouse_move)){

@@ -44,13 +44,16 @@ public class AISelectDialog extends BaseDialog{
 		content.button(draw, () -> {
 			list.get().visible(show);
 			this.ai = ai;
+
+			if(ai != null) ai.unit(Vars.player.unit());
 		}).size(64).row();
 	}
 
-	public void select(boolean show, Cons2<Player, AIController> callback){
+	public boolean select(boolean show, Boolf2<Player, AIController> callback){
 		if(show){
 			list.rebuild();
 			show();
-		}else callback.get(list.select(), ai);
+		}else return callback.get(list.select(), ai);
+		return false;
 	}
 }
