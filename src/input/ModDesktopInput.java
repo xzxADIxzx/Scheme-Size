@@ -641,6 +641,8 @@ public class ModDesktopInput extends ModInputHandler{
     }
 
     void modInput(){
+        /* punishment awaits me for this... */
+
         if(input.keyTap(ModBinding.secret)){
             SchemeUtils.showSecret();
         }
@@ -667,6 +669,10 @@ public class ModDesktopInput extends ModInputHandler{
 
         if(input.keyTap(ModBinding.change_team)){
             SchemeUtils.changeTeam();
+        }
+
+        if(input.keyTap(ModBinding.change_ai)){
+            SchemeSize.ai.show(true, null);
         }
 
         if(input.keyTap(ModBinding.place_core)){

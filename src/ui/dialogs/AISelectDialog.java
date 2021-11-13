@@ -44,6 +44,6 @@ public class AISelectDialog extends BaseDialog{
 		if(show){
             list.rebuild();
             show();
-        }else callback.get(list.select(), ai)
+        }else callback.get(list.select(), ai);
 	}
 }
