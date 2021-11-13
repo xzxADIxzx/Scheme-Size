@@ -57,15 +57,8 @@ public class ModDesktopInput extends ModInputHandler{
     /** Previously selected tile. */
     public Tile prevSelected;
 
-    public MinerAI miner = new MinerAI();
-
     public void changePanSpeed(float value){
         panSpeed = 4.5f * value / 4f;
-
-        Events.on(UnitChangeEvent.class, event -> {
-            Unit unt = player.unit();
-            miner.unit(unt);
-        });
     }
 
     boolean showHint(){
@@ -814,16 +807,18 @@ public class ModDesktopInput extends ModInputHandler{
 
     protected void updateMovement(Unit unit){
         boolean omni = unit.type.omniMovement;
+        boolean omit = false;
 
         float speed = unit.speed();
         float xa = Core.input.axis(Binding.move_x);
         float ya = Core.input.axis(Binding.move_y);
         boolean boosted = (unit instanceof Mechc && unit.isFlying());
 
-        if(input.keyDown(ModBinding.look_at)){
-            miner.updateUnit();
-            return;
-        }
+        if(xa != 0 && ya != 0) SchemeSize.ai.select(false, (ppl, ai) -> {
+            if(ai == null) return;
+            ai.updateUnit();
+        });
+        if(omit) return;
 
         movement.set(xa, ya).nor().scl(speed);
         if(Core.input.keyDown(Binding.mouse_move)){

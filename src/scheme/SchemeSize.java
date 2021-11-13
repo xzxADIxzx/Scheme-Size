@@ -29,6 +29,7 @@ public class SchemeSize extends Mod{
     public static ModHudFragment hudfrag;
     public static ModPlayerListFragment listfrag;
 
+    public static AISelectDialog ai;
     public static TeamSelectDialog team;
     public static TileSelectDialog tile;
     public static ContentSelectDialog<UnitType> unit;
@@ -50,6 +51,7 @@ public class SchemeSize extends Mod{
             hudfrag = new ModHudFragment();
             listfrag = new ModPlayerListFragment();
 
+            ai = new AISelectDialog("@aiselect");
             team = new TeamSelectDialog("@teamselect");
             tile = new TileSelectDialog("@tileselect");
             unit = new ContentSelectDialog("@unitselect", content.units(), 1, 20, 1, value -> {
