@@ -34,6 +34,7 @@ public class AISelectDialog extends BaseDialog{
 		list.build(cont);
 		cont.add(content).padLeft(16f);
 
+		list.get().visible(false);
 		Events.on(UnitChangeEvent.class, event -> {
 			if(ai != null) ai.unit(Vars.player.unit());
 		});

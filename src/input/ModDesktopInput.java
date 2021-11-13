@@ -819,11 +819,11 @@ public class ModDesktopInput extends ModInputHandler{
         float ya = Core.input.axis(Binding.move_y);
         boolean boosted = (unit instanceof Mechc && unit.isFlying());
 
-        if(xa != 0 && ya != 0 & SchemeSize.ai.select(false, (ppl, ai) -> {
+        if(xa == 0 && ya == 0 & SchemeSize.ai.select(false, (ppl, ai) -> {
             if(ai == null) return false;
             ai.updateUnit();
             return true;
-        }))
+        })) return;
 
         movement.set(xa, ya).nor().scl(speed);
         if(Core.input.keyDown(Binding.mouse_move)){
