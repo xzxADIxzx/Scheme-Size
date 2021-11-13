@@ -13,6 +13,7 @@ import mindustry.ai.types.*;
 import mindustry.gen.*;
 import mindustry.game.*;
 import mindustry.content.*;
+import mindustry.entities.units.*;
 
 public class AISelectDialog extends BaseDialog{
 
@@ -35,12 +36,12 @@ public class AISelectDialog extends BaseDialog{
         });
 	}
 
-	private void template(Unit icon, AIController ai){
+	private void template(UnitType icon, AIController ai){
 		var draw = icon.getIcon(Cicon.full);
 		content.button(draw, () -> this.ai = ai).size(64).row();
 	}
 
-	public void select(boolean show, Cons<Player, AIController> callback){
+	public void select(boolean show, Cons2<Player, AIController> callback){
 		if(show){
             list.rebuild();
             show();
