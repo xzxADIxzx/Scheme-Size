@@ -31,7 +31,13 @@ public class AISelectDialog extends BaseDialog{
 		addCloseButton();
 
 		hidden(() -> {
-			// move to selected player
+			if(ai instanceof BuilderAI && list.select() != player) ai = new BuilderAI(){
+				@Override
+				public void updateTargeting(){
+					if(retarget()) following = list.select().unit();
+				}
+			};
+
 			if(ai instanceof DefenderAI && list.select() != player) ai = new DefenderAI(){
 				@Override
 				public void updateTargeting(){
@@ -54,7 +60,7 @@ public class AISelectDialog extends BaseDialog{
 		cont.table(table -> {
 			list.build(table);
 			table.row();
-			table.labelWrap("You can select player for some ai like oct or poly...");
+			table.label(() -> "You can select player for some ai like oct or poly...");
 		});
 		cont.add(content).padLeft(16f).row();
 
