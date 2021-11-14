@@ -38,6 +38,8 @@ public class AISelectDialog extends BaseDialog{
 					if(retarget()) target = list.select().unit();
 				}
 			};
+
+			updateUnit();
 		});
 
 		template(null, null);
@@ -51,15 +53,13 @@ public class AISelectDialog extends BaseDialog{
 		cont.add(content).padLeft(16f);
 
 		Events.on(WorldLoadEvent.class, event -> ai = null);
-		Events.on(UnitChangeEvent.class, event -> {
-			if(ai != null) ai.unit(Vars.player.unit());
-		});
+		Events.on(UnitChangeEvent.class, event -> updateUnit());
 	}
 
 	private void template(UnitType icon, AIController ai){
 		var draw = icon != null ? new TextureRegionDrawable(icon.icon(Cicon.tiny)) : Icon.none;
 		content.button(draw, () -> {
-			if(ai != null) ai.unit(player.unit());
+			updateUnit();
 			this.ai = ai;
 		}).size(64).row();
 	}
@@ -73,5 +73,9 @@ public class AISelectDialog extends BaseDialog{
 			ai.updateUnit();
 		}
 		return true;
+	}
+
+	public void updateUnit(){
+		if(ai != null) ai.unit(player.unit());
 	}
 }
