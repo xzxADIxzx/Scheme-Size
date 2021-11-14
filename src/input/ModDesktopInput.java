@@ -819,7 +819,7 @@ public class ModDesktopInput extends ModInputHandler{
         float ya = Core.input.axis(Binding.move_y);
         boolean boosted = (unit instanceof Mechc && unit.isFlying());
 
-        if(xa == 0 && ya == 0 && !input.keyDown(Binding.mouse_move) && SchemeSize.ai.select(false)) return;
+        boolean omit = xa == 0 && ya == 0 && SchemeSize.ai.select(false)
 
         // move check from update for ai
         if(scene.hasField()) return;
@@ -830,7 +830,7 @@ public class ModDesktopInput extends ModInputHandler{
         }
 
         float mouseAngle = Angles.mouseAngle(unit.x, unit.y);
-        boolean aimCursor = (omni && player.shooting && unit.type.hasWeapons() && unit.type.faceTarget && !boosted && unit.type.rotateShooting) || input.keyDown(ModBinding.look_at);
+        boolean aimCursor = (omni && !omit && player.shooting && unit.type.hasWeapons() && unit.type.faceTarget && !boosted && unit.type.rotateShooting) || input.keyDown(ModBinding.look_at);
 
         if(aimCursor){
             unit.lookAt(mouseAngle);
@@ -838,11 +838,14 @@ public class ModDesktopInput extends ModInputHandler{
             unit.lookAt(unit.prefRotation());
         }
 
-        unit.movePref(movement);
+        if(!omit){
+            unit.movePref(movement);
 
-        unit.aim(unit.type.faceTarget ? Core.input.mouseWorld() : Tmp.v1.trns(unit.rotation, Core.input.mouseWorld().dst(unit)).add(unit.x, unit.y));
-        unit.controlWeapons(true, player.shooting && !boosted);
+            unit.aim(unit.type.faceTarget ? Core.input.mouseWorld() : Tmp.v1.trns(unit.rotation, Core.input.mouseWorld().dst(unit)).add(unit.x, unit.y));
+            unit.controlWeapons(true, player.shooting && !boosted);
+        }
 
+        player.shooting = omit ? player.unit().isShooting : player.shooting;
         player.boosting = Core.input.keyDown(Binding.boost);
         player.mouseX = unit.aimX();
         player.mouseY = unit.aimY();
