@@ -819,7 +819,7 @@ public class ModDesktopInput extends ModInputHandler{
         float ya = Core.input.axis(Binding.move_y);
         boolean boosted = (unit instanceof Mechc && unit.isFlying());
 
-        boolean aict = !(input.keyDown(Binding.mouse_move) || input.keyDown(ModBinding.look_at) || input.keyDown(Binding.select)
+        boolean aict = !(input.keyDown(Binding.mouse_move) || input.keyDown(ModBinding.look_at) || input.keyDown(Binding.select))
                     && xa == 0 && ya == 0 && SchemeSize.ai.select(false);
 
         // move check from update for ai
