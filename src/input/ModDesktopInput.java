@@ -821,7 +821,6 @@ public class ModDesktopInput extends ModInputHandler{
 
         if(xa == 0 && ya == 0 && !input.keyDown(Binding.mouse_move) && SchemeSize.ai.select(false, (ppl, ai) -> {
             ai.updateUnit();
-            return true;
         })) return;
 
         // move check from update for ai

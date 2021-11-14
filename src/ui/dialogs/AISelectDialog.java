@@ -18,6 +18,8 @@ import mindustry.game.EventType.*;
 import mindustry.content.*;
 import mindustry.entities.units.*;
 
+import static mindustry.Vars.*;
+
 public class AISelectDialog extends BaseDialog{
 
 	private AIController ai;
@@ -28,10 +30,21 @@ public class AISelectDialog extends BaseDialog{
 		super(name);
 		addCloseButton();
 
+		hidden(() -> {
+			if(ai instanceof DefenderAI && list.select() != player) ai = new DefenderAI(){
+				@Override
+				public void updateTargeting(){
+					target = list.select();
+				}
+			}
+		});
+
 		template(null, null);
 		template(UnitTypes.mono, new MinerAI());
 		template(UnitTypes.poly, new BuilderAI());
+		template(UnitTypes.mega, new RepairAI());
 		template(UnitTypes.oct, new DefenderAI());
+		template(UnitTypes.crawler, new SuicideAI());
 		
 		list.build(cont);
 		cont.add(content).padLeft(16f);
@@ -45,7 +58,7 @@ public class AISelectDialog extends BaseDialog{
 	private void template(UnitType icon, AIController ai){
 		var draw = icon != null ? new TextureRegionDrawable(icon.icon(Cicon.tiny)) : Icon.none;
 		content.button(draw, () -> {
-			if(ai != null) ai.unit(Vars.player.unit());
+			if(ai != null) ai.unit(player.unit());
 			this.ai = ai;
 		}).size(64).row();
 	}
@@ -54,7 +67,10 @@ public class AISelectDialog extends BaseDialog{
 		if(show){
 			list.rebuild();
 			show();
-		}else return ai != null ? callback.get(list.select(), ai) : false;
+		}else{
+			callback.get(list.select(), ai);
+			return ai != null;
+		}
 		return false;
 	}
 }
