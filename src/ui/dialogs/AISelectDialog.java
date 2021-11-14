@@ -48,10 +48,15 @@ public class AISelectDialog extends BaseDialog{
 		template(UnitTypes.mega, new RepairAI());
 		template(UnitTypes.oct, new DefenderAI());
 		template(UnitTypes.crawler, new SuicideAI());
+		template(UnitTypes.dagger, new GroundAI());
+		template(UnitTypes.flare, new FlyingAI());
 		
-		list.build(cont);
+		cont.table(table -> {
+			list.build(table);
+			table.row();
+			table.labelWrap("You can select player for some ai like oct or poly...");
+		});
 		cont.add(content).padLeft(16f).row();
-		cont.labelWrap("You can select player for some ai like oct or poly...\nTo deselect ai press [accent]alternative + change ai[]");
 
 		Events.on(WorldLoadEvent.class, event -> ai = null);
 		Events.on(UnitChangeEvent.class, event -> updateUnit());
