@@ -50,7 +50,8 @@ public class AISelectDialog extends BaseDialog{
 		template(UnitTypes.crawler, new SuicideAI());
 		
 		list.build(cont);
-		cont.add(content).padLeft(16f);
+		cont.add(content).padLeft(16f).row();
+		cont.labelWrap("You can select player for some ai like oct or poly...\nTo deselect ai press [accent]alternative + change ai[]");
 
 		Events.on(WorldLoadEvent.class, event -> ai = null);
 		Events.on(UnitChangeEvent.class, event -> updateUnit());
@@ -59,8 +60,8 @@ public class AISelectDialog extends BaseDialog{
 	private void template(UnitType icon, AIController ai){
 		var draw = icon != null ? new TextureRegionDrawable(icon.icon(Cicon.tiny)) : Icon.none;
 		content.button(draw, () -> {
-			updateUnit();
 			this.ai = ai;
+			hide();
 		}).size(64).row();
 	}
 
