@@ -672,7 +672,7 @@ public class ModDesktopInput extends ModInputHandler{
         }
 
         if(input.keyTap(ModBinding.change_ai)){
-            SchemeSize.ai.select(true, null);
+            SchemeSize.ai.select(true);
         }
 
         if(input.keyTap(ModBinding.place_core)){
@@ -819,9 +819,7 @@ public class ModDesktopInput extends ModInputHandler{
         float ya = Core.input.axis(Binding.move_y);
         boolean boosted = (unit instanceof Mechc && unit.isFlying());
 
-        if(xa == 0 && ya == 0 && !input.keyDown(Binding.mouse_move) && SchemeSize.ai.select(false, (ppl, ai) -> {
-            ai.updateUnit();
-        })) return;
+        if(xa == 0 && ya == 0 && !input.keyDown(Binding.mouse_move) && SchemeSize.ai.select(false)) return;
 
         // move check from update for ai
         if(scene.hasField()) return;

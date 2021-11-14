@@ -31,6 +31,7 @@ public class AISelectDialog extends BaseDialog{
 		addCloseButton();
 
 		hidden(() -> {
+			// move to selected player
 			if(ai instanceof DefenderAI && list.select() != player) ai = new DefenderAI(){
 				@Override
 				public void updateTargeting(){
@@ -63,14 +64,14 @@ public class AISelectDialog extends BaseDialog{
 		}).size(64).row();
 	}
 
-	public boolean select(boolean show, Cons2<Player, AIController> callback){
+	public boolean select(boolean show){
 		if(show){
 			list.rebuild();
 			show();
 		}else{
-			callback.get(list.select(), ai);
-			return ai != null;
+			if(ai == null) return false;
+			ai.updateUnit();
 		}
-		return false;
+		return true;
 	}
 }
