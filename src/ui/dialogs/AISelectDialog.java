@@ -5,6 +5,7 @@ import arc.util.*;
 import arc.func.*;
 import arc.scene.ui.*;
 import arc.scene.ui.layout.*;
+import arc.scene.event.*;
 import arc.scene.style.*;
 import arc.graphics.g2d.*;
 import mindustry.*;
@@ -34,7 +35,7 @@ public class AISelectDialog extends BaseDialog{
 			if(ai instanceof BuilderAI && list.select() != player) ai = new BuilderAI(){
 				@Override
 				public void updateTargeting(){
-					if(retarget()) following = list.select().unit();
+					following = list.select().unit();
 				}
 			};
 
@@ -49,26 +50,27 @@ public class AISelectDialog extends BaseDialog{
 		});
 
 		template(null, null);
-		template(UnitTypes.mono, new MinerAI());
-		template(UnitTypes.poly, new BuilderAI());
-		template(UnitTypes.mega, new RepairAI());
-		template(UnitTypes.oct, new DefenderAI());
-		template(UnitTypes.crawler, new SuicideAI());
-		template(UnitTypes.dagger, new GroundAI());
-		template(UnitTypes.flare, new FlyingAI());
+		template(UnitTypes.mono, new MinerAI(), false);
+		template(UnitTypes.poly, new BuilderAI(), true);
+		template(UnitTypes.mega, new RepairAI(), false);
+		template(UnitTypes.oct, new DefenderAI(), true);
+		template(UnitTypes.crawler, new SuicideAI(), false);
+		template(UnitTypes.dagger, new GroundAI(), false);
+		template(UnitTypes.flare, new FlyingAI(), false);
 		
 		cont.table(table -> {
 			list.build(table);
 			table.row();
-			table.label(() -> "You can select player for some ai like oct or poly...");
-		});
+			table.labelWrap(() -> "You can select player for some ai like oct or poly...");
+		}).width(288f);
 		cont.add(content).padLeft(16f).row();
 
 		Events.on(WorldLoadEvent.class, event -> ai = null);
 		Events.on(UnitChangeEvent.class, event -> updateUnit());
 	}
 
-	private void template(UnitType icon, AIController ai){
+	private void template(UnitType icon, AIController ai, boolean show){
+		list.get().touchable(show ? Touchable.enabled : Touchable.disabled);
 		var draw = icon != null ? new TextureRegionDrawable(icon.icon(Cicon.tiny)) : Icon.none;
 		content.button(draw, () -> {
 			this.ai = ai;
