@@ -34,9 +34,9 @@ public class AISelectDialog extends BaseDialog{
 			if(ai instanceof DefenderAI && list.select() != player) ai = new DefenderAI(){
 				@Override
 				public void updateTargeting(){
-					target = list.select();
+					if(retarget()) target = list.select().unit();
 				}
-			}
+			};
 		});
 
 		template(null, null);
@@ -63,7 +63,7 @@ public class AISelectDialog extends BaseDialog{
 		}).size(64).row();
 	}
 
-	public boolean select(boolean show, Boolf2<Player, AIController> callback){
+	public boolean select(boolean show, Cons2<Player, AIController> callback){
 		if(show){
 			list.rebuild();
 			show();
