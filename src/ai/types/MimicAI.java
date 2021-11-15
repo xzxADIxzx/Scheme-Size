@@ -1,5 +1,6 @@
 package mindustry.ai.types;
 
+import arc.util.*;
 import arc.math.*;
 import mindustry.entities.*;
 import mindustry.entities.units.*;
@@ -15,7 +16,7 @@ public class MimicAI extends AIController{
     @Override
     public void updateMovement(){
         if(following != null){
-            moveTo(following, (following instanceof Sized s ? s.hitSize() / 2f * 1.1f : 0f) + unit.hitSize / 2f + 15f, 50f);
+            moveTo(following, following.hitSize() / 2f * 1.1f + unit.hitSize / 2f + 15f, 50f);
             unit.lookAt(following.prefRotation());
             unit.aim(following.aimX(), following.aimY());
             unit.controlWeapons(true, following.isShooting);
