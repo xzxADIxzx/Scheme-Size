@@ -17,7 +17,7 @@ public class MimicAI extends AIController{
     public void updateMovement(){
         if(following != null){
             moveTo(following, following.hitSize() / 2f * 1.1f + unit.hitSize / 2f + 15f, 50f);
-            unit.lookAt(following.prefRotation());
+
             unit.aim(following.aimX(), following.aimY());
             unit.controlWeapons(true, following.isShooting);
 

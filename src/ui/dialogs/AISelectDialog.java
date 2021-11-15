@@ -60,7 +60,7 @@ public class AISelectDialog extends BaseDialog{
 		
 		cont.table(table -> {
 			list.build(table);
-			cont.add(content).padLeft(16f);
+			table.add(content).padLeft(16f);
 		}).row();
 		cont.labelWrap("You can select player for some ai like oct or poly...");
 		
