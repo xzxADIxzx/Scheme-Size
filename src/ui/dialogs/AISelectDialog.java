@@ -70,9 +70,9 @@ public class AISelectDialog extends BaseDialog{
 	}
 
 	private void template(UnitType icon, AIController ai, boolean show){
-		list.get().touchable(show ? Touchable.enabled : Touchable.disabled);
 		var draw = icon != null ? new TextureRegionDrawable(icon.icon(Cicon.tiny)) : Icon.none;
 		content.button(draw, () -> {
+			list.get().touchable(show ? Touchable.enabled : Touchable.disabled);
 			this.ai = ai;
 			hide();
 		}).size(64).row();
