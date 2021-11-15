@@ -32,10 +32,10 @@ public class AISelectDialog extends BaseDialog{
 		addCloseButton();
 
 		hidden(() -> {
-			if(ai instanceof BuilderAI && list.select() != player) ai = new BuilderAI(){
+			if(ai instanceof BuilderAI && list.select() != player) ai = new MimicAI(){
 				@Override
 				public void updateTargeting(){
-					following = list.select().unit();
+					if(retarget()) target = list.select().unit();
 				}
 			};
 
@@ -60,11 +60,10 @@ public class AISelectDialog extends BaseDialog{
 		
 		cont.table(table -> {
 			list.build(table);
-			table.row();
-			table.labelWrap("You can select player for some ai like oct or poly...");
-		}).width(288f);
-		cont.add(content).padLeft(16f).row();
-
+			cont.add(content).padLeft(16f);
+		}).row();
+		cont.labelWrap("You can select player for some ai like oct or poly...");
+		
 		Events.on(WorldLoadEvent.class, event -> ai = null);
 		Events.on(UnitChangeEvent.class, event -> updateUnit());
 	}
