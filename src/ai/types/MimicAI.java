@@ -10,13 +10,15 @@ import static mindustry.Vars.*;
 
 public class MimicAI extends AIController{
 
+    public @Nullable Unit following;
+
     @Override
     public void updateMovement(){
-        if(target != null){
-            moveTo(target, (target instanceof Sized s ? s.hitSize() / 2f * 1.1f : 0f) + unit.hitSize / 2f + 15f, 50f);
-            unit.lookAt(target.prefRotation());
-            unit.aim(target.aimX(), target.aimY());
-            unit.controlWeapons(true, target.isShooting);
+        if(following != null){
+            moveTo(following, (following instanceof Sized s ? s.hitSize() / 2f * 1.1f : 0f) + unit.hitSize / 2f + 15f, 50f);
+            unit.lookAt(following.prefRotation());
+            unit.aim(following.aimX(), following.aimY());
+            unit.controlWeapons(true, following.isShooting);
 
             unit.plans.clear();
             unit.plans.addFirst(following.buildPlan());

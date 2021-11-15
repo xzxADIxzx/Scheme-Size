@@ -35,7 +35,7 @@ public class AISelectDialog extends BaseDialog{
 			if(ai instanceof BuilderAI && list.select() != player) ai = new MimicAI(){
 				@Override
 				public void updateTargeting(){
-					if(retarget()) target = list.select().unit();
+					if(retarget()) following = list.select().unit();
 				}
 			};
 
