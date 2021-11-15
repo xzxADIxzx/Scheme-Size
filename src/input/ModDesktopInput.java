@@ -655,10 +655,6 @@ public class ModDesktopInput extends ModInputHandler{
             SchemeUtils.toggleCoreItems();
         }
 
-        if(input.keyTap(ModBinding.change_unit) && !input.keyDown(ModBinding.alternative)){
-            SchemeUtils.changeUnit();
-        }
-
         if(input.keyTap(ModBinding.change_effect)){
             SchemeUtils.changeEffect();
         }
@@ -671,10 +667,6 @@ public class ModDesktopInput extends ModInputHandler{
             SchemeUtils.changeTeam();
         }
 
-        if(input.keyTap(ModBinding.change_ai)){
-            SchemeSize.ai.select(true);
-        }
-
         if(input.keyTap(ModBinding.place_core)){
             SchemeUtils.placeCore();
         }
@@ -683,24 +675,38 @@ public class ModDesktopInput extends ModInputHandler{
             SchemeUtils.lookAt();
         }
 
-        if(input.keyTap(Binding.select) && input.keyDown(ModBinding.alternative)){
-            SchemeUtils.teleport(input.mouseWorld());
-        }
+        if(input.keyDown(ModBinding.alternative)){
+            if(input.keyTap(Binding.select)){
+                SchemeUtils.teleport(input.mouseWorld());
+            }
+    
+            if(input.keyTap(Binding.respawn)){
+                SchemeUtils.selfDest();
+            }
+    
+            if(input.keyTap(ModBinding.change_unit)){
+                SchemeUtils.spawnUnit();
+            }
 
-        if(input.keyTap(Binding.respawn) && input.keyDown(ModBinding.alternative)){
-            SchemeUtils.selfDest();
-        }
+            if(input.keyTap(ModBinding.change_ai)){
+                SchemeSize.ai.deselect();
+            }
+    
+            if(input.keyTap(Binding.block_info)){
+                SchemeUtils.showComb();
+            }
+    
+            if(input.keyTap(Binding.deselect)){
+                SchemeSize.hudfrag.toggleBT();
+            }
+        }else{
+            if(input.keyTap(ModBinding.change_unit)){
+                SchemeUtils.changeUnit();
+            }
 
-        if(input.keyTap(ModBinding.change_unit) && input.keyDown(ModBinding.alternative)){
-            SchemeUtils.spawnUnit();
-        }
-
-        if(input.keyTap(Binding.block_info) && input.keyDown(ModBinding.alternative)){
-            SchemeUtils.showComb();
-        }
-
-        if(input.keyTap(Binding.deselect) && input.keyDown(ModBinding.alternative)){
-            SchemeSize.hudfrag.toggleBT();
+            if(input.keyTap(ModBinding.change_ai)){
+                SchemeSize.ai.select(true);
+            }
         }
 
         if(Core.input.keyTap(Binding.select) && !scene.hasMouse()){

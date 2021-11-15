@@ -49,7 +49,7 @@ public class AISelectDialog extends BaseDialog{
 			updateUnit();
 		});
 
-		template(null, null);
+		template(null, null, false);
 		template(UnitTypes.mono, new MinerAI(), false);
 		template(UnitTypes.poly, new BuilderAI(), true);
 		template(UnitTypes.mega, new RepairAI(), false);
@@ -61,7 +61,7 @@ public class AISelectDialog extends BaseDialog{
 		cont.table(table -> {
 			list.build(table);
 			table.row();
-			table.labelWrap(() -> "You can select player for some ai like oct or poly...");
+			table.labelWrap("You can select player for some ai like oct or poly...");
 		}).width(288f);
 		cont.add(content).padLeft(16f).row();
 
@@ -87,6 +87,10 @@ public class AISelectDialog extends BaseDialog{
 			ai.updateUnit();
 		}
 		return true;
+	}
+
+	public void deselect(){
+		ai = null;
 	}
 
 	public void updateUnit(){
