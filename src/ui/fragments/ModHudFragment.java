@@ -206,11 +206,13 @@ public class ModHudFragment extends Fragment{
                     Drawable core = Icon.effect;
                     Drawable team = Core.atlas.drawable("team-derelict");
                     Drawable kill = Core.atlas.drawable("status-blasted");
+                    Drawable aict = Icon.logic;
                     Drawable hist = Icon.info;
 
                     select.button(core, style, isize, SchemeUtils::placeCore).name("core");
                     select.button(team, style, isize, SchemeUtils::changeTeam).name("team");
                     select.button(kill, style, isize, SchemeUtils::selfDest).name("kill");
+                    select.button(aict, style, isize, () -> SchemeSize.ai.select(true)).name("aict");
                     select.button(hist, style, isize, SchemeUtils::history).name("hist").get(
                     ).image().color(Pal.gray).width(4).height(bsize).padRight(-dsize + 1.5f + isize);
                 }).left().name("mod buttons").visible(() -> shownMobile).row();
