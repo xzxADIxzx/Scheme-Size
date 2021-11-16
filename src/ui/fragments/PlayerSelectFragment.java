@@ -24,7 +24,7 @@ public class PlayerSelectFragment{
     }
 
 	public void rebuild(){
-		Vars.player;
+		player = Vars.player;
 
 		list.clear();
 		Groups.player.each(player -> {
