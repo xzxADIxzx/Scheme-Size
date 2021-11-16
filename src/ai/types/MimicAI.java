@@ -19,7 +19,7 @@ public class MimicAI extends AIController{
             unit.updateBuilding = true;
 
             moveTo(following, following.hitSize() / 2f * 1.1f + unit.hitSize / 2f + 15f, 50f);
-            unit.lookAt(unit.type.rotateShooting ? unit.prefRotation() : following.rotation);
+            unit.lookAt(unit.type.rotateShooting ? following.rotation : unit.prefRotation());
 
             unit.aim(following.aimX(), following.aimY());
             unit.controlWeapons(true, following.isShooting);
@@ -27,8 +27,11 @@ public class MimicAI extends AIController{
             unit.plans.clear();
             if(following.activelyBuilding()) unit.plans.addFirst(following.buildPlan());
 
-            player.shooting = following.isShooting();
             player.boosting = following.isFlying();
+            player.shooting = following.isShooting();
+
+            player.mouseX = following.aimX();
+            player.mouseY = following.aimY();
         }
     }
 }
