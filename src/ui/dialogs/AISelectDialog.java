@@ -32,6 +32,18 @@ public class AISelectDialog extends BaseDialog{
 		addCloseButton();
 
 		hidden(() -> {
+			if(ai == null && list.select() != player) ai = new AIController(){
+				@Override
+				public void updateMovement(){
+					circle(target, 80f);
+				}
+
+				@Override
+				public void updateTargeting(){
+					if(retarget()) target = list.select().unit();
+				}
+			};
+
 			if(ai instanceof BuilderAI && list.select() != player) ai = new MimicAI(){
 				@Override
 				public void updateTargeting(){
@@ -45,18 +57,9 @@ public class AISelectDialog extends BaseDialog{
 					if(retarget()) target = list.select().unit();
 				}
 			};
-
-			if(ai instanceof AwaitingAI) ai = new AwaitingAI(){
-				@Override
-				public void updateTargeting(){
-					if(retarget()) target = list.select().unit();
-				}
-			};
-
-			updateUnit();
 		});
 
-		template(null, null, false);
+		template(null, null, true);
 		template(UnitTypes.mono, new MinerAI(), false);
 		template(UnitTypes.poly, new BuilderAI(), true);
 		template(UnitTypes.mega, new RepairAI(), false);
@@ -64,13 +67,12 @@ public class AISelectDialog extends BaseDialog{
 		template(UnitTypes.crawler, new SuicideAI(), false);
 		template(UnitTypes.dagger, new GroundAI(), false);
 		template(UnitTypes.flare, new FlyingAI(), false);
-		template(UnitTypes.gamma, new AwaitingAI(), true);
 		
 		cont.table(table -> {
 			list.build(table);
 			table.add(content).padLeft(16f);
 		}).row();
-		cont.labelWrap("You can select player for some ai like oct or poly...").labelAlign(2, 8).padLeft(16f);
+		cont.labelWrap("@aiselect.tooltip").labelAlign(2, 8).padTop(16f).width(368f);
 		
 		Events.on(WorldLoadEvent.class, event -> ai = null);
 		Events.on(UnitChangeEvent.class, event -> updateUnit());
@@ -87,7 +89,7 @@ public class AISelectDialog extends BaseDialog{
 
 	public boolean select(boolean show){
 		if(show){
-			list.rebuild();
+			list.rebuild(false);
 			show();
 		}else{
 			if(ai == null) return false;
