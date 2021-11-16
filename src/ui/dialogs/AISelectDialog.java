@@ -57,6 +57,8 @@ public class AISelectDialog extends BaseDialog{
 					if(retarget()) target = list.select().unit();
 				}
 			};
+
+			updateUnit();
 		});
 
 		template(null, null, true);
