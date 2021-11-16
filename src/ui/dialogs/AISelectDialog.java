@@ -64,12 +64,13 @@ public class AISelectDialog extends BaseDialog{
 		template(UnitTypes.crawler, new SuicideAI(), false);
 		template(UnitTypes.dagger, new GroundAI(), false);
 		template(UnitTypes.flare, new FlyingAI(), false);
+		template(UnitTypes.gamma, new AwaitingAI(), true);
 		
 		cont.table(table -> {
 			list.build(table);
 			table.add(content).padLeft(16f);
 		}).row();
-		cont.labelWrap("You can select player for some ai like oct or poly...");
+		cont.labelWrap("You can select player for some ai like oct or poly...").labelAlign(2, 8);
 		
 		Events.on(WorldLoadEvent.class, event -> ai = null);
 		Events.on(UnitChangeEvent.class, event -> updateUnit());
@@ -80,7 +81,6 @@ public class AISelectDialog extends BaseDialog{
 		content.button(draw, () -> {
 			list.get().touchable(show ? Touchable.enabled : Touchable.disabled);
 			this.ai = ai;
-			hide();
 		}).size(64).row();
 	}
 
