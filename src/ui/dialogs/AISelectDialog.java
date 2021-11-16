@@ -91,7 +91,7 @@ public class AISelectDialog extends BaseDialog{
 
 	public boolean select(boolean show){
 		if(show){
-			list.rebuild(false);
+			list.rebuild();
 			show();
 		}else{
 			if(ai == null) return false;

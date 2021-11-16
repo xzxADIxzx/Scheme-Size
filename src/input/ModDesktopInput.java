@@ -837,25 +837,25 @@ public class ModDesktopInput extends ModInputHandler{
         }
 
         float mouseAngle = Angles.mouseAngle(unit.x, unit.y);
-        boolean aimCursor = (omni && !aict && player.shooting && unit.type.hasWeapons() && unit.type.faceTarget && !boosted && unit.type.rotateShooting) || input.keyDown(ModBinding.look_at);
+        boolean aimCursor = (omni && player.shooting && unit.type.hasWeapons() && unit.type.faceTarget && !boosted && unit.type.rotateShooting) || input.keyDown(ModBinding.look_at);
 
-        if(aimCursor){
-            unit.lookAt(mouseAngle);
-        }else{
-            unit.lookAt(unit.prefRotation());
-        }
+        if(!aict){
+            if(aimCursor){
+                unit.lookAt(mouseAngle);
+            }else{
+                unit.lookAt(unit.prefRotation());
+            }
 
-        if(aict) player.shooting = unit.isShooting();
-        else{
             unit.movePref(movement);
 
             unit.aim(unit.type.faceTarget ? Core.input.mouseWorld() : Tmp.v1.trns(unit.rotation, Core.input.mouseWorld().dst(unit)).add(unit.x, unit.y));
             unit.controlWeapons(true, player.shooting && !boosted);
-        }
 
-        player.boosting = Core.input.keyDown(Binding.boost);
-        player.mouseX = unit.aimX();
-        player.mouseY = unit.aimY();
+            player.boosting = Core.input.keyDown(Binding.boost);
+
+            player.mouseX = unit.aimX();
+            player.mouseY = unit.aimY();
+        }
 
         //update payload input
         if(unit instanceof Payloadc){

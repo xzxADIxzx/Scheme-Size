@@ -24,11 +24,7 @@ public class PlayerSelectFragment{
     }
 
 	public void rebuild(){
-		rebuild(true);
-	}
-
-	public void rebuild(boolean reset){
-		if(reset) player = Vars.player;
+		Vars.player;
 
 		list.clear();
 		Groups.player.each(player -> {
