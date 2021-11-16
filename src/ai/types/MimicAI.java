@@ -21,8 +21,8 @@ public class MimicAI extends AIController{
             // unit.aim(following.aimX(), following.aimY());
             // unit.controlWeapons(true, following.isShooting);
 
-            unit.plans.clear();
-            unit.plans.addFirst(following.buildPlan());
+            // unit.plans.clear();
+            // unit.plans.addFirst(following.buildPlan());
         }
     }
 }

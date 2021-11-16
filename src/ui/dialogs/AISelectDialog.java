@@ -46,6 +46,13 @@ public class AISelectDialog extends BaseDialog{
 				}
 			};
 
+			if(ai instanceof AwaitingAI) ai = new AwaitingAI(){
+				@Override
+				public void updateTargeting(){
+					if(retarget()) target = list.select().unit();
+				}
+			};
+
 			updateUnit();
 		});
 
