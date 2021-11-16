@@ -7,13 +7,9 @@ import static mindustry.Vars.*;
 
 public class AwaitingAI extends AIController{
 
-    public @Nullable Unit following;
-
     @Override
     public void updateMovement(){
-        if(following == null) return;
-
-        circle(following, 100);
+        circle(target, 100);
         // for (int deg = 0; deg <= 360; deg++) {
 		// 	int x = cx + Mathf.round(Mathf.cosDeg(deg) * size, block().size);
 		// 	int y = cy + Mathf.round(Mathf.sinDeg(deg) * size, block().size);
