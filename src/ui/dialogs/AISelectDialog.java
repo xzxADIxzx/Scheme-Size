@@ -70,7 +70,7 @@ public class AISelectDialog extends BaseDialog{
 			list.build(table);
 			table.add(content).padLeft(16f);
 		}).row();
-		cont.labelWrap("You can select player for some ai like oct or poly...").labelAlign(2, 8);
+		cont.labelWrap("You can select player for some ai like oct or poly...").labelAlign(2, 8).padLeft(16f);
 		
 		Events.on(WorldLoadEvent.class, event -> ai = null);
 		Events.on(UnitChangeEvent.class, event -> updateUnit());
@@ -81,6 +81,7 @@ public class AISelectDialog extends BaseDialog{
 		content.button(draw, () -> {
 			list.get().touchable(show ? Touchable.enabled : Touchable.disabled);
 			this.ai = ai;
+			updateUnit();
 		}).size(64).row();
 	}
 
