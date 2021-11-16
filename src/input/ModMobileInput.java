@@ -996,7 +996,10 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
     //region movement
 
     protected void updateMovement(Unit unit){
-        if(!Core.input.isTouched() && SchemeSize.ai.select(false)) return;
+        if(!Core.input.isTouched() && SchemeSize.ai.select(false)){
+            Core.camera.position.set(unit.x, unit.y);
+            return;
+        }
 
         Rect rect = Tmp.r3;
 
