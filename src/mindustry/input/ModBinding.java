@@ -1,6 +1,5 @@
 package mindustry.input;
 
-import arc.*;
 import arc.KeyBinds.*;
 import arc.input.InputDevice.*;
 import arc.input.*;

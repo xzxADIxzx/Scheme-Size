@@ -3,7 +3,6 @@ package mindustry.input;
 import arc.*;
 import arc.func.*;
 import arc.graphics.g2d.*;
-import arc.input.GestureDetector.*;
 import arc.input.*;
 import arc.math.*;
 import arc.math.geom.*;
@@ -13,7 +12,6 @@ import arc.scene.ui.ImageButton.*;
 import arc.scene.ui.layout.*;
 import arc.struct.*;
 import arc.util.*;
-import mindustry.*;
 import mindustry.input.Placement.*;
 import mindustry.input.BuildingTools.*;
 import mindustry.content.*;
@@ -23,7 +21,6 @@ import mindustry.entities.units.*;
 import mindustry.game.EventType.*;
 import mindustry.game.*;
 import mindustry.gen.*;
-import mindustry.content.*;
 import mindustry.graphics.*;
 import mindustry.type.*;
 import mindustry.ui.*;
@@ -36,7 +33,7 @@ import static mindustry.Vars.*;
 import static mindustry.input.PlaceMode.*;
 
 // Last Update - Oct 3, 2021
-public class ModMobileInput extends ModInputHandler implements GestureListener{
+public class ModMobileInput extends ModInputHandler{
 
     /** Maximum speed the player can pan. */
     private static final float maxPanSpeed = 1.3f;
@@ -997,7 +994,7 @@ public class ModMobileInput extends ModInputHandler implements GestureListener{
 
     protected void updateMovement(Unit unit){
         if(!Core.input.isTouched() && SchemeSize.ai.select(false)){
-            Core.camera.position.set(unit.x, unit.y);
+            if(mobilePanCam) Core.camera.position.set(unit.x, unit.y);
             return;
         }
 

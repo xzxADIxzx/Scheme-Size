@@ -1,22 +1,19 @@
 package mindustry.ui.fragments;
 
-import arc.*;
 import arc.util.*;
-import arc.func.*;
 import arc.scene.ui.*;
 import arc.scene.ui.layout.*;
 import arc.graphics.g2d.*;
 import mindustry.*;
 import mindustry.ui.*;
 import mindustry.gen.*;
-import mindustry.game.*;
 import mindustry.graphics.*;
 
 public class PlayerSelectFragment{
 
 	public Player player;
 
-	private Cell pane;
+	private Cell<ScrollPane> pane;
 	private Table list = new Table();
 
     public void build(Table parent){
@@ -58,7 +55,7 @@ public class PlayerSelectFragment{
 		return player;
 	}
 
-	public Cell get(){
+	public Cell<ScrollPane> get(){
 		return pane;
 	}
 }

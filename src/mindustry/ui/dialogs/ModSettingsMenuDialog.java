@@ -6,15 +6,12 @@ import arc.func.*;
 import arc.graphics.*;
 import arc.graphics.Texture.*;
 import arc.input.*;
-import arc.math.geom.*;
-import arc.scene.*;
 import arc.scene.event.*;
 import arc.scene.ui.*;
 import arc.scene.ui.TextButton.*;
 import arc.scene.ui.layout.*;
 import arc.struct.*;
 import arc.util.*;
-import arc.util.io.*;
 import mindustry.content.*;
 import mindustry.content.TechTree.*;
 import mindustry.core.*;
@@ -24,9 +21,6 @@ import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.input.*;
 import mindustry.ui.*;
-
-import java.io.*;
-import java.util.zip.*;
 
 import static arc.Core.*;
 import static mindustry.Vars.*;
@@ -38,7 +32,6 @@ public class ModSettingsMenuDialog extends SettingsMenuDialog{
     private Table prefs;
     private Table menu;
     private BaseDialog dataDialog;
-    private boolean wasPaused;
 
     public ModSettingsMenuDialog(){
         // super(bundle.get("settings", "Settings"));
@@ -285,7 +278,7 @@ public class ModSettingsMenuDialog extends SettingsMenuDialog{
         mod.checkPref("copyshow", true);
         mod.checkPref("breakshow", true);
         mod.checkPref("hardconnect", false);
-        mod.checkPref("mobilemode", false);
+        if(!mobile) mod.checkPref("mobilemode", false);
         mod.checkPref("checkupdate", true);
         mod.checkPref("secret", false);
 

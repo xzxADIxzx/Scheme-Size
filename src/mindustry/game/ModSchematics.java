@@ -1,44 +1,21 @@
 package mindustry.game;
 
 import arc.*;
-import arc.assets.*;
 import arc.files.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.graphics.gl.*;
-import arc.math.*;
-import arc.math.geom.*;
 import arc.struct.*;
 import arc.util.*;
-import arc.util.io.*;
-import arc.util.io.Streams.*;
-import arc.util.pooling.*;
-import arc.util.serialization.*;
-import mindustry.*;
-import mindustry.content.*;
-import mindustry.core.*;
-import mindustry.ctype.*;
 import mindustry.entities.units.*;
-import mindustry.game.*;
 import mindustry.game.EventType.*;
 import mindustry.game.Schematic.*;
 import mindustry.gen.*;
 import mindustry.input.*;
 import mindustry.input.Placement.*;
-import mindustry.io.*;
 import mindustry.world.*;
 import mindustry.world.blocks.ConstructBlock.*;
-import mindustry.world.blocks.distribution.*;
-import mindustry.world.blocks.legacy.*;
-import mindustry.world.blocks.power.*;
-import mindustry.world.blocks.production.*;
-import mindustry.world.blocks.sandbox.*;
 import mindustry.world.blocks.storage.*;
-import mindustry.world.blocks.storage.CoreBlock.*;
-import mindustry.world.meta.*;
-
-import java.io.*;
-import java.util.zip.*;
 
 import static arc.Core.*;
 import static mindustry.Vars.*;

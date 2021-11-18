@@ -10,7 +10,6 @@ import mindustry.game.EventType.*;
 import mindustry.world.*;
 import mindustry.world.blocks.power.*;
 import mindustry.world.blocks.power.PowerNode.*;
-import mindustry.input.*;
 import mindustry.input.Placement.*;
 import mindustry.entities.units.*;
 import mindustry.scheme.*;
@@ -43,7 +42,7 @@ public class BuildingTools{
 			BuildPlan plan = node.find(bp -> bp.x == build.tileX() && bp.y == build.tileY());
 			if(plan == null) return;
 
-			Seq config = new Seq<Point2>((Point2[])plan.config);
+			Seq<Point2> config = new Seq<Point2>((Point2[])plan.config);
 			new Seq<Point2>(build.config()).each(point -> {
 				if(config.contains(point)) return;
 

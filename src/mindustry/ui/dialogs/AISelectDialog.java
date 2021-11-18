@@ -1,20 +1,13 @@
 package mindustry.ui.dialogs;
 
 import arc.*;
-import arc.util.*;
-import arc.func.*;
-import arc.scene.ui.*;
 import arc.scene.ui.layout.*;
 import arc.scene.event.*;
 import arc.scene.style.*;
-import arc.graphics.g2d.*;
-import mindustry.*;
-import mindustry.ui.*;
 import mindustry.ui.fragments.*;
 import mindustry.ai.types.*;
 import mindustry.gen.*;
 import mindustry.type.*;
-import mindustry.game.*;
 import mindustry.game.EventType.*;
 import mindustry.content.*;
 import mindustry.entities.units.*;
@@ -81,7 +74,7 @@ public class AISelectDialog extends BaseDialog{
 	}
 
 	private void template(UnitType icon, AIController ai, boolean show){
-		var draw = icon != null ? new TextureRegionDrawable(icon.icon(Cicon.tiny)) : Icon.none;
+		var draw = icon != null ? new TextureRegionDrawable(icon.uiIcon) : Icon.none;
 		content.button(draw, () -> {
 			list.get().touchable(show ? Touchable.enabled : Touchable.disabled);
 			this.ai = ai;

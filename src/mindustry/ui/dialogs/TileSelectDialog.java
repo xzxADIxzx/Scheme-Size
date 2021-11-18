@@ -8,9 +8,7 @@ import arc.scene.style.*;
 import arc.graphics.g2d.*;
 import mindustry.*;
 import mindustry.ui.*;
-import mindustry.ui.dialogs.*;
 import mindustry.gen.*;
-import mindustry.game.*;
 import mindustry.world.*;
 import mindustry.world.blocks.environment.*;
 import mindustry.content.*;
@@ -64,7 +62,7 @@ public class TileSelectDialog extends BaseDialog{
 			Vars.content.blocks().each(block -> {
 				if(skip.get(block) || block.id < 2) return;
 
-				var drawable = new TextureRegionDrawable(block.icon(Cicon.full));
+				var drawable = new TextureRegionDrawable(block.uiIcon);
 				table.button(drawable, () -> { 
 					callback.get(block);
 					updateimg();
@@ -116,7 +114,7 @@ public class TileSelectDialog extends BaseDialog{
 
 	private TextureRegionDrawable getIcon(Block block){
 		// bruh
-		return block == null ? new TextureRegionDrawable(Icon.none) : block == Blocks.air ? new TextureRegionDrawable(Icon.line) : new TextureRegionDrawable(block.icon(Cicon.full));
+		return block == null ? new TextureRegionDrawable(Icon.none) : block == Blocks.air ? new TextureRegionDrawable(Icon.line) : new TextureRegionDrawable(block.uiIcon);
 	}
 
 	private Floor asFloor(Block block){

@@ -17,8 +17,8 @@ public class ContentSelectDialog<T extends UnlockableContent> extends BaseDialog
 	public Cons3<Player, T, Floatp> callback;
 	public Stringf format;
 
-	private Cell label;
-	private Cell slider;
+	private Cell<Label> label;
+	private Cell<Slider> slider;
 	private PlayerSelectFragment list = new PlayerSelectFragment();
 	private int row = mobile ? 8 : 10;
 
@@ -38,7 +38,7 @@ public class ContentSelectDialog<T extends UnlockableContent> extends BaseDialog
 		content.each(item -> {
 			if(item.isHidden()) return;
 
-			var drawable = new TextureRegionDrawable(item.icon(Cicon.tiny));
+			var drawable = new TextureRegionDrawable(item.uiIcon);
 			table.button(drawable, () -> { 
 				callback.get(list.select(), item, () -> slider.getValue());
 				hide(); 

@@ -1,11 +1,8 @@
 package mindustry.ai.types;
 
 import arc.util.*;
-import arc.math.*;
-import mindustry.entities.*;
 import mindustry.entities.units.*;
 import mindustry.gen.*;
-import mindustry.world.meta.*;
 
 import static mindustry.Vars.*;
 

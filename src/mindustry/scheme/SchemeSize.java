@@ -1,11 +1,7 @@
 package mindustry.scheme;
 
 import arc.*;
-import arc.util.*;
-import arc.input.*;
 import arc.KeyBinds.*;
-import arc.scene.ui.*;
-import arc.scene.ui.layout.*;
 import mindustry.ui.dialogs.*;
 import mindustry.ui.fragments.*;
 import mindustry.mod.*;
@@ -54,13 +50,13 @@ public class SchemeSize extends Mod{
             ai = new AISelectDialog("@aiselect");
             team = new TeamSelectDialog("@teamselect");
             tile = new TileSelectDialog("@tileselect");
-            unit = new ContentSelectDialog("@unitselect", content.units(), 1, 20, 1, value -> {
+            unit = new ContentSelectDialog<UnitType>("@unitselect", content.units(), 1, 20, 1, value -> {
                 return Core.bundle.format("unit.zero.units", value);
             });
-            effect = new ContentSelectDialog("@effectselect", content.statusEffects(), 0, 60 * 60 * 5, 60, value -> {
+            effect = new ContentSelectDialog<StatusEffect>("@effectselect", content.statusEffects(), 0, 60 * 60 * 5, 60, value -> {
                 return value == 0 ? "@cleareffect" : Core.bundle.format("unit.zero.seconds", value / 60);
             });
-            item = new ContentSelectDialog("@itemselect", content.items(), -10000, 10000, 200, value -> {
+            item = new ContentSelectDialog<Item>("@itemselect", content.items(), -10000, 10000, 200, value -> {
                 return value == 0 ? "@clearitem" : Core.bundle.format("unit.zero.items", UI.formatAmount((long)value));
             });
 
@@ -71,7 +67,7 @@ public class SchemeSize extends Mod{
             listfrag.build(ui.hudGroup);
 
             // hide secret
-            setting.mod.getCells().get(mobile ? 9 : 10).visible(false);
+            setting.mod.getCells().get(mobile ? 8 : 10).visible(false);
 
             // mobiles haven`t keybinds
             if(mobile) return;
