@@ -995,6 +995,7 @@ public class ModMobileInput extends ModInputHandler{
     protected void updateMovement(Unit unit){
         if(!Core.input.isTouched() && SchemeSize.ai.select(false)){
             if(!freePanning) Core.camera.position.set(unit.x, unit.y);
+            player.shooting = unit.isShooting();
             return;
         }
 

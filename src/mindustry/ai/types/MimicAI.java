@@ -13,8 +13,10 @@ public class MimicAI extends AIController{
     @Override
     public void updateMovement(){
         if(following != null){
-            unit.updateBuilding = true;
             moveTo(following, following.hitSize() / 2f * 1.1f + unit.hitSize / 2f + 15f, 50f);
+
+            unit.updateBuilding = true;
+            player.boosting = following.isFlying();
 
             if(unit.type.rotateShooting) unit.lookAt(following.aimX(), following.aimY());
             else unit.lookAt(unit.prefRotation());
@@ -24,9 +26,6 @@ public class MimicAI extends AIController{
 
             unit.plans.clear();
             if(following.activelyBuilding()) unit.plans.addFirst(following.buildPlan());
-
-            player.boosting = following.isFlying();
-            player.shooting = following.isShooting();
         }
     }
 }

@@ -857,7 +857,7 @@ public class ModDesktopInput extends ModInputHandler{
 
             player.mouseX = unit.aimX();
             player.mouseY = unit.aimY();
-        }
+        }else player.shooting = unit.isShooting();
 
         //update payload input
         if(unit instanceof Payloadc){
