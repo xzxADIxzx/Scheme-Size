@@ -222,12 +222,12 @@ public class ModDesktopInput extends ModInputHandler{
         boolean panCam = false;
         float camSpeed = (!Core.input.keyDown(Binding.boost) ? panSpeed : panBoostSpeed) * Time.delta;
 
-        if(input.keyDown(Binding.pan) && !scene.hasField() && !scene.hasDialog()){
+        if(input.keyDown(Binding.pan) && !scene.hasField() && !scene.hasDialog() && !input.keyDown(ModBinding.alternative)){
             panCam = true;
             panning = true;
         }
 
-        if((Math.abs(Core.input.axis(Binding.move_x)) > 0 || Math.abs(Core.input.axis(Binding.move_y)) > 0 || input.keyDown(Binding.mouse_move)) && (!scene.hasField())){
+        if((Math.abs(Core.input.axis(Binding.move_x)) > 0 || Math.abs(Core.input.axis(Binding.move_y)) > 0 || input.keyDown(Binding.mouse_move)) && !scene.hasField() && !freePanning){
             panning = false;
         }
 
@@ -696,6 +696,10 @@ public class ModDesktopInput extends ModInputHandler{
     
             if(input.keyTap(Binding.deselect)){
                 SchemeSize.hudfrag.toggleBT();
+            }
+
+            if(input.keyTap(Binding.pan)){
+                toggleFreePan();
             }
         }else{
             if(input.keyTap(ModBinding.change_unit)){

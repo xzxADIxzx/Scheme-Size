@@ -190,9 +190,9 @@ public class ModHudFragment extends Fragment{
                     flipMobile.name = "flip";
 
                     select.button(scrt, style, isize - 12f, SchemeUtils::showSecret).name("scrt");
-                    select.button(look, style, isize, SchemeSize.input::toggleMobileDisWpn).name("look");
+                    select.button(look, style, isize, SchemeSize.input::toggleLookAt).name("look");
                     select.button(tele, style, isize, () -> SchemeUtils.teleport(Core.camera.position)).name("tele");
-                    select.button(port, style, isize, SchemeSize.input::toggleMobilePanCam).name("port").get(
+                    select.button(port, style, isize, SchemeSize.input::toggleFreePan).name("port").get(
                     ).image().color(Pal.gray).width(4).height(bsize).padRight(-dsize + 1.5f + isize);
                 }).left().name("mod buttons").row();
 

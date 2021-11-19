@@ -26,8 +26,8 @@ public class ModInputHandler extends InputHandler{
 
     public BuildingTools bt = new BuildingTools(this);
 
-    public boolean mobilePanCam = false;
-    public boolean mobileDisWpn = false;
+    public boolean freePanning = false;
+    public boolean mobileLookAt = false;
 
     public void drawSelectionMod(int x1, int y1, int x2, int y2, int size){
         drawSelection(x1, y1, x2, y2, size);
@@ -235,12 +235,12 @@ public class ModInputHandler extends InputHandler{
 
 
     // mobile features
-    public void toggleMobilePanCam(){
-        mobilePanCam = !mobilePanCam;
+    public void toggleFreePan(){
+        freePanning = !freePanning;
     }
 
-    public void toggleMobileDisWpn(){
-        mobileDisWpn = !mobileDisWpn;
+    public void toggleLookAt(){
+        mobileLookAt = !mobileLookAt;
     }
 
 

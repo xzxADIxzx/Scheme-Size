@@ -994,7 +994,7 @@ public class ModMobileInput extends ModInputHandler{
 
     protected void updateMovement(Unit unit){
         if(!Core.input.isTouched() && SchemeSize.ai.select(false)){
-            if(!mobilePanCam) Core.camera.position.set(unit.x, unit.y);
+            if(!freePanning) Core.camera.position.set(unit.x, unit.y);
             return;
         }
 
@@ -1022,7 +1022,7 @@ public class ModMobileInput extends ModInputHandler{
         float range = unit.hasWeapons() ? unit.range() : 0f;
         float bulletSpeed = unit.hasWeapons() ? type.weapons.first().bullet.speed : 0f;
         float mouseAngle = unit.angleTo(unit.aimX(), unit.aimY());
-        boolean aimCursor = (omni && player.shooting && type.hasWeapons() && type.faceTarget && !boosted && type.rotateShooting) || mobileDisWpn;
+        boolean aimCursor = (omni && player.shooting && type.hasWeapons() && type.faceTarget && !boosted && type.rotateShooting) || mobileLookAt;
 
         if(aimCursor){
             unit.lookAt(mouseAngle);
@@ -1065,10 +1065,10 @@ public class ModMobileInput extends ModInputHandler{
 
         player.boosting = collisions.overlapsTile(rect) || !unit.within(targetPos, 85f);
 
-        if(!mobilePanCam) unit.movePref(movement);
+        if(!freePanning) unit.movePref(movement);
 
         //update shooting if not building + not mining
-        if(!player.unit().activelyBuilding() && player.unit().mineTile == null && !mobileDisWpn){
+        if(!player.unit().activelyBuilding() && player.unit().mineTile == null && !mobileLookAt){
 
             //autofire targeting
             if(manualShooting){
@@ -1101,9 +1101,9 @@ public class ModMobileInput extends ModInputHandler{
             }
         }
 
-        unit.controlWeapons(player.shooting && !boosted && !mobileDisWpn);
+        unit.controlWeapons(player.shooting && !boosted && !mobileLookAt);
 
-        if(mobileDisWpn){
+        if(mobileLookAt){
             player.shooting = false;
             unit.aim(player.mouseX = Core.input.mouseWorldX(), player.mouseY = Core.input.mouseWorldY());
         }
