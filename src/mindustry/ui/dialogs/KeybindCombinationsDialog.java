@@ -19,6 +19,7 @@ public class KeybindCombinationsDialog extends BaseDialog{
 		template("@keycomb.self_dest", "keybind.respawn.name");
 		template("@keycomb.spawn_unit", "keybind.change_unit.name");
 		template("@keycomb.reset_ai", "keybind.change_ai.name");
+		template("@keycomb.free_pan", "keybind.pan.name");
 
 		cont.label(() -> "@category.bt.name").color(Color.gray).padTop(10f).row();
 		cont.image().color(Color.gray).fillX().height(3f).padBottom(6f).row();
