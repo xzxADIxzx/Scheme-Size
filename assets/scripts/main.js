@@ -1,4 +1,4 @@
-import "Scheme-Size/mod";
+require("Scheme-Size/mod");
 
 Events.on(EventType.ClientLoadEvent, event => {
 	// don`t check for updates
