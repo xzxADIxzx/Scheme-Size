@@ -245,7 +245,8 @@ public class BuildingTools{
 		circle,
 		replace,
 		power,
-		edit;
+		edit,
+		calc;
 	}
 
 	public class ProductionSeq{
@@ -286,6 +287,7 @@ public class BuildingTools{
 		}
 
 		public void add(PumpBuild build, Pump block){
+			if(build.liquidDrop == null) return;
 			liquids[build.liquidDrop.id] += build.amount * block.pumpAmount * 60f;
 		}
 

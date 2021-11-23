@@ -336,8 +336,9 @@ public class ModHudFragment extends Fragment{
                     edit.defaults().size(bsize).bottom().right();
 
                     edit.button(Icon.redo, style, SchemeSize.input::flushLastRemoved).tooltip("@keycomb.return").name("return").row();
+                    edit.button(Icon.paste, style, () -> bt.setMode(Mode.calc)).name("calculate").padBottom(bsize).row();
                     edit.button(Icon.pencil, style, () -> SchemeSize.tile.select(true, null)).name("select").row();
-                    edit.button(Icon.editor, check, () -> bt.setMode(Mode.edit)).checked(t -> bt.mode == Mode.edit).height(bsize * 3).name("edit").row();
+                    edit.button(Icon.editor, check, () -> bt.setMode(Mode.edit)).checked(t -> bt.mode == Mode.edit).name("edit").row();
                 });
 
                 pad.image().color(Pal.gray).width(4f).pad(4f).fillY();

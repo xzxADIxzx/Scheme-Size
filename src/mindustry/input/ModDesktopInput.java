@@ -125,12 +125,18 @@ public class ModDesktopInput extends ModInputHandler{
             drawSelectionMod(schemX, schemY, cursorX, cursorY, settings.getInt("copysize") - 1);
         }
 
-        if(bt.mode == Mode.edit && usingbt){
-            drawEditSelectionMod(isAdmin() ? player.tileX() : btX, isAdmin() ? player.tileY() : btY, cursorX, cursorY, isAdmin() ? 49 : maxSchematicSize);
-        }
-
-        if(bt.mode == Mode.power && usingbt && isPlacing()){
-            drawEditSelectionMod(cursorX - bt.size + 1, cursorY - bt.size + 1, cursorX + bt.size - 1, cursorY + bt.size - 1, 256);
+        if(usingbt){
+            if(bt.mode == Mode.edit){
+                drawEditSelectionMod(isAdmin() ? player.tileX() : btX, isAdmin() ? player.tileY() : btY, cursorX, cursorY, isAdmin() ? 49 : maxSchematicSize);
+            }
+    
+            if(bt.mode == Mode.power && isPlacing()){
+                drawEditSelectionMod(cursorX - bt.size + 1, cursorY - bt.size + 1, cursorX + bt.size - 1, cursorY + bt.size - 1, 256);
+            }
+    
+            if(bt.mode == Mode.calc){
+                drawEditSelectionMod(btX, btY, cursorX, cursorY, 512);
+            }
         }
 
         Draw.reset();
@@ -766,11 +772,16 @@ public class ModDesktopInput extends ModInputHandler{
 
             if(input.keyRelease(Binding.select)){
                 apply();
-            }
 
-            if(bt.mode == Mode.edit && input.keyRelease(Binding.select)){
-                NormalizeResult result = Placement.normalizeArea(isAdmin() ? player.tileX() : btX, isAdmin() ? player.tileY() : btY, cursorX, cursorY, 0, false, isAdmin() ? 49 : maxSchematicSize);
-                SchemeUtils.edit(result.x, result.y, result.x2, result.y2);
+                if(bt.mode == Mode.edit){
+                    NormalizeResult result = Placement.normalizeArea(isAdmin() ? player.tileX() : btX, isAdmin() ? player.tileY() : btY, cursorX, cursorY, 0, false, isAdmin() ? 49 : maxSchematicSize);
+                    SchemeUtils.edit(result.x, result.y, result.x2, result.y2);
+                }
+
+                if(bt.mode == Mode.calc){
+                    NormalizeResult result = Placement.normalizeArea(btX, btY, cursorX, cursorY, 0, false, 512);
+                    bt.calc(result.x, result.y, result.x2, result.y2);
+                }
             }
         }
 
