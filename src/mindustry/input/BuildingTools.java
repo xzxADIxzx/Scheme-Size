@@ -6,10 +6,13 @@ import arc.math.*;
 import arc.math.geom.*;
 import arc.struct.*;
 import mindustry.gen.*;
+import mindustry.type.*;
 import mindustry.game.EventType.*;
 import mindustry.world.*;
 import mindustry.world.blocks.power.*;
 import mindustry.world.blocks.power.PowerNode.*;
+import mindustry.world.blocks.production.*;
+import mindustry.world.consumers.*;
 import mindustry.input.Placement.*;
 import mindustry.entities.units.*;
 import mindustry.scheme.*;
@@ -21,6 +24,10 @@ public class BuildingTools{
 	private InputHandler input;
 	private Block select;
 	private int bsize;
+
+	public Seq<ItemStack> items;
+	public Seq<LiquidStack> liquids;
+	public float power;
 
 	public Seq<BuildPlan> removed = new Seq<>();
 	public Seq<BuildPlan> plan = new Seq<>();
@@ -172,6 +179,21 @@ public class BuildingTools{
 			for(int x = cx + s; x >= cx - s + 1; x -= 1) if(check.get(world.tile(x, cy - s))) return;
 			for(int y = cy - s; y <= cy + s - 1; y += 1) if(check.get(world.tile(cx - s, y))) return;
 		}
+	}
+
+	public void calc(Block block){
+		block.consumes.each(cons -> {
+			if(cons instanceof ConsumeItems c) items.addAll(c.items);
+			if(cons instanceof ConsumeLiquid c) liquids.add(new LiquidStack(c.liquid, c.amount));
+			if(cons instanceof ConsumePower c) power -= c.usage;
+		});
+
+		if(block instanceof GenericCrafter g){
+			if(g.outputsItems()) items.addAll(g.outputItems);
+			if(g.outputsLiquid) liquids.add(g.outputLiquid);
+		}
+		if(block instanceof SolidPump g) liquids.add(new LiquidStack(g.result, g.pumpAmount));
+		if(block instanceof PowerGenerator g) power += g.powerProduction;
 	}
 
 	public void save(Seq<BuildPlan> requests){
