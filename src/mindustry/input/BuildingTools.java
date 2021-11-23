@@ -25,10 +25,7 @@ public class BuildingTools{
 	private Block select;
 	private int bsize;
 
-	public Seq<ItemStack> items;
-	public Seq<LiquidStack> liquids;
-	public float power;
-
+	public ProductionSeq product = new ProductionSeq();
 	public Seq<BuildPlan> removed = new Seq<>();
 	public Seq<BuildPlan> plan = new Seq<>();
 	public Mode mode = Mode.none;
@@ -183,17 +180,14 @@ public class BuildingTools{
 
 	public void calc(Block block){
 		block.consumes.each(cons -> {
-			if(cons instanceof ConsumeItems c) items.addAll(c.items);
-			if(cons instanceof ConsumeLiquid c) liquids.add(new LiquidStack(c.liquid, c.amount));
-			if(cons instanceof ConsumePower c) power -= c.usage;
+			if(cons instanceof ConsumeItems c) product.add(c, block instanceof GenericCrafter g ? g.craftTime : 1);
+			if(cons instanceof ConsumeLiquid c) product.add(c);;
+			if(cons instanceof ConsumePower c) product.add(c);
 		});
 
-		if(block instanceof GenericCrafter g){
-			if(g.outputsItems()) items.addAll(g.outputItems);
-			if(g.outputsLiquid) liquids.add(g.outputLiquid);
-		}
-		if(block instanceof SolidPump g) liquids.add(new LiquidStack(g.result, g.pumpAmount));
-		if(block instanceof PowerGenerator g) power += g.powerProduction;
+		if(block instanceof GenericCrafter g) product.add(g);
+		if(block instanceof SolidPump g) product.add(g);
+		if(block instanceof PowerGenerator g) product.add(g);
 	}
 
 	public void save(Seq<BuildPlan> requests){
@@ -227,5 +221,36 @@ public class BuildingTools{
 		replace,
 		power,
 		edit;
+	}
+
+	public class ProductionSeq{
+		public float[] items = new float[content.items().size];
+		public float[] liquids = new float[content.liquids().size];
+		public float power;
+
+		public void add(ConsumeItems cons, float time){
+			for(ItemStack stack : cons.items) items[stack.item.id] -= stack.amount / time * 60;
+		}
+
+		public void add(ConsumeLiquid cons){
+			liquids[cons.liquid.id] -= cons.amount * 60;
+		}
+
+		public void add(ConsumePower cons){
+			power -= cons.usage * 60;
+		}
+
+		public void add(GenericCrafter gen){
+			for(ItemStack stack : gen.outputItems) items[stack.item.iconId] += stack.amount / gen.craftTime * 60;
+			if(gen.outputsLiquid) liquids[gen.outputLiquid.liquid.id] += gen.outputLiquid.amount;
+		}
+
+		public void add(SolidPump pump){
+			liquids[pump.result.id] += pump.pumpAmount * 60;
+		}
+
+		public void add(PowerGenerator gen){
+			power += gen.powerProduction * 60;
+		}
 	}
 }
