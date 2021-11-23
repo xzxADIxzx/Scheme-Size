@@ -12,6 +12,8 @@ import mindustry.world.*;
 import mindustry.world.blocks.power.*;
 import mindustry.world.blocks.power.PowerNode.*;
 import mindustry.world.blocks.production.*;
+import mindustry.world.blocks.production.Pump.*;
+import mindustry.world.blocks.production.Drill.*;
 import mindustry.world.consumers.*;
 import mindustry.input.Placement.*;
 import mindustry.entities.units.*;
@@ -26,6 +28,8 @@ public class BuildingTools{
 	private int bsize;
 
 	public ProductionSeq product = new ProductionSeq();
+	public Seq<Building> checked = new Seq<>();
+
 	public Seq<BuildPlan> removed = new Seq<>();
 	public Seq<BuildPlan> plan = new Seq<>();
 	public Mode mode = Mode.none;
@@ -35,6 +39,7 @@ public class BuildingTools{
 
 	public BuildingTools(InputHandler input){
 		this.input = input;
+		product.clear();
 
 		Events.on(ConfigEvent.class, event -> {
 			if(player.unit().plans.isEmpty()) node.clear();
@@ -178,6 +183,26 @@ public class BuildingTools{
 		}
 	}
 
+	public void calc(int sx, int sy, int ex, int ey){
+		product.clear();
+		checked.clear();
+
+		for(int x = sx; x <= ey; x++){
+			for(int y = sy; y <= ey; y++){
+				Tile tile = world.tile(x, y);
+				if(tile.build == null) continue;
+
+				if(checked.contains(tile.build)) continue;
+				checked.add(tile.build);
+
+				if(tile.block() instanceof Drill block) product.add((DrillBuild)tile.build, block);
+				if(tile.block() instanceof Pump block) product.add((PumpBuild)tile.build, block);
+
+				calc(tile.block());
+			}
+		}
+	}
+
 	public void calc(Block block){
 		block.consumes.each(cons -> {
 			if(cons instanceof ConsumeItems c) product.add(c, block instanceof GenericCrafter g ? g.craftTime : 1);
@@ -224,33 +249,50 @@ public class BuildingTools{
 	}
 
 	public class ProductionSeq{
-		public float[] items = new float[content.items().size];
-		public float[] liquids = new float[content.liquids().size];
+		public float[] items;
+		public float[] liquids;
 		public float power;
 
 		public void add(ConsumeItems cons, float time){
-			for(ItemStack stack : cons.items) items[stack.item.id] -= stack.amount / time * 60;
+			for(ItemStack stack : cons.items) items[stack.item.id] -= stack.amount / time * 60f;
 		}
 
 		public void add(ConsumeLiquid cons){
-			liquids[cons.liquid.id] -= cons.amount * 60;
+			liquids[cons.liquid.id] -= cons.amount * 60f;
 		}
 
 		public void add(ConsumePower cons){
-			power -= cons.usage * 60;
+			power -= cons.usage * 60f;
 		}
 
 		public void add(GenericCrafter gen){
-			for(ItemStack stack : gen.outputItems) items[stack.item.iconId] += stack.amount / gen.craftTime * 60;
+			for(ItemStack stack : gen.outputItems) items[stack.item.id] += stack.amount / gen.craftTime * 60f;
 			if(gen.outputsLiquid) liquids[gen.outputLiquid.liquid.id] += gen.outputLiquid.amount;
 		}
 
 		public void add(SolidPump pump){
-			liquids[pump.result.id] += pump.pumpAmount * 60;
+			liquids[pump.result.id] += pump.pumpAmount * 60f;
 		}
 
 		public void add(PowerGenerator gen){
-			power += gen.powerProduction * 60;
+			power += gen.powerProduction * 60f;
+		}
+
+		public void add(DrillBuild build, Drill block){
+			items[build.dominantItem.id] += 60f / (block.drillTime + block.hardnessDrillMultiplier * build.dominantItem.hardness) * 
+											build.dominantItems * build.efficiency() * build.warmup * 
+											(build.cons.optionalValid() ? block.liquidBoostIntensity : 1f);
+			// oh no ,_,
+		}
+
+		public void add(PumpBuild build, Pump block){
+			liquids[build.liquidDrop.id] += build.amount * block.pumpAmount * 60f;
+		}
+
+		public void clear(){
+			items = new float[content.items().size];
+			liquids = new float[content.liquids().size];
+			power = 0f;
 		}
 	}
 }
