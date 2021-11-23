@@ -187,7 +187,7 @@ public class BuildingTools{
 		product.clear();
 		checked.clear();
 
-		for(int x = sx; x <= ey; x++){
+		for(int x = sx; x <= ex; x++){
 			for(int y = sy; y <= ey; y++){
 				Tile tile = world.tile(x, y);
 				if(tile.build == null) continue;
