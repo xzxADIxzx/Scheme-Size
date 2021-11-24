@@ -255,9 +255,9 @@ public class BuildingTools{
 		public float power;
 
 		public void add(ConsumeItems cons, Block block){
-			float time = block instanceof GenericCrafter g ? g.craftTime * 60f :
+			float time = block instanceof GenericCrafter g ? g.craftTime :
 						 block instanceof ImpactReactor i ? i.itemDuration :
-						 block instanceof NuclearReactor r ? r.itemDuration : 1;
+						 block instanceof NuclearReactor r ? r.itemDuration : 60f;
 			for(ItemStack stack : cons.items) items[stack.item.id] -= stack.amount / time * 60f;
 		}
 
