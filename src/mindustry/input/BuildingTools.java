@@ -205,7 +205,7 @@ public class BuildingTools{
 
 	public void calc(Block block){
 		block.consumes.each(cons -> {
-			if(cons instanceof ConsumeItems c) product.add(c, block instanceof GenericCrafter g ? g.craftTime : 1);
+			if(cons instanceof ConsumeItems c) product.add(c, block);
 			if(cons instanceof ConsumeLiquid c) product.add(c);;
 			if(cons instanceof ConsumePower c) product.add(c);
 		});
@@ -254,8 +254,11 @@ public class BuildingTools{
 		public float[] liquids;
 		public float power;
 
-		public void add(ConsumeItems cons, float time){
-			for(ItemStack stack : cons.items) items[stack.item.id] -= stack.amount / time;
+		public void add(ConsumeItems cons, Block block){
+			float time = block instanceof GenericCrafter g ? g.craftTime * 60f :
+						 block instanceof ImpactReactor i ? i.itemDuration :
+						 block instanceof NuclearReactor r ? r.itemDuration : 1;
+			for(ItemStack stack : cons.items) items[stack.item.id] -= stack.amount / time * 60f;
 		}
 
 		public void add(ConsumeLiquid cons){
