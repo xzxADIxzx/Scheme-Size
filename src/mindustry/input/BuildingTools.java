@@ -267,7 +267,7 @@ public class BuildingTools{
 		}
 
 		public void add(GenericCrafter gen){
-			for(ItemStack stack : gen.outputItems) items[stack.item.id] += stack.amount / gen.craftTime * 60f;
+			if(gen.outputsItems()) for(ItemStack stack : gen.outputItems) items[stack.item.id] += stack.amount / gen.craftTime * 60f;
 			if(gen.outputsLiquid) liquids[gen.outputLiquid.liquid.id] += gen.outputLiquid.amount;
 		}
 
