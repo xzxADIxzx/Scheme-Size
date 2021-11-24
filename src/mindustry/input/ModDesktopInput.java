@@ -374,7 +374,7 @@ public class ModDesktopInput extends ModInputHandler{
             }
         }
 
-        if(bt.mode == Mode.edit){
+        if(bt.mode == Mode.edit || bt.mode == Mode.calc){
             cursorType = SystemCursor.arrow;
             player.shooting = false;
             mode = none;

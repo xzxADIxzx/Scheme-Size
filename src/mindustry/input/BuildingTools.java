@@ -255,7 +255,7 @@ public class BuildingTools{
 		public float power;
 
 		public void add(ConsumeItems cons, float time){
-			for(ItemStack stack : cons.items) items[stack.item.id] -= stack.amount / time * 60f;
+			for(ItemStack stack : cons.items) items[stack.item.id] -= stack.amount / time;
 		}
 
 		public void add(ConsumeLiquid cons){
@@ -268,7 +268,7 @@ public class BuildingTools{
 
 		public void add(GenericCrafter gen){
 			if(gen.outputsItems()) for(ItemStack stack : gen.outputItems) items[stack.item.id] += stack.amount / gen.craftTime * 60f;
-			if(gen.outputsLiquid) liquids[gen.outputLiquid.liquid.id] += gen.outputLiquid.amount;
+			if(gen.outputsLiquid) liquids[gen.outputLiquid.liquid.id] += gen.outputLiquid.amount * 60f;
 		}
 
 		public void add(SolidPump pump){
