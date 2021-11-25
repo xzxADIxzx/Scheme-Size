@@ -5,6 +5,7 @@ import arc.func.*;
 import arc.math.*;
 import arc.math.geom.*;
 import arc.struct.*;
+import mindustry.ui.*;
 import mindustry.gen.*;
 import mindustry.type.*;
 import mindustry.game.EventType.*;
@@ -201,6 +202,8 @@ public class BuildingTools{
 				calc(tile.block());
 			}
 		}
+
+		product.show();
 	}
 
 	public void calc(Block block){
@@ -298,6 +301,24 @@ public class BuildingTools{
 			items = new float[content.items().size];
 			liquids = new float[content.liquids().size];
 			power = 0f;
+		}
+
+		public void show(){
+			String output = new String();
+
+			for(Item item : content.items()){
+				output += Fonts.getUnicodeStr(item.name) + String.valueOf(items[item.id]) + "[gray]" + Core.bundle.get("unit.persecond") + " ";
+				if(item.id % 4 == 0) output += "\n";
+			}
+
+			for(Liquid item : content.liquids()){
+				output += Fonts.getUnicodeStr(item.name) + String.valueOf(liquids[item.id]) + "[gray]" + Core.bundle.get("unit.persecond") + " ";
+				if(item.id % 4 == 0) output += "\n";
+			}
+
+			output += "\n" + (power >= 0 ? "[accent]" : "[red]") + " " + (power >= 0 ? "+" : "") + power;
+
+			ui.showInfoToast(output, 8);
 		}
 	}
 }
