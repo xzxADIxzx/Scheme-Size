@@ -8,7 +8,6 @@ import arc.struct.*;
 import mindustry.ui.*;
 import mindustry.gen.*;
 import mindustry.type.*;
-import mindustry.core.*;
 import mindustry.ctype.*;
 import mindustry.game.EventType.*;
 import mindustry.world.*;
@@ -17,6 +16,7 @@ import mindustry.world.blocks.power.PowerNode.*;
 import mindustry.world.blocks.production.*;
 import mindustry.world.blocks.production.Pump.*;
 import mindustry.world.blocks.production.Drill.*;
+import mindustry.world.blocks.production.Separator.*;
 import mindustry.world.consumers.*;
 import mindustry.input.Placement.*;
 import mindustry.entities.units.*;
@@ -200,6 +200,7 @@ public class BuildingTools{
 
 				if(tile.block() instanceof Drill block) product.add((DrillBuild)tile.build, block);
 				if(tile.block() instanceof Pump block) product.add((PumpBuild)tile.build, block);
+				if(tile.block() instanceof Separator block) product.add((SeparatorBuild)tile.build, block);
 
 				calc(tile.block());
 			}
@@ -276,7 +277,7 @@ public class BuildingTools{
 
 		public void add(GenericCrafter gen){
 			if(gen.outputsItems()) for(ItemStack stack : gen.outputItems) items[stack.item.id] += stack.amount / gen.craftTime * 60f;
-			if(gen.outputsLiquid) liquids[gen.outputLiquid.liquid.id] += gen.outputLiquid.amount * 60f;
+			if(gen.outputsLiquid) liquids[gen.outputLiquid.liquid.id] += gen.outputLiquid.amount * 60f / (gen instanceof LiquidConverter ? 1 : gen.craftTime);
 		}
 
 		public void add(SolidPump pump){
@@ -299,6 +300,10 @@ public class BuildingTools{
 			liquids[build.liquidDrop.id] += build.amount * block.pumpAmount * 60f;
 		}
 
+		public void add(SeparatorBuild build, Separator block){
+			for(ItemStack stack : block.results) items[stack.item.id] += stack.amount / block.craftTime * 60f;
+		}
+
 		public void clear(){
 			items = new float[content.items().size];
 			liquids = new float[content.liquids().size];
@@ -317,10 +322,10 @@ public class BuildingTools{
 			int id = 0;
 			for(UnlockableContent item : content){
 				if(amount[item.id] == 0) continue;
-				input += Fonts.getUnicodeStr(item.name) + UI.formatAmount((long)amount[item.id]) + "[gray]" + Core.bundle.get("unit.persecond") + " ";
+				input += Fonts.getUnicodeStr(item.name) + Mathf.round(amount[item.id], .01f) + "[gray]" + Core.bundle.get("unit.persecond") + "[] ";
 
-				id++;
 				if(id % 4 == 3) input += "\n";
+				id++;
 			}
 			return input;
 		}
