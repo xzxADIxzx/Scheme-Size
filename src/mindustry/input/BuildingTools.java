@@ -8,6 +8,8 @@ import arc.struct.*;
 import mindustry.ui.*;
 import mindustry.gen.*;
 import mindustry.type.*;
+import mindustry.core.*;
+import mindustry.ctype.*;
 import mindustry.game.EventType.*;
 import mindustry.world.*;
 import mindustry.world.blocks.power.*;
@@ -304,21 +306,23 @@ public class BuildingTools{
 		}
 
 		public void show(){
-			String output = new String();
-
-			for(Item item : content.items()){
-				output += Fonts.getUnicodeStr(item.name) + String.valueOf(items[item.id]) + "[gray]" + Core.bundle.get("unit.persecond") + " ";
-				if(item.id % 4 == 0) output += "\n";
-			}
-
-			for(Liquid item : content.liquids()){
-				output += Fonts.getUnicodeStr(item.name) + String.valueOf(liquids[item.id]) + "[gray]" + Core.bundle.get("unit.persecond") + " ";
-				if(item.id % 4 == 0) output += "\n";
-			}
-
-			output += "\n" + (power >= 0 ? "[accent]" : "[red]") + " " + (power >= 0 ? "+" : "") + power;
+			String output = forType(new String(), content.items(), items) + "\n";
+			output = forType(output, content.liquids(), liquids) + "\n";
+			output += (power >= 0 ? "[accent]" : "[red]") + " " + (power >= 0 ? "+" : "") + power;
 
 			ui.showInfoToast(output, 8);
+		}
+
+		private String forType(String input, Seq<? extends UnlockableContent> content, float[] amount){
+			int id = 0;
+			for(UnlockableContent item : content){
+				if(amount[item.id] == 0) continue;
+				input += Fonts.getUnicodeStr(item.name) + UI.formatAmount((long)amount[item.id]) + "[gray]" + Core.bundle.get("unit.persecond") + " ";
+
+				id++;
+				if(id % 4 == 3) input += "\n";
+			}
+			return input;
 		}
 	}
 }
