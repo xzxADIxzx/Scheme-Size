@@ -241,6 +241,7 @@ public class SchemeUtils{
         return has;
     }
 
+
     // js helpfull methods
     private static String js(String code){
         return "/js " + code;

@@ -313,7 +313,7 @@ public class BuildingTools{
 		public void show(){
 			String output = forType(new String(), content.items(), items) + "\n";
 			output = forType(output, content.liquids(), liquids) + "\n";
-			output += (power >= 0 ? "[accent]" : "[red]") + " " + (power >= 0 ? "+" : "") + power;
+			output += (power >= 0 ? "[accent]" : "[red]") + " " + (power >= 0 ? "+" : "") + (int)power;
 
 			ui.showInfoToast(output, 8);
 		}

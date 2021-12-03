@@ -51,6 +51,13 @@ public class AISelectDialog extends BaseDialog{
 				}
 			};
 
+			if(ai instanceof RepairAI && list.select() != player) ai = new CursorAI(){
+				@Override
+				public void updateTargeting(){
+					if(retarget()) following = list.select().unit();
+				}
+			};
+
 			updateUnit();
 		});
 
