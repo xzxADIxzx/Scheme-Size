@@ -37,7 +37,7 @@ public class SchemeUtils{
         Runnable admins = () -> {
             SchemeSize.unit.select(false, true, (ppl, unit, amount) -> {
                 if(!hasCore(ppl)) return;
-                Call.sendChatMessage("/units change " + unit.name + " " + ppl.name);
+                Call.sendChatMessage("/unit " + unit.name + " " + ppl.name);
             });
         };
         Runnable js = () -> {
@@ -144,6 +144,7 @@ public class SchemeUtils{
     }
 
     public static void teleport(Vec2 pos){
+        player.set(pos);
         player.unit().set(pos);
     }
 
@@ -153,10 +154,10 @@ public class SchemeUtils{
         };
         Runnable js = () -> {
             Call.sendChatMessage(js(getPlayer(player)));
-            Call.sendChatMessage(js("player.unit().kill()"));
+            Call.sendChatMessage(js("player.clearUnit()"));
         };
         Runnable server = () -> {
-            player.unit().kill();
+            player.clearUnit();
         };
         template(admins, js, server);
     }
@@ -179,8 +180,7 @@ public class SchemeUtils{
         Runnable server = () -> {
             SchemeSize.unit.select(true, true, (ppl, unit, amount) -> {
                 if(!hasCore(ppl)) return;
-                for (int i = 0; i < amount.get(); i++)
-                    unit.spawn(ppl.team(), ppl.x, ppl.y);
+                for (int i = 0; i < amount.get(); i++) unit.spawn(ppl.team(), ppl.x, ppl.y);
             });
         };
         template(admins, js, server);
@@ -240,7 +240,6 @@ public class SchemeUtils{
         if(!has) ui.showInfoFade("@nocore");
         return has;
     }
-
 
     // js helpfull methods
     private static String js(String code){
