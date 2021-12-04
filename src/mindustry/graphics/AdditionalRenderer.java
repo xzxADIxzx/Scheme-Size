@@ -44,9 +44,9 @@ public class AdditionalRenderer{
         Draw.color(Color.white, opacity);
 
         Rect bounds = Core.camera.bounds(Tmp.r1).grow(grow);
-        if(bounds.perimeter() / size > size) bounds.setSize(size);
+        if(bounds.area() / size > size) bounds.setSize(size);
 
-        if(xray || grid) tiles.intersect(bounds, tile -> {
+        if(xray || grid || blockRadius) tiles.intersect(bounds, tile -> {
             if(tile.build != null){
                 if(!build.contains(tile.build)) build.add(tile.build);
                 if(xray){
