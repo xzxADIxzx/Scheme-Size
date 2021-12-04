@@ -20,13 +20,14 @@ public class AdditionalRenderer{
     private TextureRegion cell = Core.atlas.find("door-open");
     private Seq<Building> build = new Seq<>();
     private float grow = tilesize * Core.settings.getFloat("argrowsize", 16f);
+    private float size = tilesize * 50;
 
     public TilesQuadtree tiles;
     public float opacity = .5f;
 
     public boolean xray;
     public boolean grid;
-    public boolean unitRadius;
+    public boolean unitInfo;
     public boolean blockRadius;
 
     public AdditionalRenderer(){
@@ -43,7 +44,9 @@ public class AdditionalRenderer{
         Draw.color(Color.white, opacity);
 
         Rect bounds = Core.camera.bounds(Tmp.r1).grow(grow);
-        tiles.intersect(bounds, tile -> {
+        if(bounds.perimeter() / size > size) bounds.setSize(size);
+
+        if(xray || grid) tiles.intersect(bounds, tile -> {
             if(tile.build != null){
                 if(!build.contains(tile.build)) build.add(tile.build);
                 if(xray){
@@ -53,23 +56,25 @@ public class AdditionalRenderer{
             }
         });
 
-        if(grid) tiles.intersect(bounds, tile -> {
-            if(tile.block() == Blocks.air) Draw.rect(cell, tile.x * tilesize, tile.y * tilesize, tilesize, tilesize);
-        });
+        if(grid){
+            tiles.intersect(bounds, tile -> {
+                if(tile.block() == Blocks.air) Draw.rect(cell, tile.x * tilesize, tile.y * tilesize, tilesize, tilesize);
+            });
+            build.each(build -> {
+                control.input.drawSelected(build.tileX(), build.tileY(), build.block, Pal.darkMetal);
+            });
+        }
 
-        if(grid) build.each(build -> {
-            control.input.drawSelected(build.tileX(), build.tileY(), build.block, Pal.darkMetal);
-        });
-        
+        Draw.z(Layer.overlayUI);
+
         if(blockRadius) build.each(build -> {
                 if(build instanceof BaseTurretBuild btb)
                     Drawf.dashCircle(btb.x, btb.y, btb.range(), btb.team.color);
         });
 
-        Draw.z(Layer.overlayUI);
-        Groups.draw.draw(draw -> {
+        if(unitInfo) Groups.draw.draw(draw -> {
             if(draw instanceof Unit u){
-                if(unitRadius) Drawf.dashCircle(u.x, u.y, u.range(), u.team.color);
+                Drawf.dashCircle(u.x, u.y, u.range(), u.team.color);
 
                 Tmp.v1.set(u.aimX(), u.aimY()).sub(u.x, u.y);
                 Tmp.v2.set(Tmp.v1).setLength(u.hitSize);
