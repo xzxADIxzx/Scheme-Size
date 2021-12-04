@@ -64,7 +64,7 @@ public class AISelectDialog extends BaseDialog{
 		template(null, null, true);
 		template(UnitTypes.mono, new MinerAI(), false);
 		template(UnitTypes.poly, new BuilderAI(), true);
-		template(UnitTypes.mega, new RepairAI(), false);
+		template(UnitTypes.mega, new RepairAI(), true);
 		template(UnitTypes.oct, new DefenderAI(), true);
 		template(UnitTypes.crawler, new SuicideAI(), false);
 		template(UnitTypes.dagger, new GroundAI(), false);

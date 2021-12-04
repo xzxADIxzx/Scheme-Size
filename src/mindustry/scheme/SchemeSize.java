@@ -10,6 +10,7 @@ import mindustry.core.*;
 import mindustry.game.*;
 import mindustry.game.EventType.*;
 import mindustry.input.*;
+import mindustry.graphics.*;
 
 import static mindustry.Vars.*;
 
@@ -17,6 +18,7 @@ public class SchemeSize extends Mod{
 
     public static ModSchematics schematic;
     public static ModInputHandler input;
+    public static AdditionalRenderer render;
 
     public static SecretConfigDialog secret;
     public static KeybindCombinationsDialog keycomb;
@@ -39,6 +41,7 @@ public class SchemeSize extends Mod{
             schematics.loadSync();
 
             control.setInput(input = mobile ? new ModMobileInput() : new ModDesktopInput());
+            render = new AdditionalRenderer();
 
             secret = new SecretConfigDialog();
             keycomb = new KeybindCombinationsDialog();
