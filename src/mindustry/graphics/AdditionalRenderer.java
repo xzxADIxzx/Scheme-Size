@@ -19,7 +19,7 @@ public class AdditionalRenderer{
 
     private TextureRegion cell = Core.atlas.find("door-open");
     private Seq<Building> build = new Seq<>();
-    private float grow = tilesize * (mobile ? 1 : Core.settings.getFloat("argrowsize", 16f));
+    private float grow = tilesize * Core.settings.getFloat("argrowsize", 16f);
 
     public TilesQuadtree tiles;
     public float opacity = .5f;
@@ -44,7 +44,6 @@ public class AdditionalRenderer{
 
         Rect bounds = Core.camera.bounds(Tmp.r1).grow(grow);
         tiles.intersect(bounds, tile -> {
-            if(grid && tile.block() == Blocks.air) Draw.rect(cell, tile.x * tilesize, tile.y * tilesize, tilesize, tilesize);
             if(tile.build != null){
                 if(!build.contains(tile.build)) build.add(tile.build);
                 if(xray){
@@ -54,15 +53,22 @@ public class AdditionalRenderer{
             }
         });
 
-        build.each(build -> {
-            if(grid) control.input.drawSelected(build.tileX(), build.tileY(), build.block, Pal.darkMetal);
-            if(blockRadius && build instanceof BaseTurretBuild btb)
-                Drawf.dashCircle(btb.x, btb.y, btb.range(), btb.team.color);
+        if(grid) tiles.intersect(bounds, tile -> {
+            if(tile.block() == Blocks.air) Draw.rect(cell, tile.x * tilesize, tile.y * tilesize, tilesize, tilesize);
+        });
+
+        if(grid) build.each(build -> {
+            control.input.drawSelected(build.tileX(), build.tileY(), build.block, Pal.darkMetal);
+        });
+        
+        if(blockRadius) build.each(build -> {
+                if(build instanceof BaseTurretBuild btb)
+                    Drawf.dashCircle(btb.x, btb.y, btb.range(), btb.team.color);
         });
 
         Draw.z(Layer.overlayUI);
-        Groups.draw.draw(drawc -> {
-            if(drawc instanceof Unit u){
+        Groups.draw.draw(draw -> {
+            if(draw instanceof Unit u){
                 if(unitRadius) Drawf.dashCircle(u.x, u.y, u.range(), u.team.color);
 
                 Tmp.v1.set(u.aimX(), u.aimY()).sub(u.x, u.y);
