@@ -9,9 +9,9 @@ import arc.graphics.*;
 import arc.graphics.g2d.*;
 import mindustry.gen.*;
 import mindustry.game.EventType.*;
-import mindustry.content.*;
-import mindustry.graphics.BlockRenderer.*;
+import mindustry.world.*;
 import mindustry.world.blocks.defense.turrets.BaseTurret.*;
+import mindustry.content.*;
 
 import static mindustry.Vars.*;
 
@@ -21,7 +21,7 @@ public class AdditionalRenderer{
     private Seq<Building> build = new Seq<>();
     private float grow = tilesize * (mobile ? 1 : Core.settings.getFloat("argrowsize", 16f));
 
-    public FloorQuadtree tiles;
+    public TilesQuadtree tiles;
     public float opacity = .5f;
 
     public Boolean xray;
@@ -31,7 +31,7 @@ public class AdditionalRenderer{
 
     public AdditionalRenderer(){
         Events.on(WorldLoadEvent.class, event -> {
-            tiles = new FloorQuadtree(new Rect(0, 0, world.unitWidth(), world.unitHeight()));
+            tiles = new TilesQuadtree(new Rect(0, 0, world.unitWidth(), world.unitHeight()));
             world.tiles.forEach(tile -> tiles.insert(tile));
         });
 
@@ -108,5 +108,18 @@ public class AdditionalRenderer{
                     bx + stroke, y + height * fract
                 );
             }
+    }
+
+    static class TilesQuadtree extends QuadTree<Tile>{
+
+        public TilesQuadtree(Rect bounds){
+            super(bounds);
+        }
+
+        @Override
+        public void hitbox(Tile tile){
+            var floor = tile.floor();
+            tmp.setCentered(tile.worldx(), tile.worldy(), floor.clipSize, floor.clipSize);
+        }
     }
 }
