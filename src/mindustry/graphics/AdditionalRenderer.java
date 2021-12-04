@@ -24,10 +24,10 @@ public class AdditionalRenderer{
     public TilesQuadtree tiles;
     public float opacity = .5f;
 
-    public Boolean xray;
-    public Boolean grid;
-    public Boolean unitRadius;
-    public Boolean blockRadius;
+    public boolean xray;
+    public boolean grid;
+    public boolean unitRadius;
+    public boolean blockRadius;
 
     public AdditionalRenderer(){
         Events.on(WorldLoadEvent.class, event -> {
