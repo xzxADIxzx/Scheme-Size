@@ -20,7 +20,7 @@ public class AdditionalRenderer{
     private TextureRegion cell = Core.atlas.find("door-open");
     private Seq<Building> build = new Seq<>();
     private float grow = tilesize * Core.settings.getFloat("argrowsize", 16f);
-    private float size = tilesize * 50;
+    // private float size = tilesize * 50;
 
     public TilesQuadtree tiles;
     public float opacity = .5f;
@@ -56,7 +56,7 @@ public class AdditionalRenderer{
         Draw.color(Color.white, opacity);
 
         Rect bounds = Core.camera.bounds(Tmp.r1).grow(grow);
-        if(bounds.area() / size > size) bounds.setSize(size);
+        // if(bounds.area() / size > size) bounds.setSize(size);
 
         if(xray) tiles.intersect(bounds, tile -> {
             if(tile.build != null){
@@ -77,8 +77,8 @@ public class AdditionalRenderer{
         Draw.z(Layer.overlayUI);
 
         if(blockRadius) build.each(build -> {
-                if(build instanceof BaseTurretBuild btb)
-                    Drawf.dashCircle(btb.x, btb.y, btb.range(), btb.team.color);
+            if(build instanceof BaseTurretBuild btb)
+                Drawf.dashCircle(btb.x, btb.y, btb.range(), btb.team.color);
         });
 
         if(unitInfo) Groups.draw.draw(draw -> {
