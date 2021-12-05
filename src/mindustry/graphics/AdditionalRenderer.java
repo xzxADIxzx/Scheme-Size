@@ -44,6 +44,7 @@ public class AdditionalRenderer{
         Rect bounds = Core.camera.bounds(Tmp.r1).grow(tilesize);
 
         tiles.intersect(bounds, tile -> {
+            if(tile.block() == Blocks.air) Draw.rect(cell, tile.worldx(), tile.worldy(), tilesize, tilesize);
             if(tile.build != null){
                 if(!build.contains(tile.build)) build.add(tile.build);
                 if(xray){
@@ -53,19 +54,11 @@ public class AdditionalRenderer{
             }
         });
 
-        if(grid){
-            tiles.intersect(bounds, tile -> {
-                if(tile.block() == Blocks.air) Draw.rect(cell, tile.worldx(), tile.worldy(), tilesize, tilesize);
-            });
-            build.each(build -> {
-                control.input.drawSelected(build.tileX(), build.tileY(), build.block, Pal.darkMetal);
-            });
-        }
-
         Draw.z(Layer.overlayUI);
 
-        if(blockRadius) build.each(build -> {
-            if(build instanceof BaseTurretBuild btb)
+        build.each(build -> {
+            if(grid) control.input.drawSelected(build.tileX(), build.tileY(), build.block, Pal.darkMetal);
+            if(blockRadius && build instanceof BaseTurretBuild btb)
                 Drawf.dashCircle(btb.x, btb.y, btb.range(), btb.team.color);
         });
 
