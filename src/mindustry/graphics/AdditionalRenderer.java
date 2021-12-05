@@ -58,23 +58,22 @@ public class AdditionalRenderer{
                 control.input.drawSelected(build.tileX(), build.tileY(), build.block, Pal.darkMetal);
             });
 
-            int sx = Mathf.round(bounds.x, 8);
-            int sy = Mathf.round(bounds.y, 8);
-            int ex = Mathf.round(bounds.x + bounds.width, 8);
-            int ey = Mathf.round(bounds.y + bounds.height, 8);
+            int size = tilesize * Math.max(Mathf.round(bounds.area() / (2 << 18)), 1);
+            int sx = Mathf.round(bounds.x, size);
+            int sy = Mathf.round(bounds.y, size);
+            int ex = Mathf.round(bounds.x + bounds.width, size);
+            int ey = Mathf.round(bounds.y + bounds.height, size);
 
             Draw.z(Layer.blockUnder);
             Lines.stroke(1, Pal.darkMetal);
 
             int segmentsX = Math.abs(sy - ey) >> 2;
-            for(var x = sx - 4; x < ex; x += tilesize){
+            for(var x = sx - 4; x < ex; x += size)
                 Lines.dashLine(x, sy - 6, x, ey - 6, segmentsX);
-            }
 
             int segmentsY = Math.abs(sx - ex) >> 2;
-            for(var y = sy - 4; y < ey; y += tilesize){
+            for(var y = sy - 4; y < ey; y += size)
                 Lines.dashLine(sx - 6, y, ex - 6, y, segmentsY);
-            }
         }
 
         Draw.z(Layer.overlayUI);
