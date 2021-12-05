@@ -33,7 +33,19 @@ public class AdditionalRenderer{
     public AdditionalRenderer(){
         Events.on(WorldLoadEvent.class, event -> {
             tiles = new TilesQuadtree(new Rect(0, 0, world.unitWidth(), world.unitHeight()));
-            world.tiles.forEach(tile -> tiles.insert(tile));
+            build.clear();
+
+            world.tiles.forEach(tile -> {
+                tiles.insert(tile);
+
+                if(tile.build != null && !build.contains(tile.build))
+                    build.add(tile.build);
+            });
+        });
+
+        Events.on(BlockBuildEndEvent.class, event -> {
+            if(event.breaking) build.remove(event.tile.build);
+            else build.add(event.tile.build);
         });
 
         renderer.addEnvRenderer(0, this::draw);
@@ -46,13 +58,10 @@ public class AdditionalRenderer{
         Rect bounds = Core.camera.bounds(Tmp.r1).grow(grow);
         if(bounds.area() / size > size) bounds.setSize(size);
 
-        if(xray || grid || blockRadius) tiles.intersect(bounds, tile -> {
+        if(xray) tiles.intersect(bounds, tile -> {
             if(tile.build != null){
-                if(!build.contains(tile.build)) build.add(tile.build);
-                if(xray){
-                    tile.floor().drawBase(tile);
-                    tile.overlay().drawBase(tile);
-                }
+                tile.floor().drawBase(tile);
+                tile.overlay().drawBase(tile);
             }
         });
 
