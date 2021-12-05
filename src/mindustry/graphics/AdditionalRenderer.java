@@ -21,7 +21,6 @@ public class AdditionalRenderer{
     private Seq<Building> build = new Seq<>();
 
     public TilesQuadtree tiles;
-    public BlockQuadtree block;
     public float opacity = .5f;
 
     public boolean xray;
@@ -32,12 +31,7 @@ public class AdditionalRenderer{
     public AdditionalRenderer(){
         Events.on(WorldLoadEvent.class, event -> {
             tiles = new TilesQuadtree(new Rect(0, 0, world.unitWidth(), world.unitHeight()));
-            block = new BlockQuadtree(new Rect(0, 0, world.unitWidth(), world.unitHeight()));
-
-            world.tiles.forEach(tile -> {
-                tiles.insert(tile);
-                block.insert(tile);
-            });
+            world.tiles.forEach(tile -> tiles.insert(tile));
         });
 
         renderer.addEnvRenderer(0, this::draw);
@@ -47,16 +41,15 @@ public class AdditionalRenderer{
         Draw.color(Color.white, opacity);
         build.clear();
 
-        Rect bounds = Core.camera.bounds(Tmp.r1);
+        Rect bounds = Core.camera.bounds(Tmp.r1).grow(tilesize);
 
-        if(grid || blockRadius) block.intersect(bounds, tile -> {
-            if(tile.build != null) build.add(tile.build);
-        });
-
-        if(xray) tiles.intersect(bounds, tile -> {
+        tiles.intersect(bounds, tile -> {
             if(tile.build != null){
-                tile.floor().drawBase(tile);
-                tile.overlay().drawBase(tile);
+                if(!build.contains(tile.build)) build.add(tile.build);
+                if(xray){
+                    tile.floor().drawBase(tile);
+                    tile.overlay().drawBase(tile);
+                }
             }
         });
 
@@ -123,19 +116,6 @@ public class AdditionalRenderer{
                     bx + stroke, y + height * fract
                 );
             }
-    }
-
-    static class BlockQuadtree extends QuadTree<Tile>{
-
-        public BlockQuadtree(Rect bounds){
-            super(bounds);
-        }
-
-        @Override
-        public void hitbox(Tile tile){
-            var block = tile.block();
-            tmp.setCentered(tile.worldx() + block.offset, tile.worldy() + block.offset, block.clipSize, block.clipSize);
-        }
     }
 
     static class TilesQuadtree extends QuadTree<Tile>{
