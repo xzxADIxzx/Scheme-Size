@@ -14,15 +14,12 @@ import mindustry.world.blocks.power.*;
 import mindustry.world.blocks.power.ImpactReactor.*;
 import mindustry.world.blocks.power.NuclearReactor.*;
 import mindustry.world.blocks.defense.turrets.BaseTurret.*;
-import mindustry.content.*;
 
 import static mindustry.Vars.*;
 
 public class AdditionalRenderer{
 
-    private TextureRegion cell = Core.atlas.find("door-open");
-    private Seq<Building> build = new Seq<>();
-
+    public Seq<Building> build = new Seq<>();
     public TilesQuadtree tiles;
     public float opacity = .5f;
 
@@ -57,12 +54,27 @@ public class AdditionalRenderer{
         });
 
         if(grid){
-            tiles.intersect(bounds, tile -> {
-                if(tile.block() == Blocks.air) Draw.rect(cell, tile.worldx(), tile.worldy(), tilesize, tilesize);
-            });
             build.each(build -> {
                 control.input.drawSelected(build.tileX(), build.tileY(), build.block, Pal.darkMetal);
             });
+
+            int sx = Mathf.round(bounds.x, 8);
+            int sy = Mathf.round(bounds.y, 8);
+            int ex = Mathf.round(bounds.x + bounds.width, 8);
+            int ey = Mathf.round(bounds.y + bounds.height, 8);
+
+            Draw.z(Layer.blockUnder);
+            Lines.stroke(1, Pal.darkMetal);
+
+            int segmentsX = Math.abs(sy - ey) >> 2;
+            for(var x = sx - 4; x < ex; x += tilesize){
+                Lines.dashLine(x, sy - 6, x, ey - 6, segmentsX);
+            }
+
+            int segmentsY = Math.abs(sx - ex) >> 2;
+            for(var y = sy - 4; y < ey; y += tilesize){
+                Lines.dashLine(sx - 6, y, ex - 6, y, segmentsY);
+            }
         }
 
         Draw.z(Layer.overlayUI);
@@ -71,9 +83,9 @@ public class AdditionalRenderer{
             if(build instanceof BaseTurretBuild btb)
                 Drawf.dashCircle(btb.x, btb.y, btb.range(), btb.team.color);
             if(build instanceof NuclearReactorBuild nrb)
-                Drawf.dashCircle(nrb.x, nrb.y, ((NuclearReactor)nrb.block).explosionRadius, Pal.thoriumPink);
+                Drawf.dashCircle(nrb.x, nrb.y, ((NuclearReactor)nrb.block).explosionRadius * tilesize, Pal.thoriumPink);
             if(build instanceof ImpactReactorBuild irb)
-                Drawf.dashCircle(irb.x, irb.y, ((ImpactReactor)irb.block).explosionRadius, Pal.meltdownHit);
+                Drawf.dashCircle(irb.x, irb.y, ((ImpactReactor)irb.block).explosionRadius * tilesize, Pal.meltdownHit);
         });
 
         if(unitInfo) Groups.draw.draw(draw -> {
