@@ -52,7 +52,6 @@ public class AdditionalRenderer{
     }
 
     private void draw(){
-        build.clear();
         Draw.color(Color.white, opacity);
 
         Rect bounds = Core.camera.bounds(Tmp.r1).grow(grow);
@@ -67,7 +66,7 @@ public class AdditionalRenderer{
 
         if(grid){
             tiles.intersect(bounds, tile -> {
-                if(tile.block() == Blocks.air) Draw.rect(cell, tile.x * tilesize, tile.y * tilesize, tilesize, tilesize);
+                if(tile.block() == Blocks.air) Draw.rect(cell, tile.worldx(), tile.worldy(), tilesize, tilesize);
             });
             build.each(build -> {
                 control.input.drawSelected(build.tileX(), build.tileY(), build.block, Pal.darkMetal);
