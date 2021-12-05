@@ -10,6 +10,9 @@ import arc.graphics.g2d.*;
 import mindustry.gen.*;
 import mindustry.game.EventType.*;
 import mindustry.world.*;
+import mindustry.world.blocks.power.*;
+import mindustry.world.blocks.power.ImpactReactor.*;
+import mindustry.world.blocks.power.NuclearReactor.*;
 import mindustry.world.blocks.defense.turrets.BaseTurret.*;
 import mindustry.content.*;
 
@@ -43,15 +46,13 @@ public class AdditionalRenderer{
 
         Rect bounds = Core.camera.bounds(Tmp.r1).grow(tilesize);
 
-        if(grid || blockRadius) tiles.intersect(bounds, tile -> {
-            if(tile.build != null && !build.contains(tile.build))
-                build.add(tile.build);
-        });
-
-        if(xray) tiles.intersect(bounds, tile -> {
+        tiles.intersect(bounds, tile -> {
             if(tile.build != null){
-                tile.floor().drawBase(tile);
-                tile.overlay().drawBase(tile);
+                if(!build.contains(tile.build)) build.add(tile.build);
+                if(xray){
+                    tile.floor().drawBase(tile);
+                    tile.overlay().drawBase(tile);
+                }
             }
         });
 
@@ -69,10 +70,14 @@ public class AdditionalRenderer{
         if(blockRadius) build.each(build -> {
             if(build instanceof BaseTurretBuild btb)
                 Drawf.dashCircle(btb.x, btb.y, btb.range(), btb.team.color);
+            if(build instanceof NuclearReactorBuild nrb)
+                Drawf.dashCircle(nrb.x, nrb.y, ((NuclearReactor)nrb.block).explosionRadius, Pal.thoriumPink);
+            if(build instanceof ImpactReactorBuild irb)
+                Drawf.dashCircle(irb.x, irb.y, ((ImpactReactor)irb.block).explosionRadius, Pal.meltdownHit);
         });
 
         if(unitInfo) Groups.draw.draw(draw -> {
-            if(draw instanceof Unit u){
+            if(draw instanceof Unit u && u != player.unit()){
                 Drawf.dashCircle(u.x, u.y, u.range(), u.team.color);
 
                 Tmp.v1.set(u.aimX(), u.aimY()).sub(u.x, u.y);
