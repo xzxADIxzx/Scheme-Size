@@ -25,7 +25,7 @@ public class AdditionalRenderer{
 
     public boolean xray;
     public boolean grid;
-    public boolean unitInfo;
+    public boolean unit;
     public boolean radius;
 
     public AdditionalRenderer(){
@@ -56,7 +56,7 @@ public class AdditionalRenderer{
         if(grid){
             Draw.color(Pal.darkMetal);
             build.each(build -> {
-                if(build.block.size > 1) return;
+                if(build.block.size < 2) return;
                 for(int i = 0; i < 4; i++){
                     Point2 p = Geometry.d8edge[i];
                     float offset = -Math.max(build.block.size - 1, 0) / 4f;
@@ -95,17 +95,18 @@ public class AdditionalRenderer{
                 Drawf.dashCircle(irb.x, irb.y, ((ImpactReactor)irb.block).explosionRadius * tilesize, Pal.meltdownHit);
         });
 
-        if(unitInfo) Groups.draw.draw(draw -> {
+        if(unit || radius) Groups.draw.draw(draw -> {
             if(draw instanceof Unit u && u != player.unit()){
                 if(radius) Drawf.dashCircle(u.x, u.y, u.range(), u.team.color);
+                if(unit){
+                    Tmp.v1.set(u.aimX(), u.aimY()).sub(u.x, u.y);
+                    Tmp.v2.set(Tmp.v1).setLength(u.hitSize);
+                    Lines.stroke(2, u.team.color);
+                    Lines.lineAngle(u.x + Tmp.v2.x, u.y + Tmp.v2.y, Tmp.v1.angle(), Tmp.v1.len() - Tmp.v2.len());
 
-                Tmp.v1.set(u.aimX(), u.aimY()).sub(u.x, u.y);
-                Tmp.v2.set(Tmp.v1).setLength(u.hitSize);
-                Lines.stroke(2, u.team.color);
-                Lines.lineAngle(u.x + Tmp.v2.x, u.y + Tmp.v2.y, Tmp.v1.angle(), Tmp.v1.len() - Tmp.v2.len());
-
-                drawHealthBar(u, Pal.darkishGray, 1);
-                drawHealthBar(u, Pal.health, u.health / u.maxHealth);
+                    drawHealthBar(u, Pal.darkishGray, 1);
+                    drawHealthBar(u, Pal.health, u.health / u.maxHealth);
+                }
             }
         });
 

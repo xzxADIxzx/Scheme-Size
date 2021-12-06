@@ -22,6 +22,7 @@ public class SchemeSize extends Mod{
 
     public static SecretConfigDialog secret;
     public static KeybindCombinationsDialog keycomb;
+    public static RenderSettingsDialog renderingset;
     public static ModSettingsMenuDialog setting;
     public static ModTraceDialog trace;
     public static ModHudFragment hudfrag;
@@ -45,6 +46,7 @@ public class SchemeSize extends Mod{
 
             secret = new SecretConfigDialog();
             keycomb = new KeybindCombinationsDialog();
+            renderingset = new RenderSettingsDialog();
             setting = new ModSettingsMenuDialog();
             trace = new ModTraceDialog();
             hudfrag = new ModHudFragment();
