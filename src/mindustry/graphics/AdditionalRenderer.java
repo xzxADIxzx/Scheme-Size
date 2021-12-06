@@ -54,8 +54,15 @@ public class AdditionalRenderer{
         });
 
         if(grid){
+            Draw.color(Pal.darkMetal);
             build.each(build -> {
-                control.input.drawSelected(build.tileX(), build.tileY(), build.block, Pal.darkMetal);
+                for(int i = 0; i < 4; i++){
+                    Point2 p = Geometry.d8edge[i];
+                    float offset = -Math.max(build.block.size - 1, 0) / 2f * tilesize;
+                    Draw.rect("block-select",
+                    build.x + offset * p.x,
+                    build.y + offset * p.y, i * 90);
+                }
             });
 
             int size = tilesize * Math.max(Mathf.round(bounds.area() / (2 << 18)), 1);
@@ -65,7 +72,7 @@ public class AdditionalRenderer{
             int ey = Mathf.round(bounds.y + bounds.height, size);
 
             Draw.z(Layer.blockUnder);
-            Lines.stroke(1, Pal.darkMetal);
+            Lines.stroke(size, Pal.darkMetal);
 
             int segmentsX = Math.abs(sy - ey) >> 2;
             for(var x = sx - 4; x < ex; x += size)
