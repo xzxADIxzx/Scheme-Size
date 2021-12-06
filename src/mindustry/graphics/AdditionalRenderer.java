@@ -26,7 +26,7 @@ public class AdditionalRenderer{
     public boolean xray;
     public boolean grid;
     public boolean unitInfo;
-    public boolean blockRadius;
+    public boolean radius;
 
     public AdditionalRenderer(){
         Events.on(WorldLoadEvent.class, event -> {
@@ -43,7 +43,7 @@ public class AdditionalRenderer{
 
         Rect bounds = Core.camera.bounds(Tmp.r1).grow(tilesize);
 
-        tiles.intersect(bounds, tile -> {
+        if(grid || radius) tiles.intersect(bounds, tile -> {
             if(tile.build != null){
                 if(!build.contains(tile.build)) build.add(tile.build);
                 if(xray){
@@ -56,12 +56,13 @@ public class AdditionalRenderer{
         if(grid){
             Draw.color(Pal.darkMetal);
             build.each(build -> {
+                if(build.block.size > 1) return;
                 for(int i = 0; i < 4; i++){
                     Point2 p = Geometry.d8edge[i];
-                    float offset = -Math.max(build.block.size - 1, 0) / 2f * tilesize;
+                    float offset = -Math.max(build.block.size - 1, 0) / 4f;
                     Draw.rect("block-select",
                     build.x + offset * p.x,
-                    build.y + offset * p.y, i * 90);
+                    build.y + offset * p.y, i * 90f);
                 }
             });
 
@@ -72,7 +73,7 @@ public class AdditionalRenderer{
             int ey = Mathf.round(bounds.y + bounds.height, size);
 
             Draw.z(Layer.blockUnder);
-            Lines.stroke(size, Pal.darkMetal);
+            Lines.stroke(1f, Pal.darkMetal);
 
             int segmentsX = Math.abs(sy - ey) >> 2;
             for(var x = sx - 4; x < ex; x += size)
@@ -85,7 +86,7 @@ public class AdditionalRenderer{
 
         Draw.z(Layer.overlayUI);
 
-        if(blockRadius) build.each(build -> {
+        if(radius) build.each(build -> {
             if(build instanceof BaseTurretBuild btb)
                 Drawf.dashCircle(btb.x, btb.y, btb.range(), btb.team.color);
             if(build instanceof NuclearReactorBuild nrb)
@@ -96,7 +97,7 @@ public class AdditionalRenderer{
 
         if(unitInfo) Groups.draw.draw(draw -> {
             if(draw instanceof Unit u && u != player.unit()){
-                Drawf.dashCircle(u.x, u.y, u.range(), u.team.color);
+                if(radius) Drawf.dashCircle(u.x, u.y, u.range(), u.team.color);
 
                 Tmp.v1.set(u.aimX(), u.aimY()).sub(u.x, u.y);
                 Tmp.v2.set(Tmp.v1).setLength(u.hitSize);
