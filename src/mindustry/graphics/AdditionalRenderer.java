@@ -39,33 +39,16 @@ public class AdditionalRenderer{
 
     private void draw(){
         Draw.color(Color.white, opacity);
-        build.clear();
-
         Rect bounds = Core.camera.bounds(Tmp.r1).grow(tilesize);
 
-        if(grid || radius) tiles.intersect(bounds, tile -> {
+        if(xray) tiles.intersect(bounds, tile -> {
             if(tile.build != null){
-                if(!build.contains(tile.build)) build.add(tile.build);
-                if(xray){
-                    tile.floor().drawBase(tile);
-                    tile.overlay().drawBase(tile);
-                }
+                tile.floor().drawBase(tile);
+                tile.overlay().drawBase(tile);
             }
         });
 
         if(grid){
-            Draw.color(Pal.darkMetal);
-            build.each(build -> {
-                if(build.block.size < 2) return;
-                for(int i = 0; i < 4; i++){
-                    Point2 p = Geometry.d8edge[i];
-                    float offset = -Math.max(build.block.size - 1, 0) / 4f;
-                    Draw.rect("block-select",
-                    build.x + offset * p.x,
-                    build.y + offset * p.y, i * 90f);
-                }
-            });
-
             int size = tilesize * Math.max(Mathf.round(bounds.area() / (2 << 18)), 1);
             int sx = Mathf.round(bounds.x, size);
             int sy = Mathf.round(bounds.y, size);
@@ -86,12 +69,16 @@ public class AdditionalRenderer{
 
         Draw.z(Layer.overlayUI);
 
-        if(radius) build.each(build -> {
-            if(build instanceof BaseTurretBuild btb)
+        build.clear();
+        if(radius) tiles.intersect(bounds, tile -> {
+            if(tile.build == null || build.contains(tile.build)) return;
+            else build.add(tile.build);
+
+            if(tile.build instanceof BaseTurretBuild btb)
                 Drawf.dashCircle(btb.x, btb.y, btb.range(), btb.team.color);
-            if(build instanceof NuclearReactorBuild nrb)
+            if(tile.build instanceof NuclearReactorBuild nrb)
                 Drawf.dashCircle(nrb.x, nrb.y, ((NuclearReactor)nrb.block).explosionRadius * tilesize, Pal.thoriumPink);
-            if(build instanceof ImpactReactorBuild irb)
+            if(tile.build instanceof ImpactReactorBuild irb)
                 Drawf.dashCircle(irb.x, irb.y, ((ImpactReactor)irb.block).explosionRadius * tilesize, Pal.meltdownHit);
         });
 
