@@ -9,10 +9,10 @@ public class RenderSettingsDialog extends BaseDialog{
 		super("@render.name");
 		addCloseButton();
 
-        cont.label(() -> "@render.common.name").padTop(16f).row();
+        cont.label(() -> "@render.bin.name").padTop(16f).row();
 		cont.table(table -> {
-            table.check("@render.common.power", this::togglePowerLines).checked(t -> settings.getInt("lasersopacity") != 0).left().row();
-			table.check("@render.common.status", value -> settings.put("blockstatus", value)).checked(t -> settings.getBool("blockstatus")).left().row();
+            table.check("@render.bin.power", this::togglePowerLines).checked(t -> settings.getInt("lasersopacity") != 0).left().row();
+			table.check("@render.bin.status", value -> settings.put("blockstatus", value)).checked(t -> settings.getBool("blockstatus")).left().row();
 		}).left().row();
 
         cont.label(() -> "@render.add.name").padTop(16f).row();

@@ -31,7 +31,7 @@ public class AdditionalRenderer{
     public AdditionalRenderer(){
         Events.on(WorldLoadEvent.class, event -> {
             tiles = new TilesQuadtree(new Rect(0, 0, world.unitWidth(), world.unitHeight()));
-            world.tiles.forEach(tile -> tiles.insert(tile));
+            world.tiles.eachTile(tile -> tiles.insert(tile));
         });
 
         renderer.addEnvRenderer(0, this::draw);
@@ -39,7 +39,7 @@ public class AdditionalRenderer{
 
     private void draw(){
         Draw.color(Color.white, opacity);
-        Rect bounds = Core.camera.bounds(Tmp.r1).grow(tilesize);
+        Rect bounds = Core.camera.bounds(Tmp.r1).grow(16);
 
         if(xray) tiles.intersect(bounds, tile -> {
             if(tile.build != null){
@@ -49,7 +49,7 @@ public class AdditionalRenderer{
         });
 
         if(grid){
-            int size = tilesize * Math.max(Mathf.round(bounds.area() / (2 << 18)), 1);
+            int size = tilesize * Math.max(Mathf.round(bounds.area() / 524288), 1);
             int sx = Mathf.round(bounds.x, size);
             int sy = Mathf.round(bounds.y, size);
             int ex = Mathf.round(bounds.x + bounds.width, size);

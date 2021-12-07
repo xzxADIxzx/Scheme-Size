@@ -651,7 +651,7 @@ public class ModDesktopInput extends ModInputHandler{
             SchemeUtils.showSecret();
         }
 
-        if(input.keyTap(ModBinding.renderset)){
+        if(input.keyTap(ModBinding.renderingset)){
             SchemeSize.renderingset.show();
         }
 
