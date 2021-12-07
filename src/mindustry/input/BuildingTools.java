@@ -12,6 +12,7 @@ import mindustry.type.*;
 import mindustry.ctype.*;
 import mindustry.game.EventType.*;
 import mindustry.world.*;
+import mindustry.world.blocks.units.*;
 import mindustry.world.blocks.power.*;
 import mindustry.world.blocks.power.PowerNode.*;
 import mindustry.world.blocks.power.PowerGenerator.*;
@@ -266,7 +267,8 @@ public class BuildingTools{
 		public void add(ConsumeItems cons, Block block){
 			float time = block instanceof GenericCrafter g ? g.craftTime :
 						 block instanceof ImpactReactor i ? i.itemDuration :
-						 block instanceof NuclearReactor r ? r.itemDuration : 60f;
+						 block instanceof NuclearReactor r ? r.itemDuration :
+						 block instanceof Reconstructor r ? r.constructTime : 60f;
 			for(ItemStack stack : cons.items) items[stack.item.id] -= stack.amount / time * 60f;
 		}
 
@@ -284,7 +286,7 @@ public class BuildingTools{
 		}
 
 		public void add(SolidPumpBuild build, SolidPump pump){
-			liquids[pump.result.id] += pump.pumpAmount * build.efficiency() * 60f;
+			liquids[pump.result.id] += pump.pumpAmount * build.efficiency() * (build.validTiles + build.boost) * 60f;
 		}
 
 		public void add(GeneratorBuild build, PowerGenerator gen){
