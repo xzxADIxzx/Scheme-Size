@@ -1,5 +1,7 @@
 package mindustry.ui.dialogs;
 
+import arc.graphics.*;
+
 import static arc.Core.*;
 import static mindustry.scheme.SchemeSize.*;
 
@@ -22,6 +24,8 @@ public class RenderSettingsDialog extends BaseDialog{
 			table.check("@render.add.unit", value -> render.unit = value).checked(t -> render.unit).left().row();
 			table.check("@render.add.radius", value -> render.radius = value).checked(t -> render.radius).left().row();
 		}).left().row();
+
+		cont.labelWrap("@render.add.description").labelAlign(2, 8).padTop(16f).size(320f, 120f).get().getStyle().fontColor = Color.lightGray;
 	}
 
     private void togglePowerLines(boolean on){

@@ -85,6 +85,7 @@ public class SchemeSize extends Mod{
             Core.keybinds.setDefaults(binds);
             Core.settings.load(); // update controls
             ui.controls = new KeybindDialog(); // update dialog
+            keycomb.init(); // init main keys...
         });
     }
 }
