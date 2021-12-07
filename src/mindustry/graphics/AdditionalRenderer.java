@@ -14,7 +14,6 @@ import mindustry.world.*;
 import mindustry.world.blocks.power.*;
 import mindustry.world.blocks.power.ImpactReactor.*;
 import mindustry.world.blocks.power.NuclearReactor.*;
-import mindustry.world.blocks.defense.turrets.BaseTurret.*;
 
 import static mindustry.Vars.*;
 
@@ -75,19 +74,17 @@ public class AdditionalRenderer{
             if(tile.build == null || build.contains(tile.build)) return;
             else build.add(tile.build);
 
-            if(tile.build instanceof BaseTurretBuild btb)
-                Drawf.dashCircle(btb.x, btb.y, btb.range(), btb.team.color);
+            if(tile.build instanceof Ranged r)
+                Drawf.dashCircle(r.x(), r.y(), r.range(), r.team().color);
             if(tile.build instanceof NuclearReactorBuild nrb)
                 Drawf.dashCircle(nrb.x, nrb.y, ((NuclearReactor)nrb.block).explosionRadius * tilesize, Pal.thoriumPink);
             if(tile.build instanceof ImpactReactorBuild irb)
                 Drawf.dashCircle(irb.x, irb.y, ((ImpactReactor)irb.block).explosionRadius * tilesize, Pal.meltdownHit);
-            if(tile.build instanceof Ranged r)
-                Drawf.dashCircle(tile.build.x, tile.build.y, r.range(), Pal.lightPyraFlame);
         });
 
         if(unit || radius) Groups.draw.draw(draw -> {
             if(draw instanceof Unit u && u != player.unit()){
-                if(radius) Drawf.dashCircle(u.x, u.y, u.range(), u.team.color);
+                if(radius) Drawf.circles(u.x, u.y, u.range(), u.team.color);
                 if(unit){
                     Tmp.v1.set(u.aimX(), u.aimY()).sub(u.x, u.y);
                     Tmp.v2.set(Tmp.v1).setLength(u.hitSize);

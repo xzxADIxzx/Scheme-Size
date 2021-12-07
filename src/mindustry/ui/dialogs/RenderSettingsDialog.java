@@ -17,10 +17,10 @@ public class RenderSettingsDialog extends BaseDialog{
 
         cont.label(() -> "@render.add.name").padTop(16f).row();
 		cont.table(table -> {
-			table.check("@render.add.xray", value -> render.xray = !render.xray).checked(t -> render.xray).left().row();
-			table.check("@render.add.grid", value -> render.grid = !render.grid).checked(t -> render.grid).left().row();
-			table.check("@render.add.unit", value -> render.unit = !render.unit).checked(t -> render.unit).left().row();
-			table.check("@render.add.radius", value -> render.radius = !render.radius).checked(t -> render.radius).left().row();
+			table.check("@render.add.xray", value -> render.xray = value).checked(t -> render.xray).left().row();
+			table.check("@render.add.grid", value -> render.grid = value).checked(t -> render.grid).left().row();
+			table.check("@render.add.unit", value -> render.unit = value).checked(t -> render.unit).left().row();
+			table.check("@render.add.radius", value -> render.radius = value).checked(t -> render.radius).left().row();
 		}).left().row();
 	}
 

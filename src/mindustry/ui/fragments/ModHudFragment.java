@@ -220,7 +220,7 @@ public class ModHudFragment extends Fragment{
                     Drawable effe = Core.atlas.drawable("status-corroded");
                     Drawable item = Icon.production;
                     Drawable spwn = Icon.add;
-                    Drawable rndr = Icon.map;
+                    Drawable rndr = Icon.mapSmall;
 
                     select.button(unit, style, isize, SchemeUtils::changeUnit).name("unit");
                     select.button(effe, style, isize, SchemeUtils::changeEffect).name("effe");
