@@ -14,6 +14,14 @@ public class KeybindCombinationsDialog extends BaseDialog{
 	public KeybindCombinationsDialog(){
 		super("@keycomb.name");
 		addCloseButton();
+	}
+
+	/**
+	 * DO NOT CALL BEFORE MDO BINDING HAS BEEN INITIALIZED
+	 */
+	public void init(){
+		main = Core.bundle.get("keycomb.main");
+		code = Core.keybinds.get(ModBinding.alternative).key.toString();
 
 		template("@keycomb.view_comb", Binding.block_info);
 		template("@keycomb.teleport", Binding.select);
@@ -27,14 +35,6 @@ public class KeybindCombinationsDialog extends BaseDialog{
 
 		template("@keycomb.toggle_bt", Binding.deselect);
 		template("@keycomb.return", Binding.schematic_menu);
-	}
-
-	/**
-	 * DO NOT CALL BEFORE MDO BINDING HAS BEEN INITIALIZED
-	 */
-	public void init(){
-		main = Core.bundle.get("keycomb.main");
-		code = Core.keybinds.get(ModBinding.alternative).key.toString();
 	}
 
 	private void template(String name, KeyBind bind){
