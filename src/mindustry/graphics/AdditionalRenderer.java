@@ -39,7 +39,7 @@ public class AdditionalRenderer{
 
     private void draw(){
         Draw.color(Color.white, opacity);
-        Rect bounds = Core.camera.bounds(Tmp.r1).grow(16);
+        Rect bounds = Core.camera.bounds(Tmp.r1).grow(tilesize);
 
         if(xray) tiles.intersect(bounds, tile -> {
             if(tile.build != null){

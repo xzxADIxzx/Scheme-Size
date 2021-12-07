@@ -1,6 +1,7 @@
 package mindustry.input;
 
 import arc.*;
+import arc.util.*;
 import arc.func.*;
 import arc.math.*;
 import arc.math.geom.*;
@@ -13,10 +14,12 @@ import mindustry.game.EventType.*;
 import mindustry.world.*;
 import mindustry.world.blocks.power.*;
 import mindustry.world.blocks.power.PowerNode.*;
+import mindustry.world.blocks.power.PowerGenerator.*;
 import mindustry.world.blocks.production.*;
 import mindustry.world.blocks.production.Pump.*;
 import mindustry.world.blocks.production.Drill.*;
 import mindustry.world.blocks.production.Separator.*;
+import mindustry.world.blocks.production.SolidPump.*;
 import mindustry.world.consumers.*;
 import mindustry.input.Placement.*;
 import mindustry.entities.units.*;
@@ -198,27 +201,27 @@ public class BuildingTools{
 				if(checked.contains(tile.build)) continue;
 				checked.add(tile.build);
 
-				if(tile.block() instanceof Drill block) product.add((DrillBuild)tile.build, block);
-				if(tile.block() instanceof Pump block) product.add((PumpBuild)tile.build, block);
-				if(tile.block() instanceof Separator block) product.add((SeparatorBuild)tile.build, block);
-
-				calc(tile.block());
+				calc(tile.block(), tile.build);
 			}
 		}
 
 		product.show();
 	}
 
-	public void calc(Block block){
+	public void calc(Block block, Building build){
 		block.consumes.each(cons -> {
 			if(cons instanceof ConsumeItems c) product.add(c, block);
 			if(cons instanceof ConsumeLiquid c) product.add(c);;
 			if(cons instanceof ConsumePower c) product.add(c);
 		});
 
-		if(block instanceof GenericCrafter g) product.add(g);
-		if(block instanceof SolidPump g) product.add(g);
-		if(block instanceof PowerGenerator g) product.add(g);
+		if(block instanceof Drill d) product.add((DrillBuild)build, d);
+		if(block instanceof Pump p) product.add((PumpBuild)build, p);
+		if(block instanceof Separator s) product.add((SeparatorBuild)build, s);
+
+		if(block instanceof GenericCrafter gc) product.add(gc);
+		if(block instanceof SolidPump sp) product.add((SolidPumpBuild)build, sp);
+		if(block instanceof PowerGenerator pg) product.add((GeneratorBuild)build, pg);
 	}
 
 	public void save(Seq<BuildPlan> requests){
@@ -280,12 +283,12 @@ public class BuildingTools{
 			if(gen.outputsLiquid) liquids[gen.outputLiquid.liquid.id] += gen.outputLiquid.amount * 60f / (gen instanceof LiquidConverter ? 1 : gen.craftTime);
 		}
 
-		public void add(SolidPump pump){
-			liquids[pump.result.id] += pump.pumpAmount * 60f;
+		public void add(SolidPumpBuild build, SolidPump pump){
+			liquids[pump.result.id] += pump.pumpAmount * build.efficiency() * 60f;
 		}
 
-		public void add(PowerGenerator gen){
-			power += gen.powerProduction * 60f;
+		public void add(GeneratorBuild build, PowerGenerator gen){
+			power += gen.powerProduction * build.productionEfficiency * 60f;
 		}
 
 		public void add(DrillBuild build, Drill block){
@@ -297,7 +300,7 @@ public class BuildingTools{
 
 		public void add(PumpBuild build, Pump block){
 			if(build.liquidDrop == null) return;
-			liquids[build.liquidDrop.id] += build.amount * block.pumpAmount * 60f;
+			liquids[build.liquidDrop.id] += build.amount * build.efficiency() * block.pumpAmount * 60f;
 		}
 
 		public void add(SeparatorBuild build, Separator block){
@@ -311,8 +314,8 @@ public class BuildingTools{
 		}
 
 		public void show(){
-			String output = forType(new String(), content.items(), items) + "\n";
-			output = forType(output, content.liquids(), liquids) + "\n";
+			String output = forType(new String(), content.items(), items);
+			output = forType(output, content.liquids(), liquids);
 			output += (power >= 0 ? "[accent]" : "[red]") + " " + (power >= 0 ? "+" : "") + (int)power;
 
 			ui.showInfoToast(output, 8);
@@ -322,12 +325,12 @@ public class BuildingTools{
 			int id = 0;
 			for(UnlockableContent item : content){
 				if(amount[item.id] == 0) continue;
-				input += Fonts.getUnicodeStr(item.name) + Mathf.round(amount[item.id], .01f) + "[gray]" + Core.bundle.get("unit.persecond") + "[] ";
+				input += Fonts.getUnicodeStr(item.name) + Strings.autoFixed(amount[item.id], 2) + "[gray]" + Core.bundle.get("unit.persecond") + "[] ";
 
 				if(id % 4 == 3) input += "\n";
 				id++;
 			}
-			return input;
+			return input + (input.isEmpty() ? "" : "\n");
 		}
 	}
 }
