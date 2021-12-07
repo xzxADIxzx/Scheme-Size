@@ -332,7 +332,7 @@ public class BuildingTools{
 				if(id % 4 == 3) input += "\n";
 				id++;
 			}
-			return input + (input.isEmpty() ? "" : "\n");
+			return input + (input.isEmpty() || input.endsWith("\n") ? "" : "\n");
 		}
 	}
 }
