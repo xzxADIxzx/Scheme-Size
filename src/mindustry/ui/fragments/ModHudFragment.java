@@ -220,11 +220,13 @@ public class ModHudFragment extends Fragment{
                     Drawable effe = Core.atlas.drawable("status-corroded");
                     Drawable item = Icon.production;
                     Drawable spwn = Icon.add;
+                    Drawable rndr = Icon.map;
 
                     select.button(unit, style, isize, SchemeUtils::changeUnit).name("unit");
                     select.button(effe, style, isize, SchemeUtils::changeEffect).name("effe");
                     select.button(item, style, isize, SchemeUtils::changeItem).name("item");
-                    select.button(spwn, style, isize, SchemeUtils::spawnUnit).name("spwn").get(
+                    select.button(spwn, style, isize, SchemeUtils::spawnUnit).name("spwn");
+                    select.button(rndr, style, isize, SchemeSize.renderingset::show).name("rndr").get(
                     ).image().color(Pal.gray).width(4).height(bsize).padRight(-dsize + 1.5f + isize);
                 }).left().name("mod buttons").visible(() -> shownMobile).row();
             }

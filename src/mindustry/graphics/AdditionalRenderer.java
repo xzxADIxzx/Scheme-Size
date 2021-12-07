@@ -9,6 +9,7 @@ import arc.graphics.*;
 import arc.graphics.g2d.*;
 import mindustry.gen.*;
 import mindustry.game.EventType.*;
+import mindustry.logic.*;
 import mindustry.world.*;
 import mindustry.world.blocks.power.*;
 import mindustry.world.blocks.power.ImpactReactor.*;
@@ -80,6 +81,8 @@ public class AdditionalRenderer{
                 Drawf.dashCircle(nrb.x, nrb.y, ((NuclearReactor)nrb.block).explosionRadius * tilesize, Pal.thoriumPink);
             if(tile.build instanceof ImpactReactorBuild irb)
                 Drawf.dashCircle(irb.x, irb.y, ((ImpactReactor)irb.block).explosionRadius * tilesize, Pal.meltdownHit);
+            if(tile.build instanceof Ranged r)
+                Drawf.dashCircle(tile.build.x, tile.build.y, r.range(), Pal.lightPyraFlame);
         });
 
         if(unit || radius) Groups.draw.draw(draw -> {

@@ -6,7 +6,6 @@ import arc.input.*;
 
 public enum ModBinding implements KeyBind{
     secret(KeyCode.f12, "mod"),
-    renderset(KeyCode.y),
     history(KeyCode.f9),
     toggle_core_items(KeyCode.f7),
     change_unit(KeyCode.f2),
@@ -15,6 +14,7 @@ public enum ModBinding implements KeyBind{
     change_team(KeyCode.semicolon),
     change_ai(KeyCode.i),
     place_core(KeyCode.apostrophe),
+    renderset(KeyCode.y),
     look_at(KeyCode.altLeft),
     alternative(KeyCode.altLeft);
 
