@@ -85,7 +85,7 @@ public class AdditionalRenderer{
 
         if(unit || raduni) Groups.draw.draw(draw -> {
             if(draw instanceof Unit u && u != player.unit()){
-                if(radius) Drawf.circles(u.x, u.y, u.range(), u.team.color);
+                if(raduni) Drawf.circles(u.x, u.y, u.range(), u.team.color);
                 if(unit){
                     Tmp.v1.set(u.aimX(), u.aimY()).sub(u.x, u.y);
                     Tmp.v2.set(Tmp.v1).setLength(u.hitSize);

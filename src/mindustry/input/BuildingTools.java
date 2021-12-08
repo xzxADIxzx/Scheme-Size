@@ -21,6 +21,8 @@ import mindustry.world.blocks.production.Pump.*;
 import mindustry.world.blocks.production.Drill.*;
 import mindustry.world.blocks.production.Separator.*;
 import mindustry.world.blocks.production.SolidPump.*;
+import mindustry.world.blocks.production.GenericCrafter.*;
+import mindustry.world.blocks.production.AttributeCrafter.*;
 import mindustry.world.consumers.*;
 import mindustry.input.Placement.*;
 import mindustry.entities.units.*;
@@ -220,7 +222,7 @@ public class BuildingTools{
 		if(block instanceof Pump p) product.add((PumpBuild)build, p);
 		if(block instanceof Separator s) product.add((SeparatorBuild)build, s);
 
-		if(block instanceof GenericCrafter gc) product.add(gc);
+		if(block instanceof GenericCrafter gc) product.add((GenericCrafterBuild)build, gc);
 		if(block instanceof SolidPump sp) product.add((SolidPumpBuild)build, sp);
 		if(block instanceof PowerGenerator pg) product.add((GeneratorBuild)build, pg);
 	}
@@ -280,9 +282,10 @@ public class BuildingTools{
 			power -= cons.usage * 60f;
 		}
 
-		public void add(GenericCrafter gen){
-			if(gen.outputsItems()) for(ItemStack stack : gen.outputItems) items[stack.item.id] += stack.amount / gen.craftTime * 60f;
-			if(gen.outputsLiquid) liquids[gen.outputLiquid.liquid.id] += gen.outputLiquid.amount * 60f / (gen instanceof LiquidConverter ? 1 : gen.craftTime);
+		public void add(GenericCrafterBuild build, GenericCrafter gen){
+			if(gen.outputsLiquid) liquids[gen.outputLiquid.liquid.id] += gen.outputLiquid.amount * 60f / (gen instanceof LiquidConverter ? 1f : gen.craftTime);
+			if(gen.outputsItems()) for(ItemStack stack : gen.outputItems)
+				items[stack.item.id] += stack.amount / gen.craftTime * 60f * (build instanceof AttributeCrafterBuild ac ? ac.efficiencyScale() : 1f);
 		}
 
 		public void add(SolidPumpBuild build, SolidPump pump){
@@ -318,9 +321,9 @@ public class BuildingTools{
 		public void show(){
 			String output = forType(new String(), content.items(), items);
 			output = forType(output, content.liquids(), liquids);
-			output += (power >= 0 ? "[accent]" : "[red]") + " " + (power >= 0 ? "+" : "") + (int)power;
+			if(power != 0) output += (power >= 0 ? "[accent]" : "[red]") + " " + (power >= 0 ? "+" : "") + (int)power;
 
-			ui.showInfoToast(output, 8);
+			ui.showInfoToast(output, 10f);
 		}
 
 		private String forType(String input, Seq<? extends UnlockableContent> content, float[] amount){
