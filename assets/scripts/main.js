@@ -15,5 +15,5 @@ Events.on(EventType.ClientLoadEvent, event => {
 	}, () => {});
 });
 
-// why not
-Vars.enableConsole = true;
+// why not... now this is secret
+Vars.enableConsole = Core.settings.getBool("secret");

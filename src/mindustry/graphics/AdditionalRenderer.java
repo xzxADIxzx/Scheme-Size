@@ -27,6 +27,7 @@ public class AdditionalRenderer{
     public boolean grid;
     public boolean unit;
     public boolean radius;
+    public boolean raduni;
 
     public AdditionalRenderer(){
         Events.on(WorldLoadEvent.class, event -> {
@@ -82,7 +83,7 @@ public class AdditionalRenderer{
                 Drawf.dashCircle(irb.x, irb.y, ((ImpactReactor)irb.block).explosionRadius * tilesize, Pal.meltdownHit);
         });
 
-        if(unit || radius) Groups.draw.draw(draw -> {
+        if(unit || raduni) Groups.draw.draw(draw -> {
             if(draw instanceof Unit u && u != player.unit()){
                 if(radius) Drawf.circles(u.x, u.y, u.range(), u.team.color);
                 if(unit){
