@@ -323,7 +323,7 @@ public class BuildingTools{
 			output = forType(output, content.liquids(), liquids);
 			if(power != 0) output += (power >= 0 ? "[accent]" : "[red]") + " " + (power >= 0 ? "+" : "") + (int)power;
 
-			ui.showInfoToast(output, 10f);
+			if(!output.isEmpty()) ui.showInfoToast(output, 10f);
 		}
 
 		private String forType(String input, Seq<? extends UnlockableContent> content, float[] amount){
