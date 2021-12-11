@@ -23,8 +23,8 @@ public class AdditionalRenderer{
     public TilesQuadtree tiles;
     public float opacity = .5f;
 
+    public boolean show;
     public boolean xray;
-    public boolean rayuni;
     public boolean grid;
     public boolean unit;
     public boolean radius;
@@ -40,10 +40,8 @@ public class AdditionalRenderer{
     }
 
     private void draw(){
-        Draw.color(Color.white, opacity);
+        Draw.alpha(opacity);
         Rect bounds = Core.camera.bounds(Tmp.r1).grow(tilesize);
-
-        if(rayuni) Draw.z(Layer.overlayUI);
 
         if(xray) tiles.intersect(bounds, tile -> {
             if(tile.build != null){
@@ -136,6 +134,22 @@ public class AdditionalRenderer{
                     bx + stroke, y + height * fract
                 );
             }
+    }
+
+    public void showUnits(boolean show){
+        // one big crutch
+        this.show = show;
+
+        float in = show ? .1f : 1f;
+        float ot = show ? 1f : .1f;
+        Groups.unit.each(unit -> {
+            if(unit.elevation == in) unit.elevation = ot;
+        });
+
+        int dif = 100 * (show ? 1 : -1);
+        content.units().each(unit -> {
+            unit.groundLayer += dif;
+        });
     }
 
     static class TilesQuadtree extends QuadTree<Tile>{

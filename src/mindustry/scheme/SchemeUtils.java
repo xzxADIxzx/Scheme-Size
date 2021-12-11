@@ -154,9 +154,11 @@ public class SchemeUtils{
         };
         Runnable js = () -> {
             Call.sendChatMessage(js(getPlayer(player)));
+            Call.sendChatMessage(js("player.unit().spawnedByCore = true"));
             Call.sendChatMessage(js("player.clearUnit()"));
         };
         Runnable server = () -> {
+            player.unit().spawnedByCore = true;
             player.clearUnit();
         };
         template(admins, js, server);
