@@ -23,7 +23,7 @@ public class AdditionalRenderer{
     public TilesQuadtree tiles;
     public float opacity = .5f;
 
-    public boolean show;
+    public boolean hide;
     public boolean xray;
     public boolean grid;
     public boolean unit;
@@ -136,17 +136,16 @@ public class AdditionalRenderer{
             }
     }
 
-    public void showUnits(boolean show){
+    public void showUnits(boolean hide){
         // one big crutch
-        this.show = show;
+        this.hide = hide;
 
-        float in = show ? .1f : 1f;
-        float ot = show ? 1f : .1f;
+        float in = hide ? 1f : .1f;
         Groups.unit.each(unit -> {
-            if(unit.elevation == in) unit.elevation = ot;
+            if(unit.elevation == in) unit.elevation = 1.1f - in;
         });
 
-        int dif = 100 * (show ? -1 : 1);
+        int dif = 100 * (hide ? -1 : 1);
         content.units().each(unit -> {
             unit.groundLayer += dif;
         });
