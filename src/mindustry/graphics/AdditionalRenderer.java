@@ -146,7 +146,7 @@ public class AdditionalRenderer{
             if(unit.elevation == in) unit.elevation = ot;
         });
 
-        int dif = 100 * (show ? 1 : -1);
+        int dif = 100 * (show ? -1 : 1);
         content.units().each(unit -> {
             unit.groundLayer += dif;
         });
