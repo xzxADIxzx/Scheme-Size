@@ -24,6 +24,7 @@ public class AdditionalRenderer{
     public float opacity = .5f;
 
     public boolean xray;
+    public boolean rayuni;
     public boolean grid;
     public boolean unit;
     public boolean radius;
@@ -41,6 +42,8 @@ public class AdditionalRenderer{
     private void draw(){
         Draw.color(Color.white, opacity);
         Rect bounds = Core.camera.bounds(Tmp.r1).grow(tilesize);
+
+        if(rayuni) Draw.z(Layer.overlayUI);
 
         if(xray) tiles.intersect(bounds, tile -> {
             if(tile.build != null){
@@ -87,13 +90,15 @@ public class AdditionalRenderer{
             if(draw instanceof Unit u && u != player.unit()){
                 if(raduni) Drawf.circles(u.x, u.y, u.range(), u.team.color);
                 if(unit){
-                    Tmp.v1.set(u.aimX(), u.aimY()).sub(u.x, u.y);
-                    Tmp.v2.set(Tmp.v1).setLength(u.hitSize);
-                    Lines.stroke(2, u.team.color);
-                    Lines.lineAngle(u.x + Tmp.v2.x, u.y + Tmp.v2.y, Tmp.v1.angle(), Tmp.v1.len() - Tmp.v2.len());
+                    if(u.isPlayer()){
+                        Tmp.v1.set(u.aimX(), u.aimY()).sub(u.x, u.y);
+                        Tmp.v2.set(Tmp.v1).setLength(u.hitSize);
+                        Lines.stroke(2, u.team.color);
+                        Lines.lineAngle(u.x + Tmp.v2.x, u.y + Tmp.v2.y, Tmp.v1.angle(), Tmp.v1.len() - Tmp.v2.len());
+                    }
 
                     drawHealthBar(u, Pal.darkishGray, 1);
-                    drawHealthBar(u, Pal.health, u.health / u.maxHealth);
+                    drawHealthBar(u, Pal.health, Mathf.clamp(u.health / u.maxHealth));
                 }
             }
         });

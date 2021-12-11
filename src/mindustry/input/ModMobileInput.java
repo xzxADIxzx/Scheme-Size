@@ -385,7 +385,7 @@ public class ModMobileInput extends ModInputHandler{
         }
 
         if(bt.mode == Mode.edit && usingbt){
-            drawEditSelectionMod(isAdmin() ? player.tileX() : btX, isAdmin() ? player.tileY() : btY, lastbtX, lastbtY, isAdmin() ? 49 : maxSchematicSize);
+            drawEditSelectionMod(isAdmin() ? player.tileX() : btX, isAdmin() ? player.tileY() : btY, lastbtX, lastbtY, isAdmin() ? 24 : maxSchematicSize);
         }
 
         if(bt.mode == Mode.power && usingbt && isPlacing()){
@@ -877,7 +877,7 @@ public class ModMobileInput extends ModInputHandler{
             }
 
             if(bt.mode == Mode.edit && isRelease()){
-                NormalizeResult result = Placement.normalizeArea(isAdmin() ? player.tileX() : btX, isAdmin() ? player.tileY() : btY, cursorX, cursorY, 0, false, isAdmin() ? 49 : maxSchematicSize);
+                NormalizeResult result = Placement.normalizeArea(isAdmin() ? player.tileX() : btX, isAdmin() ? player.tileY() : btY, cursorX, cursorY, 0, false, isAdmin() ? 24 : maxSchematicSize);
                 SchemeUtils.edit(result.x, result.y, result.x2, result.y2);
             }
         }
