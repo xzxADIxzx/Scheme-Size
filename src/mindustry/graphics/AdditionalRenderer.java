@@ -31,14 +31,15 @@ public class AdditionalRenderer{
     public boolean raduni;
 
     public AdditionalRenderer(){
+        Events.on(UnitCreateEvent.class, event -> update());
+        Events.on(UnitSpawnEvent.class, event -> update());
+        Events.on(UnitUnloadEvent.class, event -> update());
+        Events.on(WorldLoadEvent.class, event -> update());
+
         Events.on(WorldLoadEvent.class, event -> {
             tiles = new TilesQuadtree(new Rect(0, 0, world.unitWidth(), world.unitHeight()));
             world.tiles.eachTile(tile -> tiles.insert(tile));
         });
-
-        Events.on(UnitCreateEvent.class, event -> elevation(hide));
-        Events.on(UnitSpawnEvent.class, event -> elevation(hide));
-        Events.on(UnitUnloadEvent.class, event -> elevation(hide));
 
         renderer.addEnvRenderer(0, this::draw);
     }
@@ -148,6 +149,10 @@ public class AdditionalRenderer{
         content.units().each(unit -> {
             if(unit.groundLayer >= 0 == hide) unit.groundLayer *= -1;
         });
+    }
+
+    public void update(){
+        Time.runTask(1f, () -> showUnits(hide));
     }
 
     private void elevation(boolean hide){
