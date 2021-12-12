@@ -20,6 +20,7 @@ import mindustry.game.EventType.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.input.*;
+import mindustry.scheme.SchemeSize;
 import mindustry.ui.*;
 
 import static arc.Core.*;
@@ -266,6 +267,9 @@ public class ModSettingsMenuDialog extends SettingsMenuDialog{
     void addSettings(){
         if(!mobile) mod.consSliderSetting("panspeedmul", 4, 4, 20, 1, i -> i / 4f + "x", value -> {
             if(control.input instanceof ModDesktopInput i) i.changePanSpeed(value.get()); 
+        });
+        mod.consSliderSetting("aropacity", 50, 0, 100, 1, i -> i / 4f + "%", value -> {
+            SchemeSize.render.opacity(value.get() / 100f);
         });
         mod.consSliderSetting("maxzoommul", 4, 4, 20, 1, i -> i / 4f + "x", value -> {
             renderer.maxZoom = value.get() / 4f * 6f;

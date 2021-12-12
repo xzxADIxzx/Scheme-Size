@@ -158,8 +158,12 @@ public class AdditionalRenderer{
     private void elevation(boolean hide){
         float in = hide ? 1f : .5f;
         Groups.unit.each(unit -> {
-            if(unit.elevation == in) unit.elevation = 1.5f - in;
+            if(unit.elevation == in) unit.elevation(1.5f - in);
         });
+    }
+
+    public void opacity(float opacity){
+        opacity = Mathf.clamp(opacity);
     }
 
     static class TilesQuadtree extends QuadTree<Tile>{
