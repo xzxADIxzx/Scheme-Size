@@ -36,6 +36,10 @@ public class AdditionalRenderer{
             world.tiles.eachTile(tile -> tiles.insert(tile));
         });
 
+        Events.on(UnitCreateEvent.class, event -> elevation(hide));
+        Events.on(UnitSpawnEvent.class, event -> elevation(hide));
+        Events.on(UnitUnloadEvent.class, event -> elevation(hide));
+
         renderer.addEnvRenderer(0, this::draw);
     }
 
@@ -140,14 +144,16 @@ public class AdditionalRenderer{
         // one big crutch
         this.hide = hide;
 
+        elevation(hide);
+        content.units().each(unit -> {
+            if(unit.groundLayer >= 0 == hide) unit.groundLayer *= -1;
+        });
+    }
+
+    private void elevation(boolean hide){
         float in = hide ? 1f : .5f;
         Groups.unit.each(unit -> {
             if(unit.elevation == in) unit.elevation = 1.5f - in;
-        });
-
-        int dif = hide ? -1 : 1;
-        content.units().each(unit -> {
-            unit.groundLayer *= dif;
         });
     }
 
