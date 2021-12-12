@@ -280,6 +280,7 @@ public class ModSettingsMenuDialog extends SettingsMenuDialog{
         mod.checkPref("copyshow", true);
         mod.checkPref("breakshow", true);
         mod.checkPref("hardconnect", false);
+        mod.checkPref("hardscheme", false);
         if(!mobile) mod.checkPref("mobilemode", false);
         mod.checkPref("checkupdate", true);
         mod.checkPref("secret", false);

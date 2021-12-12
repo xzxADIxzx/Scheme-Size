@@ -68,6 +68,10 @@ public class BuildingTools{
 				build.onConfigureTileTapped(tile.build);
 			});
 		});
+
+		Events.on(WorldLoadEvent.class, event -> {
+			if(Core.settings.getBool("hardscheme")) state.rules.schematicsAllowed = true;
+		});
 	}
 	
 	public boolean isPlacing(){

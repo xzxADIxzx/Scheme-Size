@@ -22,7 +22,7 @@ public class AdditionalRenderer{
     private Seq<Unit> units = new Seq<>();
     private Seq<Building> build = new Seq<>();
     private TilesQuadtree tiles;
-    private float opacity = .5f;
+    private float opacity;
 
     public boolean hide;
     public boolean xray;
@@ -144,7 +144,7 @@ public class AdditionalRenderer{
     }
 
     public void update(){
-        if(hide) Time.runTask(1f, () -> showUnits(hide));
+        if(hide) Time.runTask(2f, () -> showUnits(hide));
     }
 
     public void showUnits(boolean hide){
