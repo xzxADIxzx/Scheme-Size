@@ -140,14 +140,14 @@ public class AdditionalRenderer{
         // one big crutch
         this.hide = hide;
 
-        float in = hide ? 1f : .1f;
+        float in = hide ? 1f : .5f;
         Groups.unit.each(unit -> {
-            if(unit.elevation == in) unit.elevation = 1.1f - in;
+            if(unit.elevation == in) unit.elevation = 1.5f - in;
         });
 
-        int dif = 100 * (hide ? -1 : 1);
+        int dif = hide ? -1 : 1;
         content.units().each(unit -> {
-            unit.groundLayer += dif;
+            unit.groundLayer *= dif;
         });
     }
 
