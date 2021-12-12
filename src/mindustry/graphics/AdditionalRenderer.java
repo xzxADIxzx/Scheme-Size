@@ -19,10 +19,10 @@ import static mindustry.Vars.*;
 
 public class AdditionalRenderer{
 
-    public Seq<Unit> units = new Seq<>();
-    public Seq<Building> build = new Seq<>();
-    public TilesQuadtree tiles;
-    public float opacity = .5f;
+    private Seq<Unit> units = new Seq<>();
+    private Seq<Building> build = new Seq<>();
+    private TilesQuadtree tiles;
+    private float opacity = .5f;
 
     public boolean hide;
     public boolean xray;
@@ -35,11 +35,13 @@ public class AdditionalRenderer{
         Events.on(UnitCreateEvent.class, event -> update());
         Events.on(UnitSpawnEvent.class, event -> update());
         Events.on(UnitUnloadEvent.class, event -> update());
-        Events.on(WorldLoadEvent.class, event -> update());
 
         Events.on(WorldLoadEvent.class, event -> {
             tiles = new TilesQuadtree(new Rect(0, 0, world.unitWidth(), world.unitHeight()));
             world.tiles.eachTile(tile -> tiles.insert(tile));
+
+            units.clear();
+            update();
         });
 
         renderer.addEnvRenderer(0, this::draw);
@@ -154,13 +156,13 @@ public class AdditionalRenderer{
             Groups.draw.remove(drawc);
         });
         else{
-            units.each(unit -> Groups.draw.add(unit));
+            units.select(unit -> !unit.dead()).each(unit -> Groups.draw.add(unit));
             units.clear();
         }
     }
 
     public void opacity(float opacity){
-        opacity = Mathf.clamp(opacity);
+        this.opacity = Mathf.clamp(opacity);
     }
 
     static class TilesQuadtree extends QuadTree<Tile>{

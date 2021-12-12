@@ -17,7 +17,6 @@ import mindustry.world.*;
 import mindustry.world.blocks.ConstructBlock.*;
 import mindustry.world.blocks.storage.*;
 
-import static arc.Core.*;
 import static mindustry.Vars.*;
 
 // Last Update - Sep 11, 2021
@@ -103,7 +102,7 @@ public class ModSchematics extends Schematics{
 
     @Override
     public Schematic create(int x, int y, int x2, int y2){
-        NormalizeResult result = Placement.normalizeArea(x, y, x2, y2, 0, false, settings.getInt("copysize") - 1);
+        NormalizeResult result = Placement.normalizeArea(x, y, x2, y2, 0, false, 511);
         x = result.x;
         y = result.y;
         x2 = result.x2;

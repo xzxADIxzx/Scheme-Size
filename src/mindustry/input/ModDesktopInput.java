@@ -117,12 +117,11 @@ public class ModDesktopInput extends ModInputHandler{
 
         //draw break selection
         if(mode == breaking){
-            int size = Core.input.keyDown(Binding.schematic_select) ? settings.getInt("copysize") : settings.getInt("breaksize");
-            drawBreakSelectionMod(selectX, selectY, cursorX, cursorY, size - 1);
+            drawBreakSelectionMod(selectX, selectY, cursorX, cursorY, 511);
         }
 
         if(Core.input.keyDown(Binding.schematic_select) && !Core.scene.hasKeyboard() && mode != breaking){
-            drawSelectionMod(schemX, schemY, cursorX, cursorY, settings.getInt("copysize") - 1);
+            drawSelectionMod(schemX, schemY, cursorX, cursorY, 511);
         }
 
         if(usingbt){
@@ -606,13 +605,12 @@ public class ModDesktopInput extends ModInputHandler{
                 lineRequests.clear();
                 Events.fire(new LineConfirmEvent());
             }else if(mode == breaking){ //touch up while breaking, break everything in selection
-                int size = Core.input.keyDown(Binding.schematic_select) ? settings.getInt("copysize") - 1 : settings.getInt("breaksize") - 1;
-                removeSelection(selectX, selectY, cursorX, cursorY, size);
+                removeSelection(selectX, selectY, cursorX, cursorY, 511);
                 if(lastSchematic != null){
                     useSchematic(lastSchematic);
                     lastSchematic = null;
                 }else{
-                    bt.save(selectX, selectY, cursorX, cursorY, size);
+                    bt.save(selectX, selectY, cursorX, cursorY, 511);
                 }
             }
             selectX = -1;

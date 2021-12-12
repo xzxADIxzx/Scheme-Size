@@ -189,10 +189,10 @@ public class ModHudFragment extends Fragment{
                     flipMobile = select.button(flip, style, this::toggleMobile).get();
                     flipMobile.name = "flip";
 
-                    select.button(scrt, style, isize - 12f, SchemeUtils::showSecret).name("scrt");
-                    select.button(look, style, isize, SchemeSize.input::toggleLookAt).name("look");
-                    select.button(tele, style, isize, () -> SchemeUtils.teleport(Core.camera.position)).name("tele");
-                    select.button(port, style, isize, SchemeSize.input::toggleFreePan).name("port").get(
+                    select.button(scrt, style, isize - 12f, SchemeUtils::showSecret);
+                    select.button(look, style, isize, SchemeSize.input::toggleLookAt);
+                    select.button(tele, style, isize, () -> SchemeUtils.teleport(Core.camera.position));
+                    select.button(port, style, isize, SchemeSize.input::toggleFreePan).get(
                     ).image().color(Pal.gray).width(4).height(bsize).padRight(-dsize + 1.5f + isize);
                 }).left().name("mod buttons").row();
 
@@ -205,11 +205,11 @@ public class ModHudFragment extends Fragment{
                     Drawable aict = Icon.logic;
                     Drawable hist = Icon.info;
 
-                    select.button(core, style, isize, SchemeUtils::placeCore).name("core");
-                    select.button(team, style, isize, SchemeUtils::changeTeam).name("team");
-                    select.button(kill, style, isize, SchemeUtils::selfDest).name("kill");
-                    select.button(aict, style, isize, () -> SchemeSize.ai.select(true)).name("aict");
-                    select.button(hist, style, isize, SchemeUtils::history).name("hist").get(
+                    select.button(core, style, isize, SchemeUtils::placeCore);
+                    select.button(team, style, isize, SchemeUtils::changeTeam);
+                    select.button(kill, style, isize, SchemeUtils::selfDest);
+                    select.button(aict, style, isize, () -> SchemeSize.ai.select(true));
+                    select.button(hist, style, isize, SchemeUtils::history).get(
                     ).image().color(Pal.gray).width(4).height(bsize).padRight(-dsize + 1.5f + isize);
                 }).left().name("mod buttons").visible(() -> shownMobile).row();
 
@@ -222,11 +222,11 @@ public class ModHudFragment extends Fragment{
                     Drawable spwn = Icon.add;
                     Drawable rndr = Icon.map;
 
-                    select.button(unit, style, isize, SchemeUtils::changeUnit).name("unit");
-                    select.button(effe, style, isize, SchemeUtils::changeEffect).name("effe");
-                    select.button(item, style, isize, SchemeUtils::changeItem).name("item");
-                    select.button(spwn, style, isize, SchemeUtils::spawnUnit).name("spwn");
-                    select.button(rndr, style, isize, SchemeSize.renderingset::show).name("rndr").get(
+                    select.button(unit, style, isize, SchemeUtils::changeUnit);
+                    select.button(effe, style, isize, SchemeUtils::changeEffect);
+                    select.button(item, style, isize, SchemeUtils::changeItem);
+                    select.button(spwn, style, isize, SchemeUtils::spawnUnit);
+                    select.button(rndr, style, isize, SchemeSize.renderingset::show).get(
                     ).image().color(Pal.gray).width(4).height(bsize).padRight(-dsize + 1.5f + isize);
                 }).left().name("mod buttons").visible(() -> shownMobile).row();
             }
@@ -324,11 +324,11 @@ public class ModHudFragment extends Fragment{
                     ctrl.name = "controls";
                     ctrl.defaults().size(bsize).bottom().right();
 
-                    ctrl.button(Icon.cancel, style, () -> { SchemeSize.input.block = null; bt.plan.clear(); }).visible(bt::isPlacing).name("cancel").row();
+                    ctrl.button(Icon.cancel, style, () -> { SchemeSize.input.block = null; bt.plan.clear(); }).visible(bt::isPlacing).row();
                     ctrl.add(size).row();
-                    ctrl.button(Icon.up, style, () -> bt.resize(1)).name("sizeup").row();
-                    ctrl.image(Icon.resize).name("resize").row();
-                    ctrl.button(Icon.down, style, () -> bt.resize(-1)).name("sizedown").row();
+                    ctrl.button(Icon.up, style, () -> bt.resize(1)).row();
+                    ctrl.image(Icon.resize).row();
+                    ctrl.button(Icon.down, style, () -> bt.resize(-1)).row();
                 });
 
                 pad.image().color(Pal.gray).width(4f).pad(4f).fillY();
@@ -337,10 +337,10 @@ public class ModHudFragment extends Fragment{
                     edit.name = "mapeditor";
                     edit.defaults().size(bsize).bottom().right();
 
-                    edit.button(Icon.redo, style, SchemeSize.input::flushLastRemoved).tooltip("@keycomb.return").name("return").row();
-                    edit.button(Icon.paste, check, () -> bt.setMode(Mode.calc)).checked(t -> bt.mode == Mode.calc).name("calculate").row();
-                    edit.button(Icon.pencil, style, () -> SchemeSize.tile.select(true, null)).padTop(bsize).name("select").row();
-                    edit.button(Icon.editor, check, () -> bt.setMode(Mode.edit)).checked(t -> bt.mode == Mode.edit).name("edit").row();
+                    edit.button(Icon.redo, style, SchemeSize.input::flushLastRemoved).tooltip("@keycomb.return").row();
+                    edit.button(Icon.paste, check, () -> bt.setMode(Mode.calc)).checked(t -> bt.mode == Mode.calc).row();
+                    edit.button(Icon.pencil, style, () -> SchemeSize.tile.select(true, null)).padTop(bsize).row();
+                    edit.button(Icon.editor, check, () -> bt.setMode(Mode.edit)).checked(t -> bt.mode == Mode.edit).row();
                 });
 
                 pad.image().color(Pal.gray).width(4f).pad(4f).fillY();
@@ -349,11 +349,11 @@ public class ModHudFragment extends Fragment{
                     mode.name = "modes";
                     mode.defaults().size(bsize).bottom().right();
 
-                    mode.button(Icon.fill, check, () -> bt.setMode(Mode.fill)).checked(t -> bt.mode == Mode.fill).name("fill").row();
-                    mode.button(Icon.grid, check, () -> bt.setMode(Mode.square)).checked(t -> bt.mode == Mode.square).name("square").row();
-                    mode.button(Icon.commandRally, check, () -> bt.setMode(Mode.circle)).checked(t -> bt.mode == Mode.circle).name("circle").row();
-                    mode.button(Icon.link, check, () -> bt.setMode(Mode.replace)).checked(t -> bt.mode == Mode.replace).name("replace").row();
-                    mode.button(Icon.power, check, () -> bt.setMode(Mode.power)).checked(t -> bt.mode == Mode.power).name("wall").row();
+                    mode.button(Icon.fill, check, () -> bt.setMode(Mode.fill)).checked(t -> bt.mode == Mode.fill).row();
+                    mode.button(Icon.grid, check, () -> bt.setMode(Mode.square)).checked(t -> bt.mode == Mode.square).row();
+                    mode.button(Icon.commandRally, check, () -> bt.setMode(Mode.circle)).checked(t -> bt.mode == Mode.circle).row();
+                    mode.button(Icon.link, check, () -> bt.setMode(Mode.replace)).checked(t -> bt.mode == Mode.replace).row();
+                    mode.button(Icon.power, check, () -> bt.setMode(Mode.power)).checked(t -> bt.mode == Mode.power).row();
                 }).row();
             }).height(254f).visible(() -> shownBT && shown && !ui.minimapfrag.shown()).update(t -> {
                 if(block != null) t.setTranslation(-block.getWidth() + Scl.scl(4), 0);

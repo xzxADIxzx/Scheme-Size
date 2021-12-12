@@ -363,7 +363,7 @@ public class ModMobileInput extends ModInputHandler{
                 }
                 lineRequests.each(this::drawOverRequestMod);
             }else if(mode == breaking){
-                drawBreakSelectionMod(lineStartX, lineStartY, tileX, tileY, Core.settings.getInt("breaksize") - 1);
+                drawBreakSelectionMod(lineStartX, lineStartY, tileX, tileY, 511);
             }
         }
 
@@ -381,7 +381,7 @@ public class ModMobileInput extends ModInputHandler{
     public void drawTop(){
         //draw schematic selection
         if(mode == schematicSelect){
-            drawSelectionMod(lineStartX, lineStartY, lastLineX, lastLineY, Core.settings.getInt("copysize") - 1);
+            drawSelectionMod(lineStartX, lineStartY, lastLineX, lastLineY, 511);
         }
 
         if(bt.mode == Mode.edit && usingbt){
@@ -549,9 +549,8 @@ public class ModMobileInput extends ModInputHandler{
                 flushSelectRequests(lineRequests);
                 Events.fire(new LineConfirmEvent());
             }else if(mode == breaking){
-                int size = Core.settings.getInt("breaksize") - 1;
-                removeSelection(lineStartX, lineStartY, tileX, tileY, true, size);
-                bt.save(lineStartX, lineStartY, tileX, tileY, size);
+                removeSelection(lineStartX, lineStartY, tileX, tileY, true, 511);
+                bt.save(lineStartX, lineStartY, tileX, tileY, 511);
             }
 
             lineMode = false;
