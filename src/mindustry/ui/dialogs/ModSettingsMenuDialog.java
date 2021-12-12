@@ -20,7 +20,7 @@ import mindustry.game.EventType.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.input.*;
-import mindustry.scheme.SchemeSize;
+import mindustry.scheme.*;
 import mindustry.ui.*;
 
 import static arc.Core.*;
@@ -268,7 +268,7 @@ public class ModSettingsMenuDialog extends SettingsMenuDialog{
         if(!mobile) mod.consSliderSetting("panspeedmul", 4, 4, 20, 1, i -> i / 4f + "x", value -> {
             if(control.input instanceof ModDesktopInput i) i.changePanSpeed(value.get()); 
         });
-        mod.consSliderSetting("aropacity", 50, 0, 100, 1, i -> i / 4f + "%", value -> {
+        mod.consSliderSetting("aropacity", 50, 0, 100, 1, i -> i + "%", value -> {
             SchemeSize.render.opacity(value.get() / 100f);
         });
         mod.consSliderSetting("maxzoommul", 4, 4, 20, 1, i -> i / 4f + "x", value -> {
@@ -277,8 +277,8 @@ public class ModSettingsMenuDialog extends SettingsMenuDialog{
         mod.consSliderSetting("minzoommul", 4, 4, 20, 1, i -> i / 4f + "x", value -> {
             renderer.minZoom = 1f / (value.get() / 4f) * 1.5f;
         });
-        mod.sliderPref("copysize", 512, 32, 512, 32, i -> Core.bundle.format("setting.blocks", i));
-        mod.sliderPref("breaksize", 512, 32, 512, 32, i -> Core.bundle.format("setting.blocks", i));
+        // mod.sliderPref("copysize", 512, 32, 512, 32, i -> Core.bundle.format("setting.blocks", i));
+        // mod.sliderPref("breaksize", 512, 32, 512, 32, i -> Core.bundle.format("setting.blocks", i));
         mod.checkPref("copyshow", true);
         mod.checkPref("breakshow", true);
         mod.checkPref("hardconnect", false);

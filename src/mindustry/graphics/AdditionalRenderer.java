@@ -19,6 +19,7 @@ import static mindustry.Vars.*;
 
 public class AdditionalRenderer{
 
+    public Seq<Unit> units = new Seq<>();
     public Seq<Building> build = new Seq<>();
     public TilesQuadtree tiles;
     public float opacity = .5f;
@@ -26,7 +27,7 @@ public class AdditionalRenderer{
     public boolean hide;
     public boolean xray;
     public boolean grid;
-    public boolean unit;
+    public boolean info;
     public boolean radius;
     public boolean raduni;
 
@@ -89,20 +90,19 @@ public class AdditionalRenderer{
                 Drawf.dashCircle(irb.x, irb.y, ((ImpactReactor)irb.block).explosionRadius * tilesize, Pal.meltdownHit);
         });
 
-        if(unit || raduni) Groups.draw.draw(draw -> {
-            if(draw instanceof Unit u && u != player.unit()){
-                if(raduni) Drawf.circles(u.x, u.y, u.range(), u.team.color);
-                if(unit){
-                    if(u.isPlayer()){
-                        Tmp.v1.set(u.aimX(), u.aimY()).sub(u.x, u.y);
-                        Tmp.v2.set(Tmp.v1).setLength(u.hitSize);
-                        Lines.stroke(2, u.team.color);
-                        Lines.lineAngle(u.x + Tmp.v2.x, u.y + Tmp.v2.y, Tmp.v1.angle(), Tmp.v1.len() - Tmp.v2.len());
-                    }
-
-                    drawHealthBar(u, Pal.darkishGray, 1);
-                    drawHealthBar(u, Pal.health, Mathf.clamp(u.health / u.maxHealth));
+        if(info || raduni) Groups.unit.intersect(bounds.x, bounds.y, bounds.width, bounds.height, unit -> {
+            if(unit == player.unit()) return;
+            if(raduni) Drawf.circles(unit.x, unit.y, unit.range(), unit.team.color);
+            if(info){
+                if(unit.isPlayer()){
+                    Tmp.v1.set(unit.aimX(), unit.aimY()).sub(unit.x, unit.y);
+                    Tmp.v2.set(Tmp.v1).setLength(unit.hitSize);
+                    Lines.stroke(2, unit.team.color);
+                    Lines.lineAngle(unit.x + Tmp.v2.x, unit.y + Tmp.v2.y, Tmp.v1.angle(), Tmp.v1.len() - Tmp.v2.len());
                 }
+                
+                drawHealthBar(unit, Pal.darkishGray, 1);
+                drawHealthBar(unit, Pal.health, Mathf.clamp(unit.health / unit.maxHealth));
             }
         });
 
@@ -141,25 +141,22 @@ public class AdditionalRenderer{
             }
     }
 
+    public void update(){
+        if(hide) Time.runTask(1f, () -> showUnits(hide));
+    }
+
     public void showUnits(boolean hide){
         // one big crutch
         this.hide = hide;
-
-        elevation(hide);
-        content.units().each(unit -> {
-            if(unit.groundLayer >= 0 == hide) unit.groundLayer *= -1;
+        
+        if(hide) Groups.draw.each(drawc -> {
+            if(drawc instanceof Unit u) units.add(u);
+            Groups.draw.remove(drawc);
         });
-    }
-
-    public void update(){
-        Time.runTask(1f, () -> showUnits(hide));
-    }
-
-    private void elevation(boolean hide){
-        float in = hide ? 1f : .5f;
-        Groups.unit.each(unit -> {
-            if(unit.elevation == in) unit.elevation(1.5f - in);
-        });
+        else{
+            units.each(unit -> Groups.draw.add(unit));
+            units.clear();
+        }
     }
 
     public void opacity(float opacity){

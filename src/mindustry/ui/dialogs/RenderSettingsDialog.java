@@ -25,7 +25,7 @@ public class RenderSettingsDialog extends BaseDialog{
 			table.check("@render.add.xray", value -> render.xray = value).left().row();
 			table.check("@render.add.hide", value -> render.showUnits(value)).left().row();
 			table.check("@render.add.grid", value -> render.grid = value).left().row();
-			table.check("@render.add.unit", value -> render.unit = value).left().row();
+			table.check("@render.add.info", value -> render.info = value).left().row();
 			table.check("@render.add.raduni", value -> render.raduni = value).left().row();
 			table.check("@render.add.radius", value -> render.radius = value).left().row();
 		}).left().row();

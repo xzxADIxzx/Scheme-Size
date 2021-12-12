@@ -38,7 +38,6 @@ public class SchemeUtils{
             SchemeSize.unit.select(false, true, (ppl, unit, amount) -> {
                 if(!hasCore(ppl)) return;
                 Call.sendChatMessage("/unit " + unit.name + " " + ppl.name);
-                SchemeSize.render.update();
             });
         };
         Runnable js = () -> {
@@ -48,7 +47,6 @@ public class SchemeUtils{
                 Call.sendChatMessage(js("player.unit().spawnedByCore = true"));
                 Call.sendChatMessage(js("var newUnit = " + getUnit(unit) + ".spawn(player.team(), player.x, player.y)"));
                 Call.sendChatMessage(js("Call.unitControl(player, newUnit)"));
-                SchemeSize.render.update();
             });
         };
         Runnable server = () -> {
@@ -57,10 +55,10 @@ public class SchemeUtils{
                 ppl.unit().spawnedByCore = true;
                 var newUnit = unit.spawn(ppl.team(), ppl.x, ppl.y);
                 Call.unitControl(ppl, newUnit);
-                SchemeSize.render.update();
             });
         };
         template(admins, js, server);
+        SchemeSize.render.update();
     }
 
     public static void changeEffect(){
@@ -172,7 +170,6 @@ public class SchemeUtils{
             SchemeSize.unit.select(true, false, (ppl, unit, amount) -> {
                 if(!hasCore(ppl)) return;
                 Call.sendChatMessage("/spawn " + unit.name + " " + (int)amount.get() + " " + player.team().name);
-                SchemeSize.render.update();
             });
         };
         Runnable js = () -> {
@@ -181,17 +178,16 @@ public class SchemeUtils{
                 Call.sendChatMessage(js(getPlayer(ppl)));
                 Call.sendChatMessage(js("var unit = " + getUnit(unit)));
                 Call.sendChatMessage(js("for(var i = 0; i < " + amount.get() + "; i++) unit.spawn(player.team(), player.x, player.y)"));
-                SchemeSize.render.update();
             });
         };
         Runnable server = () -> {
             SchemeSize.unit.select(true, true, (ppl, unit, amount) -> {
                 if(!hasCore(ppl)) return;
                 for (int i = 0; i < amount.get(); i++) unit.spawn(ppl.team(), ppl.x, ppl.y);
-                SchemeSize.render.update();
             });
         };
         template(admins, js, server);
+        SchemeSize.render.update();
     }
 
     public static void showComb(){
