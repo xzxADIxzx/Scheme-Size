@@ -152,8 +152,10 @@ public class AdditionalRenderer{
         this.hide = hide;
         
         if(hide) Groups.draw.each(drawc -> {
-            if(drawc instanceof Unit u) units.add(u);
-            Groups.draw.remove(drawc);
+            if(drawc instanceof Unit u){
+                Groups.draw.remove(drawc);
+                units.add(u);
+            }
         });
         else{
             units.select(unit -> !unit.dead()).each(unit -> Groups.draw.add(unit));
