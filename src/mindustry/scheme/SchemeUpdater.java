@@ -17,7 +17,7 @@ public class SchemeUpdater{
 
     private static LoadedMod mod = mods.getMod(SchemeSize.class);
     private static float progress;
-    private static String repo = ghApi + "/repos/" + mod.meta.repo + "/releases/latest";;
+    private static String repo = ghApi + "/repos/" + mod.getRepo() + "/releases/latest";
 
     public static void check(){
         Http.get(repo, res -> {
