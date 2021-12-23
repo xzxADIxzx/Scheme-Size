@@ -67,7 +67,6 @@ public class ModSettingsMenuDialog extends SettingsMenuDialog{
 
         prefs = new Table();
         prefs.top();
-        // prefs.margin(14f);
         prefs.marginBottom(80f);
 
         rebuildMenu();
