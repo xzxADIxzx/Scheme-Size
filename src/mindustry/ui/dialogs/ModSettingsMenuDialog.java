@@ -225,21 +225,6 @@ public class ModSettingsMenuDialog extends SettingsMenuDialog{
         addSettings();
     }
 
-    String getLogs(){
-        Fi log = settings.getDataDirectory().child("last_log.txt");
-
-        StringBuilder out = new StringBuilder();
-        for(Fi fi : settings.getDataDirectory().child("crashes").list()){
-            out.append(fi.name()).append("\n\n").append(fi.readString()).append("\n");
-        }
-
-        if(log.exists()){
-            out.append("\nlast log:\n").append(log.readString());
-        }
-
-        return out.toString();
-    }
-
     public void rebuildMenu(){
         menu.clearChildren();
 
@@ -469,7 +454,7 @@ public class ModSettingsMenuDialog extends SettingsMenuDialog{
         prefs.add(menu);
     }
 
-    private void visible(int index){
+    public void visible(int index){
         prefs.clearChildren();
         prefs.add(new Table[]{game, graphics, sound, mod}[index]);
     }

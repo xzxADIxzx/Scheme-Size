@@ -16,6 +16,7 @@ import arc.struct.*;
 import arc.util.*;
 import mindustry.entities.abilities.*;
 import mindustry.core.GameState.*;
+import mindustry.content.*;
 import mindustry.core.*;
 import mindustry.game.EventType.*;
 import mindustry.game.*;
@@ -23,6 +24,8 @@ import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.input.*;
 import mindustry.input.BuildingTools.*;
+import mindustry.world.*;
+import mindustry.world.blocks.power.*;
 import mindustry.net.Packets.*;
 import mindustry.type.*;
 import mindustry.ui.*;
@@ -54,6 +57,11 @@ public class ModHudFragment extends Fragment{
 
         Events.on(WorldLoadEvent.class, event -> {
             updateBlock();
+
+            Tile tile = node == null ? null : world.tile(node.pos());
+            if(tile == null || tile.build == null || tile.block() instanceof PowerNode == false)
+                node = Blocks.powerNode.newBuilding();
+            else updateNode(tile.build);
         });
 
         Events.on(UnlockEvent.class, event -> {
@@ -360,20 +368,21 @@ public class ModHudFragment extends Fragment{
             });
         });
 
+        // power display
         getCoreItems().table(cont -> {
             cont.name = "energydisplay";
             cont.background(Styles.black6).margin(8f, 8f, 8f, 0f);
 
             Bar power = new Bar(
-                () -> Core.bundle.format("bar.powerbalance", node != null ? (node.power.graph.getPowerBalance() >= 0 ? "+" : "") + UI.formatAmount((long)(node.power.graph.getPowerBalance() * 60)) : "+0"),
-                () -> Pal.powerBar,
-                () -> node != null ? node.power.graph.getSatisfaction() : 0);
+                () -> Core.bundle.format("bar.powerbalance", (node.power.graph.getPowerBalance() >= 0 ? "+" : "") + UI.formatAmount((long)(node.power.graph.getPowerBalance() * 60))),
+                () -> node.dead ? Pal.health : Pal.powerBar,
+                () -> node.power.graph.getSatisfaction());
 
             Bar stored = new Bar(
-                () -> Core.bundle.format("bar.powerstored", node != null ? UI.formatAmount((long)node.power.graph.getLastPowerStored()) : 0,
-                                                            node != null ? UI.formatAmount((long)node.power.graph.getLastCapacity()) : 0),
-                () -> Pal.powerBar,
-                () -> node != null ? Mathf.clamp(node.power.graph.getLastPowerStored() / node.power.graph.getLastCapacity()) : 0);
+                () -> Core.bundle.format("bar.powerstored", UI.formatAmount((long)node.power.graph.getLastPowerStored()),
+                                                            UI.formatAmount((long)node.power.graph.getLastCapacity())),
+                () -> node.dead ? Pal.health : Pal.powerBar,
+                () -> Mathf.clamp(node.power.graph.getLastPowerStored() / node.power.graph.getLastCapacity()));
 
             ImageButtonStyle style = new ImageButtonStyle(){{
                 down = Styles.flatDown;
@@ -739,10 +748,10 @@ public class ModHudFragment extends Fragment{
         });
     }
 
-    public void updateNode(Building node){
+    public void updateNode(Building build){
         if(checked){
-            checked = !checked;
-            this.node = node;
+            checked = false;
+            node = build;
         }
     }
 }
