@@ -16,6 +16,8 @@ import static mindustry.Vars.*;
 
 public class SchemeSize extends Mod{
 
+    public static SchemeUpdater updater;
+
     public static ModSchematics schematic;
     public static ModInputHandler input;
     public static AdditionalRenderer render;
