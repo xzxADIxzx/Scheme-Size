@@ -650,7 +650,7 @@ public class ModDesktopInput extends ModInputHandler{
         }
 
         if(input.keyTap(ModBinding.renderingset)){
-            SchemeSize.renderingset.show();
+            SchemeSize.renderset.show();
         }
 
         if(input.keyTap(ModBinding.history)){

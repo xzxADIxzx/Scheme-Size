@@ -226,7 +226,7 @@ public class ModHudFragment extends Fragment{
                     select.button(effe, style, isize, SchemeUtils::changeEffect);
                     select.button(item, style, isize, SchemeUtils::changeItem);
                     select.button(spwn, style, isize, SchemeUtils::spawnUnit);
-                    select.button(rndr, style, isize, SchemeSize.renderingset::show).get(
+                    select.button(rndr, style, isize, SchemeSize.renderset::show).get(
                     ).image().color(Pal.gray).width(4).height(bsize).padRight(-dsize + 1.5f + isize);
                 }).left().name("mod buttons").visible(() -> shownMobile).row();
             }

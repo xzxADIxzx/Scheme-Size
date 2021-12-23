@@ -20,13 +20,13 @@ public class SchemeUpdater{
     private static String repo = ghApi + "/repos/" + mod.meta.repo + "/releases/latest";;
 
     public static void check(){
-        // don`t check for updates
-        if(!settings.getBool("checkupdate")) return;
-
         Http.get(repo, res -> {
             var json = Jval.read(res.getResultAsString());
-            if(json.getString("tag_name").substring(1) != mod.meta.version)
-                ui.showCustomConfirm("@updater.name", "@updater.info", "@OK", "@updater.reinstall", null, SchemeUpdater::update);
+            String version = json.getString("tag_name").substring(1);
+            if(version != mod.meta.version)
+                ui.showCustomConfirm("@updater.name",
+                    bundle.format("@updater.info", mod.meta.version, version),
+                    "@ok", "@updater.reinstall", null, SchemeUpdater::update);
         }, e -> {});
     }
 
