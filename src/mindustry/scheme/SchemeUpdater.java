@@ -53,7 +53,6 @@ public class SchemeUpdater{
             if(asset != null){
                 String url = asset.getString("browser_download_url");
                 Http.get(url, r -> handle(mod.getRepo(), r, p -> progress = p), e -> {});
-                ui.showInfoOnHidden("@mods.reloadexit", app::exit);
             }
         }, e -> {});
     }
@@ -70,6 +69,8 @@ public class SchemeUpdater{
 
             file.delete();
             app.post(ui.loadfrag::hide);
+
+            ui.showInfoOnHidden("@mods.reloadexit", app::exit);
         }catch (Throwable e) {}
     }
 }
