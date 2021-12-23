@@ -8,6 +8,8 @@ import static mindustry.scheme.SchemeSize.*;
 
 public class RenderSettingsDialog extends BaseDialog{
 
+	public boolean shown;
+
 	public RenderSettingsDialog(){
 		super("@render.name");
 		addCloseButton();
@@ -21,7 +23,8 @@ public class RenderSettingsDialog extends BaseDialog{
 			table.button("@render.bin.settings", () -> {
 				setting.show();
 				setting.visible(1);
-			});
+				shown = true;
+			}).growX();
 		}).left().row();
 
         cont.label(() -> "@render.add.name").padTop(16f).row();

@@ -58,7 +58,7 @@ public class ModHudFragment extends Fragment{
 
             if(node != null){
                 node = world.build(node.pos());
-                if(node.block instanceof PowerBlock == false) node = null;
+                if(node != null && node.block instanceof PowerBlock == false) node = null;
             }
         });
 
@@ -373,13 +373,13 @@ public class ModHudFragment extends Fragment{
 
             Bar power = new Bar(
                 () -> Core.bundle.format("bar.powerbalance", node != null ? (node.power.graph.getPowerBalance() >= 0 ? "+" : "") + UI.formatAmount((long)(node.power.graph.getPowerBalance() * 60)) : "+0"),
-                () -> node != null && node.added ? Pal.powerBar : Pal.health,
+                () -> node != null && node.added ? Pal.powerBar : Pal.adminChat,
                 () -> node != null ? node.power.graph.getSatisfaction() : 0);
 
             Bar stored = new Bar(
                 () -> Core.bundle.format("bar.powerstored", node != null ? UI.formatAmount((long)node.power.graph.getLastPowerStored()) : 0,
                                                             node != null ? UI.formatAmount((long)node.power.graph.getLastCapacity()) : 0),
-                () -> node != null && node.added ? Pal.powerBar : Pal.health,
+                () -> node != null && node.added ? Pal.powerBar : Pal.adminChat,
                 () -> node != null ? Mathf.clamp(node.power.graph.getLastPowerStored() / node.power.graph.getLastCapacity()) : 0);
 
             ImageButtonStyle style = new ImageButtonStyle(){{

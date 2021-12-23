@@ -460,23 +460,21 @@ public class ModSettingsMenuDialog extends SettingsMenuDialog{
 
     @Override
     public void addCloseButton(){
-        buttons.button("@back", Icon.left, () -> {
-            if(prefs.getChildren().first() != menu){
-                back();
-            }else{
-                hide();
-            }
-        }).size(210f, 64f);
+        buttons.button("@back", Icon.left, this::close).size(210f, 64f);
 
         keyDown(key -> {
-            if(key == KeyCode.escape || key == KeyCode.back){
-                if(prefs.getChildren().first() != menu){
-                    back();
-                }else{
-                    hide();
-                }
-            }
+            if(key == KeyCode.escape || key == KeyCode.back) close();
         });
+    }
+
+    private void close(){
+        if(prefs.getChildren().first() != menu
+        && !SchemeSize.renderset.shown){
+            back();
+        }else{
+            SchemeSize.renderset.shown = false;
+            hide();
+        }
     }
 
     private void clearOld(){
