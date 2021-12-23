@@ -25,8 +25,8 @@ public class SchemeUpdater{
             String version = json.getString("tag_name").substring(1);
             if(version != mod.meta.version)
                 ui.showCustomConfirm("@updater.name",
-                    bundle.format("@updater.info", mod.meta.version, version),
-                    "@ok", "@updater.reinstall", null, SchemeUpdater::update);
+                    bundle.format("updater.info", mod.meta.version, version),
+                    "@updater.load", "@ok", SchemeUpdater::update, () -> {});
         }, e -> {});
     }
 
@@ -52,7 +52,7 @@ public class SchemeUpdater{
 
             if(asset != null){
                 String url = asset.getString("browser_download_url");
-                Http.get(url, r -> handle(mod.meta.repo, r, p -> progress = p), e -> {});
+                Http.get(url, r -> handle(mod.getRepo(), r, p -> progress = p), e -> {});
             }
         }, e -> {});
     }
