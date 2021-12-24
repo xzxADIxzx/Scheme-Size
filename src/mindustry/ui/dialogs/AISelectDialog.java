@@ -5,10 +5,10 @@ import arc.math.geom.Vec3;
 import arc.scene.ui.layout.*;
 import arc.scene.event.*;
 import arc.scene.style.*;
-import mindustry.ui.fragments.*;
-import mindustry.ai.formations.Formation;
-import mindustry.ai.formations.patterns.CircleFormation;
 import mindustry.ai.types.*;
+import mindustry.ai.formations.*;
+import mindustry.ai.formations.patterns.*;
+import mindustry.ui.fragments.*;
 import mindustry.gen.*;
 import mindustry.type.*;
 import mindustry.game.EventType.*;
@@ -42,8 +42,14 @@ public class AISelectDialog extends BaseDialog{
 
 			if(ai instanceof BuilderAI && list.select() != player) ai = new FormationAI(
 				list.select().unit(),
-				new Formation(new Vec3(player.unit().x, player.unit().y, player.unit().rotation), new CircleFormation())
-			);
+				new Formation(new Vec3(list.select().unit().x, list.select().unit().y, list.select().unit().rotation), 
+				new CircleFormation())
+			){
+				@Override
+				public void updateTargeting(){
+					if(retarget()) leader = list.select().unit();
+				}
+			};
 
 			if(ai instanceof DefenderAI && list.select() != player) ai = new DefenderAI(){
 				@Override
@@ -107,5 +113,11 @@ public class AISelectDialog extends BaseDialog{
 
 	public void updateUnit(){
 		if(ai != null) ai.unit(player.unit());
+	}
+
+	public void gotoppl(Player ppl){
+		ai = new DefenderAI();
+		list.player = ppl;
+		hide();
 	}
 }
