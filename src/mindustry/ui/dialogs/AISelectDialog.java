@@ -22,12 +22,13 @@ public class AISelectDialog extends BaseDialog{
 	private AIController ai;
 	private Table content = new Table();
 	private PlayerSelectFragment list = new PlayerSelectFragment();
+	private Runnable onHidden;
 
 	public AISelectDialog(String name){
 		super(name);
 		addCloseButton();
 
-		hidden(() -> {
+		hidden(onHidden = () -> {
 			if(ai == null && list.select() != player) ai = new AIController(){
 				@Override
 				public void updateMovement(){
@@ -118,6 +119,6 @@ public class AISelectDialog extends BaseDialog{
 	public void gotoppl(Player ppl){
 		ai = new DefenderAI();
 		list.player = ppl;
-		hide();
+		onHidden.run();;
 	}
 }

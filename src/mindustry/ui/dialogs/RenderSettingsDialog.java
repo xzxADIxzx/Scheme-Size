@@ -20,7 +20,7 @@ public class RenderSettingsDialog extends BaseDialog{
 			table.check("@render.bin.status", value -> settings.put("blockstatus", value)).checked(t -> settings.getBool("blockstatus")).left().row();
 			table.check("@render.bin.light", value -> enableLight = value).checked(t -> enableLight).left().row();
 			table.check("@render.bin.dark", value -> enableDarkness = value).checked(t -> enableDarkness).left().row();
-			table.button("@render.bin.settings", this::showGraphics).width(320f).row();
+			table.button("@keycomb.graphics", this::showGraphics).width(320f).row();
 		}).left().row();
 
         cont.label(() -> "@render.add.name").padTop(16f).row();

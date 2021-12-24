@@ -34,7 +34,6 @@ public class SchemeUpdater{
         try{
             // dancing with tambourines, just to remove the old mod
             if(mod.loader instanceof URLClassLoader cl) cl.close();
-            else return;
             mod.loader = null;
         }catch (Exception e){
             return;
