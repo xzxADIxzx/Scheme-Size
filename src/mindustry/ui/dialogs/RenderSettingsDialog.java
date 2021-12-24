@@ -20,11 +20,7 @@ public class RenderSettingsDialog extends BaseDialog{
 			table.check("@render.bin.status", value -> settings.put("blockstatus", value)).checked(t -> settings.getBool("blockstatus")).left().row();
 			table.check("@render.bin.light", value -> enableLight = value).checked(t -> enableLight).left().row();
 			table.check("@render.bin.dark", value -> enableDarkness = value).checked(t -> enableDarkness).left().row();
-			table.button("@render.bin.settings", () -> {
-				setting.show();
-				setting.visible(1);
-				shown = true;
-			}).growX();
+			table.button("@render.bin.settings", this::showGraphics).width(320f).row();
 		}).left().row();
 
         cont.label(() -> "@render.add.name").padTop(16f).row();
@@ -38,6 +34,12 @@ public class RenderSettingsDialog extends BaseDialog{
 		}).left().row();
 
 		cont.labelWrap("@render.add.description").labelAlign(2, 8).padTop(16f).size(320f, 120f).get().getStyle().fontColor = Color.lightGray;
+	}
+
+	public void showGraphics(){
+		setting.show();
+		setting.visible(1);
+		shown = true;
 	}
 
     private void togglePowerLines(boolean on){

@@ -14,7 +14,7 @@ public enum ModBinding implements KeyBind{
     change_team(KeyCode.semicolon),
     change_ai(KeyCode.i),
     place_core(KeyCode.apostrophe),
-    renderingset(KeyCode.y),
+    renderset(KeyCode.y),
     look_at(KeyCode.altLeft),
     alternative(KeyCode.altLeft);
 

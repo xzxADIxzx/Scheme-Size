@@ -649,10 +649,6 @@ public class ModDesktopInput extends ModInputHandler{
             SchemeUtils.showSecret();
         }
 
-        if(input.keyTap(ModBinding.renderingset)){
-            SchemeSize.renderset.show();
-        }
-
         if(input.keyTap(ModBinding.history)){
             SchemeUtils.history();
         }
@@ -709,6 +705,10 @@ public class ModDesktopInput extends ModInputHandler{
             if(input.keyTap(Binding.pan)){
                 toggleFreePan();
             }
+
+            if(input.keyTap(ModBinding.renderset)){
+                SchemeSize.renderset.showGraphics();
+            }
         }else{
             if(input.keyTap(ModBinding.change_unit)){
                 SchemeUtils.changeUnit();
@@ -716,6 +716,10 @@ public class ModDesktopInput extends ModInputHandler{
 
             if(input.keyTap(ModBinding.change_ai)){
                 SchemeSize.ai.select(true);
+            }
+
+            if(input.keyTap(ModBinding.renderset)){
+                SchemeSize.renderset.show();
             }
         }
 

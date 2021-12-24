@@ -1,10 +1,13 @@
 package mindustry.ui.dialogs;
 
 import arc.*;
+import arc.math.geom.Vec3;
 import arc.scene.ui.layout.*;
 import arc.scene.event.*;
 import arc.scene.style.*;
 import mindustry.ui.fragments.*;
+import mindustry.ai.formations.Formation;
+import mindustry.ai.formations.patterns.CircleFormation;
 import mindustry.ai.types.*;
 import mindustry.gen.*;
 import mindustry.type.*;
@@ -37,12 +40,10 @@ public class AISelectDialog extends BaseDialog{
 				}
 			};
 
-			if(ai instanceof BuilderAI && list.select() != player) ai = new MimicAI(){
-				@Override
-				public void updateTargeting(){
-					if(retarget()) following = list.select().unit();
-				}
-			};
+			if(ai instanceof BuilderAI && list.select() != player) ai = new FormationAI(
+				list.select().unit(),
+				new Formation(new Vec3(player.unit().x, player.unit().y, player.unit().rotation), new CircleFormation())
+			);
 
 			if(ai instanceof DefenderAI && list.select() != player) ai = new DefenderAI(){
 				@Override
