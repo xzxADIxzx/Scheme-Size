@@ -50,6 +50,7 @@ public class AISelectDialog extends BaseDialog{
 				public void updateUnit(){
 					updateTargeting();
 					init();
+					super.updateUnit();
 				}
 
 				@Override
