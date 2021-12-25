@@ -468,12 +468,12 @@ public class ModSettingsMenuDialog extends SettingsMenuDialog{
     }
 
     private void close(){
-        if(SchemeSize.renderset.shown) ui.paused.hide();
-        if(prefs.getChildren().first() != menu
-        && !SchemeSize.renderset.shown){
+        if(SchemeSize.renderset.shown){
+            SchemeSize.renderset.shown = false;
+            app.post(this::hide);
+        }else if(prefs.getChildren().first() != menu){
             back();
         }else{
-            SchemeSize.renderset.shown = false;
             hide();
         }
     }

@@ -48,9 +48,9 @@ public class AISelectDialog extends BaseDialog{
 			){
 				@Override
 				public void updateUnit(){
-					updateTargeting();
-					init();
 					super.updateUnit();
+					updateTargeting();
+					moveTo(leader, formationSize(), 50f);
 				}
 
 				@Override
