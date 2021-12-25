@@ -47,6 +47,12 @@ public class AISelectDialog extends BaseDialog{
 				new CircleFormation())
 			){
 				@Override
+				public void updateUnit(){
+					updateTargeting();
+					init();
+				}
+
+				@Override
 				public void updateTargeting(){
 					if(retarget()) leader = list.select().unit();
 				}
