@@ -1,7 +1,8 @@
 package mindustry.ui.dialogs;
 
 import arc.*;
-import arc.math.geom.Vec3;
+import arc.math.*;
+import arc.math.geom.*;
 import arc.scene.ui.layout.*;
 import arc.scene.event.*;
 import arc.scene.style.*;
@@ -50,12 +51,26 @@ public class AISelectDialog extends BaseDialog{
 				public void updateUnit(){
 					super.updateUnit();
 					updateTargeting();
-					moveTo(leader, formationSize(), 50f);
+					updateMovement();
 				}
 
 				@Override
 				public void updateTargeting(){
 					if(retarget()) leader = list.select().unit();
+				}
+
+				@Override
+				public void updateMovement(){
+					formationPos().set(leader.x, leader.y, 0).sub(unit.x, unit.y, 0);
+
+					float length = Mathf.clamp((unit.dst(leader) - formationSize()) / 50f, -1f, 1f);
+
+					formationPos().setLength(unit.speed() * length);
+					if(length < -0.5f){
+						formationPos().rotate(Vec3.Z, 180f);
+					}else if(length < 0){
+						formationPos().setZero();
+					}
 				}
 			};
 
