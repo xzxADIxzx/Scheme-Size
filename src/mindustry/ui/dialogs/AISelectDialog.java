@@ -1,7 +1,7 @@
 package mindustry.ui.dialogs;
 
 import arc.*;
-import arc.math.*;
+import arc.util.*;
 import arc.math.geom.*;
 import arc.scene.ui.layout.*;
 import arc.scene.event.*;
@@ -61,17 +61,13 @@ public class AISelectDialog extends BaseDialog{
 
 				@Override
 				public void updateMovement(){
-					formationPos().set(leader.x, leader.y, 0);
-					// formationPos().set(leader.x, leader.y, 0).sub(unit.x, unit.y, 0);
+					Tmp.v2.set(unit.x, unit.y);
+					Tmp.v1.set(leader.x, leader.y).sub(Tmp.v2);
 
-					// float length = Mathf.clamp((unit.dst(leader) - formationSize()) / 50f, -1f, 1f);
+					if(Tmp.v1.len() < formationSize()) return;
 
-					// formationPos().setLength(unit.speed() * length);
-					// if(length < -0.5f){
-					// 	formationPos().rotate(Vec3.Z, 180f);
-					// }else if(length < 0){
-					// 	formationPos().setZero();
-					// }
+					Tmp.v1.limit(unit.speed());
+					formationPos().set(Tmp.v2.add(Tmp.v1), 0);
 				}
 			};
 

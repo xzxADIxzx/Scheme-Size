@@ -15,6 +15,7 @@ import mindustry.gen.*;
 import mindustry.net.*;
 import mindustry.net.Packets.*;
 import mindustry.game.EventType.*;
+import mindustry.input.*;
 import mindustry.scheme.*;
 import mindustry.graphics.*;
 
@@ -30,9 +31,7 @@ public class ModPlayerListFragment extends PlayerListFragment{
 
     @Override
     public void build(Group parent){
-        content.name = "players";
         parent.fill(cont -> {
-            cont.name = "playerlist";
             cont.visible(() -> visible);
             cont.update(() -> {
                 if(!(net.active() && state.isGame())){
@@ -95,9 +94,6 @@ public class ModPlayerListFragment extends PlayerListFragment{
     public void rebuild(){
         content.clear();
 
-        float h = 74f;
-        boolean found = false;
-
         players.clear();
         Groups.player.copy(players);
 
@@ -106,10 +102,13 @@ public class ModPlayerListFragment extends PlayerListFragment{
             players.filter(p -> Strings.stripColors(p.name().toLowerCase()).contains(search.getText().toLowerCase()));
         }
 
-        for(var user : players){
-            found = true;
-            NetConnection connection = user.con;
+        float h = 74f;
+        float bs = 37f;
 
+        if(players.isEmpty()){
+            content.add(Core.bundle.format("players.notfound")).padBottom(6).width(350f).maxHeight(h + 14);
+        }else for(var user : players){
+            NetConnection connection = user.con;
             if(connection == null && net.server() && !user.isLocal()) return;
 
             Table button = new Table();
@@ -129,12 +128,11 @@ public class ModPlayerListFragment extends PlayerListFragment{
             };
             table.margin(8);
             table.add(new Image(user.icon()).setScaling(Scaling.bounded)).grow();
-            table.name = user.name();
 
-            String color = "[#" + user.color().toString().toUpperCase() + "]";
+            String name = "[#" + user.color().toString().toUpperCase() + "]" + user.name();
 
             button.add(table).size(h);
-            button.labelWrap(color + user.name()).width(170f).pad(10);
+            button.labelWrap(name).width(170f).pad(10);
             button.add().grow();
 
             var style = new ImageButtonStyle(){{
@@ -154,22 +152,22 @@ public class ModPlayerListFragment extends PlayerListFragment{
                 imageOverColor = Color.lightGray;
             }};
 
-            float bs = h / 2f;
-
             if(!user.isLocal()){
                 button.add().growY();
                 button.table(t -> {
                     t.defaults().size(bs);
 
                     t.button(Icon.copy, ustyle, () -> {
-                        Core.app.setClipboardText(color + user.name());
+                        Core.app.setClipboardText(name);
                         ui.showInfoFade("@copied");
-                    }).size(bs, h);
+                    });
 
-                    t.row();
-
-                    t.button(Icon.eye, ustyle, () -> {});
-                    t.button(Icon.logic, ustyle, () -> SchemeSize.ai.gotoppl(user));
+                    t.button(Icon.logic, ustyle, () -> SchemeSize.ai.gotoppl(user)).row();
+                    t.button(Icon.eye, ustyle, () -> {
+                        Core.camera.position.set(user.x, user.y);
+                        if(SchemeSize.input instanceof ModDesktopInput di) di.panning = true;
+                        else SchemeSize.input.toggleFreePan();
+                    }).size(h, bs);
 
                 }).padRight(12).padLeft(16).size(bs + 10f, bs);
             }
@@ -228,10 +226,6 @@ public class ModPlayerListFragment extends PlayerListFragment{
             content.row();
             content.image().height(4f).color(state.rules.pvp || show ? user.team().color : Pal.gray).growX();
             content.row();
-        }
-
-        if(!found){
-            content.add(Core.bundle.format("players.notfound")).padBottom(6).width(350f).maxHeight(h + 14);
         }
 
         content.marginBottom(5);
