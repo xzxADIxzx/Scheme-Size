@@ -1,21 +1,22 @@
 package mindustry.ui.fragments;
 
 import arc.*;
+import arc.util.*;
+import arc.scene.*;
+import arc.scene.ui.*;
+import arc.scene.ui.layout.*;
+import arc.scene.ui.ImageButton.*;
+import arc.scene.event.*;
+import arc.struct.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
-import arc.scene.*;
-import arc.scene.event.*;
-import arc.scene.ui.*;
-import arc.scene.ui.ImageButton.*;
-import arc.scene.ui.layout.*;
-import arc.struct.*;
-import arc.util.*;
+import mindustry.ui.*;
 import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.game.EventType.*;
 import mindustry.net.*;
 import mindustry.net.Packets.*;
-import mindustry.ui.*;
+import mindustry.game.EventType.*;
+import mindustry.scheme.*;
+import mindustry.graphics.*;
 
 import static mindustry.Vars.*;
 
@@ -130,10 +131,10 @@ public class ModPlayerListFragment extends PlayerListFragment{
             table.add(new Image(user.icon()).setScaling(Scaling.bounded)).grow();
             table.name = user.name();
 
-            String usercolor = "[#" + user.color().toString().toUpperCase() + "]";
+            String color = "[#" + user.color().toString().toUpperCase() + "]";
 
             button.add(table).size(h);
-            button.labelWrap(usercolor + user.name()).width(170f).pad(10);
+            button.labelWrap(color + user.name()).width(170f).pad(10);
             button.add().grow();
 
             var style = new ImageButtonStyle(){{
@@ -153,12 +154,24 @@ public class ModPlayerListFragment extends PlayerListFragment{
                 imageOverColor = Color.lightGray;
             }};
 
+            float bs = h / 2f;
+
             if(!user.isLocal()){
                 button.add().growY();
-                button.button(Icon.copy, ustyle, () -> {
-                    Core.app.setClipboardText(usercolor + user.name());
-                    ui.showInfoFade("@copied");
-                }).size(h);
+                button.table(t -> {
+                    t.defaults().size(bs);
+
+                    t.button(Icon.copy, ustyle, () -> {
+                        Core.app.setClipboardText(color + user.name());
+                        ui.showInfoFade("@copied");
+                    }).size(bs, h);
+
+                    t.row();
+
+                    t.button(Icon.eye, ustyle, () -> {});
+                    t.button(Icon.logic, ustyle, () -> SchemeSize.ai.gotoppl(user));
+
+                }).padRight(12).padLeft(16).size(bs + 10f, bs);
             }
 
             if(user.admin && !(!user.isLocal() && net.server())){
@@ -167,9 +180,6 @@ public class ModPlayerListFragment extends PlayerListFragment{
 
             if((net.server() || player.admin) && !user.isLocal() && (!user.admin || net.server())){
                 button.add().growY();
-
-                float bs = (h) / 2f;
-
                 button.table(t -> {
                     t.defaults().size(bs);
 

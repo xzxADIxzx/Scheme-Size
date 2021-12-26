@@ -61,16 +61,17 @@ public class AISelectDialog extends BaseDialog{
 
 				@Override
 				public void updateMovement(){
-					formationPos().set(leader.x, leader.y, 0).sub(unit.x, unit.y, 0);
+					formationPos().set(leader.x, leader.y, 0);
+					// formationPos().set(leader.x, leader.y, 0).sub(unit.x, unit.y, 0);
 
-					float length = Mathf.clamp((unit.dst(leader) - formationSize()) / 50f, -1f, 1f);
+					// float length = Mathf.clamp((unit.dst(leader) - formationSize()) / 50f, -1f, 1f);
 
-					formationPos().setLength(unit.speed() * length);
-					if(length < -0.5f){
-						formationPos().rotate(Vec3.Z, 180f);
-					}else if(length < 0){
-						formationPos().setZero();
-					}
+					// formationPos().setLength(unit.speed() * length);
+					// if(length < -0.5f){
+					// 	formationPos().rotate(Vec3.Z, 180f);
+					// }else if(length < 0){
+					// 	formationPos().setZero();
+					// }
 				}
 			};
 

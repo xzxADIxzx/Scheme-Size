@@ -42,7 +42,7 @@ public class KeybindCombinationsDialog extends BaseDialog{
 		String key = Core.keybinds.get(bind).key.toString();
 		String sec = Core.bundle.get("keybind." + bind.name() + ".name");
 
-		cont.add(name, Color.white).left().padRight(20f).padLeft(16f);
+		cont.add(name, Color.white).left().padRight(20f).padLeft(24f);
 		cont.add("", Pal.accent).left().minWidth(340f).padRight(20f).update(label -> {
 			label.setText(label.hasMouse() ? code + " + " + key : main + " + " + sec);
 		}).row();
