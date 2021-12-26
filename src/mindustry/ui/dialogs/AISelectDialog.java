@@ -2,6 +2,7 @@ package mindustry.ui.dialogs;
 
 import arc.*;
 import arc.util.*;
+import arc.math.*;
 import arc.math.geom.*;
 import arc.scene.ui.layout.*;
 import arc.scene.event.*;
@@ -61,12 +62,15 @@ public class AISelectDialog extends BaseDialog{
 
 				@Override
 				public void updateMovement(){
+					float circle = formationSize() * (leader.formation == null ? 1f : leader.formation.slotAssignments.size);
+					if(unit.dst(leader) < circle) return;
+
 					Tmp.v2.set(unit.x, unit.y);
 					Tmp.v1.set(leader.x, leader.y).sub(Tmp.v2);
 
-					if(Tmp.v1.len() < formationSize()) return;
+					float length = Mathf.clamp((unit.dst(leader) - circle) / 50f, -1f, 1f);
 
-					Tmp.v1.limit(unit.speed());
+					Tmp.v1.setLength(unit.speed() * length);
 					formationPos().set(Tmp.v2.add(Tmp.v1), 0);
 				}
 			};

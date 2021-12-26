@@ -155,19 +155,24 @@ public class ModPlayerListFragment extends PlayerListFragment{
             if(!user.isLocal()){
                 button.add().growY();
                 button.table(t -> {
-                    t.defaults().size(bs);
+                    t.defaults().size(h, bs);
 
-                    t.button(Icon.copy, ustyle, () -> {
-                        Core.app.setClipboardText(name);
-                        ui.showInfoFade("@copied");
-                    });
+                    t.table(s -> {
+                        s.defaults().size(bs);
 
-                    t.button(Icon.logic, ustyle, () -> SchemeSize.ai.gotoppl(user)).row();
+                        s.button(Icon.logic, ustyle, () -> SchemeSize.ai.gotoppl(user));
+
+                        s.button(Icon.copy, ustyle, () -> {
+                            Core.app.setClipboardText(name);
+                            ui.showInfoFade("@copied");
+                        });
+                    }).row();
+
                     t.button(Icon.eye, ustyle, () -> {
                         Core.camera.position.set(user.x, user.y);
                         if(SchemeSize.input instanceof ModDesktopInput di) di.panning = true;
                         else SchemeSize.input.toggleFreePan();
-                    }).size(h, bs);
+                    });
 
                 }).padRight(12).padLeft(16).size(bs + 10f, bs);
             }

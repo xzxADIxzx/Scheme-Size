@@ -32,7 +32,7 @@ public class KeybindCombinationsDialog extends BaseDialog{
 		template("@keycomb.graphics", ModBinding.renderset);
 
 		cont.label(() -> "@category.bt.name").color(Color.gray).padTop(10f).row();
-		cont.image().color(Color.gray).fillX().height(3f).padBottom(6f).row();
+		cont.image().color(Color.gray).fillX().height(3f).padBottom(6f).padLeft(24f).row();
 
 		template("@keycomb.toggle_bt", Binding.deselect);
 		template("@keycomb.return", Binding.schematic_menu);
