@@ -41,10 +41,10 @@ public class BuildingTools{
 
 	public Seq<BuildPlan> removed = new Seq<>();
 	public Seq<BuildPlan> plan = new Seq<>();
+	public Seq<BuildPlan> node = new Seq<>();
+
 	public Mode mode = Mode.none;
 	public int size = 8;
-
-	public Seq<BuildPlan> node = new Seq<>();
 
 	public BuildingTools(InputHandler input){
 		this.input = input;
@@ -145,7 +145,7 @@ public class BuildingTools{
 		}
 	}
 
-	public void replace(int cx, int cy){
+	public void replace(int cx, int cy, boolean remove){
 		if(block() == null) return;
 
 		Tile tile = world.tile(cx, cy);
@@ -154,10 +154,10 @@ public class BuildingTools{
 		select = tile.block();
 		bsize = select.size;
 
-		if(block().size == bsize && block() != select && tile.build != null) replace(tile);
+		if(block().size == bsize && block() != select && tile.build != null) replace(tile, remove);
 	}
 
-	private void replace(Tile tile){
+	private void replace(Tile tile, boolean remove){
 		if(tile.block() != select) return;
 
 		int bx = (int)tile.build.x / tilesize;
@@ -165,13 +165,13 @@ public class BuildingTools{
 			
 		if(plan.contains(build -> build.x == bx && build.y == by)) return;
 			
-		BuildPlan build = new BuildPlan(bx, by, tile.build.rotation, block(), block().nextConfig());
+		BuildPlan build = remove ? new BuildPlan(bx, by) : new BuildPlan(bx, by, tile.build.rotation, block(), block().nextConfig());
 		plan.add(build);
 
-		for(int x = bx - bsize + 1; x <= bx + bsize - 1; x += bsize) replace(world.tile(x, by + bsize));
-		for(int y = by + bsize - 1; y >= by - bsize + 1; y -= bsize) replace(world.tile(bx + bsize, y));
-		for(int x = bx + bsize - 1; x >= bx - bsize + 1; x -= bsize) replace(world.tile(x, by - bsize));
-		for(int y = by - bsize + 1; y <= by + bsize - 1; y += bsize) replace(world.tile(bx - bsize, y));
+		for(int x = bx - bsize + 1; x <= bx + bsize - 1; x += bsize) replace(world.tile(x, by + bsize), remove);
+		for(int y = by + bsize - 1; y >= by - bsize + 1; y -= bsize) replace(world.tile(bx + bsize, y), remove);
+		for(int x = bx + bsize - 1; x >= bx - bsize + 1; x -= bsize) replace(world.tile(x, by - bsize), remove);
+		for(int y = by - bsize + 1; y <= by + bsize - 1; y += bsize) replace(world.tile(bx - bsize, y), remove);
 	}
 
 	public void power(int cx, int cy, Cons2<Intp, Intp> callback){

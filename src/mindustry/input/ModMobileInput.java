@@ -853,7 +853,7 @@ public class ModMobileInput extends ModInputHandler{
                 }
 
                 if(bt.mode == Mode.replace){
-                    bt.replace(cursorX, cursorY);
+                    bt.replace(cursorX, cursorY, mode == PlaceMode.breaking);
                 }
 
                 if(bt.mode == Mode.power){

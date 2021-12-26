@@ -24,18 +24,10 @@ import static mindustry.Vars.*;
 // Last Update - Sep 11, 2021
 public class ModSchematics extends Schematics{
 
-    // private static final Schematic tmpSchem = new Schematic(new Seq<>(), new StringMap(), 0, 0);
-    // private static final Schematic tmpSchem2 = new Schematic(new Seq<>(), new StringMap(), 0, 0);
-
-    // private static final byte[] header = {'m', 's', 'c', 'h'};
-    // private static final byte version = 1;
-
     private static final int padding = 2;
     private static final int maxPreviewsMobile = 32;
     private static final int resolution = 32;
 
-    // private OptimizedByteArrayOutputStream out = new OptimizedByteArrayOutputStream(1024);
-    private Seq<Schematic> all = new Seq<>();
     private OrderedMap<Schematic, FrameBuffer> previews = new OrderedMap<>();
     private ObjectSet<Schematic> errored = new ObjectSet<>();
     private ObjectMap<CoreBlock, Seq<Schematic>> loadouts = new ObjectMap<>();
@@ -54,7 +46,7 @@ public class ModSchematics extends Schematics{
 
     @Override
     public void load(){
-        all.clear();
+        all().clear();
 
         loadLoadouts();
 
@@ -66,7 +58,7 @@ public class ModSchematics extends Schematics{
             if(s != null) s.mod = mod;
         });
 
-        all.sort();
+        all().sort();
 
         if(shadowBuffer == null)
             Core.app.post(() -> shadowBuffer = new FrameBuffer(512 + padding + 8, 512 + padding + 8));
@@ -77,7 +69,7 @@ public class ModSchematics extends Schematics{
 
         try{
             Schematic s = read(file);
-            all.add(s);
+            all().add(s);
             checkLoadout(s, true);
 
             if(!s.file.parent().equals(schematicDirectory)){
@@ -155,7 +147,7 @@ public class ModSchematics extends Schematics{
 
     @Override
     public void add(Schematic schematic){
-        all.add(schematic);
+        all().add(schematic);
         try{
             Fi file = schematicDirectory.child(Time.millis() + "." + schematicExtension);
             write(schematic, file);
@@ -166,12 +158,12 @@ public class ModSchematics extends Schematics{
         }
 
         checkLoadout(schematic, true);
-        all.sort();
+        all().sort();
     }
 
     @Override
     public void remove(Schematic schematic){
-        all.remove(schematic);
+        all().remove(schematic);
         loadouts.each((block, seq) -> seq.remove(schematic));
         if(schematic.file != null){
             schematic.file.delete();
@@ -181,7 +173,7 @@ public class ModSchematics extends Schematics{
             previews.get(schematic).dispose();
             previews.remove(schematic);
         }
-        all.sort();
+        all().sort();
     }
 
     @Override
@@ -209,11 +201,6 @@ public class ModSchematics extends Schematics{
             Log.err(e);
             ui.showException(e);
         }
-    }
-
-    @Override
-    public Seq<Schematic> all(){
-        return all;
     }
 
     @Override
@@ -309,6 +296,10 @@ public class ModSchematics extends Schematics{
     // loadouts
     private void loadLoadouts(){
         Seq.with(Loadouts.basicShard, Loadouts.basicFoundation, Loadouts.basicNucleus).each(s -> checkLoadout(s, false));
+    }
+
+    public ObjectMap<CoreBlock, Seq<Schematic>> getLoadouts(){
+        return loadouts;
     }
 
     public Seq<Schematic> getLoadouts(CoreBlock block){

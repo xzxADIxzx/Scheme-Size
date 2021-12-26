@@ -758,7 +758,7 @@ public class ModDesktopInput extends ModInputHandler{
                 }
 
                 if(bt.mode == Mode.replace){
-                    bt.replace(cursorX, cursorY);
+                    bt.replace(cursorX, cursorY, input.keyDown(Binding.break_block));
                 }
 
                 if(bt.mode == Mode.power){

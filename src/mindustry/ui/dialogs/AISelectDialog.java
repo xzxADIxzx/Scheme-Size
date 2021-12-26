@@ -65,7 +65,7 @@ public class AISelectDialog extends BaseDialog{
 					if(unit.dst(leader) < formationSize()) return;
 
 					Tmp.v1.set(leader.x, leader.y).sub(unit.x, unit.y);
-					float length = Mathf.clamp((unit.dst(leader) - formationSize()) / 40f, -1.2f, 1.2f);
+					float length = Mathf.clamp((unit.dst(leader) - formationSize()) / 40f, -1f, 1f);
 
 					Tmp.v1.setLength(unit.speed() * length * Time.delta);
 					unit.vel.set(Tmp.v1);

@@ -3,7 +3,7 @@
 	"displayName": "Scheme Size",
 	"description": "A mod that increase the schematic size limit to 512 blocks!\nVanilla Only!",
 	"author": "xzxADIxzx",
-	"version": "2.2.16",
+	"version": "2.2.18",
 	"minGameVersion": "135",
 	"hidden": true,
 	"main": "mindustry.scheme.SchemeSize"
