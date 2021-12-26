@@ -45,8 +45,7 @@ public class AISelectDialog extends BaseDialog{
 
 			if(ai instanceof BuilderAI && list.select() != player) ai = new FormationAI(
 				list.select().unit(),
-				new Formation(new Vec3(list.select().unit().x, list.select().unit().y, list.select().unit().rotation), 
-				new CircleFormation())
+				new Formation(new Vec3(), new CircleFormation())
 			){
 				@Override
 				public void updateUnit(){
@@ -63,17 +62,13 @@ public class AISelectDialog extends BaseDialog{
 				@Override
 				public void updateMovement(){
 					player.boosting = leader.isFlying();
+					if(unit.dst(leader) < formationSize()) return;
 
-					float circle = leader.hitSize + formationSize();
-					if(unit.dst(leader) < circle) return;
+					Tmp.v1.set(leader.x, leader.y).sub(unit.x, unit.y);
+					float length = Mathf.clamp((unit.dst(leader) - formationSize()) / 40f, -1.2f, 1.2f);
 
-					Tmp.v2.set(unit.x, unit.y);
-					Tmp.v1.set(leader.x, leader.y).sub(Tmp.v2);
-
-					float length = Mathf.clamp((unit.dst(leader) - circle) / 50f, -1f, 1f);
-
-					Tmp.v1.setLength(unit.speed() * length);
-					formationPos().set(Tmp.v2.add(Tmp.v1), 0);
+					Tmp.v1.setLength(unit.speed() * length * Time.delta);
+					unit.vel.set(Tmp.v1);
 				}
 			};
 

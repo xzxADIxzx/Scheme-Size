@@ -1,21 +1,23 @@
 package mindustry.game;
 
 import arc.*;
-import arc.files.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.graphics.gl.*;
-import arc.struct.*;
 import arc.util.*;
-import mindustry.entities.units.*;
+import arc.files.*;
+import arc.struct.*;
+import arc.graphics.*;
+import arc.graphics.gl.*;
+import arc.graphics.g2d.*;
+import mindustry.gen.*;
 import mindustry.game.EventType.*;
 import mindustry.game.Schematic.*;
-import mindustry.gen.*;
 import mindustry.input.*;
 import mindustry.input.Placement.*;
 import mindustry.world.*;
-import mindustry.world.blocks.ConstructBlock.*;
+import mindustry.world.meta.*;
 import mindustry.world.blocks.storage.*;
+import mindustry.world.blocks.ConstructBlock.*;
+import mindustry.content.*;
+import mindustry.entities.units.*;
 
 import static mindustry.Vars.*;
 
@@ -42,14 +44,11 @@ public class ModSchematics extends Schematics{
     private long lastClearTime;
 
     public ModSchematics(){
-        Events.on(ClientLoadEvent.class, event -> {
-            errorTexture = new Texture("sprites/error.png");
-        });
+        Events.on(ClientLoadEvent.class, event -> errorTexture = new Texture("sprites/error.png"));
     }
 
     @Override
     public void loadSync(){
-        // why?
         load();
     }
 
@@ -57,27 +56,20 @@ public class ModSchematics extends Schematics{
     public void load(){
         all.clear();
 
-        // loadLoadouts();
+        loadLoadouts();
 
-        for(Fi file : schematicDirectory.list()){
-            loadFile(file);
-        }
-
+        for(Fi file : schematicDirectory.list()) loadFile(file);
         platform.getWorkshopContent(Schematic.class).each(this::loadFile);
 
         mods.listFiles("schematics", (mod, file) -> {
             Schematic s = loadFile(file);
-            if(s != null){
-                s.mod = mod;
-            }
+            if(s != null) s.mod = mod;
         });
 
         all.sort();
 
-        if(shadowBuffer == null){
-            // 512 because it's safer
+        if(shadowBuffer == null)
             Core.app.post(() -> shadowBuffer = new FrameBuffer(512 + padding + 8, 512 + padding + 8));
-        }
     }
 
     private @Nullable Schematic loadFile(Fi file){
@@ -86,7 +78,7 @@ public class ModSchematics extends Schematics{
         try{
             Schematic s = read(file);
             all.add(s);
-            // checkLoadout(s, true);
+            checkLoadout(s, true);
 
             if(!s.file.parent().equals(schematicDirectory)){
                 s.tags.put("steamid", s.file.parent().name());
@@ -173,7 +165,7 @@ public class ModSchematics extends Schematics{
             Log.err(e);
         }
 
-        // checkLoadout(schematic, true);
+        checkLoadout(schematic, true);
         all.sort();
     }
 
@@ -208,7 +200,7 @@ public class ModSchematics extends Schematics{
         newSchematic.file = target.file;
 
         loadouts.each((block, list) -> list.remove(target));
-        // checkLoadout(target, true);
+        checkLoadout(target, true);
 
         try{
             write(newSchematic, target.file);
@@ -221,7 +213,6 @@ public class ModSchematics extends Schematics{
 
     @Override
     public Seq<Schematic> all(){
-        // need to return this.all
         return all;
     }
 
@@ -312,5 +303,28 @@ public class ModSchematics extends Schematics{
         }
 
         return previews.get(schematic);
+    }
+
+
+    // loadouts
+    private void loadLoadouts(){
+        Seq.with(Loadouts.basicShard, Loadouts.basicFoundation, Loadouts.basicNucleus).each(s -> checkLoadout(s, false));
+    }
+
+    public Seq<Schematic> getLoadouts(CoreBlock block){
+        return loadouts.get(block, Seq::new);
+    }
+
+    private void checkLoadout(Schematic s, boolean validate){
+        Stile core = s.tiles.find(t -> t.block instanceof CoreBlock);
+        if(core == null) return;
+
+        int cores = s.tiles.count(t -> t.block instanceof CoreBlock);
+        int maxSize = getMaxLaunchSize(core.block);
+
+        if((validate && (s.width > maxSize || s.height > maxSize
+            || s.tiles.contains(t -> t.block.buildVisibility == BuildVisibility.sandboxOnly || !t.block.unlocked()) || cores > 1))) return;
+
+        loadouts.get((CoreBlock)core.block, Seq::new).add(s);
     }
 }
