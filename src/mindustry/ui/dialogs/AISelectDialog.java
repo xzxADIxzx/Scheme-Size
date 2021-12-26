@@ -62,7 +62,9 @@ public class AISelectDialog extends BaseDialog{
 
 				@Override
 				public void updateMovement(){
-					float circle = formationSize() * (leader.formation == null ? 1f : leader.formation.slotAssignments.size);
+					player.boosting = leader.isFlying();
+
+					float circle = leader.hitSize + formationSize();
 					if(unit.dst(leader) < circle) return;
 
 					Tmp.v2.set(unit.x, unit.y);
