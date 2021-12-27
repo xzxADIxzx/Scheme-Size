@@ -21,6 +21,7 @@ public class SchemeUpdater{
 
     public static String mv;
     public static String rv;
+    public static boolean e;
 
     public static void check(){
         mod = mods.getMod(SchemeSize.class);
@@ -30,7 +31,8 @@ public class SchemeUpdater{
             var json = Jval.read(res.getResultAsString());
             String version = json.getString("tag_name").substring(1);
 
-            if(version == mod.meta.version) return;
+            e = version == mod.meta.version;
+            if(e) return;
             ui.showCustomConfirm("@updater.name",
                 bundle.format("updater.info", mod.meta.version, version),
                 "@updater.load", "@ok", SchemeUpdater::update, () -> {});
