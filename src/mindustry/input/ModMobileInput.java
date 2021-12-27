@@ -346,8 +346,12 @@ public class ModMobileInput extends ModInputHandler{
         Draw.mixcol();
         Draw.color(Pal.accent);
 
-        //Draw lines
-        if(lineMode && !bt.isPlacing()){
+        if(bt.isPlacing() || bt.mode == Mode.replace && mode == breaking){
+            bt.plan.each(build -> {
+                build.animScale = 1f;
+                drawRequest(build);
+            });
+        }else if(lineMode){
             int tileX = tileXMod(Core.input.mouseX());
             int tileY = tileYMod(Core.input.mouseY());
 
@@ -365,13 +369,6 @@ public class ModMobileInput extends ModInputHandler{
             }else if(mode == breaking){
                 drawBreakSelectionMod(lineStartX, lineStartY, tileX, tileY, 511);
             }
-        }
-
-        if(bt.isPlacing()){
-            bt.plan.each(build -> {
-                build.animScale = 1f;
-                drawRequest(build);
-            });
         }
 
         Draw.reset();

@@ -174,7 +174,12 @@ public class ModDesktopInput extends ModInputHandler{
 
         selectRequests.each(this::drawOverRequest);
 
-        if(player.isBuilder() && !bt.isPlacing()){
+        if(bt.isPlacing() || bt.mode == Mode.replace && Core.input.keyDown(Binding.break_block)){
+            bt.plan.each(build -> {
+                build.animScale = 1f;
+                drawRequest(build);
+            });
+        }else if(player.isBuilder()){
             //draw things that may be placed soon
             if(mode == placing && block != null){
                 for(int i = 0; i < lineRequests.size; i++){
@@ -203,13 +208,6 @@ public class ModDesktopInput extends ModInputHandler{
                     Draw.reset();
                 }
             }
-        }
-
-        if(bt.isPlacing()){
-            bt.plan.each(build -> {
-                build.animScale = 1f;
-                drawRequest(build);
-            });
         }
 
         Draw.reset();

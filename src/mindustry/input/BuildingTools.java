@@ -76,7 +76,7 @@ public class BuildingTools{
 	}
 	
 	public boolean isPlacing(){
-		return ((!plan.isEmpty() || mode == Mode.power) && mode != Mode.none && input.isPlacing()) || (mode == Mode.replace && Core.input.keyDown(Binding.break_block));
+		return (!plan.isEmpty() || mode == Mode.power) && mode != Mode.none && input.isPlacing();
 	}
 
 	public boolean isRemoving(){
