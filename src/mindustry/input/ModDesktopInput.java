@@ -797,7 +797,7 @@ public class ModDesktopInput extends ModInputHandler{
             usingbt = true;
         }
 
-        if(input.keyTap(Binding.break_block) || input.keyRelease(Binding.select)){
+        if(input.keyTap(Binding.break_block) || input.keyTap(Binding.deselect) || input.keyRelease(Binding.select)){
             btX = lastbtX = -1;
             btY = lastbtY = -1;
             usingbt = false;
