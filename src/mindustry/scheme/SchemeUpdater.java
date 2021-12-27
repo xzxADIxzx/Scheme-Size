@@ -19,15 +19,21 @@ public class SchemeUpdater{
     private static float progress;
     private static String repo = ghApi + "/repos/" + mod.getRepo() + "/releases/latest";
 
+    public static String mv;
+    public static String rv;
+
     public static void check(){
         Http.get(repo, res -> {
             var json = Jval.read(res.getResultAsString());
             String version = json.getString("tag_name").substring(1);
-            if(version != mod.meta.version){
-                ui.showCustomConfirm("@updater.name",
-                    bundle.format("updater.info", mod.meta.version, version),
-                    "@updater.load", "@ok", SchemeUpdater::update, () -> {});
-            }
+
+            if(version == mod.meta.version) return;
+            ui.showCustomConfirm("@updater.name",
+                bundle.format("updater.info", mod.meta.version, version),
+                "@updater.load", "@ok", SchemeUpdater::update, () -> {});
+
+            mv = mod.meta.version;
+            rv = version;
         }, e -> {});
     }
 
