@@ -29,11 +29,12 @@ public class ModSchematics extends Schematics{
     private static final int resolution = 32;
 
     private OrderedMap<Schematic, FrameBuffer> previews = new OrderedMap<>();
-    private ObjectSet<Schematic> errored = new ObjectSet<>();
     private ObjectMap<CoreBlock, Seq<Schematic>> loadouts = new ObjectMap<>();
     private FrameBuffer shadowBuffer;
-    private Texture errorTexture;
     private long lastClearTime;
+
+    private ObjectSet<Schematic> errored = new ObjectSet<>();
+    private Texture errorTexture;
 
     public ModSchematics(){
         Events.on(ClientLoadEvent.class, event -> errorTexture = new Texture("sprites/error.png"));
@@ -203,6 +204,12 @@ public class ModSchematics extends Schematics{
         }
     }
 
+    // previews
+    @Override
+    public boolean hasPreview(Schematic schematic){
+        return previews.containsKey(schematic);
+    }
+
     @Override
     public Texture getPreview(Schematic schematic){
         if(errored.contains(schematic)) return errorTexture;
@@ -294,18 +301,6 @@ public class ModSchematics extends Schematics{
 
 
     // loadouts
-    private void loadLoadouts(){
-        Seq.with(Loadouts.basicShard, Loadouts.basicFoundation, Loadouts.basicNucleus).each(s -> checkLoadout(s, false));
-    }
-
-    public ObjectMap<CoreBlock, Seq<Schematic>> getLoadouts(){
-        return loadouts;
-    }
-
-    public Seq<Schematic> getLoadouts(CoreBlock block){
-        return loadouts.get(block, Seq::new);
-    }
-
     private void checkLoadout(Schematic s, boolean validate){
         Stile core = s.tiles.find(t -> t.block instanceof CoreBlock);
         if(core == null) return;
@@ -317,5 +312,19 @@ public class ModSchematics extends Schematics{
             || s.tiles.contains(t -> t.block.buildVisibility == BuildVisibility.sandboxOnly || !t.block.unlocked()) || cores > 1))) return;
 
         loadouts.get((CoreBlock)core.block, Seq::new).add(s);
+    }
+
+    private void loadLoadouts(){
+        Seq.with(Loadouts.basicShard, Loadouts.basicFoundation, Loadouts.basicNucleus).each(s -> checkLoadout(s, false));
+    }
+
+    @Override
+    public ObjectMap<CoreBlock, Seq<Schematic>> getLoadouts(){
+        return loadouts;
+    }
+
+    @Override
+    public Seq<Schematic> getLoadouts(CoreBlock block){
+        return loadouts.get(block, Seq::new);
     }
 }
