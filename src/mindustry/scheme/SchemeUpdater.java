@@ -24,7 +24,7 @@ public class SchemeUpdater{
     public static boolean e;
 
     public static void check(){
-        mod = mods.getMod(SchemeSize.class);
+        mod = mods.locateMod("scheme-size");
         repo = ghApi + "/repos/" + mod.getRepo() + "/releases/latest";
 
         Http.get(repo, res -> {
