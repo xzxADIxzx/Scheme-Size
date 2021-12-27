@@ -32,15 +32,15 @@ public class SchemeUpdater{
             var json = Jval.read(res.getResultAsString());
             String version = json.getString("tag_name").substring(1);
 
-            e = version == mod.meta.version;
+            e = version.equals(mod.meta.version);
             i = version.getClass() == mod.meta.version.getClass();
+            mv = mod.meta.version;
+            rv = version;
+
             if(e) return;
             ui.showCustomConfirm("@updater.name",
                 bundle.format("updater.info", mod.meta.version, version),
                 "@updater.load", "@ok", SchemeUpdater::update, () -> {});
-
-            mv = mod.meta.version;
-            rv = version;
         }, e -> {});
     }
 
