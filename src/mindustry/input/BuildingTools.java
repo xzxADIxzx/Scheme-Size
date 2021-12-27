@@ -147,7 +147,7 @@ public class BuildingTools{
 	}
 
 	public void replace(int cx, int cy, boolean remove){
-		if(block() == null) return;
+		if(block() == null && !remove) return;
 
 		Tile tile = world.tile(cx, cy);
 		if(tile == null) return;
@@ -156,7 +156,7 @@ public class BuildingTools{
 		bsize = select.size;
 		this.remove = remove;
 
-		if(block().size == bsize && block() != select && tile.build != null) replace(tile);
+		if((remove ? true : block().size == bsize && block() != select) && tile.build != null) replace(tile);
 	}
 
 	private void replace(Tile tile){
