@@ -776,7 +776,7 @@ public class ModDesktopInput extends ModInputHandler{
                 lastbtS = bt.size;
             }
 
-            if(input.keyRelease(Binding.select)){
+            if(input.keyRelease(Binding.select) || (bt.mode == Mode.replace && input.keyRelease(Binding.break_block))){
                 apply();
 
                 if(bt.mode == Mode.edit){
@@ -791,13 +791,13 @@ public class ModDesktopInput extends ModInputHandler{
             }
         }
 
-        if((input.keyTap(Binding.select) || (input.keyTap(Binding.break_block) && bt.mode == Mode.replace)) && !scene.hasMouse()){
+        if((input.keyTap(Binding.select) || (bt.mode == Mode.replace && input.keyTap(Binding.break_block))) && !scene.hasMouse()){
             btX = cursorX;
             btY = cursorY;
             usingbt = true;
         }
 
-        if((input.keyTap(Binding.break_block) && bt.mode != Mode.replace) || input.keyTap(Binding.deselect) || input.keyRelease(Binding.select)){
+        if((bt.mode != Mode.replace && input.keyTap(Binding.break_block)) || input.keyTap(Binding.deselect) || input.keyRelease(Binding.select)){
             btX = lastbtX = -1;
             btY = lastbtY = -1;
             usingbt = false;
