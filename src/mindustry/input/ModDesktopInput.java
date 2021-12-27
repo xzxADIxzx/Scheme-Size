@@ -791,13 +791,13 @@ public class ModDesktopInput extends ModInputHandler{
             }
         }
 
-        if(input.keyTap(Binding.select) && !scene.hasMouse()){
+        if((input.keyTap(Binding.select) || (input.keyTap(Binding.break_block) && bt.mode == Mode.replace)) && !scene.hasMouse()){
             btX = cursorX;
             btY = cursorY;
             usingbt = true;
         }
 
-        if(input.keyTap(Binding.break_block) || input.keyTap(Binding.deselect) || input.keyRelease(Binding.select)){
+        if((input.keyTap(Binding.break_block) && bt.mode != Mode.replace) || input.keyTap(Binding.deselect) || input.keyRelease(Binding.select)){
             btX = lastbtX = -1;
             btY = lastbtY = -1;
             usingbt = false;

@@ -35,6 +35,7 @@ public class BuildingTools{
 	private InputHandler input;
 	private Block select;
 	private int bsize;
+	private boolean remove;
 
 	public ProductionSeq product = new ProductionSeq();
 	public Seq<Building> checked = new Seq<>();
@@ -153,11 +154,12 @@ public class BuildingTools{
 
 		select = tile.block();
 		bsize = select.size;
+		this.remove = remove;
 
-		if(block().size == bsize && block() != select && tile.build != null) replace(tile, remove);
+		if(block().size == bsize && block() != select && tile.build != null) replace(tile);
 	}
 
-	private void replace(Tile tile, boolean remove){
+	private void replace(Tile tile){
 		if(tile.block() != select) return;
 
 		int bx = (int)tile.build.x / tilesize;
@@ -168,10 +170,10 @@ public class BuildingTools{
 		BuildPlan build = remove ? new BuildPlan(bx, by) : new BuildPlan(bx, by, tile.build.rotation, block(), block().nextConfig());
 		plan.add(build);
 
-		for(int x = bx - bsize + 1; x <= bx + bsize - 1; x += bsize) replace(world.tile(x, by + bsize), remove);
-		for(int y = by + bsize - 1; y >= by - bsize + 1; y -= bsize) replace(world.tile(bx + bsize, y), remove);
-		for(int x = bx + bsize - 1; x >= bx - bsize + 1; x -= bsize) replace(world.tile(x, by - bsize), remove);
-		for(int y = by - bsize + 1; y <= by + bsize - 1; y += bsize) replace(world.tile(bx - bsize, y), remove);
+		for(int x = bx - bsize + 1; x <= bx + bsize - 1; x += bsize) replace(world.tile(x, by + bsize));
+		for(int y = by + bsize - 1; y >= by - bsize + 1; y -= bsize) replace(world.tile(bx + bsize, y));
+		for(int x = bx + bsize - 1; x >= bx - bsize + 1; x -= bsize) replace(world.tile(x, by - bsize));
+		for(int y = by - bsize + 1; y <= by + bsize - 1; y += bsize) replace(world.tile(bx - bsize, y));
 	}
 
 	public void power(int cx, int cy, Cons2<Intp, Intp> callback){

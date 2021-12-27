@@ -117,7 +117,7 @@ public class ModSchematics extends Schematics{
 
     @Override
     public Texture getPreview(Schematic schematic){
-        if(schematic.width > maxSchematicSize || schematic.height > maxSchematicSize) return getTexture(schematic);
+        if(schematic.width > 42 || schematic.height > 42) return getTexture(schematic);
         else return super.getPreview(schematic);
     }
 }
