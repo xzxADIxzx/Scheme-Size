@@ -250,7 +250,8 @@ public class ModInputHandler extends InputHandler{
     }
 
     public void apply(){
-        flushRequests(bt.plan);
+        if(bt.isRemoving()) bt.plan.each(selectRequests::add);
+        else flushRequests(bt.plan);
         bt.plan.clear();
     }
 

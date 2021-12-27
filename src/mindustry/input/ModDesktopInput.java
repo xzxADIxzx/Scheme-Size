@@ -709,6 +709,10 @@ public class ModDesktopInput extends ModInputHandler{
             if(input.keyTap(ModBinding.renderset)){
                 SchemeSize.renderset.showGraphics();
             }
+
+            if(input.keyTap(Binding.schematic_menu)){
+                flushLastRemoved();
+            }
         }else{
             if(input.keyTap(ModBinding.change_unit)){
                 SchemeUtils.changeUnit();
@@ -730,10 +734,6 @@ public class ModDesktopInput extends ModInputHandler{
     }
 
     void btInput(){
-        if(input.keyTap(Binding.schematic_menu) && input.keyDown(ModBinding.alternative)){
-            flushLastRemoved();
-        }
-
         if(!SchemeSize.hudfrag.shownBT) bt.setMode(Mode.none);
         if(bt.mode == Mode.none) return;
 

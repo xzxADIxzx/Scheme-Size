@@ -79,6 +79,10 @@ public class BuildingTools{
 		return (!plan.isEmpty() || mode == Mode.power) && mode != Mode.none && input.isPlacing();
 	}
 
+	public boolean isRemoving(){
+		return remove;
+	}
+
 	public void resize(){
 		size = Mathf.clamp(size, 1, 512);
 		SchemeSize.hudfrag.resize(size);
