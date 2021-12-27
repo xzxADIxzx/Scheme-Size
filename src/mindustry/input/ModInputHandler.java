@@ -250,7 +250,7 @@ public class ModInputHandler extends InputHandler{
     }
 
     public void apply(){
-        if(bt.isRemoving()) bt.plan.each(selectRequests::add);
+        if(bt.isRemoving()) bt.plan.each(player.unit()::addBuild);
         else flushRequests(bt.plan);
         bt.plan.clear();
     }
