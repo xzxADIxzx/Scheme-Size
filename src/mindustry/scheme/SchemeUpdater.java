@@ -15,14 +15,17 @@ import java.net.*;
 
 public class SchemeUpdater{
 
-    private static LoadedMod mod = mods.getMod(SchemeSize.class);
+    private static LoadedMod mod;
     private static float progress;
-    private static String repo = ghApi + "/repos/" + mod.getRepo() + "/releases/latest";
+    private static String repo;
 
     public static String mv;
     public static String rv;
 
     public static void check(){
+        mod = mods.getMod(SchemeSize.class);
+        repo = ghApi + "/repos/" + mod.getRepo() + "/releases/latest";
+
         Http.get(repo, res -> {
             var json = Jval.read(res.getResultAsString());
             String version = json.getString("tag_name").substring(1);
