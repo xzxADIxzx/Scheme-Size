@@ -23,10 +23,11 @@ public class SchemeUpdater{
         Http.get(repo, res -> {
             var json = Jval.read(res.getResultAsString());
             String version = json.getString("tag_name").substring(1);
-            if(version != mod.meta.version)
+            if(version != mod.meta.version){
                 ui.showCustomConfirm("@updater.name",
                     bundle.format("updater.info", mod.meta.version, version),
                     "@updater.load", "@ok", SchemeUpdater::update, () -> {});
+            }
         }, e -> {});
     }
 
