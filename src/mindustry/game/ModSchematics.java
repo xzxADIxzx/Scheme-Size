@@ -1,6 +1,10 @@
 package mindustry.game;
 
+import arc.util.*;
 import arc.struct.*;
+import arc.graphics.*;
+import arc.graphics.gl.*;
+import arc.graphics.g2d.*;
 import mindustry.gen.*;
 import mindustry.game.Schematic.*;
 import mindustry.input.*;
@@ -8,6 +12,7 @@ import mindustry.input.Placement.*;
 import mindustry.world.*;
 import mindustry.world.blocks.storage.*;
 import mindustry.world.blocks.ConstructBlock.*;
+import mindustry.entities.units.*;
 
 import static mindustry.Vars.*;
 
@@ -73,5 +78,46 @@ public class ModSchematics extends Schematics{
         }
 
         return new Schematic(tiles, new StringMap(), width, height);
+    }
+
+    // previews
+    public Texture getTexture(Schematic schematic){
+        Tmp.m1.set(Draw.proj());
+        Tmp.m2.set(Draw.trans());
+
+        Draw.blend();
+        Draw.reset();
+
+        FrameBuffer buffer = new FrameBuffer((schematic.width + 2) * 32, (schematic.height + 2) * 32);
+        buffer.begin(Color.clear);
+
+        Draw.proj().setOrtho(0, buffer.getHeight(), buffer.getWidth(), -buffer.getHeight());
+        Draw.trans().scale(4, 4).translate(12, 12);
+
+        Seq<BuildPlan> requests = schematic.tiles.map(t -> new BuildPlan(t.x, t.y, t.rotation, t.block, t.config));
+
+        requests.each(req -> {
+            req.animScale = 1f;
+            req.worldContext = false;
+            req.block.drawRequestRegion(req, requests);
+        });
+
+        requests.each(req -> req.block.drawRequestConfigTop(req, requests));
+
+        Draw.flush();
+        Draw.trans().idt();
+
+        buffer.end();
+
+        Draw.proj(Tmp.m1);
+        Draw.trans(Tmp.m2);
+
+        return buffer.getTexture();
+    }
+
+    @Override
+    public Texture getPreview(Schematic schematic){
+        if(schematic.width > maxSchematicSize || schematic.height > maxSchematicSize) return getTexture(schematic);
+        else return super.getPreview(schematic);
     }
 }
