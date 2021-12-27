@@ -15,13 +15,14 @@ import java.net.*;
 
 public class SchemeUpdater{
 
-    private static LoadedMod mod;
-    private static float progress;
-    private static String repo;
+    public static LoadedMod mod;
+    public static float progress;
+    public static String repo;
 
     public static String mv;
     public static String rv;
     public static boolean e;
+    public static boolean i;
 
     public static void check(){
         mod = mods.locateMod("scheme-size");
@@ -32,6 +33,7 @@ public class SchemeUpdater{
             String version = json.getString("tag_name").substring(1);
 
             e = version == mod.meta.version;
+            i = version.getClass() == mod.meta.version.getClass();
             if(e) return;
             ui.showCustomConfirm("@updater.name",
                 bundle.format("updater.info", mod.meta.version, version),
