@@ -72,17 +72,17 @@ public class AISelectDialog extends BaseDialog{
 				}
 			};
 
-			if(ai instanceof DefenderAI && list.select() != player) ai = new DefenderAI(){
-				@Override
-				public void updateTargeting(){
-					if(retarget()) target = list.select().unit();
-				}
-			};
-
 			if(ai instanceof RepairAI && list.select() != player) ai = new CursorAI(){
 				@Override
 				public void updateTargeting(){
 					if(retarget()) following = list.select().unit();
+				}
+			};
+
+			if(ai instanceof DefenderAI && list.select() != player) ai = new DefenderAI(){
+				@Override
+				public void updateTargeting(){
+					if(retarget()) target = list.select().unit();
 				}
 			};
 

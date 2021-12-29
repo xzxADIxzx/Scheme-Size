@@ -45,7 +45,7 @@ public class SchemeUtils{
             SchemeSize.unit.select(false, true, (ppl, unit, amount) -> {
                 if(!hasCore(ppl)) return;
                 Call.sendChatMessage(js(getPlayer(ppl)));
-                Call.sendChatMessage(js("player.unit().spawnedByCore(true)"));
+                Call.sendChatMessage(js("player.unit().spawnedByCore = true"));
                 Call.sendChatMessage(js("var newUnit = " + getUnit(unit) + ".spawn(player.team(), player.x, player.y)"));
                 Call.sendChatMessage(js("Call.unitControl(player, newUnit)"));
                 SchemeSize.render.update();
@@ -157,7 +157,7 @@ public class SchemeUtils{
         };
         Runnable js = () -> {
             Call.sendChatMessage(js(getPlayer(ppl)));
-            Call.sendChatMessage(js("player.unit().spawnedByCore(true)"));
+            Call.sendChatMessage(js("player.unit().spawnedByCore = true"));
             Call.sendChatMessage(js("player.clearUnit()"));
         };
         Runnable server = () -> {

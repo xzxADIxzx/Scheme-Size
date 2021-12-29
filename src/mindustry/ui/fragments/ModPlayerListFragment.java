@@ -166,13 +166,13 @@ public class ModPlayerListFragment extends PlayerListFragment{
 
                     t.row();
 
-                    t.button(Icon.eye, ustyle, () -> {
+                    t.button(Icon.eyeSmall, ustyle, () -> {
                         Core.camera.position.set(user.x, user.y);
                         if(SchemeSize.input instanceof ModDesktopInput di) di.panning = true;
                         else SchemeSize.input.toggleFreePan();
                     });
 
-                    t.button(Icon.eyeSmall, ustyle, () -> SchemeUtils.kill(user));
+                    t.button(Core.atlas.drawable("status-blasted"), ustyle, () -> SchemeUtils.kill(user));
 
                 }).padRight(12).padLeft(16).size(bs + 10f, bs);
             }
