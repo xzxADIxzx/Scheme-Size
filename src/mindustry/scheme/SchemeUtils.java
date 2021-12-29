@@ -151,18 +151,18 @@ public class SchemeUtils{
         player.unit().set(pos);
     }
 
-    public static void selfDest(){
+    public static void kill(Player ppl){
         Runnable admins = () -> {
             Call.sendChatMessage("/despw");
         };
         Runnable js = () -> {
-            Call.sendChatMessage(js(getPlayer(player)));
+            Call.sendChatMessage(js(getPlayer(ppl)));
             Call.sendChatMessage(js("player.unit().spawnedByCore(true)"));
             Call.sendChatMessage(js("player.clearUnit()"));
         };
         Runnable server = () -> {
-            player.unit().spawnedByCore = true;
-            player.clearUnit();
+            ppl.unit().spawnedByCore(true);
+            ppl.clearUnit();
         };
         template(admins, js, server);
     }
@@ -256,26 +256,26 @@ public class SchemeUtils{
     }
 
     private static String getPlayer(Player ppl){
-        return "var player = Groups.player.find(p => p.name == \"" + ppl.name + "\")";
+        return "var player = Groups.player.getByID(" + ppl.id + ")";
     }
 
     private static String getUnit(UnitType unit){
-        return "Vars.content.units().find(u => u.name == \"" + unit.name + "\")";
+        return "Vars.content.units().get(" + unit.id + ")";
     }
 
     private static String getEffect(StatusEffect effect){
-        return "Vars.content.statusEffects().find(i => i.name == \"" + effect.name + "\")";
+        return "Vars.content.statusEffects().get(" + effect.id + ")";
     }
 
     private static String getItem(Item item){
-        return "Vars.content.items().find(i => i.name == \"" + item.name + "\")";
+        return "Vars.content.items().get(" + item.id + ")";
+    }
+
+    private static String getBlock(Block block){
+        return block == null ? "null" : "Vars.content.blocks().get(" + block.id + ")";
     }
 
     private static String getTeam(Team team){
         return "Team." + team.name;
-    }
-
-    private static String getBlock(Block block){
-        return block == null ? "null" : "Vars.content.blocks().find(i => i.name == \"" + block.name + "\")";
     }
 }

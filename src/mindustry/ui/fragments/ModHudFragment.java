@@ -213,7 +213,7 @@ public class ModHudFragment extends Fragment{
 
                     select.button(core, style, isize, SchemeUtils::placeCore);
                     select.button(team, style, isize, SchemeUtils::changeTeam);
-                    select.button(kill, style, isize, SchemeUtils::selfDest);
+                    select.button(kill, style, isize, () -> SchemeUtils.kill(player));
                     select.button(aict, style, isize, () -> SchemeSize.ai.select(true));
                     select.button(hist, style, isize, SchemeUtils::history).get(
                     ).image().color(Pal.gray).width(4).height(bsize).padRight(-dsize + 1.5f + isize);

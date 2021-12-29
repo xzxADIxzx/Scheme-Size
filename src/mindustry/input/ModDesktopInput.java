@@ -681,7 +681,7 @@ public class ModDesktopInput extends ModInputHandler{
             }
     
             if(input.keyTap(Binding.respawn)){
-                SchemeUtils.selfDest();
+                SchemeUtils.kill(player);
             }
     
             if(input.keyTap(ModBinding.change_unit)){
