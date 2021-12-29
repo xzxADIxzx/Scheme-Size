@@ -31,18 +31,6 @@ public class AISelectDialog extends BaseDialog{
 		addCloseButton();
 
 		hidden(onHidden = () -> {
-			if(ai == null && list.select() != player) ai = new AIController(){
-				@Override
-				public void updateMovement(){
-					circle(target, 80f);
-				}
-
-				@Override
-				public void updateTargeting(){
-					if(retarget()) target = list.select().unit();
-				}
-			};
-
 			if(ai instanceof BuilderAI && list.select() != player) ai = new FormationAI(
 				list.select().unit(),
 				new Formation(new Vec3(), new CircleFormation())
@@ -86,10 +74,12 @@ public class AISelectDialog extends BaseDialog{
 				}
 			};
 
+			if(ai instanceof CircleAI c) c.init(list.select());
+
 			updateUnit();
 		});
 
-		template(null, null, true);
+		template(null, null, false);
 		template(UnitTypes.mono, new MinerAI(), false);
 		template(UnitTypes.poly, new BuilderAI(), true);
 		template(UnitTypes.mega, new RepairAI(), true);
@@ -97,6 +87,7 @@ public class AISelectDialog extends BaseDialog{
 		template(UnitTypes.crawler, new SuicideAI(), false);
 		template(UnitTypes.dagger, new GroundAI(), false);
 		template(UnitTypes.flare, new FlyingAI(), false);
+		template(UnitTypes.gamma, new CircleAI(), true);
 		
 		cont.table(table -> {
 			list.build(table);
