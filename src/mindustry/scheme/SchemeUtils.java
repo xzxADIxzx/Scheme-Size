@@ -260,19 +260,19 @@ public class SchemeUtils{
     }
 
     private static String getUnit(UnitType unit){
-        return "Vars.content.units().get(" + unit.id + ")";
+        return "Vars.content.unit(" + unit.id + ")";
     }
 
     private static String getEffect(StatusEffect effect){
-        return "Vars.content.statusEffects().get(" + effect.id + ")";
+        return "Vars.content.statusEffect(" + effect.id + ")";
     }
 
     private static String getItem(Item item){
-        return "Vars.content.items().get(" + item.id + ")";
+        return "Vars.content.item(" + item.id + ")";
     }
 
     private static String getBlock(Block block){
-        return block == null ? "null" : "Vars.content.blocks().get(" + block.id + ")";
+        return block == null ? "null" : "Vars.content.block(" + block.id + ")";
     }
 
     private static String getTeam(Team team){

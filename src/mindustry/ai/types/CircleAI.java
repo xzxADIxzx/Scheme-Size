@@ -13,6 +13,7 @@ public class CircleAI extends AIController{
     public Vec2 target = new Vec2();
 
     public void init(Player ppl){
+        following = null;
         if(ppl == player) target.set(ppl.x, ppl.y);
         else following = ppl;
     }
