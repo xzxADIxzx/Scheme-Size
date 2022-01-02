@@ -46,8 +46,7 @@ public class SchemeUtils{
                 if(!hasCore(ppl)) return;
                 Call.sendChatMessage(js(getPlayer(ppl)));
                 Call.sendChatMessage(js("player.unit().spawnedByCore = true"));
-                Call.sendChatMessage(js("var newUnit = " + getUnit(unit) + ".spawn(player.team(), player.x, player.y)"));
-                Call.sendChatMessage(js("Call.unitControl(player, newUnit)"));
+                Call.sendChatMessage(js("player.unit(" + getUnit(unit) + ".spawn(player.team(), player.x, player.y))"));
                 SchemeSize.render.update();
             });
         };
@@ -55,8 +54,7 @@ public class SchemeUtils{
             SchemeSize.unit.select(false, true, (ppl, unit, amount) -> {
                 if(!hasCore(ppl)) return;
                 ppl.unit().spawnedByCore(true);
-                var newUnit = unit.spawn(ppl.team(), ppl.x, ppl.y);
-                Call.unitControl(ppl, newUnit);
+                player.unit(unit.spawn(ppl.team(), ppl.x, ppl.y));
                 SchemeSize.render.update();
             });
         };
