@@ -54,7 +54,7 @@ public class SchemeUtils{
             SchemeSize.unit.select(false, true, (ppl, unit, amount) -> {
                 if(!hasCore(ppl)) return;
                 ppl.unit().spawnedByCore(true);
-                player.unit(unit.spawn(ppl.team(), ppl.x, ppl.y));
+                ppl.unit(unit.spawn(ppl.team(), ppl.x, ppl.y));
                 SchemeSize.render.update();
             });
         };
