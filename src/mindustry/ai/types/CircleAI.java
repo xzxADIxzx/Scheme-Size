@@ -9,8 +9,8 @@ import static mindustry.Vars.*;
 
 public class CircleAI extends AIController{
 
-    public @Nullable Player following;
-    public Vec2 target = new Vec2();
+    public static @Nullable Player following;
+    public static Vec2 target = new Vec2();
 
     public void init(Player ppl){
         following = null;
