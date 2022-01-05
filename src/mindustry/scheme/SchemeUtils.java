@@ -262,7 +262,7 @@ public class SchemeUtils{
     }
 
     private static String getEffect(StatusEffect effect){
-        return "Vars.content.statusEffect(" + effect.id + ")";
+        return "Vars.content.statusEffect(" + effect.name + ")";
     }
 
     private static String getItem(Item item){
