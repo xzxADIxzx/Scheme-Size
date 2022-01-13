@@ -7,7 +7,6 @@ import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
 import arc.math.geom.*;
-import arc.scene.*;
 import arc.scene.ui.*;
 import arc.scene.ui.layout.*;
 import arc.util.*;
@@ -62,51 +61,6 @@ public class ModDesktopInput extends ModInputHandler{
     boolean showHint(){
         return ui.hudfrag.shown && Core.settings.getBool("hints") && selectRequests.isEmpty() &&
             (!isBuilding && !Core.settings.getBool("buildautopause") || player.unit().isBuilding() || !player.dead() && !player.unit().spawnedByCore());
-    }
-
-    @Override
-    public void buildUI(Group group){
-        //building and respawn hints
-        group.fill(t -> {
-            t.color.a = 0f;
-            t.visible(() -> (t.color.a = Mathf.lerpDelta(t.color.a, Mathf.num(showHint()), 0.15f)) > 0.001f);
-            t.bottom();
-            t.table(Styles.black6, b -> {
-                StringBuilder str = new StringBuilder();
-                b.defaults().left();
-                b.label(() -> {
-                    if(!showHint()) return str;
-                    str.setLength(0);
-                    if(!isBuilding && !Core.settings.getBool("buildautopause") && !player.unit().isBuilding()){
-                        str.append(Core.bundle.format("enablebuilding", Core.keybinds.get(Binding.pause_building).key.toString()));
-                    }else if(player.unit().isBuilding()){
-                        str.append(Core.bundle.format(isBuilding ? "pausebuilding" : "resumebuilding", Core.keybinds.get(Binding.pause_building).key.toString()))
-                            .append("\n").append(Core.bundle.format("cancelbuilding", Core.keybinds.get(Binding.clear_building).key.toString()))
-                            .append("\n").append(Core.bundle.format("selectschematic", Core.keybinds.get(Binding.schematic_select).key.toString()));
-                    }
-                    if(!player.dead() && !player.unit().spawnedByCore()){
-                        str.append(str.length() != 0 ? "\n" : "").append(Core.bundle.format("respawn", Core.keybinds.get(Binding.respawn).key.toString()));
-                    }
-                    return str;
-                }).style(Styles.outlineLabel);
-            }).margin(10f);
-        });
-
-        //schematic controls
-        group.fill(t -> {
-            t.visible(() -> ui.hudfrag.shown && lastSchematic != null && !selectRequests.isEmpty());
-            t.bottom();
-            t.table(Styles.black6, b -> {
-                b.defaults().left();
-                b.label(() -> Core.bundle.format("schematic.flip",
-                    Core.keybinds.get(Binding.schematic_flip_x).key.toString(),
-                    Core.keybinds.get(Binding.schematic_flip_y).key.toString())).style(Styles.outlineLabel).visible(() -> Core.settings.getBool("hints"));
-                b.row();
-                b.table(a -> {
-                    a.button("@schematic.add", Icon.save, this::showSchematicSave).colspan(2).size(250f, 50f).disabled(f -> lastSchematic == null || lastSchematic.file != null);
-                });
-            }).margin(6f);
-        });
     }
 
     @Override
@@ -479,7 +433,7 @@ public class ModDesktopInput extends ModInputHandler{
             selectRequests.clear();
         }
 
-        if(Core.input.keyRelease(Binding.schematic_select) && !Core.scene.hasKeyboard() && selectX == -1 && selectY == -1 && schemX != -1 && schemY != -1){
+        if(Core.input.keyRelease(Binding.schematic_select) && !Core.input.keyDown(ModBinding.alternative) && !Core.scene.hasKeyboard() && selectX == -1 && selectY == -1 && schemX != -1 && schemY != -1){
             lastSchematic = schematics.create(schemX, schemY, rawCursorX, rawCursorY);
             useSchematic(lastSchematic);
             if(selectRequests.isEmpty()){
@@ -710,6 +664,10 @@ public class ModDesktopInput extends ModInputHandler{
 
             if(input.keyTap(Binding.schematic_menu)){
                 flushLastRemoved();
+            }
+
+            if(input.keyTap(Binding.schematic_select)){
+                SchemeSize.schematic.next();
             }
         }else{
             if(input.keyTap(ModBinding.change_unit)){
