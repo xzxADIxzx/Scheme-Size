@@ -40,7 +40,7 @@ public class ContentSelectDialog<T extends UnlockableContent> extends BaseDialog
 
 			var drawable = new TextureRegionDrawable(item.uiIcon);
 			table.button(drawable, () -> { 
-				callback.get(list.select(), item, () -> slider.getValue());
+				callback.get(list.select(), item, slider::getValue);
 				hide(); 
 			}).size(mobile ? 58f : 64f);
 
@@ -54,6 +54,10 @@ public class ContentSelectDialog<T extends UnlockableContent> extends BaseDialog
 			t.add(table).row();
 			this.label = t.add(label).center().padTop(16f);
 			t.row();
+			t.button(Icon.add, () -> {
+				content.each(item -> callback.get(list.select(), item, slider::getValue));
+				hide();
+			});
 			this.slider = t.add(slider).fillX();
 		}).growX();
 		cont.table().width(288f).right();

@@ -555,7 +555,7 @@ public class ModMobileInput extends ModInputHandler{
             selectRequests.clear();
             lastSchematic = schematics.create(lineStartX, lineStartY, lastLineX, lastLineY);
             useSchematic(lastSchematic);
-            if(selectRequests.isEmpty()){
+            if(selectRequests.isEmpty() && SchemeSize.schematic.isStandard()){
                 lastSchematic = null;
             }
             schematicMode = false;

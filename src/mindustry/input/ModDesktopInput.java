@@ -120,7 +120,7 @@ public class ModDesktopInput extends ModInputHandler{
             drawBreakSelectionMod(selectX, selectY, cursorX, cursorY, 511);
         }
 
-        if(Core.input.keyDown(Binding.schematic_select) && !Core.scene.hasKeyboard() && mode != breaking){
+        if(input.keyDown(Binding.schematic_select) && !Core.scene.hasKeyboard() && mode != breaking && !input.keyDown(ModBinding.alternative)){
             drawSelectionMod(schemX, schemY, cursorX, cursorY, 511);
         }
 

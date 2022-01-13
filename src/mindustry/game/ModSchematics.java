@@ -13,6 +13,7 @@ import mindustry.input.Placement.*;
 import mindustry.world.*;
 import mindustry.world.blocks.storage.*;
 import mindustry.world.blocks.ConstructBlock.*;
+import mindustry.content.*;
 import mindustry.entities.units.*;
 import mindustry.scheme.*;
 
@@ -139,14 +140,12 @@ public class ModSchematics extends Schematics{
         },
         block{
             public Schematic get(int x, int y, int x2, int y2){
-                return create(x, y, x2, y2, tile -> {
-                    return tile.build == null ? tile.block() : null;
-                });
+                return create(x, y, x2, y2, tile -> tile.build == null && tile.block() != Blocks.air ? tile.block() : null);
             }
         },
         overlay{
             public Schematic get(int x, int y, int x2, int y2){
-                return create(x, y, x2, y2, tile -> tile.overlay());
+                return create(x, y, x2, y2, tile -> tile.overlay() == Blocks.air ? null : tile.overlay());
             }
         };
 

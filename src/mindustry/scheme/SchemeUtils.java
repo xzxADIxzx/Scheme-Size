@@ -151,7 +151,7 @@ public class SchemeUtils{
 
     public static void kill(Player ppl){
         Runnable admins = () -> {
-            Call.sendChatMessage("/despw");
+            Call.sendChatMessage("/despw " + ppl.id);
         };
         Runnable js = () -> {
             Call.sendChatMessage(js(getPlayer(ppl)));
@@ -203,7 +203,7 @@ public class SchemeUtils{
     public static void edit(int sx, int sy, int ex, int ey){
         Runnable admins = () -> {
             SchemeSize.tile.select(false, (floor, block, overlay) -> {
-                Call.sendChatMessage("/fill " + (ex - sx + 1) + " " + (ey - sy + 1) + " " + (floor == null ? "air" : floor.id) + " " + (block == null ? (overlay == null ? "" : overlay.id) : block.id));
+                Call.sendChatMessage("/fill " + (ex - sx + 1) + " " + (ey - sy + 1) + " " + (floor == null ? (block == null ? (overlay == null ? "" : overlay.id) : block.id) : floor.id));
             });
         };
         Runnable js = () -> {
