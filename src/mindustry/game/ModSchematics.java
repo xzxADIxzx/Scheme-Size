@@ -166,7 +166,7 @@ public class ModSchematics extends Schematics{
             }
     
             app.post(() -> SchemeSize.input.showSchematicSaveMod());
-            return new Schematic(tiles, new StringMap(), tiles.isEmpty() ? 1 : tiles.min(st -> st.x).x, tiles.isEmpty() ? 1 : tiles.min(st -> st.y).y);
+            return new Schematic(tiles, new StringMap(), tiles.isEmpty() ? 1 : tiles.max(st -> st.x).x, tiles.isEmpty() ? 1 : tiles.max(st -> st.y).y);
         }
 
         public abstract Schematic get(int x, int y, int x2, int y2);

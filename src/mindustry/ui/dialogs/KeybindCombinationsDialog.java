@@ -32,6 +32,7 @@ public class KeybindCombinationsDialog extends BaseDialog{
 		template("@keycomb.reset_ai", ModBinding.change_ai);
 		template("@keycomb.free_pan", Binding.pan);
 		template("@keycomb.graphics", ModBinding.renderset);
+		template("@keycomb.schematic", Binding.schematic_select);
 
 		cont.label(() -> "@category.bt.name").color(Color.gray).padTop(10f).row();
 		cont.image().color(Color.gray).fillX().height(3f).padBottom(6f).row();
