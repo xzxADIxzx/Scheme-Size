@@ -164,7 +164,15 @@ public class ModSchematics extends Schematics{
                     if(tile != null && (block = cons.get(tile)) != null) tiles.add(new Stile(block, x - x1, y - y1, null, (byte)0));
                 }
             }
-    
+
+            int minx = tiles.min(st -> st.x).x;
+            int miny = tiles.min(st -> st.y).y;
+
+            tiles.each(st -> {
+                st.x -= minx;
+                st.y -= miny;
+            });
+
             app.post(() -> SchemeSize.input.showSchematicSaveMod());
             return new Schematic(tiles, new StringMap(), tiles.isEmpty() ? 1 : tiles.max(st -> st.x).x, tiles.isEmpty() ? 1 : tiles.max(st -> st.y).y);
         }

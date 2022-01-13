@@ -61,7 +61,7 @@ public class ContentSelectDialog<T extends UnlockableContent> extends BaseDialog
 					});
 					hide();
 				});
-				s.add(slider).padLeft(16f).fillX();
+				s.add(slider).padLeft(8f).growX();
 			}).fillX();
 		}).growX();
 		cont.table().width(288f).right();
