@@ -156,8 +156,8 @@ public class ModSchematics extends Schematics{
         public static Schematic create(int x1, int y1, int x2, int y2, Func<Tile, Block> cons){
             Seq<Stile> tiles = new Seq<>();
     
-            for(int x = x1; x < x2; x++){
-                for(int y = y1; y < y2; y++){
+            for(int x = x1; x <= x2; x++){
+                for(int y = y1; y <= y2; y++){
                     Tile tile = world.tile(x, y);
                     Block block;
     

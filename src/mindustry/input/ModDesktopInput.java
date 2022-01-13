@@ -479,14 +479,17 @@ public class ModDesktopInput extends ModInputHandler{
             selectRequests.clear();
         }
 
-        if(Core.input.keyRelease(Binding.schematic_select) && !Core.input.keyDown(ModBinding.alternative) && !changed && !Core.scene.hasKeyboard() && selectX == -1 && selectY == -1 && schemX != -1 && schemY != -1){
-            lastSchematic = schematics.create(schemX, schemY, rawCursorX, rawCursorY);
-            useSchematic(lastSchematic);
-            if(selectRequests.isEmpty() && SchemeSize.schematic.isStandard()){
-                lastSchematic = null;
+        if(Core.input.keyRelease(Binding.schematic_select) && !Core.scene.hasKeyboard() && selectX == -1 && selectY == -1 && schemX != -1 && schemY != -1){
+            if(changed || Core.input.keyDown(ModBinding.alternative)) changed = false;
+            else{
+                lastSchematic = schematics.create(schemX, schemY, rawCursorX, rawCursorY);
+                useSchematic(lastSchematic);
+                if(selectRequests.isEmpty() && SchemeSize.schematic.isStandard()){
+                    lastSchematic = null;
+                }
+                schemX = -1;
+                schemY = -1;
             }
-            schemX = -1;
-            schemY = -1;
         }
 
         if(!selectRequests.isEmpty()){
@@ -717,8 +720,6 @@ public class ModDesktopInput extends ModInputHandler{
                 changed = true;
             }
         }else{
-            if(!input.keyDown(Binding.schematic_select)) changed = false;
-
             if(input.keyTap(ModBinding.change_unit)){
                 SchemeUtils.changeUnit();
             }
