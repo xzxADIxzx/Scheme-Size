@@ -14,7 +14,9 @@ import mindustry.world.*;
 import mindustry.world.blocks.storage.*;
 import mindustry.world.blocks.ConstructBlock.*;
 import mindustry.entities.units.*;
+import mindustry.scheme.*;
 
+import static arc.Core.*;
 import static mindustry.Vars.*;
 
 // Last Update - Sep 11, 2021
@@ -46,6 +48,7 @@ public class ModSchematics extends Schematics{
             }
         }
 
+        app.post(() -> SchemeSize.input.showSchematicSaveMod());
         return new Schematic(tiles, new StringMap(), tiles.isEmpty() ? 1 : x2 - x, tiles.isEmpty() ? 1 : y2 - y);
     }
 
