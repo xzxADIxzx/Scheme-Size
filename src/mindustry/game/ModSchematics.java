@@ -165,6 +165,8 @@ public class ModSchematics extends Schematics{
                 }
             }
 
+            if(tiles.isEmpty()) return new Schematic(tiles, new StringMap(), 1, 1);
+
             int minx = tiles.min(st -> st.x).x;
             int miny = tiles.min(st -> st.y).y;
 
@@ -174,7 +176,7 @@ public class ModSchematics extends Schematics{
             });
 
             app.post(() -> SchemeSize.input.showSchematicSaveMod());
-            return new Schematic(tiles, new StringMap(), tiles.isEmpty() ? 1 : tiles.max(st -> st.x).x, tiles.isEmpty() ? 1 : tiles.max(st -> st.y).y);
+            return new Schematic(tiles, new StringMap(), tiles.max(st -> st.x).x + 1, tiles.max(st -> st.y).y + 1);
         }
 
         public abstract Schematic get(int x, int y, int x2, int y2);

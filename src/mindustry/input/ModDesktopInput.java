@@ -47,7 +47,7 @@ public class ModDesktopInput extends ModInputHandler{
     /** Selected build request for movement. */
     public @Nullable BuildPlan sreq;
     /** Whether player is currently deleting removal requests. */
-    public boolean deleting = false, shouldShoot = false, panning = false, usingbt = false;
+    public boolean deleting = false, shouldShoot = false, panning = false, usingbt = false, changed = false;
     /** Mouse pan speed. */
     public float panScale = 0.005f, panSpeed = 4.5f, panBoostSpeed = 15f;
     /** Delta time between consecutive clicks. */
@@ -479,7 +479,7 @@ public class ModDesktopInput extends ModInputHandler{
             selectRequests.clear();
         }
 
-        if(Core.input.keyRelease(Binding.schematic_select) && !Core.input.keyDown(ModBinding.alternative) && !Core.scene.hasKeyboard() && selectX == -1 && selectY == -1 && schemX != -1 && schemY != -1){
+        if(Core.input.keyRelease(Binding.schematic_select) && !Core.input.keyDown(ModBinding.alternative) && !changed && !Core.scene.hasKeyboard() && selectX == -1 && selectY == -1 && schemX != -1 && schemY != -1){
             lastSchematic = schematics.create(schemX, schemY, rawCursorX, rawCursorY);
             useSchematic(lastSchematic);
             if(selectRequests.isEmpty() && SchemeSize.schematic.isStandard()){
@@ -714,8 +714,11 @@ public class ModDesktopInput extends ModInputHandler{
 
             if(input.keyTap(Binding.schematic_select)){
                 SchemeSize.schematic.next();
+                changed = true;
             }
         }else{
+            if(!input.keyDown(Binding.schematic_select)) changed = false;
+
             if(input.keyTap(ModBinding.change_unit)){
                 SchemeUtils.changeUnit();
             }

@@ -57,7 +57,7 @@ public class ContentSelectDialog<T extends UnlockableContent> extends BaseDialog
 			this.slider = t.table(s -> {
 				s.button(Icon.add, () -> {
 					content.each(item -> {
-						if (item.isHidden()) callback.get(list.select(), item, slider::getValue);
+						if (!item.isHidden()) callback.get(list.select(), item, slider::getValue);
 					});
 					hide();
 				});
