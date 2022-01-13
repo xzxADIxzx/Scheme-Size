@@ -209,13 +209,13 @@ public class ModHudFragment extends Fragment{
                     Drawable team = Core.atlas.drawable("team-derelict");
                     Drawable kill = Core.atlas.drawable("status-blasted");
                     Drawable aict = Icon.logic;
-                    Drawable hist = Icon.info;
+                    Drawable rndr = Icon.map;
 
                     select.button(core, style, isize, SchemeUtils::placeCore);
                     select.button(team, style, isize, SchemeUtils::changeTeam);
                     select.button(kill, style, isize, () -> SchemeUtils.kill(player));
                     select.button(aict, style, isize, () -> SchemeSize.ai.select(true));
-                    select.button(hist, style, isize, SchemeUtils::history).get(
+                    select.button(rndr, style, isize, SchemeSize.renderset::show).get(
                     ).image().color(Pal.gray).width(4).height(bsize).padRight(-dsize + 1.5f + isize);
                 }).left().name("mod buttons").visible(() -> shownMobile).row();
 
@@ -226,13 +226,13 @@ public class ModHudFragment extends Fragment{
                     Drawable effe = Core.atlas.drawable("status-corroded");
                     Drawable item = Icon.production;
                     Drawable spwn = Icon.add;
-                    Drawable rndr = Icon.map;
+                    Drawable hist = Icon.info;
 
                     select.button(unit, style, isize, SchemeUtils::changeUnit);
                     select.button(effe, style, isize, SchemeUtils::changeEffect);
                     select.button(item, style, isize, SchemeUtils::changeItem);
                     select.button(spwn, style, isize, SchemeUtils::spawnUnit);
-                    select.button(rndr, style, isize, SchemeSize.renderset::show).get(
+                    select.button(hist, style, isize, SchemeUtils::history).get(
                     ).image().color(Pal.gray).width(4).height(bsize).padRight(-dsize + 1.5f + isize);
                 }).left().name("mod buttons").visible(() -> shownMobile).row();
             }

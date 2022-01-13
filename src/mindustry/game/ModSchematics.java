@@ -22,7 +22,7 @@ import static mindustry.Vars.*;
 // Last Update - Sep 11, 2021
 public class ModSchematics extends Schematics{
 
-    public Mode mode = Mode.standart;
+    public Mode mode = Mode.standard;
     public Interval timer = new Interval();
 
     public void next(){
@@ -36,20 +36,8 @@ public class ModSchematics extends Schematics{
         return mode.get(result.x, result.y, result.x2, result.y2);
     }
 
-    public static Schematic create(int x, int y, int x2, int y2, Func<Tile, Block> cons){
-        Seq<Stile> tiles = new Seq<>();
-
-        for(; x < x2; x++){
-            for(; y < y2; y++){
-                Tile tile = world.tile(x, y);
-                Block block;
-
-                if(tile != null && (block = cons.get(tile)) != null) tiles.add(new Stile(block, x, y, null, (byte)0));
-            }
-        }
-
-        app.post(() -> SchemeSize.input.showSchematicSaveMod());
-        return new Schematic(tiles, new StringMap(), tiles.isEmpty() ? 1 : x2 - x, tiles.isEmpty() ? 1 : y2 - y);
+    public boolean isStandard(){
+        return mode == Mode.standard;
     }
 
     // previews
@@ -94,7 +82,7 @@ public class ModSchematics extends Schematics{
     }
 
     public enum Mode {
-        standart{
+        standard{
             public Schematic get(int x, int y, int x2, int y2){
                 int ox = x, oy = y, ox2 = x2, oy2 = y2;
 
@@ -163,7 +151,23 @@ public class ModSchematics extends Schematics{
         };
 
         public static Mode next(Mode last){
-            return values()[new Seq<Mode>(values()).indexOf(last) + 1 % 3];
+            return values()[(new Seq<Mode>(values()).indexOf(last) + 1) % 3];
+        }
+
+        public static Schematic create(int x1, int y1, int x2, int y2, Func<Tile, Block> cons){
+            Seq<Stile> tiles = new Seq<>();
+    
+            for(int x = x1; x < x2; x++){
+                for(int y = y1; y < y2; y++){
+                    Tile tile = world.tile(x, y);
+                    Block block;
+    
+                    if(tile != null && (block = cons.get(tile)) != null) tiles.add(new Stile(block, x - x1, y - y1, null, (byte)0));
+                }
+            }
+    
+            app.post(() -> SchemeSize.input.showSchematicSaveMod());
+            return new Schematic(tiles, new StringMap(), tiles.isEmpty() ? 1 : x2 - x1, tiles.isEmpty() ? 1 : y2 - y1);
         }
 
         public abstract Schematic get(int x, int y, int x2, int y2);

@@ -482,7 +482,7 @@ public class ModDesktopInput extends ModInputHandler{
         if(Core.input.keyRelease(Binding.schematic_select) && !Core.input.keyDown(ModBinding.alternative) && !Core.scene.hasKeyboard() && selectX == -1 && selectY == -1 && schemX != -1 && schemY != -1){
             lastSchematic = schematics.create(schemX, schemY, rawCursorX, rawCursorY);
             useSchematic(lastSchematic);
-            if(selectRequests.isEmpty()){
+            if(selectRequests.isEmpty() && SchemeSize.schematic.isStandard()){
                 lastSchematic = null;
             }
             schemX = -1;
