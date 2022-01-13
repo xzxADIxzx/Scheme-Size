@@ -24,8 +24,8 @@ public class ModSchematics extends Schematics{
     public Interval timer = new Interval();
 
     public void next(){
-        if(!timer.get(5f * Time.toSeconds)) mode = Mode.next(mode);
-        ui.showInfoPopup("@mode." + mode.toString(), 5f, 4, 0, 0, 0, 0);
+        if(!timer.get(4f * Time.toSeconds)) mode = Mode.next(mode);
+        ui.showInfoPopup("@mode." + mode.toString(), 4f, 4, 0, 0, 0, 0);
     }
 
     @Override
@@ -104,13 +104,14 @@ public class ModSchematics extends Schematics{
                         Building linked = world.build(cx, cy);
                         Block realBlock = linked == null ? null : linked instanceof ConstructBuild cons ? cons.current : linked.block;
 
-                        if(found = linked != null && realBlock != null && (realBlock.isVisible() || realBlock instanceof CoreBlock)){
+                        if(linked != null && realBlock != null && (realBlock.isVisible() || realBlock instanceof CoreBlock)){
                             int top = realBlock.size / 2;
                             int bot = realBlock.size % 2 == 1 ? -realBlock.size / 2 : -(realBlock.size - 1) / 2;
                             minx = Math.min(linked.tileX() + bot, minx);
                             miny = Math.min(linked.tileY() + bot, miny);
                             maxx = Math.max(linked.tileX() + top, maxx);
                             maxy = Math.max(linked.tileY() + top, maxy);
+                            found = true;
                         }
                     }
                 }
@@ -159,7 +160,7 @@ public class ModSchematics extends Schematics{
         };
 
         public static Mode next(Mode last){
-            return values()[new Seq<Mode>(values()).indexOf(last) + 1 % 4];
+            return values()[new Seq<Mode>(values()).indexOf(last) + 1 % 3];
         }
 
         public abstract Schematic get(int x, int y, int x2, int y2);
