@@ -329,7 +329,7 @@ public class BuildingTools{
 		}
 
 		public void show(){
-			String output = forType(new String(), content.items(), items);
+			String output = forType("", content.items(), items);
 			output = forType(output, content.liquids(), liquids);
 			if(power != 0) output += (power >= 0 ? "[accent]" : "[red]") + " " + (power >= 0 ? "+" : "") + (int)power;
 
