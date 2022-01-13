@@ -150,7 +150,7 @@ public class ModSchematics extends Schematics{
         };
 
         public static Mode next(Mode last){
-            return values()[(new Seq<Mode>(values()).indexOf(last) + 1) % 3];
+            return values()[(new Seq<Mode>(values()).indexOf(last) + 1) % 4];
         }
 
         public static Schematic create(int x1, int y1, int x2, int y2, Func<Tile, Block> cons){
@@ -166,7 +166,7 @@ public class ModSchematics extends Schematics{
             }
     
             app.post(() -> SchemeSize.input.showSchematicSaveMod());
-            return new Schematic(tiles, new StringMap(), tiles.isEmpty() ? 1 : x2 - x1, tiles.isEmpty() ? 1 : y2 - y1);
+            return new Schematic(tiles, new StringMap(), tiles.isEmpty() ? 1 : tiles.min(st -> st.x).x, tiles.isEmpty() ? 1 : tiles.min(st -> st.y).y);
         }
 
         public abstract Schematic get(int x, int y, int x2, int y2);

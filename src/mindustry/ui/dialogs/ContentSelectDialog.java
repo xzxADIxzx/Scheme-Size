@@ -18,7 +18,7 @@ public class ContentSelectDialog<T extends UnlockableContent> extends BaseDialog
 	public Stringf format;
 
 	private Cell<Label> label;
-	private Cell<Slider> slider;
+	private Cell<Table> slider;
 	private PlayerSelectFragment list = new PlayerSelectFragment();
 	private int row = mobile ? 8 : 10;
 
@@ -54,11 +54,15 @@ public class ContentSelectDialog<T extends UnlockableContent> extends BaseDialog
 			t.add(table).row();
 			this.label = t.add(label).center().padTop(16f);
 			t.row();
-			t.button(Icon.add, () -> {
-				content.each(item -> callback.get(list.select(), item, slider::getValue));
-				hide();
-			});
-			this.slider = t.add(slider).fillX();
+			this.slider = t.table(s -> {
+				s.button(Icon.add, () -> {
+					content.each(item -> {
+						if (item.isHidden()) callback.get(list.select(), item, slider::getValue);
+					});
+					hide();
+				});
+				s.add(slider);
+			}).fillX();
 		}).growX();
 		cont.table().width(288f).right();
 	}
