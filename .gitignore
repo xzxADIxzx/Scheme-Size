@@ -2,8 +2,11 @@
 .settings/*
 .vscode/*
 
-.classpath
-.project
+bin/*
+lib/*
+build/*
 
-bin
-lib
+*.classpath
+*.project
+*.bat
+*.xml
