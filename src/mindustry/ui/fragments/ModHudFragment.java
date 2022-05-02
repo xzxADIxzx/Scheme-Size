@@ -47,6 +47,84 @@ public class ModHudFragment extends Fragment{
     public boolean shownBT = false;
     public boolean checked = false;
 
+    public void tstBuild(Group parent) {
+        Events.on(UnitChangeEvent.class, event -> {
+            updateShield(player.unit());
+        });
+
+        class Bar extends Table {
+            public final Floatp amount;
+            public float last, blink, value;
+            public float sw = Scl.scl(25.8f);
+
+            public Bar(Floatp amount, Cons<Table> cons) {
+                super(cons);
+                this.amount = amount;
+            }
+
+            @Override
+            public void draw() {
+                float next = amount.get();
+
+                if (next == 0f) return;
+                if (next < last) blink = 1f;
+
+                if (Float.isNaN(next) || Float.isInfinite(next)) next = 1f;
+                if (Float.isNaN(value) || Float.isInfinite(value)) value = 1f;
+
+                blink = Mathf.lerpDelta(blink, 0f, 0.2f);
+                value = Mathf.lerpDelta(value, next, 0.15f);
+                last = next;
+
+                drawInner(Pal.darkerGray, 1f); // draw a gray background over the standard one
+                if (value > 0) drawInner(Tmp.c1.set(Pal.accent).lerp(Color.white, blink), value);
+
+                Drawf.shadow(x + width / 2f, y + height / 2f, height * 1.13f, parentAlpha);
+                Draw.reset();
+
+                super.draw();
+            }
+
+            public void drawInner(Color color, float fract) {
+                fract = Mathf.clamp(fract);
+                Draw.color(color, parentAlpha);
+
+                float f1 = Math.min(fract * 2f, 1f), f2 = (fract - 0.5f) * 2f;
+                float bh = height / 2f, mw = width - sw;
+
+                float dx = sw * f1;
+                float dy = bh * f1 + y;
+                Fill.quad(
+                        x + sw, y,
+                        x + mw, y,
+                        x + dx + mw, dy,
+                        x - dx + sw, dy);
+
+                if (f2 < 0) return;
+
+                dx = sw * f2;
+                dy = height * fract + y;
+                Fill.quad(
+                        x, y + bh,
+                        x + width, y + bh,
+                        x + width - dx, dy,
+                        x + dx, dy);
+            }
+        }
+
+        parent.fill(cont -> {
+            cont.name = "shieldbar";
+            cont.top().left();
+
+            cont.visible(() -> shown && !state.isEditor());
+
+            float dif = Scl.scl() % .5f == 0 ? 0f : 1f;
+            cont.add(new Bar(() -> player.unit().shield / maxShield, icon -> {
+                icon.image(() -> player.icon()).scaling(Scaling.bounded).grow().maxWidth(54f);
+            })).size(92.2f + dif / 2, 80f).padLeft(18.2f - dif);
+        });
+    }
+
     @Override
     public void build(Group parent){
         Events.on(UnitChangeEvent.class, event -> {
