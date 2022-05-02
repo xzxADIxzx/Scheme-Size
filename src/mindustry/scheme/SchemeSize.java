@@ -69,7 +69,7 @@ public class SchemeSize extends Mod {
             ui.settings = setting;
             ui.traces = trace;
             ui.listfrag = listfrag;
-            hudfrag.tstBuild(ui.hudGroup);
+            hudfrag.build(ui.hudGroup);
             listfrag.build(ui.hudGroup);
 
             // hide secret
