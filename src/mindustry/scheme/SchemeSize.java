@@ -15,7 +15,7 @@ import mindustry.graphics.*;
 import static arc.Core.*;
 import static mindustry.Vars.*;
 
-public class SchemeSize extends Mod{
+public class SchemeSize extends Mod {
 
     public static ModSchematics schematic;
     public static ModInputHandler input;
@@ -36,7 +36,7 @@ public class SchemeSize extends Mod{
     public static ContentSelectDialog<StatusEffect> effect;
     public static ContentSelectDialog<Item> item;
 
-    public SchemeSize(){
+    public SchemeSize() {
         Events.on(ClientLoadEvent.class, event -> {
             schematic = new ModSchematics();
             schematics = schematic;
@@ -63,7 +63,7 @@ public class SchemeSize extends Mod{
                 return value == 0 ? "@cleareffect" : bundle.format("unit.zero.seconds", value / 60);
             });
             item = new ContentSelectDialog<Item>("@itemselect", content.items(), -10000, 10000, 200, value -> {
-                return value == 0 ? "@clearitem" : bundle.format("unit.zero.items", UI.formatAmount((long)value));
+                return value == 0 ? "@clearitem" : bundle.format("unit.zero.items", UI.formatAmount((long) value));
             });
 
             ui.settings = setting;
@@ -74,15 +74,16 @@ public class SchemeSize extends Mod{
 
             // hide secret
             setting.mod.getCells().get(mobile ? 8 : 10).visible(settings.getBool("secret"));
+            enableConsole = true; // temp
 
-            // check for update
-            if(settings.getBool("checkupdate")) SchemeUpdater.check();
+            SchemeUpdater.init(); // restore colors
+            if (settings.getBool("checkupdate")) SchemeUpdater.check();
 
             // mobiles haven`t keybinds
-            if(mobile) return;
+            if (mobile) return;
 
-            KeyBind[] origi = (KeyBind[])Binding.values();
-            KeyBind[] moded = (KeyBind[])ModBinding.values();
+            KeyBind[] origi = (KeyBind[]) Binding.values();
+            KeyBind[] moded = (KeyBind[]) ModBinding.values();
             KeyBind[] binds = new KeyBind[origi.length + moded.length];
             System.arraycopy(origi, 0, binds, 0, origi.length);
             System.arraycopy(moded, 0, binds, origi.length, moded.length);

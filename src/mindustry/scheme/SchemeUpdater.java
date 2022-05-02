@@ -13,33 +13,48 @@ import static mindustry.Vars.*;
 
 import java.net.*;
 
-public class SchemeUpdater{
+public class SchemeUpdater {
 
     private static LoadedMod mod;
     private static float progress;
     private static String repo;
 
-    public static void check(){
-        mod = mods.locateMod("scheme-size");
+    public static void init() {
+        mod = mods.getMod(SchemeSize.class);
         repo = ghApi + "/repos/" + mod.getRepo() + "/releases/latest";
 
+        String updates = "[orange]"; // coloring description of the mod
+        for (String[] names : new String[][] {
+                {"Release!", "Settings", "Java 8", "Controls", "Updater", "Mobile Support", "Admin`s Secret"},
+                {"Building Tools", "AI Power", "Renderer", "Cursed Schemes", "Deep Cleaning"}
+        }) {
+            updates += "\n"; // add update names
+            for (String name : names) updates += "\n   - " + name;
+        }
+
+        Jval meta = Jval.read(new ZipFi(mod.file).child("mod.json").readString());
+        mod.meta.author = meta.getString("author");
+        mod.meta.description = meta.getString("description") + updates;
+    }
+
+    public static void check() {
         Http.get(repo, res -> {
             var json = Jval.read(res.getResultAsString());
             String version = json.getString("tag_name").substring(1);
 
-            if(version.equals(mod.meta.version)) return;
+            if (version.equals(mod.meta.version)) return;
             ui.showCustomConfirm("@updater.name",
-                bundle.format("updater.info", mod.meta.version, version),
-                "@updater.load", "@ok", SchemeUpdater::update, () -> {});
+                    bundle.format("updater.info", mod.meta.version, version),
+                    "@updater.load", "@ok", SchemeUpdater::update, () -> {});
         }, e -> {});
     }
 
-    public static void update(){
-        try{
+    public static void update() {
+        try {
             // dancing with tambourines, just to remove the old mod
-            if(mod.loader instanceof URLClassLoader cl) cl.close();
+            if (mod.loader instanceof URLClassLoader cl) cl.close();
             mod.loader = null;
-        }catch (Exception e){
+        } catch (Exception e) {
             return;
         }
 
@@ -53,15 +68,15 @@ public class SchemeUpdater{
             var dexed = assets.find(j -> j.getString("name").startsWith("dexed") && j.getString("name").endsWith(".jar"));
             var asset = dexed == null ? assets.find(j -> j.getString("name").endsWith(".jar")) : dexed;
 
-            if(asset != null){
+            if (asset != null) {
                 String url = asset.getString("browser_download_url");
                 Http.get(url, r -> handle(mod.getRepo(), r, p -> progress = p), e -> {});
             }
         }, e -> {});
     }
 
-    public static void handle(String repo, HttpResponse res, Floatc cons){
-        try{
+    public static void handle(String repo, HttpResponse res, Floatc cons) {
+        try {
             Fi file = tmpDirectory.child(repo.replace("/", "") + ".zip");
             long len = res.getContentLength();
 
@@ -74,6 +89,6 @@ public class SchemeUpdater{
             app.post(ui.loadfrag::hide);
 
             ui.showInfoOnHidden("@mods.reloadexit", app::exit);
-        }catch (Throwable e) {}
+        } catch (Throwable e) {}
     }
 }
