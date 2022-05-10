@@ -1,6 +1,5 @@
 package mindustry.scheme;
 
-import arc.*;
 import arc.KeyBinds.*;
 import mindustry.ui.dialogs.*;
 import mindustry.ui.fragments.*;
@@ -8,7 +7,6 @@ import mindustry.mod.*;
 import mindustry.type.*;
 import mindustry.core.*;
 import mindustry.game.*;
-import mindustry.game.EventType.*;
 import mindustry.input.*;
 import mindustry.graphics.*;
 
@@ -36,61 +34,60 @@ public class SchemeSize extends Mod {
     public static ContentSelectDialog<StatusEffect> effect;
     public static ContentSelectDialog<Item> item;
 
-    public SchemeSize() {
-        Events.on(ClientLoadEvent.class, event -> {
-            schematic = new ModSchematics();
-            schematics = schematic;
-            schematics.loadSync();
+    @Override
+    public void init() {
+        schematic = new ModSchematics();
+        schematics = schematic;
+        schematics.loadSync();
 
-            control.setInput(input = mobile ? new ModMobileInput() : new ModDesktopInput());
-            render = new AdditionalRenderer();
+        control.setInput(input = mobile ? new ModMobileInput() : new ModDesktopInput());
+        render = new AdditionalRenderer();
 
-            secret = new SecretConfigDialog();
-            keycomb = new KeybindCombinationsDialog();
-            renderset = new RenderSettingsDialog();
-            setting = new ModSettingsMenuDialog();
-            trace = new ModTraceDialog();
-            hudfrag = new ModHudFragment();
-            listfrag = new ModPlayerListFragment();
+        secret = new SecretConfigDialog();
+        keycomb = new KeybindCombinationsDialog();
+        renderset = new RenderSettingsDialog();
+        setting = new ModSettingsMenuDialog();
+        trace = new ModTraceDialog();
+        hudfrag = new ModHudFragment();
+        listfrag = new ModPlayerListFragment();
 
-            ai = new AISelectDialog("@aiselect");
-            team = new TeamSelectDialog("@teamselect");
-            tile = new TileSelectDialog("@tileselect");
-            unit = new ContentSelectDialog<UnitType>("@unitselect", content.units(), 1, 20, 1, value -> {
-                return bundle.format("unit.zero.units", value);
-            });
-            effect = new ContentSelectDialog<StatusEffect>("@effectselect", content.statusEffects(), 0, 60 * 60 * 5, 60, value -> {
-                return value == 0 ? "@cleareffect" : bundle.format("unit.zero.seconds", value / 60);
-            });
-            item = new ContentSelectDialog<Item>("@itemselect", content.items(), -10000, 10000, 200, value -> {
-                return value == 0 ? "@clearitem" : bundle.format("unit.zero.items", UI.formatAmount((long) value));
-            });
-
-            ui.settings = setting;
-            ui.traces = trace;
-            ui.listfrag = listfrag;
-            hudfrag.build(ui.hudGroup);
-            listfrag.build(ui.hudGroup);
-
-            // hide secret
-            setting.mod.getCells().get(mobile ? 8 : 10).visible(settings.getBool("secret"));
-            enableConsole = true; // temp
-
-            SchemeUpdater.init(); // restore colors
-            if (settings.getBool("checkupdate")) SchemeUpdater.check();
-
-            // mobiles haven`t keybinds
-            if (mobile) return;
-
-            KeyBind[] origi = (KeyBind[]) Binding.values();
-            KeyBind[] moded = (KeyBind[]) ModBinding.values();
-            KeyBind[] binds = new KeyBind[origi.length + moded.length];
-            System.arraycopy(origi, 0, binds, 0, origi.length);
-            System.arraycopy(moded, 0, binds, origi.length, moded.length);
-            keybinds.setDefaults(binds);
-            settings.load(); // update controls
-            ui.controls = new KeybindDialog(); // update dialog
-            keycomb.init(); // init main keys...
+        ai = new AISelectDialog("@aiselect");
+        team = new TeamSelectDialog("@teamselect");
+        tile = new TileSelectDialog("@tileselect");
+        unit = new ContentSelectDialog<UnitType>("@unitselect", content.units(), 1, 20, 1, value -> {
+            return bundle.format("unit.zero.units", value);
         });
+        effect = new ContentSelectDialog<StatusEffect>("@effectselect", content.statusEffects(), 0, 60 * 60 * 5, 60, value -> {
+            return value == 0 ? "@cleareffect" : bundle.format("unit.zero.seconds", value / 60);
+        });
+        item = new ContentSelectDialog<Item>("@itemselect", content.items(), -10000, 10000, 200, value -> {
+            return value == 0 ? "@clearitem" : bundle.format("unit.zero.items", UI.formatAmount((long) value));
+        });
+
+        ui.settings = setting;
+        ui.traces = trace;
+        ui.listfrag = listfrag;
+        hudfrag.build(ui.hudGroup);
+        listfrag.build(ui.hudGroup);
+
+        // hide secret
+        setting.mod.getCells().get(mobile ? 8 : 10).visible(settings.getBool("secret"));
+        enableConsole = true; // temp
+
+        SchemeUpdater.init(); // restore colors
+        if (settings.getBool("checkupdate")) SchemeUpdater.check();
+
+        // mobiles haven`t keybinds
+        if (mobile) return;
+
+        KeyBind[] origi = (KeyBind[]) Binding.values();
+        KeyBind[] moded = (KeyBind[]) ModBinding.values();
+        KeyBind[] binds = new KeyBind[origi.length + moded.length];
+        System.arraycopy(origi, 0, binds, 0, origi.length);
+        System.arraycopy(moded, 0, binds, origi.length, moded.length);
+        keybinds.setDefaults(binds);
+        settings.load(); // update controls
+        ui.controls = new KeybindDialog(); // update dialog
+        keycomb.init(); // init main keys...
     }
 }

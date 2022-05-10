@@ -23,10 +23,11 @@ import mindustry.world.blocks.power.*;
 import mindustry.ui.*;
 import mindustry.scheme.*;
 
+import static arc.Core.*;
 import static mindustry.Vars.*;
 
 // Last Update - Oct 12, 2021
-public class ModHudFragment extends Fragment{
+public class ModHudFragment extends Fragment {
 
     private ImageButton flipMobile;
     private TextField size;
@@ -39,26 +40,24 @@ public class ModHudFragment extends Fragment{
     public boolean checked = false;
 
     @Override
-    public void build(Group parent){
-        Events.on(UnitChangeEvent.class, event -> {
+    public void build(Group parent) {
+        Events.run(UnitChangeEvent.class, () -> {
             maxShield = -1;
-            player.unit().abilities.each((a) -> {
-                maxShield = a instanceof ForceFieldAbility ffa ? ffa.max : maxShield;
+            player.unit().abilities.each(ability -> {
+                if (ability instanceof ForceFieldAbility field) maxShield = field.max;
             });
         });
 
-        Events.on(WorldLoadEvent.class, event -> {
+        Events.run(WorldLoadEvent.class, () -> {
             updateBlock();
 
-            if(node != null){
+            if (node != null) {
                 node = world.build(node.pos());
-                if(node != null && node.block instanceof PowerBlock == false) node = null;
+                if (node != null && node.block instanceof PowerBlock == false) node = null;
             }
         });
 
-        Events.on(UnlockEvent.class, event -> {
-            updateBlock();
-        });
+        Events.run(UnlockEvent.class, this::updateBlock);
 
         parent.fill(cont -> {
             cont.name = "shieldbar";
@@ -138,20 +137,20 @@ public class ModHudFragment extends Fragment{
             float bsize = 46f;
             BuildingTools bt = SchemeSize.input.bt;
 
-            ImageButtonStyle style = new ImageButtonStyle(){{
+            ImageButtonStyle style = new ImageButtonStyle() {{
                 down = Styles.flatDown;
                 up = Styles.none;
                 over = Styles.flatOver;
             }};
 
-            ImageButtonStyle check = new ImageButtonStyle(){{
+            ImageButtonStyle check = new ImageButtonStyle() {{
                 down = Styles.flatDown;
                 up = Styles.none;
                 over = Styles.flatOver;
                 checked = Styles.flatDown;
             }};
 
-            TextFieldStyle input = new TextFieldStyle(){{
+            TextFieldStyle input = new TextFieldStyle() {{
                 font = Fonts.def;
                 fontColor = Color.white;
                 selection = Tex.selection;
@@ -169,7 +168,10 @@ public class ModHudFragment extends Fragment{
                     ctrl.name = "controls";
                     ctrl.defaults().size(bsize).bottom().right();
 
-                    ctrl.button(Icon.cancel, style, () -> { SchemeSize.input.block = null; bt.plan.clear(); }).visible(bt::isPlacing).row();
+                    ctrl.button(Icon.cancel, style, () -> {
+                        SchemeSize.input.block = null;
+                        bt.plan.clear();
+                    }).visible(bt::isPlacing).row();
                     ctrl.add(size).row();
                     ctrl.button(Icon.up, style, () -> bt.resize(1)).row();
                     ctrl.image(Icon.resize).row();
@@ -201,7 +203,7 @@ public class ModHudFragment extends Fragment{
                     mode.button(Icon.power, check, () -> bt.setMode(Mode.power)).checked(t -> bt.mode == Mode.power).row();
                 }).row();
             }).height(254f).visible(() -> shownBT && ui.hudfrag.shown && !ui.minimapfrag.shown()).update(t -> {
-                if(block != null) t.setTranslation(-block.getWidth() + Scl.scl(4), 0);
+                if (block != null) t.setTranslation(-block.getWidth() + Scl.scl(4), 0);
             });
         });
 
@@ -211,17 +213,17 @@ public class ModHudFragment extends Fragment{
             cont.background(Styles.black6).margin(8f, 8f, 8f, 0f);
 
             Bar power = new Bar(
-                () -> Core.bundle.format("bar.powerbalance", node != null ? (node.power.graph.getPowerBalance() >= 0 ? "+" : "") + UI.formatAmount((long)(node.power.graph.getPowerBalance() * 60)) : "+0"),
-                () -> node != null && node.added ? Pal.powerBar : Pal.adminChat,
-                () -> node != null ? node.power.graph.getSatisfaction() : 0);
+                    () -> Core.bundle.format("bar.powerbalance", node != null ? (node.power.graph.getPowerBalance() >= 0 ? "+" : "") + UI.formatAmount((long) (node.power.graph.getPowerBalance() * 60)) : "+0"),
+                    () -> node != null && node.added ? Pal.powerBar : Pal.adminChat,
+                    () -> node != null ? node.power.graph.getSatisfaction() : 0);
 
             Bar stored = new Bar(
-                () -> Core.bundle.format("bar.powerstored", node != null ? UI.formatAmount((long)node.power.graph.getLastPowerStored()) : 0,
-                                                            node != null ? UI.formatAmount((long)node.power.graph.getLastCapacity()) : 0),
-                () -> node != null && node.added ? Pal.powerBar : Pal.adminChat,
-                () -> node != null ? Mathf.clamp(node.power.graph.getLastPowerStored() / node.power.graph.getLastCapacity()) : 0);
+                    () -> Core.bundle.format("bar.powerstored", node != null ? UI.formatAmount((long) node.power.graph.getLastPowerStored()) : 0,
+                                                                node != null ? UI.formatAmount((long) node.power.graph.getLastCapacity()) : 0),
+                    () -> node != null && node.added ? Pal.powerBar : Pal.adminChat,
+                    () -> node != null ? Mathf.clamp(node.power.graph.getLastPowerStored() / node.power.graph.getLastCapacity()) : 0);
 
-            ImageButtonStyle style = new ImageButtonStyle(){{
+            ImageButtonStyle style = new ImageButtonStyle() {{
                 down = Styles.flatDown;
                 up = Styles.none;
                 over = Styles.flatOver;
@@ -236,34 +238,34 @@ public class ModHudFragment extends Fragment{
         }).fillX().visible(() -> Core.settings.getBool("coreitems") && !mobile && ui.hudfrag.shown);
     }
 
-    public void resize(int amount){
+    public void resize(int amount) {
         size.setText(String.valueOf(amount));
     }
 
-    private void toggleMobile(){
-        if(flipMobile != null){
+    private void toggleMobile() {
+        if (flipMobile != null) {
             flipMobile.getStyle().imageUp = shownMobile ? Icon.downOpen : Icon.upOpen;
         }
 
         shownMobile = !shownMobile;
     }
 
-    public void toggleBT(){
+    public void toggleBT() {
         shownBT = !shownBT;
     }
 
-    private Table getCoreItems(){
-        return (Table)((Table)ui.hudGroup.getChildren().get(4)).getChildren().get(1);
+    private Table getCoreItems() {
+        return (Table) ((Table) ui.hudGroup.getChildren().get(4)).getChildren().get(1);
     }
 
-    public void updateBlock(){
-        Time.runTask(1f, () -> { // waiting for blockfrag rebuild
-            block = ((Table)ui.hudGroup.getChildren().get(9)).getChildren().get(0);
+    public void updateBlock() {
+        app.post(() -> { // waiting for blockfrag rebuild
+            block = ((Table) ui.hudGroup.getChildren().get(9)).getChildren().get(0);
         });
     }
 
-    public void updateNode(Building build){
-        if(checked){
+    public void updateNode(Building build) {
+        if (checked) {
             checked = false;
             node = build;
         }
