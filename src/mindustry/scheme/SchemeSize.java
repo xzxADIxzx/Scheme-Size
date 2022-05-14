@@ -1,93 +1,36 @@
 package mindustry.scheme;
 
-import arc.KeyBinds.*;
-import mindustry.ui.dialogs.*;
-import mindustry.ui.fragments.*;
+import arc.Core;
 import mindustry.mod.*;
-import mindustry.type.*;
-import mindustry.core.*;
-import mindustry.game.*;
-import mindustry.input.*;
-import mindustry.graphics.*;
+import mindustry.Vars;
+import mindustry.input.ModBinding;
 
-import static arc.Core.*;
-import static mindustry.Vars.*;
+import static mindustry.scheme.SchemeVars.*;
 
 public class SchemeSize extends Mod {
 
-    public static ModSchematics schematic;
-    public static ModInputHandler input;
-    public static AdditionalRenderer render;
-
-    public static SecretConfigDialog secret;
-    public static KeybindCombinationsDialog keycomb;
-    public static RenderSettingsDialog renderset;
-    public static ModSettingsMenuDialog setting;
-    public static ModTraceDialog trace;
-    public static ModHudFragment hudfrag;
-    public static ModPlayerListFragment listfrag;
-
-    public static AISelectDialog ai;
-    public static TeamSelectDialog team;
-    public static TileSelectDialog tile;
-    public static ContentSelectDialog<UnitType> unit;
-    public static ContentSelectDialog<StatusEffect> effect;
-    public static ContentSelectDialog<Item> item;
-
     @Override
     public void init() {
-        schematic = new ModSchematics();
-        schematics = schematic;
-        schematics.loadSync();
+        SchemeVars.load();
 
-        control.setInput(input = mobile ? new ModMobileInput() : new ModDesktopInput());
-        render = new AdditionalRenderer();
+        Vars.enableConsole = true; // temp
 
-        secret = new SecretConfigDialog();
-        keycomb = new KeybindCombinationsDialog();
-        renderset = new RenderSettingsDialog();
-        setting = new ModSettingsMenuDialog();
-        trace = new ModTraceDialog();
-        hudfrag = new ModHudFragment();
-        listfrag = new ModPlayerListFragment();
+        Vars.schematics = schematics;
+        Vars.schematics.loadSync();
+        Vars.control.setInput(input);
 
-        ai = new AISelectDialog("@aiselect");
-        team = new TeamSelectDialog("@teamselect");
-        tile = new TileSelectDialog("@tileselect");
-        unit = new ContentSelectDialog<UnitType>("@unitselect", content.units(), 1, 20, 1, value -> {
-            return bundle.format("unit.zero.units", value);
-        });
-        effect = new ContentSelectDialog<StatusEffect>("@effectselect", content.statusEffects(), 0, 60 * 60 * 5, 60, value -> {
-            return value == 0 ? "@cleareffect" : bundle.format("unit.zero.seconds", value / 60);
-        });
-        item = new ContentSelectDialog<Item>("@itemselect", content.items(), -10000, 10000, 200, value -> {
-            return value == 0 ? "@clearitem" : bundle.format("unit.zero.items", UI.formatAmount((long) value));
-        });
+        Vars.ui.settings = settings;
+        Vars.ui.traces = traces;
+        Vars.ui.listfrag = listfrag;
 
-        ui.settings = setting;
-        ui.traces = trace;
-        ui.listfrag = listfrag;
-        hudfrag.build(ui.hudGroup);
-        listfrag.build(ui.hudGroup);
-
-        // hide secret
-        setting.mod.getCells().get(mobile ? 8 : 10).visible(settings.getBool("secret"));
-        enableConsole = true; // temp
+        hudfrag.build(Vars.ui.hudGroup);
+        listfrag.build(Vars.ui.hudGroup);
 
         SchemeUpdater.init(); // restore colors
-        if (settings.getBool("checkupdate")) SchemeUpdater.check();
+        if (Core.settings.getBool("checkupdate")) SchemeUpdater.check();
 
-        // mobiles haven`t keybinds
-        if (mobile) return;
-
-        KeyBind[] origi = (KeyBind[]) Binding.values();
-        KeyBind[] moded = (KeyBind[]) ModBinding.values();
-        KeyBind[] binds = new KeyBind[origi.length + moded.length];
-        System.arraycopy(origi, 0, binds, 0, origi.length);
-        System.arraycopy(moded, 0, binds, origi.length, moded.length);
-        keybinds.setDefaults(binds);
-        settings.load(); // update controls
-        ui.controls = new KeybindDialog(); // update dialog
-        keycomb.init(); // init main keys...
+        if (Vars.mobile) return; // mobiles haven`t keybinds
+        ModBinding.load();
+        keycomb.init(); // init main keys
     }
 }

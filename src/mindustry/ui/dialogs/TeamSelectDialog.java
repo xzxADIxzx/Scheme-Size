@@ -14,8 +14,8 @@ public class TeamSelectDialog extends BaseDialog{
 	private Table team = new Table();
 	private PlayerSelectFragment list = new PlayerSelectFragment();
 
-	public TeamSelectDialog(String name){
-		super(name);
+	public TeamSelectDialog(){
+		super("@teamselect");
 		addCloseButton();
 
 		template("team-derelict", Team.derelict);

@@ -26,8 +26,8 @@ public class AISelectDialog extends BaseDialog{
 	private PlayerSelectFragment list = new PlayerSelectFragment();
 	private Runnable onHidden;
 
-	public AISelectDialog(String name){
-		super(name);
+	public AISelectDialog(){
+		super("@aiselect");
 		addCloseButton();
 
 		hidden(onHidden = () -> {

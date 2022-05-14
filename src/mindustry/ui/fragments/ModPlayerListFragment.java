@@ -157,7 +157,7 @@ public class ModPlayerListFragment extends PlayerListFragment{
                 button.table(t -> {
                     t.defaults().size(bs);
 
-                    t.button(Icon.logic, ustyle, () -> SchemeSize.ai.gotoppl(user));
+                    t.button(Icon.logic, ustyle, () -> SchemeVars.ai.gotoppl(user));
 
                     t.button(Icon.copy, ustyle, () -> {
                         Core.app.setClipboardText(name);
@@ -168,8 +168,8 @@ public class ModPlayerListFragment extends PlayerListFragment{
 
                     t.button(Icon.eyeSmall, ustyle, () -> {
                         Core.camera.position.set(user.x, user.y);
-                        if(SchemeSize.input instanceof ModDesktopInput di) di.panning = true;
-                        else SchemeSize.input.toggleFreePan();
+                        if(SchemeVars.input instanceof ModDesktopInput di) di.panning = true;
+                        else SchemeVars.input.toggleFreePan();
                     });
 
                     t.button(Core.atlas.drawable("status-blasted"), ustyle, () -> SchemeUtils.kill(user));

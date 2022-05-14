@@ -250,10 +250,10 @@ public class ModSettingsMenuDialog extends SettingsMenuDialog{
 
     void addSettings(){
         if(!mobile) mod.consSliderSetting("panspeedmul", 4, 4, 20, 1, i -> i / 4f + "x", value -> {
-            if(SchemeSize.input instanceof ModDesktopInput i) i.changePanSpeed(value.get()); 
+            if(SchemeVars.input instanceof ModDesktopInput i) i.changePanSpeed(value.get()); 
         });
         mod.consSliderSetting("aropacity", 50, 0, 100, 1, i -> i + "%", value -> {
-            SchemeSize.render.opacity(value.get() / 100f);
+            SchemeVars.renderer.opacity(value.get() / 100f);
         });
         mod.consSliderSetting("maxzoommul", 4, 4, 20, 1, i -> i / 4f + "x", value -> {
             renderer.maxZoom = value.get() / 4f * 6f;
@@ -468,8 +468,8 @@ public class ModSettingsMenuDialog extends SettingsMenuDialog{
     }
 
     private void close(){
-        if(SchemeSize.renderset.shown){
-            SchemeSize.renderset.shown = false;
+        if(SchemeVars.rendercfg.shown){
+            SchemeVars.rendercfg.shown = false;
             app.post(this::hide);
         }else if(prefs.getChildren().first() != menu){
             back();

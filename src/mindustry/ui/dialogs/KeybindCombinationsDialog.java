@@ -19,7 +19,7 @@ public class KeybindCombinationsDialog extends BaseDialog{
 	}
 
 	/**
-	 * DO NOT CALL BEFORE MDO BINDING HAS BEEN INITIALIZED
+	 * DO NOT CALL BEFORE MOD BINDING HAS BEEN INITIALIZED
 	 */
 	public void init(){
 		main = Core.bundle.get("keycomb.main");

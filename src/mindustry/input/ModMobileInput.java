@@ -187,10 +187,10 @@ public class ModMobileInput extends ModInputHandler{
 
     void toggleBT(){
         if(flip != null){
-            flip.getStyle().imageUp = SchemeSize.hudfrag.shownBT ? Icon.downOpen : Icon.upOpen;
+            flip.getStyle().imageUp = SchemeVars.hudfrag.shownBT ? Icon.downOpen : Icon.upOpen;
         }
 
-        SchemeSize.hudfrag.toggleBT();
+        SchemeVars.hudfrag.toggleBT();
     }
 
     boolean isRelease(){
@@ -555,7 +555,7 @@ public class ModMobileInput extends ModInputHandler{
             selectRequests.clear();
             lastSchematic = schematics.create(lineStartX, lineStartY, lastLineX, lastLineY);
             useSchematic(lastSchematic);
-            if(selectRequests.isEmpty() && SchemeSize.schematic.isStandard()){
+            if(selectRequests.isEmpty() && SchemeVars.schematics.isStandard()){
                 lastSchematic = null;
             }
             schematicMode = false;
@@ -826,7 +826,7 @@ public class ModMobileInput extends ModInputHandler{
     }
 
     private void btInput(){
-        if(!SchemeSize.hudfrag.shownBT) bt.setMode(Mode.none);
+        if(!SchemeVars.hudfrag.shownBT) bt.setMode(Mode.none);
         if(bt.mode == Mode.none) return;
 
         int cursorX = tileXMod(Core.input.mouseX());
@@ -989,7 +989,7 @@ public class ModMobileInput extends ModInputHandler{
     //region movement
 
     protected void updateMovement(Unit unit){
-        if(!Core.input.isTouched() && SchemeSize.ai.select(false)){
+        if(!Core.input.isTouched() && SchemeVars.ai.select(false)){
             if(!freePanning) Core.camera.position.set(unit.x, unit.y);
             player.shooting = unit.isShooting();
             return;

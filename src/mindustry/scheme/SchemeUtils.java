@@ -35,27 +35,27 @@ public class SchemeUtils{
 
     public static void changeUnit(){
         Runnable admins = () -> {
-            SchemeSize.unit.select(false, true, (ppl, unit, amount) -> {
+            SchemeVars.unit.select(false, true, (ppl, unit, amount) -> {
                 if(!hasCore(ppl)) return;
                 Call.sendChatMessage("/unit " + unit.id + " " + ppl.name);
-                SchemeSize.render.update();
+                SchemeVars.renderer.update();
             });
         };
         Runnable js = () -> {
-            SchemeSize.unit.select(false, true, (ppl, unit, amount) -> {
+            SchemeVars.unit.select(false, true, (ppl, unit, amount) -> {
                 if(!hasCore(ppl)) return;
                 Call.sendChatMessage(js(getPlayer(ppl)));
                 Call.sendChatMessage(js("player.unit().spawnedByCore = true"));
                 Call.sendChatMessage(js("player.unit(" + getUnit(unit) + ".spawn(player.team(), player.x, player.y))"));
-                SchemeSize.render.update();
+                SchemeVars.renderer.update();
             });
         };
         Runnable server = () -> {
-            SchemeSize.unit.select(false, true, (ppl, unit, amount) -> {
+            SchemeVars.unit.select(false, true, (ppl, unit, amount) -> {
                 if(!hasCore(ppl)) return;
                 ppl.unit().spawnedByCore(true);
                 ppl.unit(unit.spawn(ppl.team(), ppl.x, ppl.y));
-                SchemeSize.render.update();
+                SchemeVars.renderer.update();
             });
         };
         template(admins, js, server);
@@ -66,14 +66,14 @@ public class SchemeUtils{
             ui.showInfoFade("@feature.jsonly");
         };
         Runnable js = () -> {
-            SchemeSize.effect.select(true, true, (ppl, effect, amount) -> {
+            SchemeVars.effect.select(true, true, (ppl, effect, amount) -> {
                 Call.sendChatMessage(js(getPlayer(ppl)));
                 if(amount.get() == 0) Call.sendChatMessage(js("player.unit().unapply(" + getEffect(effect) + ")"));
                 else Call.sendChatMessage(js("player.unit().apply(" + getEffect(effect) + ", " + amount.get() + ")"));
             });
         };
         Runnable server = () -> {
-            SchemeSize.effect.select(true, true, (ppl, effect, amount) -> {
+            SchemeVars.effect.select(true, true, (ppl, effect, amount) -> {
                 if(amount.get() == 0) ppl.unit().unapply(effect);
                 else ppl.unit().apply(effect, amount.get());
             });
@@ -83,20 +83,20 @@ public class SchemeUtils{
 
     public static void changeItem(){
         Runnable admins = () -> {
-            SchemeSize.item.select(true, false, (ppl, item, amount) -> {
+            SchemeVars.item.select(true, false, (ppl, item, amount) -> {
                 if(!hasCore(ppl)) return;
                 Call.sendChatMessage("/give " + item.id + " " + fix(item, (int)amount.get()));
             });
         };
         Runnable js = () -> {
-            SchemeSize.item.select(true, false, (ppl, item, amount) -> {
+            SchemeVars.item.select(true, false, (ppl, item, amount) -> {
                 if(!hasCore(ppl)) return;
                 Call.sendChatMessage(js(getPlayer(ppl)));
                 Call.sendChatMessage(js("player.core().items.add(" + getItem(item) + ", " + fix(item, (int)amount.get())) + ")");
             });
         };
         Runnable server = () -> {
-            SchemeSize.item.select(true, false, (ppl, item, amount) -> {
+            SchemeVars.item.select(true, false, (ppl, item, amount) -> {
                 if(!hasCore(ppl)) return;
                 ppl.core().items.add(item, fix(item, (int)amount.get()));
             });
@@ -106,18 +106,18 @@ public class SchemeUtils{
 
 	public static void changeTeam(){
         Runnable admins = () -> {
-            SchemeSize.team.select((ppl, team) -> {
+            SchemeVars.team.select((ppl, team) -> {
                 Call.sendChatMessage("/team " + team.id + " " + ppl.name);
             });
         };
         Runnable js = () -> {
-            SchemeSize.team.select((ppl, team) -> {
+            SchemeVars.team.select((ppl, team) -> {
                 Call.sendChatMessage(js(getPlayer(ppl)));
                 Call.sendChatMessage(js("player.team(" + getTeam(team) + ")"));
             });
         };
         Runnable server = () -> {
-            SchemeSize.team.select((ppl, team) -> {
+            SchemeVars.team.select((ppl, team) -> {
                 ppl.team(team);
             });
         };
@@ -167,47 +167,47 @@ public class SchemeUtils{
 
     public static void spawnUnit(){
         Runnable admins = () -> {
-            SchemeSize.unit.select(true, false, (ppl, unit, amount) -> {
+            SchemeVars.unit.select(true, false, (ppl, unit, amount) -> {
                 if(!hasCore(ppl)) return;
                 Call.sendChatMessage("/spawn " + unit.id + " " + (int)amount.get() + " " + player.team().id);
-                SchemeSize.render.update();
+                SchemeVars.renderer.update();
             });
         };
         Runnable js = () -> {
-            SchemeSize.unit.select(true, true, (ppl, unit, amount) -> {
+            SchemeVars.unit.select(true, true, (ppl, unit, amount) -> {
                 if(!hasCore(ppl)) return;
                 Call.sendChatMessage(js(getPlayer(ppl)));
                 Call.sendChatMessage(js("var unit = " + getUnit(unit)));
                 Call.sendChatMessage(js("for(var i = 0; i < " + amount.get() + "; i++) unit.spawn(player.team(), player.x, player.y)"));
-                SchemeSize.render.update();
+                SchemeVars.renderer.update();
             });
         };
         Runnable server = () -> {
-            SchemeSize.unit.select(true, true, (ppl, unit, amount) -> {
+            SchemeVars.unit.select(true, true, (ppl, unit, amount) -> {
                 if(!hasCore(ppl)) return;
                 for (int i = 0; i < amount.get(); i++) unit.spawn(ppl.team(), ppl.x, ppl.y);
-                SchemeSize.render.update();
+                SchemeVars.renderer.update();
             });
         };
         template(admins, js, server);
     }
 
     public static void showComb(){
-        SchemeSize.keycomb.show();
+        SchemeVars.keycomb.show();
     }
 
     public static void showSecret(){
-        SchemeSize.secret.show();
+        SchemeVars.secretcfg.show();
     }
 
     public static void edit(int sx, int sy, int ex, int ey){
         Runnable admins = () -> {
-            SchemeSize.tile.select(false, (floor, block, overlay) -> {
+            SchemeVars.tile.select(false, (floor, block, overlay) -> {
                 Call.sendChatMessage("/fill " + (ex - sx + 1) + " " + (ey - sy + 1) + " " + (floor == null ? (block == null ? (overlay == null ? "" : overlay.id) : block.id) : floor.id));
             });
         };
         Runnable js = () -> {
-            SchemeSize.tile.select(false, (floor, block, overlay) -> {
+            SchemeVars.tile.select(false, (floor, block, overlay) -> {
                 Call.sendChatMessage(js("var floor = " + getBlock(floor)));
                 Call.sendChatMessage(js("var block = " + getBlock(block)));
                 Call.sendChatMessage(js("var overlay = " + getBlock(overlay)));
@@ -219,7 +219,7 @@ public class SchemeUtils{
             });
         };
         Runnable server = () -> {
-            SchemeSize.tile.select(false, (floor, block, overlay) -> {
+            SchemeVars.tile.select(false, (floor, block, overlay) -> {
                 for(int x = sx; x <= ex; x++){
                     for(int y = sy; y <= ey; y++){
                         Tile tile = world.tiles.get(x, y);

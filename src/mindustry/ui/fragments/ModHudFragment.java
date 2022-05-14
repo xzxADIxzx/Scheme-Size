@@ -6,6 +6,7 @@ import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
 import arc.scene.*;
+import arc.scene.event.*;
 import arc.scene.style.*;
 import arc.scene.ui.*;
 import arc.scene.ui.TextField.*;
@@ -63,13 +64,13 @@ public class ModHudFragment extends Fragment {
             cont.name = "shieldbar";
             cont.top().left();
 
+            cont.touchable = Touchable.disabled;
             cont.visible(() -> ui.hudfrag.shown && !state.isEditor());
 
-            // TODO: test click on mobile
             float dif = Scl.scl() % .5f == 0 ? 0f : 1f;
             cont.add(new HexBar(() -> player.unit().shield / maxShield, icon -> {
                 icon.image(() -> player.icon()).scaling(Scaling.bounded).grow().maxWidth(54f);
-            })).size(92.2f + dif / 2, 80f).padLeft(18.2f - dif);
+            })).size(92.2f + dif / 2, 80f).padLeft(18.2f - dif).padTop(mobile ? 65f : 0f);
         });
 
         if (mobile || Core.settings.getBool("mobilemode")) parent.fill(cont -> {
@@ -98,9 +99,9 @@ public class ModHudFragment extends Fragment {
                 flipMobile.name = "flip";
 
                 select.button(Icon.admin, style, isize - 12f, SchemeUtils::showSecret);
-                select.button(look,       style, isize, SchemeSize.input::toggleLookAt);
+                select.button(look,       style, isize, SchemeVars.input::toggleLookAt);
                 select.button(tele,       style, isize, () -> SchemeUtils.teleport(Core.camera.position));
-                select.button(Icon.lock,  style, isize, SchemeSize.input::toggleFreePan).get().image().color(Pal.gray).width(4).height(bsize).padRight(-dsize + 1.5f + isize);
+                select.button(Icon.lock,  style, isize, SchemeVars.input::toggleFreePan).get().image().color(Pal.gray).width(4).height(bsize).padRight(-dsize + 1.5f + isize);
             }).left().row();
 
             cont.table(select -> {
@@ -112,8 +113,8 @@ public class ModHudFragment extends Fragment {
                 select.button(Icon.effect, style, isize, SchemeUtils::placeCore);
                 select.button(team,        style, isize, SchemeUtils::changeTeam);
                 select.button(kill,        style, isize, () -> SchemeUtils.kill(player));
-                select.button(Icon.logic,  style, isize, () -> SchemeSize.ai.select(true));
-                select.button(Icon.map,    style, isize, SchemeSize.renderset::show).get().image().color(Pal.gray).width(4).height(bsize).padRight(-dsize + 1.5f + isize);
+                select.button(Icon.logic,  style, isize, () -> SchemeVars.ai.select(true));
+                select.button(Icon.map,    style, isize, SchemeVars.rendercfg::show).get().image().color(Pal.gray).width(4).height(bsize).padRight(-dsize + 1.5f + isize);
             }).left().visible(() -> shownMobile).row();
 
             cont.table(select -> {
@@ -135,7 +136,7 @@ public class ModHudFragment extends Fragment {
             cont.bottom().right();
 
             float bsize = 46f;
-            BuildingTools bt = SchemeSize.input.bt;
+            BuildingTools bt = SchemeVars.input.bt;
 
             ImageButtonStyle style = new ImageButtonStyle() {{
                 down = Styles.flatDown;
@@ -169,7 +170,7 @@ public class ModHudFragment extends Fragment {
                     ctrl.defaults().size(bsize).bottom().right();
 
                     ctrl.button(Icon.cancel, style, () -> {
-                        SchemeSize.input.block = null;
+                        SchemeVars.input.block = null;
                         bt.plan.clear();
                     }).visible(bt::isPlacing).row();
                     ctrl.add(size).row();
@@ -184,9 +185,9 @@ public class ModHudFragment extends Fragment {
                     edit.name = "mapeditor";
                     edit.defaults().size(bsize).bottom().right();
 
-                    edit.button(Icon.redo, style, SchemeSize.input::flushLastRemoved).tooltip("@keycomb.return").row();
+                    edit.button(Icon.redo, style, SchemeVars.input::flushLastRemoved).tooltip("@keycomb.return").row();
                     edit.button(Icon.paste, check, () -> bt.setMode(Mode.calc)).checked(t -> bt.mode == Mode.calc).row();
-                    edit.button(Icon.pencil, style, () -> SchemeSize.tile.select(true, null)).padTop(bsize).row();
+                    edit.button(Icon.pencil, style, () -> SchemeVars.tile.select(true, null)).padTop(bsize).row();
                     edit.button(Icon.editor, check, () -> bt.setMode(Mode.edit)).checked(t -> bt.mode == Mode.edit).row();
                 });
 

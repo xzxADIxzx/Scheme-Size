@@ -85,7 +85,7 @@ public class BuildingTools{
 
 	public void resize(){
 		size = Mathf.clamp(size, 1, 512);
-		SchemeSize.hudfrag.resize(size);
+		SchemeVars.hudfrag.resize(size);
 	}
 
 	public void resize(int amount){

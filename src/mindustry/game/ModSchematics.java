@@ -175,7 +175,7 @@ public class ModSchematics extends Schematics{
                 st.y -= miny;
             });
 
-            app.post(() -> SchemeSize.input.showSchematicSaveMod());
+            app.post(() -> SchemeVars.input.showSchematicSaveMod());
             return new Schematic(tiles, new StringMap(), tiles.max(st -> st.x).x + 1, tiles.max(st -> st.y).y + 1);
         }
 

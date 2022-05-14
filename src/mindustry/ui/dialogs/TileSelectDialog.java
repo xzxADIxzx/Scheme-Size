@@ -34,8 +34,8 @@ public class TileSelectDialog extends BaseDialog{
 
 	private int row = mobile ? 8 : 10;
 
-	public TileSelectDialog(String name){
-		super(name);
+	public TileSelectDialog(){
+		super("@tileselect");
 		addCloseButton();
 
 		cont.add(category).size(288f, 270f).left();
