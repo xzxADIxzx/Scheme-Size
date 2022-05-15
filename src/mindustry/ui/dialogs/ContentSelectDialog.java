@@ -1,82 +1,73 @@
 package mindustry.ui.dialogs;
 
 import arc.func.*;
+import arc.scene.style.*;
 import arc.scene.ui.*;
 import arc.scene.ui.layout.*;
-import arc.scene.style.*;
 import arc.struct.*;
-import mindustry.ui.*;
-import mindustry.ui.fragments.*;
-import mindustry.gen.*;
 import mindustry.ctype.*;
+import mindustry.game.*;
+import mindustry.gen.*;
+import mindustry.ui.*;
 
 import static mindustry.Vars.*;
 
-public class ContentSelectDialog<T extends UnlockableContent> extends BaseDialog{
+public class ContentSelectDialog<T extends UnlockableContent> extends ListDialog {
 
-	public Cons3<Player, T, Floatp> callback;
-	public Stringf format;
+    public static final int row = mobile ? 8 : 10;
+    public static final float size = mobile ? 54f : 64f;
 
-	private Cell<Label> label;
-	private Cell<Table> slider;
-	private PlayerSelectFragment list = new PlayerSelectFragment();
-	private int row = mobile ? 8 : 10;
+    public Cons4<Player, Team, T, Floatp> callback;
+    public Func<Float, String> format;
 
-	public ContentSelectDialog(String name, Seq<T> content, float min, float max, float step, Stringf format){
-		super(name);
-		this.format = format;
-		addCloseButton();
+    public boolean showSlider;
 
-		var label = new Label("", Styles.outlineLabel);
-		var slider = new Slider(min, max, step, false);
-		slider.moved(value -> {
-			label.setText(format.get(value));
-		});
-		slider.change();
+    public ContentSelectDialog(String title, Seq<T> content, int min, int max, int step, Func<Float, String> format) {
+        super(title);
+        this.format = format;
 
-		var table = new Table();
-		content.each(item -> {
-			if(item.isHidden()) return;
+        Label label = new Label("", Styles.outlineLabel);
+        Slider slider = new Slider(min, max, step, false);
 
-			var drawable = new TextureRegionDrawable(item.uiIcon);
-			table.button(drawable, () -> { 
-				callback.get(list.select(), item, slider::getValue);
-				hide(); 
-			}).size(mobile ? 58f : 64f);
+        slider.moved(value -> label.setText(format.get(value)));
+        slider.change(); // update label
 
-			if(item.id % row == row - 1) table.row();
-		});
+        Table table = new Table();
+        content.each(T::logicVisible, item -> {
+            table.button(new TextureRegionDrawable(item.uiIcon), () -> {
+                callback.get(players.get(), teams.get(), item, slider::getValue);
+                hide();
+            }).size(size);
 
-		list.build(cont);
-		list.get().left();
+            if (item.id % row == row - 1) table.row();
+        });
 
-		cont.table(t -> {
-			t.add(table).row();
-			this.label = t.add(label).center().padTop(16f);
-			t.row();
-			this.slider = t.table(s -> {
-				s.button(Icon.add, () -> {
-					content.each(item -> {
-						if (!item.isHidden()) callback.get(list.select(), item, slider::getValue);
-					});
-					hide();
-				});
-				s.add(slider).padLeft(8f).growX();
-			}).fillX();
-		}).growX();
-		cont.table().width(288f).right();
-	}
+        addPlayer();
 
-	public void select(boolean showSL, boolean showP, Cons3<Player, T, Floatp> callback){
-		this.callback = callback;
-		label.visible(showSL);
-		slider.visible(showSL);
-		list.get().visible(showP);
-		list.rebuild();
-		show();
-	}
+        cont.table(t -> {
+            t.add(table).row();
+            t.add(label).center().padTop(16f).visible(() -> showSlider).row();
+            t.table(s -> {
+                s.button(Icon.add, () -> {
+                    content.each(T::logicVisible, item -> callback.get(players.get(), teams.get(), item, slider::getValue));
+                    hide();
+                });
+                s.add(slider).padLeft(8f).growX();
+            }).fillX().visible(() -> showSlider);
+        }).growX();
 
-	public interface Stringf{
-        String get(float f);
+        addTeam();
+    }
+
+    public void select(boolean showSlider, boolean showPlayers, boolean showTeams, Cons4<Player, Team, T, Floatp> callback) {
+        players.pane.visible(showPlayers);
+        players.rebuild();
+
+        teams.pane.visible(showTeams);
+        teams.rebuild();
+
+        this.showSlider = showSlider;
+        this.callback = callback;
+        show();
     }
 }

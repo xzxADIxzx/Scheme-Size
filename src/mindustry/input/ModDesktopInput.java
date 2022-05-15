@@ -647,7 +647,7 @@ public class ModDesktopInput extends ModInputHandler{
         /* punishment awaits me for this... */
 
         if(input.keyTap(ModBinding.secret)){
-            SchemeUtils.showSecret();
+            secretcfg.show();
         }
 
         if(input.keyTap(ModBinding.history)){
@@ -696,7 +696,7 @@ public class ModDesktopInput extends ModInputHandler{
             }
     
             if(input.keyTap(Binding.block_info)){
-                SchemeUtils.showComb();
+                keycomb.show();
             }
     
             if(input.keyTap(Binding.deselect)){

@@ -1,6 +1,5 @@
 package mindustry.scheme;
 
-import arc.util.*;
 import mindustry.core.*;
 import mindustry.game.*;
 import mindustry.graphics.*;
@@ -55,11 +54,11 @@ public class SchemeVars {
         unit = new ContentSelectDialog<UnitType>("@unitselect", content.units(), 1, 20, 1, value -> {
             return bundle.format("unit.zero.units", value);
         });
-        effect = new ContentSelectDialog<StatusEffect>("@effectselect", content.statusEffects(), 0, 5 * Time.toMinutes, 60, value -> {
-            return value == 0 ? "@cleareffect" : bundle.format("unit.zero.seconds", value / 60);
+        effect = new ContentSelectDialog<StatusEffect>("@effectselect", content.statusEffects(), 0, 5 * 3600, 60, value -> {
+            return value == 0 ? "@cleareffect" : bundle.format("unit.zero.seconds", value / 60f);
         });
         item = new ContentSelectDialog<Item>("@itemselect", content.items(), -10000, 10000, 200, value -> {
-            return value == 0 ? "@clearitem" : bundle.format("unit.zero.items", UI.formatAmount((long) value));
+            return value == 0 ? "@clearitem" : bundle.format("unit.zero.items", UI.formatAmount(value.longValue()));
         });
 
         hudfrag = new ModHudFragment();

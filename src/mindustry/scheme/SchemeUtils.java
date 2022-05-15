@@ -36,26 +36,26 @@ public class SchemeUtils{
 
     public static void changeUnit(){
         Runnable admins = () -> {
-            unit.select(false, true, (ppl, unit, amount) -> {
-                if(!hasCore(ppl)) return;
-                Call.sendChatMessage("/unit " + unit.id + " " + ppl.name);
+            unit.select(false, true, false, (player, team, unit, amount) -> {
+                if(!hasCore(player)) return;
+                Call.sendChatMessage("/unit " + unit.id + " " + player.name);
                 m_renderer.update();
             });
         };
         Runnable js = () -> {
-            unit.select(false, true, (ppl, unit, amount) -> {
-                if(!hasCore(ppl)) return;
-                Call.sendChatMessage(js(getPlayer(ppl)));
+            unit.select(false, true, false, (player, team, unit, amount) -> {
+                if(!hasCore(player)) return;
+                Call.sendChatMessage(js(getPlayer(player)));
                 Call.sendChatMessage(js("player.unit().spawnedByCore = true"));
                 Call.sendChatMessage(js("player.unit(" + getUnit(unit) + ".spawn(player.team(), player.x, player.y))"));
                 m_renderer.update();
             });
         };
         Runnable server = () -> {
-            unit.select(false, true, (ppl, unit, amount) -> {
-                if(!hasCore(ppl)) return;
-                ppl.unit().spawnedByCore(true);
-                ppl.unit(unit.spawn(ppl.team(), ppl.x, ppl.y));
+            unit.select(false, true, false, (player, team, unit, amount) -> {
+                if(!hasCore(player)) return;
+                player.unit().spawnedByCore(true);
+                player.unit(unit.spawn(player.team(), player.x, player.y));
                 m_renderer.update();
             });
         };
@@ -67,16 +67,16 @@ public class SchemeUtils{
             ui.showInfoFade("@feature.jsonly");
         };
         Runnable js = () -> {
-            effect.select(true, true, (ppl, effect, amount) -> {
-                Call.sendChatMessage(js(getPlayer(ppl)));
+            effect.select(true, true, false, (player, team, effect, amount) -> {
+                Call.sendChatMessage(js(getPlayer(player)));
                 if(amount.get() == 0) Call.sendChatMessage(js("player.unit().unapply(" + getEffect(effect) + ")"));
                 else Call.sendChatMessage(js("player.unit().apply(" + getEffect(effect) + ", " + amount.get() + ")"));
             });
         };
         Runnable server = () -> {
-            effect.select(true, true, (ppl, effect, amount) -> {
-                if(amount.get() == 0) ppl.unit().unapply(effect);
-                else ppl.unit().apply(effect, amount.get());
+            effect.select(true, true, false, (player, team, effect, amount) -> {
+                if(amount.get() == 0) player.unit().unapply(effect);
+                else player.unit().apply(effect, amount.get());
             });
         };
         template(admins, js, server);
@@ -84,22 +84,21 @@ public class SchemeUtils{
 
     public static void changeItem(){
         Runnable admins = () -> {
-            item.select(true, false, (ppl, item, amount) -> {
-                if(!hasCore(ppl)) return;
+            item.select(true, false, false, (player, team, item, amount) -> {
+                if(!hasCore(player)) return;
                 Call.sendChatMessage("/give " + item.id + " " + fix(item, (int)amount.get()));
             });
         };
         Runnable js = () -> {
-            item.select(true, false, (ppl, item, amount) -> {
-                if(!hasCore(ppl)) return;
-                Call.sendChatMessage(js(getPlayer(ppl)));
-                Call.sendChatMessage(js("player.core().items.add(" + getItem(item) + ", " + fix(item, (int)amount.get())) + ")");
+            item.select(true, false, true, (player, team, item, amount) -> {
+                if(!hasCore(player)) return;
+                Call.sendChatMessage(js(getTeam(team) + ".core().items.add(" + getItem(item) + ", " + fix(item, (int)amount.get())) + ")");
             });
         };
         Runnable server = () -> {
-            item.select(true, false, (ppl, item, amount) -> {
-                if(!hasCore(ppl)) return;
-                ppl.core().items.add(item, fix(item, (int)amount.get()));
+            item.select(true, false, true, (player, team, item, amount) -> {
+                if(!hasCore(player)) return;
+                team.core().items.add(item, fix(item, (int)amount.get()));
             });
         };
         template(admins, js, server);
@@ -107,19 +106,19 @@ public class SchemeUtils{
 
 	public static void changeTeam(){
         Runnable admins = () -> {
-            team.select((ppl, team) -> {
-                Call.sendChatMessage("/team " + team.id + " " + ppl.name);
+            team.select((player, team) -> {
+                Call.sendChatMessage("/team " + team.id + " " + player.name);
             });
         };
         Runnable js = () -> {
-            team.select((ppl, team) -> {
-                Call.sendChatMessage(js(getPlayer(ppl)));
+            team.select((player, team) -> {
+                Call.sendChatMessage(js(getPlayer(player)));
                 Call.sendChatMessage(js("player.team(" + getTeam(team) + ")"));
             });
         };
         Runnable server = () -> {
-            team.select((ppl, team) -> {
-                ppl.team(team);
+            team.select((player, team) -> {
+                player.team(team);
             });
         };
         template(admins, js, server);
@@ -152,7 +151,7 @@ public class SchemeUtils{
 
     public static void kill(Player ppl){
         Runnable admins = () -> {
-            Call.sendChatMessage("/despw " + ppl.id);
+            Call.sendChatMessage("/despawn " + ppl.id);
         };
         Runnable js = () -> {
             Call.sendChatMessage(js(getPlayer(ppl)));
@@ -168,37 +167,29 @@ public class SchemeUtils{
 
     public static void spawnUnit(){
         Runnable admins = () -> {
-            unit.select(true, false, (ppl, unit, amount) -> {
-                if(!hasCore(ppl)) return;
-                Call.sendChatMessage("/spawn " + unit.id + " " + (int)amount.get() + " " + player.team().id);
+            unit.select(true, false, true, (player, team, unit, amount) -> {
+                if(!hasCore(player)) return;
+                Call.sendChatMessage("/spawn " + unit.id + " " + (int)amount.get() + " " + team.id);
                 m_renderer.update();
             });
         };
         Runnable js = () -> {
-            unit.select(true, true, (ppl, unit, amount) -> {
-                if(!hasCore(ppl)) return;
-                Call.sendChatMessage(js(getPlayer(ppl)));
+            unit.select(true, true, true, (player, team, unit, amount) -> {
+                if(!hasCore(player)) return;
+                Call.sendChatMessage(js(getPlayer(player)));
                 Call.sendChatMessage(js("var unit = " + getUnit(unit)));
-                Call.sendChatMessage(js("for(var i = 0; i < " + amount.get() + "; i++) unit.spawn(player.team(), player.x, player.y)"));
+                Call.sendChatMessage(js("for(var i = 0; i < " + amount.get() + "; i++) unit.spawn(" + getTeam(team) + ", player.x, player.y)"));
                 m_renderer.update();
             });
         };
         Runnable server = () -> {
-            unit.select(true, true, (ppl, unit, amount) -> {
-                if(!hasCore(ppl)) return;
-                for (int i = 0; i < amount.get(); i++) unit.spawn(ppl.team(), ppl.x, ppl.y);
+            unit.select(true, true, true, (player, team, unit, amount) -> {
+                if(!hasCore(player)) return;
+                for (int i = 0; i < amount.get(); i++) unit.spawn(player.team(), player.x, player.y);
                 m_renderer.update();
             });
         };
         template(admins, js, server);
-    }
-
-    public static void showComb(){
-        keycomb.show();
-    }
-
-    public static void showSecret(){
-        secretcfg.show();
     }
 
     public static void edit(int sx, int sy, int ex, int ey){
@@ -216,7 +207,7 @@ public class SchemeUtils{
                 Call.sendChatMessage(js("var setf = (tile) => { tile.setFloorNet(floor==null?tile.floor():floor.asFloor(),overlay==null?tile.overlay():overlay.asFloor());setb(tile) }"));
                 Call.sendChatMessage(js("var nulc = (tile) => { if(tile != null) setf(tile) }"));
                 Call.sendChatMessage(js("var todo = (x, y) => { nulc(tile = Vars.world.tiles.get(x, y)) }"));
-                Call.sendChatMessage(js("for(var x = " + sx +"; x <= " + ex + "; x++){ for(var y = " + sy + "; y <= " + ey + "; y++){ todo(x, y) } }"));
+                Call.sendChatMessage(js("for(var x = " + sx + "; x <= " + ex + "; x++){ for(var y = " + sy + "; y <= " + ey + "; y++){ todo(x, y) } }"));
             });
         };
         Runnable server = () -> {

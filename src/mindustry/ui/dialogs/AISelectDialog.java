@@ -10,7 +10,6 @@ import arc.scene.style.*;
 import mindustry.ai.types.*;
 import mindustry.ai.formations.*;
 import mindustry.ai.formations.patterns.*;
-import mindustry.ui.fragments.*;
 import mindustry.gen.*;
 import mindustry.type.*;
 import mindustry.game.EventType.*;
@@ -19,11 +18,10 @@ import mindustry.entities.units.*;
 
 import static mindustry.Vars.*;
 
-public class AISelectDialog extends BaseDialog{
+public class AISelectDialog extends ListDialog{
 
 	private AIController ai;
 	private Table content = new Table();
-	private PlayerSelectFragment list = new PlayerSelectFragment();
 	private Runnable onHidden;
 
 	public AISelectDialog(){
@@ -31,8 +29,8 @@ public class AISelectDialog extends BaseDialog{
 		addCloseButton();
 
 		hidden(onHidden = () -> {
-			if(ai instanceof BuilderAI && list.select() != player) ai = new FormationAI(
-				list.select().unit(),
+			if(ai instanceof BuilderAI && players.get() != player) ai = new FormationAI(
+				players.get().unit(),
 				new Formation(new Vec3(), new CircleFormation())
 			){
 				@Override
@@ -44,7 +42,7 @@ public class AISelectDialog extends BaseDialog{
 
 				@Override
 				public void updateTargeting(){
-					if(retarget()) leader = list.select().unit();
+					if(retarget()) leader = players.get().unit();
 				}
 
 				@Override
@@ -60,21 +58,21 @@ public class AISelectDialog extends BaseDialog{
 				}
 			};
 
-			if(ai instanceof RepairAI && list.select() != player) ai = new CursorAI(){
+			if(ai instanceof RepairAI && players.get() != player) ai = new CursorAI(){
 				@Override
 				public void updateTargeting(){
-					if(retarget()) following = list.select().unit();
+					if(retarget()) following = players.get().unit();
 				}
 			};
 
-			if(ai instanceof DefenderAI && list.select() != player) ai = new DefenderAI(){
+			if(ai instanceof DefenderAI && players.get() != player) ai = new DefenderAI(){
 				@Override
 				public void updateTargeting(){
-					if(retarget()) target = list.select().unit();
+					if(retarget()) target = players.get().unit();
 				}
 			};
 
-			if(ai instanceof CircleAI c) c.init(list.select());
+			if(ai instanceof CircleAI c) c.init(players.get());
 
 			updateUnit();
 		});
@@ -90,7 +88,7 @@ public class AISelectDialog extends BaseDialog{
 		template(UnitTypes.gamma, new CircleAI(), true);
 		
 		cont.table(table -> {
-			list.build(table);
+			players.build(table);
 			table.add(content).padLeft(16f);
 		}).row();
 		cont.labelWrap("@aiselect.tooltip").labelAlign(2, 8).padTop(16f).width(368f);
@@ -102,7 +100,7 @@ public class AISelectDialog extends BaseDialog{
 	private void template(UnitType icon, AIController ai, boolean show){
 		var draw = icon != null ? new TextureRegionDrawable(icon.uiIcon) : Icon.none;
 		content.button(draw, () -> {
-			list.get().touchable(show ? Touchable.enabled : Touchable.disabled);
+			players.pane.touchable(show ? Touchable.enabled : Touchable.disabled);
 			this.ai = ai;
 			updateUnit();
 		}).size(64).row();
@@ -110,7 +108,7 @@ public class AISelectDialog extends BaseDialog{
 
 	public boolean select(boolean show){
 		if(show){
-			list.rebuild();
+			players.rebuild();
 			show();
 		}else{
 			if(ai == null) return false;
@@ -129,7 +127,7 @@ public class AISelectDialog extends BaseDialog{
 
 	public void gotoppl(Player ppl){
 		ai = new DefenderAI();
-		list.player = ppl;
+		players.selected = ppl;
 		onHidden.run();;
 	}
 }
