@@ -14,16 +14,16 @@ import static mindustry.Vars.*;
 
 public class SchemeVars {
 
-    public static ModSchematics schematics;
-    public static ModInputHandler input;
-    public static AdditionalRenderer renderer;
+    public static ModSchematics m_schematics;
+    public static ModInputHandler m_input;
+    public static AdditionalRenderer m_renderer;
 
-    public static ModSettingsMenuDialog settings;
+    public static ModSettingsMenuDialog m_settings;
     public static KeybindCombinationsDialog keycomb;
-    public static ModTraceDialog traces;
+    public static ModTraceDialog m_traces;
 
     public static SecretConfigDialog secretcfg;
-    public static RenderSettingsDialog rendercfg;
+    public static RenderConfigDialog rendercfg;
 
     public static AISelectDialog ai;
     public static TeamSelectDialog team;
@@ -37,16 +37,16 @@ public class SchemeVars {
     public static ModPlayerListFragment listfrag;
 
     public static void load() {
-        schematics = new ModSchematics();
-        input = mobile ? new ModMobileInput() : new ModDesktopInput();
-        renderer = new AdditionalRenderer();
+        m_schematics = new ModSchematics();
+        m_input = mobile ? new ModMobileInput() : new ModDesktopInput();
+        m_renderer = new AdditionalRenderer();
 
-        settings = new ModSettingsMenuDialog();
+        m_settings = new ModSettingsMenuDialog();
         keycomb = new KeybindCombinationsDialog();
-        traces = new ModTraceDialog();
+        m_traces = new ModTraceDialog();
 
         secretcfg = new SecretConfigDialog();
-        rendercfg = new RenderSettingsDialog();
+        rendercfg = new RenderConfigDialog();
 
         ai = new AISelectDialog();
         team = new TeamSelectDialog();

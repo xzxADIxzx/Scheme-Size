@@ -26,9 +26,9 @@ import mindustry.world.blocks.power.*;
 import mindustry.scheme.*;
 
 import static arc.Core.*;
-import static mindustry.Vars.net;
 import static mindustry.Vars.*;
 import static mindustry.input.PlaceMode.*;
+import static mindustry.scheme.SchemeVars.*;
 
 // Last Update - Oct 3, 2021
 public class ModDesktopInput extends ModInputHandler{
@@ -484,7 +484,7 @@ public class ModDesktopInput extends ModInputHandler{
             else{
                 lastSchematic = schematics.create(schemX, schemY, rawCursorX, rawCursorY);
                 useSchematic(lastSchematic);
-                if(selectRequests.isEmpty() && SchemeVars.schematics.isStandard()){
+                if(selectRequests.isEmpty() && m_schematics.isStandard()){
                     lastSchematic = null;
                 }
                 schemX = -1;
@@ -692,7 +692,7 @@ public class ModDesktopInput extends ModInputHandler{
             }
 
             if(input.keyTap(ModBinding.change_ai)){
-                SchemeVars.ai.deselect();
+                ai.deselect();
             }
     
             if(input.keyTap(Binding.block_info)){
@@ -700,7 +700,7 @@ public class ModDesktopInput extends ModInputHandler{
             }
     
             if(input.keyTap(Binding.deselect)){
-                SchemeVars.hudfrag.toggleBT();
+                hudfrag.toggleBT();
             }
 
             if(input.keyTap(Binding.pan)){
@@ -708,7 +708,7 @@ public class ModDesktopInput extends ModInputHandler{
             }
 
             if(input.keyTap(ModBinding.renderset)){
-                SchemeVars.rendercfg.showGraphics();
+                rendercfg.showGraphics();
             }
 
             if(input.keyTap(Binding.schematic_menu)){
@@ -716,7 +716,7 @@ public class ModDesktopInput extends ModInputHandler{
             }
 
             if(input.keyTap(Binding.schematic_select)){
-                SchemeVars.schematics.next();
+                m_schematics.next();
                 changed = true;
             }
         }else{
@@ -725,22 +725,22 @@ public class ModDesktopInput extends ModInputHandler{
             }
 
             if(input.keyTap(ModBinding.change_ai)){
-                SchemeVars.ai.select(true);
+                ai.select(true);
             }
 
             if(input.keyTap(ModBinding.renderset)){
-                SchemeVars.rendercfg.show();
+                rendercfg.show();
             }
         }
 
         if(Core.input.keyTap(Binding.select) && !scene.hasMouse()){
             Tile tile = tileAtMod(Core.input.mouseX(), Core.input.mouseY());
-            if(tile != null && tile.block() instanceof PowerNode) SchemeVars.hudfrag.updateNode(tile.build);
+            if(tile != null && tile.block() instanceof PowerNode) hudfrag.updateNode(tile.build);
         }
     }
 
     void btInput(){
-        if(!SchemeVars.hudfrag.shownBT) bt.setMode(Mode.none);
+        if(!hudfrag.shownBT) bt.setMode(Mode.none);
         if(bt.mode == Mode.none) return;
 
         int cursorX = tileXMod(Core.input.mouseX());
@@ -841,7 +841,7 @@ public class ModDesktopInput extends ModInputHandler{
         boolean boosted = (unit instanceof Mechc && unit.isFlying());
 
         boolean aict = !(input.keyDown(Binding.mouse_move) || input.keyDown(ModBinding.look_at) || input.keyDown(Binding.select))
-                    && xa == 0 && ya == 0 && SchemeVars.ai.select(false);
+                    && xa == 0 && ya == 0 && ai.select(false);
 
         // move check from update for ai
         if(scene.hasField()) return;

@@ -26,9 +26,9 @@ import mindustry.world.blocks.production.AttributeCrafter.*;
 import mindustry.world.consumers.*;
 import mindustry.input.Placement.*;
 import mindustry.entities.units.*;
-import mindustry.scheme.*;
 
 import static mindustry.Vars.*;
+import static mindustry.scheme.SchemeVars.*;
 
 public class BuildingTools{
 
@@ -85,7 +85,7 @@ public class BuildingTools{
 
 	public void resize(){
 		size = Mathf.clamp(size, 1, 512);
-		SchemeVars.hudfrag.resize(size);
+		hudfrag.resize(size);
 	}
 
 	public void resize(int amount){

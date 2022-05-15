@@ -1,10 +1,10 @@
 package mindustry.scheme;
 
-import arc.Core;
 import mindustry.mod.*;
-import mindustry.Vars;
 import mindustry.input.ModBinding;
 
+import static arc.Core.*;
+import static mindustry.Vars.*;
 import static mindustry.scheme.SchemeVars.*;
 
 public class SchemeSize extends Mod {
@@ -13,23 +13,23 @@ public class SchemeSize extends Mod {
     public void init() {
         SchemeVars.load();
 
-        Vars.enableConsole = true; // temp
+        enableConsole = true; // temp
 
-        Vars.schematics = schematics;
-        Vars.schematics.loadSync();
-        Vars.control.setInput(input);
+        schematics = m_schematics;
+        schematics.loadSync();
+        control.setInput(m_input);
 
-        Vars.ui.settings = settings;
-        Vars.ui.traces = traces;
-        Vars.ui.listfrag = listfrag;
+        ui.settings = m_settings;
+        ui.traces = m_traces;
+        ui.listfrag = listfrag;
 
-        hudfrag.build(Vars.ui.hudGroup);
-        listfrag.build(Vars.ui.hudGroup);
+        hudfrag.build(ui.hudGroup);
+        listfrag.build(ui.hudGroup);
 
         SchemeUpdater.init(); // restore colors
-        if (Core.settings.getBool("checkupdate")) SchemeUpdater.check();
+        if (settings.getBool("checkupdate")) SchemeUpdater.check();
 
-        if (Vars.mobile) return; // mobiles haven`t keybinds
+        if (mobile) return; // mobiles haven`t keybinds
         ModBinding.load();
         keycomb.init(); // init main keys
     }

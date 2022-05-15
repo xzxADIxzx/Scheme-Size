@@ -15,10 +15,10 @@ import mindustry.world.blocks.storage.*;
 import mindustry.world.blocks.ConstructBlock.*;
 import mindustry.content.*;
 import mindustry.entities.units.*;
-import mindustry.scheme.*;
 
 import static arc.Core.*;
 import static mindustry.Vars.*;
+import static mindustry.scheme.SchemeVars.*;
 
 // Last Update - Sep 11, 2021
 public class ModSchematics extends Schematics{
@@ -175,7 +175,7 @@ public class ModSchematics extends Schematics{
                 st.y -= miny;
             });
 
-            app.post(() -> SchemeVars.input.showSchematicSaveMod());
+            app.post(() -> m_input.showSchematicSaveMod());
             return new Schematic(tiles, new StringMap(), tiles.max(st -> st.x).x + 1, tiles.max(st -> st.y).y + 1);
         }
 

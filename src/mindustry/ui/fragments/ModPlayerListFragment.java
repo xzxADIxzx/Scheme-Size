@@ -20,6 +20,7 @@ import mindustry.scheme.*;
 import mindustry.graphics.*;
 
 import static mindustry.Vars.*;
+import static mindustry.scheme.SchemeVars.*;
 
 // Last Update - Oct 21, 2021
 public class ModPlayerListFragment extends PlayerListFragment{
@@ -157,7 +158,7 @@ public class ModPlayerListFragment extends PlayerListFragment{
                 button.table(t -> {
                     t.defaults().size(bs);
 
-                    t.button(Icon.logic, ustyle, () -> SchemeVars.ai.gotoppl(user));
+                    t.button(Icon.logic, ustyle, () -> ai.gotoppl(user));
 
                     t.button(Icon.copy, ustyle, () -> {
                         Core.app.setClipboardText(name);
@@ -168,8 +169,8 @@ public class ModPlayerListFragment extends PlayerListFragment{
 
                     t.button(Icon.eyeSmall, ustyle, () -> {
                         Core.camera.position.set(user.x, user.y);
-                        if(SchemeVars.input instanceof ModDesktopInput di) di.panning = true;
-                        else SchemeVars.input.toggleFreePan();
+                        if(m_input instanceof ModDesktopInput di) di.panning = true;
+                        else m_input.toggleFreePan();
                     });
 
                     t.button(Core.atlas.drawable("status-blasted"), ustyle, () -> SchemeUtils.kill(user));

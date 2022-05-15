@@ -31,6 +31,7 @@ import mindustry.scheme.*;
 
 import static mindustry.Vars.*;
 import static mindustry.input.PlaceMode.*;
+import static mindustry.scheme.SchemeVars.*;
 
 // Last Update - Oct 3, 2021
 public class ModMobileInput extends ModInputHandler{
@@ -187,10 +188,10 @@ public class ModMobileInput extends ModInputHandler{
 
     void toggleBT(){
         if(flip != null){
-            flip.getStyle().imageUp = SchemeVars.hudfrag.shownBT ? Icon.downOpen : Icon.upOpen;
+            flip.getStyle().imageUp = hudfrag.shownBT ? Icon.downOpen : Icon.upOpen;
         }
 
-        SchemeVars.hudfrag.toggleBT();
+        hudfrag.toggleBT();
     }
 
     boolean isRelease(){
@@ -555,7 +556,7 @@ public class ModMobileInput extends ModInputHandler{
             selectRequests.clear();
             lastSchematic = schematics.create(lineStartX, lineStartY, lastLineX, lastLineY);
             useSchematic(lastSchematic);
-            if(selectRequests.isEmpty() && SchemeVars.schematics.isStandard()){
+            if(selectRequests.isEmpty() && m_schematics.isStandard()){
                 lastSchematic = null;
             }
             schematicMode = false;
@@ -826,7 +827,7 @@ public class ModMobileInput extends ModInputHandler{
     }
 
     private void btInput(){
-        if(!SchemeVars.hudfrag.shownBT) bt.setMode(Mode.none);
+        if(!hudfrag.shownBT) bt.setMode(Mode.none);
         if(bt.mode == Mode.none) return;
 
         int cursorX = tileXMod(Core.input.mouseX());
@@ -989,7 +990,7 @@ public class ModMobileInput extends ModInputHandler{
     //region movement
 
     protected void updateMovement(Unit unit){
-        if(!Core.input.isTouched() && SchemeVars.ai.select(false)){
+        if(!Core.input.isTouched() && ai.select(false)){
             if(!freePanning) Core.camera.position.set(unit.x, unit.y);
             player.shooting = unit.isShooting();
             return;

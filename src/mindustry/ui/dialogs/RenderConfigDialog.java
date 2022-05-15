@@ -1,16 +1,16 @@
 package mindustry.ui.dialogs;
 
 import arc.graphics.*;
-import mindustry.scheme.SchemeVars;
 
 import static arc.Core.*;
 import static mindustry.Vars.*;
+import static mindustry.scheme.SchemeVars.*;
 
-public class RenderSettingsDialog extends BaseDialog{
+public class RenderConfigDialog extends BaseDialog{
 
 	public boolean shown;
 
-	public RenderSettingsDialog(){
+	public RenderConfigDialog(){
 		super("@render.name");
 		addCloseButton();
 
@@ -25,20 +25,20 @@ public class RenderSettingsDialog extends BaseDialog{
 
         cont.label(() -> "@render.add.name").padTop(16f).row();
 		cont.table(table -> {
-			table.check("@render.add.xray", value -> SchemeVars.renderer.xray = value).left().row();
-			table.check("@render.add.hide", value -> SchemeVars.renderer.showUnits(value)).left().row();
-			table.check("@render.add.grid", value -> SchemeVars.renderer.grid = value).left().row();
-			table.check("@render.add.info", value -> SchemeVars.renderer.info = value).left().row();
-			table.check("@render.add.raduni", value -> SchemeVars.renderer.raduni = value).left().row();
-			table.check("@render.add.radius", value -> SchemeVars.renderer.radius = value).left().row();
+			table.check("@render.add.xray", value -> m_renderer.xray = value).left().row();
+			table.check("@render.add.hide", value -> m_renderer.showUnits(value)).left().row();
+			table.check("@render.add.grid", value -> m_renderer.grid = value).left().row();
+			table.check("@render.add.info", value -> m_renderer.info = value).left().row();
+			table.check("@render.add.raduni", value -> m_renderer.raduni = value).left().row();
+			table.check("@render.add.radius", value -> m_renderer.radius = value).left().row();
 		}).left().row();
 
 		cont.labelWrap("@render.add.description").labelAlign(2, 8).padTop(16f).size(320f, 120f).get().getStyle().fontColor = Color.lightGray;
 	}
 
 	public void showGraphics(){
-		SchemeVars.settings.show();
-		SchemeVars.settings.visible(1);
+		m_settings.show();
+		m_settings.visible(1);
 		shown = true;
 	}
 
