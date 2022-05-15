@@ -45,6 +45,7 @@ public class ListDialog extends BaseDialog {
         cont.table().width(288f);
     }
 
+    // TODO: team icons are too big, but in V7 anuke will add new icons for all commands
     public static TextureRegion texture(Team team) {
         return atlas.find(new String[] {
                 "team-derelict",

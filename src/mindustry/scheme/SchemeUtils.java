@@ -195,7 +195,10 @@ public class SchemeUtils{
     public static void edit(int sx, int sy, int ex, int ey){
         Runnable admins = () -> {
             tile.select(false, (floor, block, overlay) -> {
-                Call.sendChatMessage("/fill " + (ex - sx + 1) + " " + (ey - sy + 1) + " " + (floor == null ? (block == null ? (overlay == null ? "" : overlay.id) : block.id) : floor.id));
+                String base = "/fill " + (ex - sx + 1) + " " + (ey - sy + 1) + " ";
+                if (floor != null) Call.sendChatMessage(base + floor.id);
+                if (block != null) Call.sendChatMessage(base + block.id);
+                if (overlay != null) Call.sendChatMessage(base + overlay.id);
             });
         };
         Runnable js = () -> {

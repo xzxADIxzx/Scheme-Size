@@ -50,7 +50,7 @@ public class ListFragment<T> {
                     Draw.reset();
                 }
             };
-            icon.add(new Image(texture.get(item)).setScaling(Scaling.fill)).pad(8f).grow();
+            icon.image(texture.get(item)).scaling(Scaling.bounded).pad(8f).grow();
 
             check.add(icon).size(74f);
             check.table(t -> {
