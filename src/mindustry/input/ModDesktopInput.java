@@ -647,7 +647,7 @@ public class ModDesktopInput extends ModInputHandler{
         /* punishment awaits me for this... */
 
         if(input.keyTap(ModBinding.secret)){
-            secretcfg.show();
+            adminscfg.show();
         }
 
         if(input.keyTap(ModBinding.history)){

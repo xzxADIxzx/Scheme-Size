@@ -7,6 +7,7 @@ import mindustry.input.*;
 import mindustry.type.*;
 import mindustry.ui.dialogs.*;
 import mindustry.ui.fragments.*;
+import mindustry.admins.*;
 
 import static arc.Core.*;
 import static mindustry.Vars.*;
@@ -15,13 +16,15 @@ public class SchemeVars {
 
     public static ModSchematics m_schematics;
     public static ModInputHandler m_input;
-    public static AdditionalRenderer m_renderer;
 
     public static ModSettingsMenuDialog m_settings;
     public static KeybindCombinationsDialog keycomb;
     public static ModTraceDialog m_traces;
 
-    public static SecretConfigDialog secretcfg;
+    public static AdminsUtilsHandler admins;
+    public static AdditionalRenderer m_renderer;
+
+    public static AdminsConfigDialog adminscfg;
     public static RenderConfigDialog rendercfg;
 
     public static AISelectDialog ai;
@@ -44,7 +47,7 @@ public class SchemeVars {
         keycomb = new KeybindCombinationsDialog();
         m_traces = new ModTraceDialog();
 
-        secretcfg = new SecretConfigDialog();
+        adminscfg = new AdminsConfigDialog();
         rendercfg = new RenderConfigDialog();
 
         ai = new AISelectDialog();

@@ -8,13 +8,13 @@ import mindustry.ui.*;
 
 import static arc.Core.*;
 
-public class SecretConfigDialog extends BaseDialog{
+public class AdminsConfigDialog extends BaseDialog{
 	
 	public boolean enabled = settings.getBool("enabledsecret", false);
 	public boolean isAdmin = settings.getBool("adminssecret", false);
 	public boolean usejs = settings.getBool("usejs", true);
 
-	public SecretConfigDialog(){
+	public AdminsConfigDialog(){
 		super("@secret.name");
 		addCloseButton();
 

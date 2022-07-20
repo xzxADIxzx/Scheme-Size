@@ -26,7 +26,6 @@ public class AISelectDialog extends ListDialog{
 
 	public AISelectDialog(){
 		super("@aiselect");
-		addCloseButton();
 
 		hidden(onHidden = () -> {
 			if(ai instanceof BuilderAI && players.get() != player) ai = new FormationAI(

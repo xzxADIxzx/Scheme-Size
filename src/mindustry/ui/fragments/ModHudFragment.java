@@ -99,7 +99,7 @@ public class ModHudFragment extends Fragment {
                 flipMobile = select.button(Icon.downOpen, style, this::toggleMobile).get();
                 flipMobile.name = "flip";
 
-                select.button(Icon.admin, style, isize - 12f, secretcfg::show);
+                select.button(Icon.admin, style, isize - 12f, adminscfg::show);
                 select.button(look,       style, isize, m_input::toggleLookAt);
                 select.button(tele,       style, isize, () -> SchemeUtils.teleport(Core.camera.position));
                 select.button(Icon.lock,  style, isize, m_input::toggleFreePan).get().image().color(Pal.gray).width(4).height(bsize).padRight(-dsize + 1.5f + isize);
