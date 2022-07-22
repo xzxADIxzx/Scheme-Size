@@ -4,9 +4,7 @@ import mindustry.core.UI;
 import mindustry.type.Item;
 import mindustry.type.StatusEffect;
 import mindustry.type.UnitType;
-import scheme.moded.ModedDesktopInput;
-import scheme.moded.ModedInputHandler;
-import scheme.moded.ModedSchematics;
+import scheme.moded.*;
 import scheme.tools.*;
 import scheme.tools.admins.AdminsTools;
 import scheme.ui.HudFragment;
@@ -46,8 +44,7 @@ public class SchemeVars {
 
     public static void load() {
         // m_schematics = new ModedSchematics();
-        // m_input = mobile ? new ModMobileInput() : new ModDesktopInput();
-        m_input = new ModedDesktopInput();
+        m_input = mobile ? new ModedMobileInput() : new ModedDesktopInput();
 
         admins = AdminsConfigDialog.getTools();
         render = new RendererTools();

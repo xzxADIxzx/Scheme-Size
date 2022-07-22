@@ -7,6 +7,7 @@ import arc.scene.ui.TextField;
 import arc.struct.Seq;
 import mindustry.content.Blocks;
 import mindustry.entities.units.BuildPlan;
+import mindustry.gen.Unit;
 import mindustry.input.Binding;
 import mindustry.input.DesktopInput;
 import mindustry.input.InputHandler;
@@ -23,7 +24,7 @@ import static scheme.SchemeVars.*;
 /** Last update - Jun 14, 2022 */
 public class ModedDesktopInput extends DesktopInput implements ModedInputHandler {
 
-    public boolean using;
+    public boolean using, movementLocked;
     public int buildX = -1, buildY = -1;
     public int lastX, lastY, lastSize = 8;
 
@@ -180,6 +181,10 @@ public class ModedDesktopInput extends DesktopInput implements ModedInputHandler
     public void changePanSpeed(float value) {
         panSpeed = 4.5f * value / 4f;
         panBoostSpeed = 15f * Mathf.sqrt(value / 4f);
+    }
+
+    public void lockMovement() {
+        movementLocked = !movementLocked;
     }
 
     public void flush(Seq<BuildPlan> plans) {
