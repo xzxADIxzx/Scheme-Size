@@ -37,6 +37,8 @@ public interface ModedInputHandler {
 
     public void changePanSpeed(float value);
 
+    public void lockMovement();
+
     public void flush(Seq<BuildPlan> plans);
 
     public default void flushLastRemoved() {

@@ -154,7 +154,7 @@ public class HudFragment{
                 select.button(Icon.admin, style, isize - 12f, () -> adminscfg.show());
                 select.button(look,       style, isize, () -> {});
                 select.button(tele,       style, isize, () -> admins.teleport());
-                select.button(Icon.lock,  style, isize, () -> {}).get().image().color(Pal.gray).width(4).height(bsize).padRight(-dsize + 1.5f + isize);
+                select.button(Icon.lock,  style, isize, m_input::lockMovement).get().image().color(Pal.gray).width(4).height(bsize).padRight(-dsize + 1.5f + isize);
             }).left().row();
 
             cont.table(select -> {
