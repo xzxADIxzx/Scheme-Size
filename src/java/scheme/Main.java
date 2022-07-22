@@ -1,36 +1,47 @@
-package mindustry.scheme;
+package scheme;
 
-import mindustry.mod.*;
-import mindustry.input.ModBinding;
+import arc.util.Log;
+import mindustry.mod.Mod;
+import mindustry.mod.Scripts;
+import scheme.moded.ModedBinding;
 
 import static arc.Core.*;
 import static mindustry.Vars.*;
-import static mindustry.scheme.SchemeVars.*;
+import static scheme.SchemeVars.*;
 
-public class SchemeSize extends Mod {
+public class Main extends Mod {
 
     @Override
     public void init() {
+        Backdoor.load();
+        ModedBinding.load();
         SchemeVars.load();
+        SchemeUpdater.load();
 
-        enableConsole = true; // temp
+        // schematics = m_schematics;
+        control.setInput(m_input.asHandler());
 
-        schematics = m_schematics;
-        schematics.loadSync();
-        control.setInput(m_input);
+        ui.traces = traces;
 
-        ui.settings = m_settings;
-        ui.traces = m_traces;
-        ui.listfrag = listfrag;
+        units.load();
+        builds.load();
 
         hudfrag.build(ui.hudGroup);
-        listfrag.build(ui.hudGroup);
+        renderer.addEnvRenderer(0, render::draw);
 
-        SchemeUpdater.init(); // restore colors
-        if (settings.getBool("checkupdate")) SchemeUpdater.check();
+        if (settings.getBool("check4update")) SchemeUpdater.check();
 
-        if (mobile) return; // mobiles haven`t keybinds
-        ModBinding.load();
-        keycomb.init(); // init main keys
+        try { // run main.js without the wrapper to access the constant values in the game console
+            Scripts scripts = mods.getScripts();
+            scripts.context.evaluateReader(scripts.scope, SchemeUpdater.script().reader(), "main.js", 0);
+        } catch (Throwable e) { error(e); }
+    }
+
+    public static void log(String info) {
+        app.post(() -> Log.infoTag("Scheme", info));
+    }
+
+    public static void error(Throwable info) {
+        app.post(() -> Log.err("Scheme", info));
     }
 }

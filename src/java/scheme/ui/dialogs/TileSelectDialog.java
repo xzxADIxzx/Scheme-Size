@@ -1,130 +1,98 @@
-package mindustry.ui.dialogs;
+package scheme.ui.dialogs;
 
-import arc.util.*;
-import arc.func.*;
-import arc.scene.ui.*;
-import arc.scene.ui.layout.*;
-import arc.scene.style.*;
-import arc.graphics.g2d.*;
-import mindustry.*;
-import mindustry.ui.*;
-import mindustry.gen.*;
-import mindustry.world.*;
-import mindustry.world.blocks.environment.*;
-import mindustry.content.*;
-import mindustry.graphics.*;
+import arc.func.Boolf;
+import arc.func.Cons;
+import arc.func.Cons3;
+import arc.func.Prov;
+import arc.graphics.g2d.TextureRegion;
+import arc.scene.style.TextureRegionDrawable;
+import arc.scene.ui.layout.Table;
+import arc.struct.Seq;
+import mindustry.content.Blocks;
+import mindustry.gen.Icon;
+import mindustry.graphics.Pal;
+import mindustry.ui.dialogs.BaseDialog;
+import mindustry.world.Block;
+import mindustry.world.blocks.environment.Floor;
+import mindustry.world.blocks.environment.OverlayFloor;
+import mindustry.world.blocks.environment.StaticWall;
+import scheme.ui.List;
 
+import static arc.Core.*;
 import static mindustry.Vars.*;
+import static scheme.SchemeVars.*;
 
-public class TileSelectDialog extends BaseDialog{
+public class TileSelectDialog extends BaseDialog {
 
-	public Cons3<Floor, Block, Floor> callback;
+    public static final int row = mobile ? 8 : 10;
+    public static final float size = mobile ? 54f : 64f;
 
-	private int selected = 0;
-	private Table category = new Table();
-	private Table content = new Table();
+    public Table blocks = new Table();
 
-	private Block floor;
-	private Block block;
-	private Block overlay;
+    public Block floor;
+    public Block block;
+    public Block overlay;
+    public List<Folder> list;
 
-	private Image floorImg;
-	private Image blockImg;
-	private Image overlayImg;
+    public TileSelectDialog() {
+        super("@select.tile");
+        addCloseButton();
 
-	private int row = mobile ? 8 : 10;
+        Seq<Folder> folders = Seq.with(
+                new Folder("select.floor", () -> floor, b -> b instanceof Floor && !(b instanceof OverlayFloor), b -> floor = b),
+                new Folder("select.block", () -> block, b -> b instanceof StaticWall, b -> block = b),
+                new Folder("select.overlay", () -> overlay, b -> b instanceof OverlayFloor, b -> overlay = b));
 
-	public TileSelectDialog(){
-		super("@tileselect");
-		addCloseButton();
+        list = new List<>(folders::each, Folder::name, Folder::icon, folder -> Pal.accent);
+        list.onChanged = this::rebuild;
+        list.set(folders.first());
+        list.rebuild();
+        
+        list.build(cont);
+        cont.add(blocks).growX();
+        cont.table().width(288f);
+    }
 
-		cont.add(category).size(288f, 270f).left();
-		cont.add(content).growX();
-		cont.table().width(288f).right();
+    public void rebuild(Folder folder) {
+        blocks.clear();
+        blocks.table(table -> {
+            table.defaults().size(size);
 
-		floorImg = template("@tile.floor", 0, b -> !(b instanceof Floor) || b instanceof OverlayFloor, b -> floor = b);
-		blockImg = template("@tile.block", 1, b -> !(b instanceof StaticWall), b -> block = b);
-		overlayImg = template("@tile.overlay", 2, b -> !(b instanceof OverlayFloor), b -> overlay = b);
-	}
+            table.button(Icon.none, () -> folder.callback(null));
+            table.button(Icon.line, () -> folder.callback(Blocks.air));
 
-	private void rebuild(Boolf<Block> skip, Cons<Block> callback){
-		content.clear();
-		content.table(table -> {
-			table.button(Icon.none, () -> { 
-				callback.get(null);
-				updateimg();
-			}).size(64f);
-			table.button(Icon.line, () -> { 
-				callback.get(Blocks.air);
-				updateimg();
-			}).size(64f);
+            content.blocks().each(folder::pred, block -> {
+                TextureRegionDrawable drawable = new TextureRegionDrawable(block.uiIcon);
+                table.button(drawable, () -> folder.callback(block));
 
-			Vars.content.blocks().each(block -> {
-				if(skip.get(block) || block.id < 2) return;
+                if (table.getChildren().count(i -> true) % row == 0) table.row();
+            });
+        });
+    }
 
-				var drawable = new TextureRegionDrawable(block.uiIcon);
-				table.button(drawable, () -> { 
-					callback.get(block);
-					updateimg();
-				}).size(mobile ? 58f : 64f);
+    public void select(Cons3<Floor, Block, Floor> callback) {
+        callback.get(floor != null ? floor.asFloor() : null, block, overlay != null ? overlay.asFloor() : null);
+    }
 
-				if((table.getChildren().count(i -> true) - 1) % row == row - 1) table.row();
-			});
-		});
-	}
+    public record Folder(String name, Prov<Block> block, Boolf<Block> pred, Cons<Block> callback) {
 
-	private Image template(String name, int select, Boolf<Block> skip, Cons<Block> callback){
-		Button check = new Button(Styles.transt);
-		check.changed(() -> {
-			selected = select;
-			rebuild(skip, callback);
-		});
+        public String name() {
+            Block selected = block.get();
+            return bundle.format(name, selected == null ? bundle.get("none") : selected.localizedName);
+        }
 
-		Image img;
-		Table icon = new Table(){
-			@Override
-			public void draw(){
-				super.draw();
-				Draw.color(check.isChecked() ? Pal.accent : Pal.gray);
-				Draw.alpha(parentAlpha);
-				Lines.stroke(Scl.scl(4f));
-				Lines.rect(x, y, width, height);
-				Draw.reset();
-			}
-		};
-		icon.add(img = new Image().setScaling(Scaling.bounded)).pad(8f).grow();
+        public TextureRegion icon() {
+            Block selected = block.get();
+            return selected == null ? Icon.none.getRegion() : selected == Blocks.air ? Icon.line.getRegion() : selected.uiIcon;
+        }
 
-		check.add(icon).size(74f);
-		check.table(t -> {
-			t.labelWrap(name).growX().row();
-			t.image().height(4f).color(Pal.gray).growX().bottom().padTop(4f);
-		}).size(170f, 74f).pad(10f);
+        public boolean pred(Block block) {
+            return pred.get(block) && block.id > 1;
+        }
 
-		category.add(check).checked(t -> selected == select).size(264f, 74f).padBottom(16f).row();
-
-		if(selected == select) check.change();
-		return img;
-	}
-
-	private void updateimg(){
-		floorImg.setDrawable(getIcon(floor));
-		blockImg.setDrawable(getIcon(block));
-		overlayImg.setDrawable(getIcon(overlay));
-	}
-
-	private TextureRegionDrawable getIcon(Block block){
-		// bruh
-		return block == null ? new TextureRegionDrawable(Icon.none) : block == Blocks.air ? new TextureRegionDrawable(Icon.line) : new TextureRegionDrawable(block.uiIcon);
-	}
-
-	private Floor asFloor(Block block){
-		return block == null ? null : block.asFloor();
-	}
-
-	public void select(boolean show, Cons3<Floor, Block, Floor> callback){
-		this.callback = callback;
-		if(show) show();
-		else callback.get(asFloor(floor), block, asFloor(overlay));
-		updateimg();
-	}
+        public void callback(Block block) {
+            callback.get(block);
+            tile.list.rebuild();
+        }
+    }
 }

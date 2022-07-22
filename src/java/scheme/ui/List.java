@@ -1,15 +1,21 @@
-package mindustry.ui.fragments;
+package scheme.ui;
 
-import arc.util.*;
-import arc.scene.ui.*;
-import arc.scene.ui.layout.*;
-import arc.func.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import mindustry.ui.*;
-import mindustry.graphics.*;
+import arc.func.Cons;
+import arc.func.Func;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Lines;
+import arc.graphics.g2d.TextureRegion;
+import arc.scene.ui.Button;
+import arc.scene.ui.ScrollPane;
+import arc.scene.ui.layout.Cell;
+import arc.scene.ui.layout.Scl;
+import arc.scene.ui.layout.Table;
+import arc.util.Scaling;
+import mindustry.graphics.Pal;
+import mindustry.ui.Styles;
 
-public class ListFragment<T> {
+public class List<T> {
 
     public T selected;
 
@@ -17,12 +23,12 @@ public class ListFragment<T> {
     public Func<T, String> title;
     public Func<T, TextureRegion> texture;
     public Func<T, Color> color;
-    public Cons<T> onChanged = t -> {};
+    public Cons<T> onChanged = value -> {};
 
     public Cell<ScrollPane> pane;
     public Table list = new Table();
 
-    public ListFragment(Cons<Cons<T>> iterator, Func<T, String> title, Func<T, TextureRegion> texture, Func<T, Color> color) {
+    public List(Cons<Cons<T>> iterator, Func<T, String> title, Func<T, TextureRegion> texture, Func<T, Color> color) {
         this.iterator = iterator;
         this.title = title;
         this.texture = texture;
@@ -30,13 +36,13 @@ public class ListFragment<T> {
     }
 
     public void build(Table parent) {
-        pane = parent.pane(list).size(288f, 540f).scrollX(false);
+        pane = parent.pane(list).size(288f, 630f).scrollX(false);
     }
 
     public void rebuild() {
         list.clear();
         iterator.get(item -> {
-            Button check = new Button(Styles.transt);
+            Button check = new Button(Styles.cleart);
             check.changed(() -> set(item));
 
             Table icon = new Table() {

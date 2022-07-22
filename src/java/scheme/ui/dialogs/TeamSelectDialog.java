@@ -1,15 +1,15 @@
-package mindustry.ui.dialogs;
+package scheme.ui.dialogs;
 
-import arc.func.*;
-import mindustry.gen.*;
-import mindustry.game.*;
+import arc.func.Cons2;
+import mindustry.game.Team;
+import mindustry.gen.Player;
 
 public class TeamSelectDialog extends ListDialog {
 
     public Cons2<Player, Team> callback;
 
     public TeamSelectDialog() {
-        super("@teamselect");
+        super("@select.team");
 
         addPlayer();
         addTeam();

@@ -1,31 +1,33 @@
-package mindustry.scheme;
+package scheme;
 
-import mindustry.core.*;
-import mindustry.game.*;
-import mindustry.graphics.*;
-import mindustry.input.*;
-import mindustry.type.*;
-import mindustry.ui.dialogs.*;
-import mindustry.ui.fragments.*;
-import mindustry.admins.*;
+import mindustry.core.UI;
+import mindustry.type.Item;
+import mindustry.type.StatusEffect;
+import mindustry.type.UnitType;
+import scheme.moded.ModedDesktopInput;
+import scheme.moded.ModedInputHandler;
+import scheme.moded.ModedSchematics;
+import scheme.tools.*;
+import scheme.tools.admins.AdminsTools;
+import scheme.ui.HudFragment;
+import scheme.ui.dialogs.*;
 
 import static arc.Core.*;
 import static mindustry.Vars.*;
 
 public class SchemeVars {
 
-    public static ModSchematics m_schematics;
-    public static ModInputHandler m_input;
+    public static ModedSchematics m_schematics;
+    public static ModedInputHandler m_input;
 
-    public static ModSettingsMenuDialog m_settings;
-    public static KeybindCombinationsDialog keycomb;
-    public static ModTraceDialog m_traces;
-
-    public static AdminsUtilsHandler admins;
-    public static AdditionalRenderer m_renderer;
+    public static AdminsTools admins;
+    public static RendererTools render;
+    public static BuildingTools build;
+    public static UnitsCache units;
+    public static BuildsCache builds;
 
     public static AdminsConfigDialog adminscfg;
-    public static RenderConfigDialog rendercfg;
+    public static RendererConfigDialog rendercfg;
 
     public static AISelectDialog ai;
     public static TeamSelectDialog team;
@@ -35,36 +37,46 @@ public class SchemeVars {
     public static ContentSelectDialog<StatusEffect> effect;
     public static ContentSelectDialog<Item> item;
 
-    public static ModHudFragment hudfrag;
-    public static ModPlayerListFragment listfrag;
+    // public static KeybindCombinationsDialog keycomb;
+    // public static ModedSettingsMenuDialog m_settings;
+    public static TraceDialog traces;
+
+    public static HudFragment hudfrag;
+    // public static PlayerListFragment listfrag;
 
     public static void load() {
-        m_schematics = new ModSchematics();
-        m_input = mobile ? new ModMobileInput() : new ModDesktopInput();
-        m_renderer = new AdditionalRenderer();
+        // m_schematics = new ModedSchematics();
+        // m_input = mobile ? new ModMobileInput() : new ModDesktopInput();
+        m_input = new ModedDesktopInput();
 
-        m_settings = new ModSettingsMenuDialog();
-        keycomb = new KeybindCombinationsDialog();
-        m_traces = new ModTraceDialog();
+        admins = AdminsConfigDialog.getTools();
+        render = new RendererTools();
+        build = new BuildingTools();
+        units = new UnitsCache();
+        builds = new BuildsCache();
 
         adminscfg = new AdminsConfigDialog();
-        rendercfg = new RenderConfigDialog();
+        rendercfg = new RendererConfigDialog();
 
         ai = new AISelectDialog();
         team = new TeamSelectDialog();
         tile = new TileSelectDialog();
 
-        unit = new ContentSelectDialog<UnitType>("@unitselect", content.units(), 1, 20, 1, value -> {
-            return bundle.format("unit.zero.units", value);
+        unit = new ContentSelectDialog<>("@select.unit", content.units(), 1, 24, 1, value -> {
+            return bundle.format("select.units", value);
         });
-        effect = new ContentSelectDialog<StatusEffect>("@effectselect", content.statusEffects(), 0, 5 * 3600, 60, value -> {
-            return value == 0 ? "@cleareffect" : bundle.format("unit.zero.seconds", value / 60f);
+        effect = new ContentSelectDialog<>("@select.effect", content.statusEffects(), 0, 5 * 3600, 60, value -> {
+            return value == 0 ? "@select.effect.clear" : bundle.format("select.seconds", value / 60f);
         });
-        item = new ContentSelectDialog<Item>("@itemselect", content.items(), -10000, 10000, 200, value -> {
-            return value == 0 ? "@clearitem" : bundle.format("unit.zero.items", UI.formatAmount(value.longValue()));
+        item = new ContentSelectDialog<>("@select.item", content.items(), -10000, 10000, 500, value -> {
+            return value == 0 ? "@select.item.clear" : bundle.format("select.items", UI.formatAmount(value.longValue()));
         });
 
-        hudfrag = new ModHudFragment();
-        listfrag = new ModPlayerListFragment();
+        // m_settings = new ModSettingsMenuDialog();
+        // keycomb = new KeybindCombinationsDialog();
+        traces = new TraceDialog();
+
+        hudfrag = new HudFragment();
+        // listfrag = new PlayerListFragment();
     }
 }

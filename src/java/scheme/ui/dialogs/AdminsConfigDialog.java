@@ -1,58 +1,66 @@
-package mindustry.ui.dialogs;
+package scheme.ui.dialogs;
 
-import arc.scene.ui.*;
-import arc.scene.ui.layout.*;
-import arc.scene.event.*;
-import arc.graphics.*;
-import mindustry.ui.*;
+import arc.scene.event.Touchable;
+import arc.scene.ui.Label;
+import arc.scene.ui.Slider;
+import arc.scene.ui.layout.Table;
+import mindustry.ui.Styles;
+import mindustry.ui.dialogs.BaseDialog;
+import scheme.moded.ModedBinding;
+import scheme.tools.admins.*;
 
 import static arc.Core.*;
+import static scheme.SchemeVars.*;
 
-public class AdminsConfigDialog extends BaseDialog{
-	
-	public boolean enabled = settings.getBool("enabledsecret", false);
-	public boolean isAdmin = settings.getBool("adminssecret", false);
-	public boolean usejs = settings.getBool("usejs", true);
+public class AdminsConfigDialog extends BaseDialog {
 
-	public AdminsConfigDialog(){
-		super("@secret.name");
-		addCloseButton();
+    public boolean enabled = settings.getBool("adminsenabled", false);
+    public int way = settings.getInt("adminsway", 0);
 
-		hidden(() -> {
-			settings.put("enabledsecret", enabled);
-			settings.put("adminssecret", isAdmin);
-			settings.put("usejs", usejs);
-		});
+    public AdminsConfigDialog() {
+        super("@admins.name");
+        addCloseButton();
 
-		new Table(table -> {
-			table.touchable = Touchable.disabled;
+        hidden(() -> {
+            settings.put("adminsenabled", enabled);
+            settings.put("adminsway", way);
+            admins = getTools();
+        });
 
-			Label text = table.labelWrap("").style(Styles.outlineLabel).padLeft(33f).growX().left().get();
-			Slider lever = new Slider(0, 1, 1, false);
-			lever.moved(value -> {
-				enabled = value == 1;
-				text.setText(bundle.format("secret.use.name", bundle.get(enabled ? "secret.use.enabled" : "secret.use.disabled")));
-			});
-			lever.setValue(enabled ? 1 : 0);
-			lever.change();
+        new Table(table -> {
+            table.touchable = Touchable.disabled;
 
-			cont.stack(lever, table).width(320).row();
-		});
+            Label text = table.labelWrap("").style(Styles.outlineLabel).padLeft(32f).growX().left().get();
+            Slider lever = new Slider(0, 1, 1, false);
 
-		cont.label(() -> "@secret.who.name").padTop(16f).row();
-		cont.table(table -> {
-			table.check("@secret.who.server", value -> isAdmin = !value).disabled(t -> !enabled).checked(t -> !isAdmin).left().row();
-			table.check("@secret.who.admin", value -> isAdmin = value).disabled(t -> !enabled).checked(t -> isAdmin).left().row();
-		}).left().row();
+            lever.moved(value -> text.setText(bundle.format("admins.lever", bundle.get((enabled = value == 1) ? "admins.enabled" : "admins.disabled"))));
+            lever.setValue(enabled ? 1 : 0);
+            lever.change();
 
-		cont.label(() -> "@secret.way.name").padTop(16f).row();
-		cont.table(table -> {
-			table.check("@secret.way.js", value -> usejs = value).disabled(t -> !enabled || !isAdmin).checked(t -> usejs).left().row();
-			table.check("@secret.way.secret", value -> usejs = !value).disabled(t -> !enabled || !isAdmin).checked(t -> !usejs).left().row();
-		}).left().row();
+            cont.stack(lever, table).width(320f).row();
+        });
 
-		cont.labelWrap("").labelAlign(2, 8).padTop(16f).size(320f, 120f).update(t -> {
-			t.setText(enabled && isAdmin ? (usejs ? "@secret.way.js.description" : "@secret.way.secret.description") : "");
-		}).get().getStyle().fontColor = Color.lightGray;;
-	}
+        cont.labelWrap("@admins.way").padTop(16f).width(320f).row();
+        cont.table(table -> {
+            addCheck(table, "@admins.way.internal", 0);
+            addCheck(table, "@admins.way.slashjs", 1);
+            addCheck(table, "@admins.way.darkdustry", 2);
+        }).left().row();
+    }
+
+    private void addCheck(Table table, String text, int way) {
+        table.check(text + ".name", value -> this.way = way).checked(t -> this.way == way).disabled(t -> !enabled).tooltip(text + ".desc").left().row();
+    }
+
+    /** Made static so that it can be accessed before the dialog is created. */
+    public static AdminsTools getTools() {
+        return new AdminsTools[] {
+                new Internal(), new SlashJs(), new Darkdustry()
+        }[settings.getInt("adminsway", 0)];
+    }
+
+    /** Key to press to open the dialog. */
+    public static String keybind() {
+        return "([accent]\uE82C/" + keybinds.get(ModedBinding.adminscfg).key.toString() + "[])";
+    }
 }

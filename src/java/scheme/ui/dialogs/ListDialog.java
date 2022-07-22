@@ -1,31 +1,33 @@
-package mindustry.ui.dialogs;
+package scheme.ui.dialogs;
 
-import arc.graphics.g2d.*;
+import arc.graphics.g2d.TextureRegion;
 import arc.scene.ui.Dialog;
-import arc.util.*;
-import mindustry.*;
-import mindustry.game.*;
-import mindustry.gen.*;
-import mindustry.ui.fragments.*;
+import arc.util.Structs;
+import mindustry.game.Team;
+import mindustry.gen.Groups;
+import mindustry.gen.Player;
+import mindustry.ui.dialogs.BaseDialog;
+import scheme.ui.List;
 
 import static arc.Core.*;
+import static mindustry.Vars.*;
 
 public class ListDialog extends BaseDialog {
 
-    public ListFragment<Player> players;
-    public ListFragment<Team> teams;
+    public List<Player> players;
+    public List<Team> teams;
 
     public ListDialog(String title) {
         super(title);
         addCloseButton();
 
-        players = new ListFragment<>(Groups.player::each, Player::coloredName, Player::icon, player -> player.team().color);
-        teams = new ListFragment<>(cons -> Structs.each(cons, Team.baseTeams), Team::localized, ListDialog::texture, team -> team.color);
+        players = new List<>(Groups.player::each, Player::coloredName, Player::icon, player -> player.team().color);
+        teams = new List<>(cons -> Structs.each(cons, Team.baseTeams), Team::localized, ListDialog::texture, team -> team.color);
     }
 
     @Override
     public Dialog show() {
-        players.set(Vars.player);
+        players.set(player);
         return super.show();
     }
 
@@ -38,6 +40,7 @@ public class ListDialog extends BaseDialog {
         teams.build(cont);
         teams.pane.right();
 
+        // not via ListFragment.set because some dialogs are closed after selecting a team
         players.onChanged = player -> teams.selected = player.team();
     }
 
@@ -45,14 +48,13 @@ public class ListDialog extends BaseDialog {
         cont.table().width(288f);
     }
 
-    // TODO: team icons are too big, but in V7 anuke will add new icons for all commands
     public static TextureRegion texture(Team team) {
         return atlas.find(new String[] {
                 "team-derelict",
                 "team-sharded",
-                "status-boss-ui",
+                "team-crux",
+                "team-malis",
                 "status-electrified-ui",
-                "status-spore-slowed-ui",
                 "status-wet-ui"
         }[team.id]);
     }

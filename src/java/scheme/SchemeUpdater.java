@@ -1,12 +1,12 @@
-package mindustry.scheme;
+package scheme;
 
-import arc.func.*;
-import arc.util.*;
-import arc.util.io.*;
-import arc.util.serialization.*;
-import arc.util.Http.*;
-import arc.files.*;
-import mindustry.mod.Mods.*;
+import arc.util.Http;
+import arc.util.Http.HttpResponse;
+import arc.util.io.Streams;
+import arc.util.serialization.Jval;
+import arc.files.Fi;
+import arc.files.ZipFi;
+import mindustry.mod.Mods.LoadedMod;
 
 import static arc.Core.*;
 import static mindustry.Vars.*;
@@ -15,80 +15,71 @@ import java.net.*;
 
 public class SchemeUpdater {
 
-    private static LoadedMod mod;
-    private static float progress;
-    private static String repo;
+    public static final String repo = "xzxADIxzx/Scheme-Size";
 
-    public static void init() {
-        mod = mods.getMod(SchemeSize.class);
-        repo = ghApi + "/repos/" + mod.getRepo() + "/releases/latest";
+    public static LoadedMod mod;
+    public static String url;
+
+    public static float progress;
+    public static String download;
+
+    public static void load() {
+        mod = mods.getMod(Main.class);
+        url = ghApi + "/repos/" + repo + "/releases/latest";
 
         String updates = "[orange]"; // coloring description of the mod
         for (String[] names : new String[][] {
-                {"Release!", "Settings", "Java 8", "Controls", "Updater", "Mobile Support", "Admin`s Secret"},
-                {"Building Tools", "AI Power", "Renderer", "Cursed Schemes", "Deep Cleaning"}
+                { "Release!", "Settings", "Java 8", "Controls", "Updater", "Mobile Support", "Admins Tools" },
+                { "Building Tools", "AI Power", "Renderer Tools", "Deep Cleaning" } // TODO: "Cursed Schemes"
         }) {
             updates += "\n"; // add update names
             for (String name : names) updates += "\n   - " + name;
         }
 
         Jval meta = Jval.read(new ZipFi(mod.file).child("mod.json").readString());
-        mod.meta.author = meta.getString("author");
+        mod.meta.author = meta.getString("author"); // restore colors in mod's meta
         mod.meta.description = meta.getString("description") + updates;
     }
 
     public static void check() {
-        Http.get(repo, res -> {
-            var json = Jval.read(res.getResultAsString());
-            String version = json.getString("tag_name").substring(1);
+        Main.log("Checking for updates.");
+        Http.get(url, res -> {
+            Jval json = Jval.read(res.getResultAsString());
+            String latest = json.getString("tag_name").substring(1);
+            download = json.get("assets").asArray().get(0).getString("browser_download_url");
 
-            if (version.equals(mod.meta.version)) return;
-            ui.showCustomConfirm("@updater.name",
-                    bundle.format("updater.info", mod.meta.version, version),
+            if (!latest.equals(mod.meta.version)) ui.showCustomConfirm(
+                    "@updater.name", bundle.format("updater.info", mod.meta.version, latest),
                     "@updater.load", "@ok", SchemeUpdater::update, () -> {});
-        }, e -> {});
+        }, Main::error);
     }
 
     public static void update() {
-        try {
-            // dancing with tambourines, just to remove the old mod
+        try { // dancing with tambourines, just to remove the old mod
             if (mod.loader instanceof URLClassLoader cl) cl.close();
             mod.loader = null;
-        } catch (Exception e) {
-            return;
-        }
+        } catch (Throwable e) { Main.error(e); } // this has never happened before, but everything can be
 
         ui.loadfrag.show("@downloading");
         ui.loadfrag.setProgress(() -> progress);
 
-        Http.get(repo, res -> {
-            var json = Jval.read(res.getResultAsString());
-            var assets = json.get("assets").asArray();
-
-            var dexed = assets.find(j -> j.getString("name").startsWith("dexed") && j.getString("name").endsWith(".jar"));
-            var asset = dexed == null ? assets.find(j -> j.getString("name").endsWith(".jar")) : dexed;
-
-            if (asset != null) {
-                String url = asset.getString("browser_download_url");
-                Http.get(url, r -> handle(mod.getRepo(), r, p -> progress = p), e -> {});
-            }
-        }, e -> {});
+        Http.get(download, SchemeUpdater::handle, Main::error);
     }
 
-    public static void handle(String repo, HttpResponse res, Floatc cons) {
+    public static void handle(HttpResponse res) {
         try {
             Fi file = tmpDirectory.child(repo.replace("/", "") + ".zip");
-            long len = res.getContentLength();
+            Streams.copyProgress(res.getResultAsStream(), file.write(false), res.getContentLength(), 4096, p -> progress = p);
 
-            Streams.copyProgress(res.getResultAsStream(), file.write(false), len, 4096, cons);
-
-            mod = mods.importMod(file);
-            mod.setRepo(repo);
-
+            mods.importMod(file).setRepo(repo);
             file.delete();
-            app.post(ui.loadfrag::hide);
 
+            app.post(ui.loadfrag::hide);
             ui.showInfoOnHidden("@mods.reloadexit", app::exit);
-        } catch (Throwable e) {}
+        } catch (Throwable e) { Main.error(e); }
+    }
+
+    public static Fi script() {
+        return mod.root.child("scripts").child("main.js");
     }
 }

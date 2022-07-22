@@ -1,264 +1,91 @@
-package mindustry.input;
+package scheme.moded;
 
-import arc.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.util.*;
-import mindustry.content.*;
-import mindustry.core.*;
-import mindustry.entities.units.*;
-import mindustry.game.EventType.*;
-import mindustry.game.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.input.Placement.*;
-import mindustry.world.*;
+import mindustry.content.Blocks;
+import mindustry.core.World;
+import mindustry.entities.units.BuildPlan;
+import mindustry.graphics.Pal;
+import mindustry.input.InputHandler;
+import mindustry.input.Placement;
+import mindustry.input.Placement.NormalizeDrawResult;
+import mindustry.world.Tile;
+import scheme.tools.BuildingTools.Mode;
+import scheme.tools.admins.Darkdustry;
 
+import static arc.Core.*;
 import static mindustry.Vars.*;
+import static scheme.SchemeVars.*;
 
-// Last Update - Oct 31, 2021
-public class ModInputHandler extends InputHandler{
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Lines;
+import arc.struct.Seq;
 
-	final static float playerSelectRange = mobile ? 17f : 11f;
-    final static Rect r1 = new Rect(), r2 = new Rect();
+/** Last update - Jul 19, 2022 */
+public interface ModedInputHandler {
 
-    public BuildingTools bt = new BuildingTools(this);
+    public int sizeX = mobile ? 0 : -16;
+    public int sizeY = mobile ? 32 : -16;
 
-    public boolean freePanning = false;
-    public boolean mobileLookAt = false;
+    public default void modedInput() {}
 
-    public void drawSelectionMod(int x1, int y1, int x2, int y2, int size){
-        drawSelection(x1, y1, x2, y2, size);
+    public default void buildInput() {}
 
-        // Show Size
-        if(Core.settings.getBool("copyshow")){
-            NormalizeResult result = Placement.normalizeArea(x1, y1, x2, y2, 0, false, size);
+    public boolean hasMoved(int x, int y);
 
-            int sizeX = result.x2 - result.x;
-            int sizeY = result.y2 - result.y;
-            String strSizeX = sizeX == size ? "[accent]" + String.valueOf(++sizeX) + "[]" : String.valueOf(++sizeX);
-            String strSizeY = sizeY == size ? "[accent]" + String.valueOf(++sizeY) + "[]" : String.valueOf(++sizeY);
-            String info = strSizeX + ", " + strSizeY;
-            ui.showLabel(info, 0.02f, x2 * tilesize + (mobile ? 0 : 16), y2 * tilesize + (mobile ? 32 : -16));
-        }
+    public default boolean isDarkdustry() {
+        return admins instanceof Darkdustry;
     }
 
-    public void drawBreakSelectionMod(int x1, int y1, int x2, int y2, int size){
-        drawBreakSelection(x1, y1, x2, y2, size);
+    public void changePanSpeed(float value);
 
-        // Show Size
-        if(Core.settings.getBool("breakshow")){
-            NormalizeResult result = Placement.normalizeArea(x1, y1, x2, y2, 0, false, size);
+    public void flush(Seq<BuildPlan> plans);
 
-            int sizeX = result.x2 - result.x;
-            int sizeY = result.y2 - result.y;
-            String strSizeX = sizeX == size ? "[accent]" + String.valueOf(++sizeX) + "[]" : String.valueOf(++sizeX);
-            String strSizeY = sizeY == size ? "[accent]" + String.valueOf(++sizeY) + "[]" : String.valueOf(++sizeY);
-            String info = strSizeX + ", " + strSizeY;
-            ui.showLabel(info, 0.02f, x2 * tilesize + (mobile ? 0 : 16), y2 * tilesize + (mobile ? 32 : -16));
-        }
+    public default void flushLastRemoved() {
+        // if (settings.getBool("hardconnect")) build.save(build.removed);
+        // flush(build.removed);
+        // build.removed.clear();
     }
 
-    public void drawEditSelectionMod(int x1, int y1, int x2, int y2, int size){
-        NormalizeDrawResult result = Placement.normalizeDrawArea(Blocks.air, x1, y1, x2, y2, false, size, 1f);
+    public default void flushBuildingTools() {
+        if (build.mode != Mode.remove) flush(build.plan);
+        else build.plan.each(player.unit()::addBuild);
+        build.plan.clear();
+    }
 
+    public InputHandler asHandler();
+
+    // methods that exist but, who knows why, not available
+    public default Tile tileAt() {
+        return world.tile(tileX(), tileY());
+    }
+
+    public default int tileX() {
+        return World.toTile(input.mouseWorldX());
+    }
+
+    public default int tileY() {
+        return World.toTile(input.mouseWorldY());
+    }
+
+    // some drawing methods
+    public default void drawSize(int x1, int y1, int x2, int y2, int maxLength) {
+        String x = getSize(Math.abs(x1 - x2), maxLength);
+        String y = getSize(Math.abs(y1 - y2), maxLength);
+        ui.showLabel(x + ", " + y, 0.02f, x2 * tilesize + sizeX, y2 * tilesize + sizeY);
+    }
+
+    public default String getSize(int size, int maxLength) {
+        return ++size >= maxLength ? "[accent]" + maxLength + "[]" : String.valueOf(size);
+    }
+
+    public default void drawEditSelection(int x1, int y1, int x2, int y2, int maxLength){
+        NormalizeDrawResult result = Placement.normalizeDrawArea(Blocks.air, x1, y1, x2, y2, false, maxLength, 1f);
+
+        drawSize(x1, y1, x2, y2, maxLength);
         Lines.stroke(2f);
 
         Draw.color(Pal.darkerMetal);
         Lines.rect(result.x, result.y - 1, result.x2 - result.x, result.y2 - result.y);
         Draw.color(Pal.darkMetal);
         Lines.rect(result.x, result.y, result.x2 - result.x, result.y2 - result.y);
-    }
-
-    public void drawOverRequestMod(BuildPlan request){
-        boolean valid = validPlace(request.x, request.y, request.block, request.rotation);
-
-        Draw.reset();
-        Draw.mixcol(!valid ? Pal.breakInvalid : Color.white, (!valid ? 0.4f : 0.24f) + Mathf.absin(Time.globalTime, 6f, 0.28f));
-        Draw.alpha(1f);
-        request.block.drawRequestConfigTop(request, cons -> {
-            selectRequests.each(cons);
-            lineRequests.each(cons);
-        });
-        Draw.reset();
-    }
-
-    public void showSchematicSaveMod(){
-        if(lastSchematic == null) return;
-
-        ui.showTextInput("@schematic.add", "@name", "", text -> {
-            Schematic replacement = schematics.all().find(s -> s.name().equals(text));
-            if(replacement != null){
-                ui.showConfirm("@confirm", "@schematic.replace", () -> {
-                    schematics.overwrite(replacement, lastSchematic);
-                    ui.showInfoFade("@schematic.saved");
-                    ui.schematics.showInfo(replacement);
-                });
-            }else{
-                lastSchematic.tags.put("name", text);
-                lastSchematic.tags.put("description", "");
-                schematics.add(lastSchematic);
-                ui.showInfoFade("@schematic.saved");
-                ui.schematics.showInfo(lastSchematic);
-                Events.fire(new SchematicCreateEvent(lastSchematic));
-            }
-        });
-    }
-
-    public int rawTileXMod(){
-        return World.toTile(Core.input.mouseWorld().x);
-    }
-
-    public int rawTileYMod(){
-        return World.toTile(Core.input.mouseWorld().y);
-    }
-
-	public int tileXMod(float cursorX){
-        Vec2 vec = Core.input.mouseWorld(cursorX, 0);
-        if(selectedBlock()){
-            vec.sub(block.offset, block.offset);
-        }
-        return World.toTile(vec.x);
-    }
-
-    public int tileYMod(float cursorY){
-        Vec2 vec = Core.input.mouseWorld(0, cursorY);
-        if(selectedBlock()){
-            vec.sub(block.offset, block.offset);
-        }
-        return World.toTile(vec.y);
-    }
-
-    public Tile tileAtMod(float x, float y){
-        return world.tile(tileXMod(x), tileYMod(y));
-    }
-
-    public boolean tileTappedMod(@Nullable Building build){
-        if(build == null){
-            frag.inv.hide();
-            frag.config.hideConfig();
-            return false;
-        }
-        boolean consumed = false, showedInventory = false;
-
-        //check if tapped block is configurable
-        if(build.block.configurable && build.interactable(player.team())){
-            consumed = true;
-            if((!frag.config.isShown() && build.shouldShowConfigure(player)) //if the config fragment is hidden, show
-            //alternatively, the current selected block can 'agree' to switch config tiles
-            || (frag.config.isShown() && frag.config.getSelectedTile().onConfigureTileTapped(build))){
-                Sounds.click.at(build);
-                frag.config.showConfig(build);
-            }
-            //otherwise...
-        }else if(!frag.config.hasConfigMouse()){ //make sure a configuration fragment isn't on the cursor
-            //then, if it's shown and the current block 'agrees' to hide, hide it.
-            if(frag.config.isShown() && frag.config.getSelectedTile().onConfigureTileTapped(build)){
-                consumed = true;
-                frag.config.hideConfig();
-            }
-
-            if(frag.config.isShown()){
-                consumed = true;
-            }
-        }
-
-        //call tapped event
-        if(!consumed && build.interactable(player.team())){
-            build.tapped();
-        }
-
-        //consume tap event if necessary
-        if(build.interactable(player.team()) && build.block.consumesTap){
-            consumed = true;
-        }else if(build.interactable(player.team()) && build.block.synthetic() && (!consumed || build.block.allowConfigInventory)){
-            if(build.block.hasItems && build.items.total() > 0){
-                frag.inv.showFor(build);
-                consumed = true;
-                showedInventory = true;
-            }
-        }
-
-        if(!showedInventory){
-            frag.inv.hide();
-        }
-
-        return consumed;
-    }
-
-    public boolean canMineMod(Tile tile){
-        return !Core.scene.hasMouse()
-            && tile.drop() != null
-            && player.unit().validMine(tile)
-            && !((!Core.settings.getBool("doubletapmine") && tile.floor().playerUnmineable) && tile.overlay().itemDrop == null)
-            && player.unit().acceptsItem(tile.drop())
-            && tile.block() == Blocks.air;
-    }
-
-    public boolean tryBeginMineMod(Tile tile){
-        if(canMineMod(tile)){
-            player.unit().mineTile = tile;
-            return true;
-        }
-        return false;
-    }
-
-    public boolean tryStopMineMod(Tile tile){
-        if(player.unit().mineTile == tile){
-            player.unit().mineTile = null;
-            return true;
-        }
-        return false;
-    }
-
-    public boolean tryStopMineMod(){
-        if(player.unit().mining()){
-            player.unit().mineTile = null;
-            return true;
-        }
-        return false;
-    }
-
-    public boolean canTapPlayerMod(float x, float y){
-        return player.within(x, y, playerSelectRange) && player.unit().stack.amount > 0;
-    }
-
-    public boolean tryTapPlayerMod(float x, float y){
-        if(canTapPlayerMod(x, y)){
-            droppingItem = true;
-            return true;
-        }
-        return false;
-    }
-
-
-    // mobile features
-    public void toggleFreePan(){
-        freePanning = !freePanning;
-    }
-
-    public void toggleLookAt(){
-        mobileLookAt = !mobileLookAt;
-    }
-
-
-    // helpfull methods
-    public boolean isAdmin(){
-        return Core.settings.getBool("adminssecret") && !Core.settings.getBool("usejs");
-    }
-
-    public void apply(){
-        if(bt.isRemoving()) bt.plan.each(player.unit()::addBuild);
-        else flushRequests(bt.plan);
-        bt.plan.clear();
-    }
-
-    public void flushLastRemoved(){
-        if(Core.settings.getBool("hardconnect")) bt.save(bt.removed);
-
-        flushRequests(bt.removed);
-        bt.removed.clear();
     }
 }
