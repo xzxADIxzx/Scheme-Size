@@ -68,7 +68,7 @@ public class ModedDesktopInput extends DesktopInput implements ModedInputHandler
     public void update() {
         super.update();
 
-        if (scene.getKeyboardFocus() instanceof TextField) return;
+        if (scene.getKeyboardFocus() instanceof TextField || locked()) return;
 
         modedInput();
         buildInput();
