@@ -1,6 +1,9 @@
 // well, after the 136th build, it became much easier
 Vars.maxSchematicSize = 511;
 
+// Mod.loader is null on mobile devices
+if (mobile) return;
+
 // it is really useful for development
 var mod = Vars.mods.getMod("scheme-size-new")
 var get = (pkg) => mod.loader.loadClass(pkg).newInstance()
