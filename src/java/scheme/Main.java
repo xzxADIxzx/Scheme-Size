@@ -31,6 +31,7 @@ public class Main extends Mod {
 
         if (settings.getBool("check4update")) SchemeUpdater.check();
 
+        if (mobile) return; // Mod.loader is empty on mobile devices
         try { // run main.js without the wrapper to access the constant values in the game console
             Scripts scripts = mods.getScripts();
             scripts.context.evaluateReader(scripts.scope, SchemeUpdater.script().reader(), "main.js", 0);
