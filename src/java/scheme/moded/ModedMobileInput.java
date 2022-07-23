@@ -23,23 +23,24 @@ public class ModedMobileInput extends MobileInput implements ModedInputHandler {
     public int buildX = -1, buildY = -1;
     public int lastX, lastY, lastSize = 8;
 
+    private boolean isRelease() {
+        return lastTouched && !input.isTouched(0);
+    }
+
+    private boolean isTap() {
+        return !lastTouched && input.isTouched(0);
+    }
 
     @Override
     protected void flushPlans(Seq<BuildPlan> plans) {
+        build.save(plans);
         super.flushPlans(plans);
     }
 
     @Override
-    protected void removeSelection(int x1, int y1, int x2, int y2, boolean flush){
+    protected void removeSelection(int x1, int y1, int x2, int y2, boolean flush) {
+        build.save(x1, y1, x2, y2, maxSchematicSize);
         super.removeSelection(x1, y1, x2, y2, flush, maxSchematicSize);
-    }
-
-    private boolean isRelease(){
-        return lastTouched && !input.isTouched(0);
-    }
-
-    private boolean isTap(){
-        return !lastTouched && input.isTouched(0);
     }
 
     @Override
@@ -95,6 +96,7 @@ public class ModedMobileInput extends MobileInput implements ModedInputHandler {
         if (has) build.plan.clear();
 
         if (using) {
+            if (build.mode == Mode.drop) build.drop(cursorX, cursorY);
             if (has) {
                 if (build.mode == Mode.replace) build.replace(cursorX, cursorY);
                 if (build.mode == Mode.remove) build.remove(cursorX, cursorY);

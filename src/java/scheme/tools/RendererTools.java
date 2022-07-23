@@ -127,7 +127,7 @@ public class RendererTools {
 
         if (f2 < 0) return;
 
-        float top = ysize * 2f * fract;
+        float top = size * 2f * fract;
         float bx = x + (-size - stroke) * (1f - f2);
         Fill.quad(
                 x - size, ysize,

@@ -30,11 +30,13 @@ public class ModedDesktopInput extends DesktopInput implements ModedInputHandler
 
     @Override
     protected void flushPlans(Seq<BuildPlan> plans) {
+        build.save(plans);
         super.flushPlans(plans);
     }
 
     @Override
     protected void removeSelection(int x1, int y1, int x2, int y2, int maxLength) {
+        build.save(x1, y1, x2, y2, maxSchematicSize);
         super.removeSelection(x1, y1, x2, y2, maxSchematicSize);
     }
 
@@ -125,10 +127,12 @@ public class ModedDesktopInput extends DesktopInput implements ModedInputHandler
 
             // alternative + respawn moved to updateMovement because it needs to be called before internal respawn
             if (input.keyTap(Binding.mouse_move)) admins.teleport(input.mouseWorld());
+            if (input.keyTap(Binding.pan)) lockMovement();
 
             // if (input.keyTap(Binding.block_info)) keycomd.show();
             if (input.keyTap(Binding.schematic_menu)) flushLastRemoved();
             if (input.keyTap(Binding.deselect)) hudfrag.building.flip();
+            if (input.keyDown(Binding.rotateplaced)) build.drop(tileX(), tileY());
         }
 
         if (input.keyTap(Binding.select) && !scene.hasMouse()) {
@@ -147,6 +151,7 @@ public class ModedDesktopInput extends DesktopInput implements ModedInputHandler
         if (has) build.plan.clear();
 
         if (using) {
+            if (build.mode == Mode.drop) build.drop(cursorX, cursorY);
             if (has) { // TODO: try replace buildX/Y to selectX/Y
                 if (build.mode == Mode.replace) build.replace(cursorX, cursorY);
                 if (build.mode == Mode.remove) build.remove(cursorX, cursorY);

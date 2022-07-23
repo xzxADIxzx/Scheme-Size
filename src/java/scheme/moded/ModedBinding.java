@@ -23,7 +23,7 @@ public enum ModedBinding implements KeyBind {
     manage_item(KeyCode.f4),
     manage_team(KeyCode.semicolon),
     place_core(KeyCode.apostrophe),
-    alternative(KeyCode.altLeft); // TODO: to look_at alternative + rmb or pan_move
+    alternative(KeyCode.altLeft);
 
     private final KeybindValue defaultValue;
     private final String category;

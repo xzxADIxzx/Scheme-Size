@@ -6,16 +6,23 @@ import arc.func.Cons2;
 import arc.func.Cons4;
 import arc.math.Mathf;
 import arc.math.geom.Geometry;
+import arc.math.geom.Point2;
 import arc.struct.Seq;
+import mindustry.content.Items;
 import mindustry.entities.Units;
 import mindustry.entities.units.BuildPlan;
 import mindustry.game.EventType.*;
 import mindustry.gen.Building;
+import mindustry.gen.Call;
 import mindustry.input.InputHandler;
 import mindustry.input.Placement;
 import mindustry.input.Placement.NormalizeResult;
+import mindustry.type.Item;
 import mindustry.world.Block;
 import mindustry.world.Tile;
+import mindustry.world.blocks.power.PowerNode;
+import mindustry.world.blocks.power.PowerNode.PowerNodeBuild;
+import mindustry.world.modules.ItemModule;
 import scheme.Main;
 
 import static arc.Core.*;
@@ -31,6 +38,8 @@ public class BuildingTools {
     public int size = 8;
 
     public Seq<BuildPlan> plan = new Seq<>();
+    public Seq<BuildPlan> removed = new Seq<>();
+    public Seq<BuildPlan> node = new Seq<>();
 
     public Cons<Building> iterator;
     public Block iterated;
@@ -43,6 +52,41 @@ public class BuildingTools {
         Events.on(WorldLoadEvent.class, event -> {
             if (settings.getBool("hardscheme")) state.rules.schematicsAllowed = true;
         });
+
+        Events.on(ConfigEvent.class, event -> {
+            if (player.unit().plans.isEmpty()) node.clear();
+            if (node.isEmpty()) return;
+
+            PowerNodeBuild build = event.tile instanceof PowerNodeBuild pnb ? pnb : null;
+            if (build == null) return;
+
+            BuildPlan plan = node.find(bp -> bp.x == build.tileX() && bp.y == build.tileY());
+            if (plan == null) return;
+
+            Seq<Point2> config = new Seq<Point2>((Point2[]) plan.config);
+            new Seq<Point2>(build.config()).each(point -> {
+                if (config.contains(point)) return;
+
+                Tile tile = world.tile(build.tileX() + point.x, build.tileY() + point.y);
+                build.onConfigureBuildTapped(tile.build);
+            });
+        });
+    }
+
+    public void drop(int x, int y) {
+        Tile tile = world.tile(x, y);
+        if (tile == null || tile.build == null) return;
+
+        ItemModule items = tile.build.items;
+        if (items == null || items.empty()) return;
+        else if (items.has(Items.sand)) drop(tile.build, Items.sand);
+        else if (items.has(Items.coal)) drop(tile.build, Items.coal);
+        else drop(tile.build, items.first());
+    }
+
+    private void drop(Building build, Item item) {
+        Call.requestItem(player, build, item, units.maxAccepted);
+        Call.dropItem(units.maxAccepted);
     }
 
     public void replace(int x, int y) {
@@ -118,8 +162,23 @@ public class BuildingTools {
         if (block() == null) return;
 
         Geometry.circle(x, y, size, (px, py) -> {
-            if (!Mathf.within(x, y, px, py, size)) plan(px, py, 0);
+            if (!Mathf.within(x, y, px, py, size - 1)) plan(px, py, 0);
         });
+    }
+
+    public void save(Seq<BuildPlan> plans) {
+        plans.each(plan -> plan.block instanceof PowerNode, plan -> node.add(plan.copy()));
+    }
+
+    public void save(int x1, int y1, int x2, int y2, int maxLength) {
+        removed.clear();
+
+        NormalizeResult result = Placement.normalizeArea(x1, y1, x2, y2, 0, false, maxLength);
+        for (int x = result.x; x <= result.x2; x++)
+            for (int y = result.y; y <= result.y2; y++) {
+                Building build = world.build(x, y);
+                if (build != null) plan(build);
+        }
     }
 
     public boolean isPlacing() {
@@ -162,11 +221,15 @@ public class BuildingTools {
         plan.add(new BuildPlan(x, y, rotation, block(), block().nextConfig()));
     }
 
+    private void plan(Building build) {
+        removed.add(new BuildPlan(build.tileX(), build.tileY(), build.rotation, build.block, build.config()));
+    }
+
     private Block block() {
         return input.block;
     }
 
     public enum Mode {
-        none, replace, remove, connect, fill, square, circle, pick, edit;
+        none, drop, replace, remove, connect, fill, square, circle, pick, edit;
     }
 }

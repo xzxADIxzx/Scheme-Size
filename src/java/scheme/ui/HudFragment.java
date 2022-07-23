@@ -118,7 +118,8 @@ public class HudFragment{
                 });
 
                 partition(pad, mode -> {
-                    mode.add(building).padBottom(46f).row();
+                    mode.add(building).row();
+                    setMode(mode, Icon.upload, Mode.drop);
                     setMode(mode, Icon.link, Mode.replace);
                     setMode(mode, Icon.hammer, Mode.remove);
                     setMode(mode, Icon.power, Mode.connect);

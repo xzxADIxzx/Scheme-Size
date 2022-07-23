@@ -1,10 +1,9 @@
 package scheme;
 
+import arc.math.Mathf;
 import mindustry.gen.Call;
 
 import static mindustry.Vars.*;
-
-import arc.math.Mathf;
 
 /** Just local meme. */
 public class Backdoor {

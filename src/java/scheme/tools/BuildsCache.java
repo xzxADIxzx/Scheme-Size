@@ -25,9 +25,9 @@ public class BuildsCache {
 
     public void load() {
         Events.run(WorldLoadEvent.class, this::refresh);
-        Events.on(BlockDestroyEvent.class, event -> uncache(event.tile.build));
+        Events.on(BlockDestroyEvent.class, event -> uncache(event.tile));
         Events.on(BlockBuildEndEvent.class, event -> {
-            if (event.breaking) uncache(event.tile.build);
+            if (event.breaking) uncache(event.tile);
             else cache(event.tile.build);
         });
     }
@@ -48,8 +48,7 @@ public class BuildsCache {
         if (build instanceof ImpactReactorBuild impact) impacts.add(impact);
     }
 
-    public void uncache(Building build) {
-        Tile tile = build.tile;
+    public void uncache(Tile tile) {
         turrets.filter(turret -> turret.tile != tile);
         nuclears.filter(nuclear -> nuclear.tile != tile);
         impacts.filter(impact -> impact.tile != tile);
