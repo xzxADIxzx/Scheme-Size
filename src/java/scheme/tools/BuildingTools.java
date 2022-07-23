@@ -138,8 +138,9 @@ public class BuildingTools {
     public void circle(int x, int y){
         if (block() == null) return;
 
+        ibsize = block().size;
         Geometry.circle(x, y, size, (px, py) -> {
-            if (!Mathf.within(x, y, px, py, size - 1)) plan(px, py, 0);
+            if (!Mathf.within(x, y, px, py, size - 1)) plan(Mathf.round(px, ibsize), Mathf.round(py, ibsize), 0);
         });
     }
 
