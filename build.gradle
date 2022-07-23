@@ -17,7 +17,7 @@ repositories {
 
 ext {
     mindustryVersion = 'v136.1' //the build number that this mod is made for
-    jabelVersion = "0.9.0"
+    jabelVersion = "93fde537c7"
     sdkRoot = System.getenv("ANDROID_HOME") ?: System.getenv("ANDROID_SDK_ROOT")
 }
 
@@ -31,7 +31,7 @@ dependencies {
     compileOnly "com.github.Anuken.Arc:arc-core:$mindustryVersion"
     compileOnly "com.github.Anuken.Mindustry:core:$mindustryVersion"
 
-    annotationProcessor "com.github.Anuken:Jabel:$jabelVersion"
+    annotationProcessor "com.github.Anuken:mindustryjitpack:$jabelVersion"
 }
 
 jar {
