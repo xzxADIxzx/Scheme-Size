@@ -54,7 +54,7 @@ public class KeybindCombinationsDialog extends BaseDialog {
         String sec = bundle.get("keybind." + bind.name() + ".name");
 
         cont.add("@keycomb." + name, Color.white).left().padRight(20f);
-        cont.add("", Pal.accent).left().minWidth(360f).padRight(20f).update(label -> {
+        cont.add("", Pal.accent).left().minWidth(400f).padRight(20f).update(label -> {
             label.setText(label.hasMouse() ? code + " + " + key : main + " + " + sec);
         }).row();
     }
