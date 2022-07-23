@@ -19,13 +19,13 @@ public class Main extends Mod {
         SchemeUpdater.load();
 
         // schematics = m_schematics;
-        control.setInput(m_input.asHandler());
-
         ui.traces = traces;
 
         units.load();
         builds.load();
+        keycomb.load();
 
+        control.setInput(m_input.asHandler());
         hudfrag.build(ui.hudGroup);
         renderer.addEnvRenderer(0, render::draw);
 

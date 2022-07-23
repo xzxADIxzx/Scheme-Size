@@ -35,7 +35,7 @@ public class SchemeVars {
     public static ContentSelectDialog<StatusEffect> effect;
     public static ContentSelectDialog<Item> item;
 
-    // public static KeybindCombinationsDialog keycomb;
+    public static KeybindCombinationsDialog keycomb;
     // public static ModedSettingsMenuDialog m_settings;
     public static TraceDialog traces;
 
@@ -70,7 +70,7 @@ public class SchemeVars {
         });
 
         // m_settings = new ModSettingsMenuDialog();
-        // keycomb = new KeybindCombinationsDialog();
+        keycomb = new KeybindCombinationsDialog();
         traces = new TraceDialog();
 
         hudfrag = new HudFragment();

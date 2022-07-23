@@ -124,11 +124,11 @@ public class HudFragment{
                     setMode(mode, Icon.hammer, Mode.remove);
                     setMode(mode, Icon.power, Mode.connect);
                 }).visible(() -> true).update(mode -> {
-                    mode.setTranslation(Scl.scl(building.fliped ? -100f : 0f), 0);
+                    mode.setTranslation(Scl.scl(building.fliped ? 0f: -87f), 0);
                 });
-            }).height(254f).update(table -> {
-                if (block != null) table.setTranslation(Scl.scl(4f) - block.getWidth(), 0f);
-                table.setWidth(Scl.scl(building.fliped ? 244f : 60f));
+            }).height(254f).update(table -> { // more magic numbers to the god of magic numbers
+                if (block != null) table.setTranslation(Scl.scl(building.fliped ? 4f : 178f) - block.getWidth(), 0f);
+                table.setWidth(Scl.scl(building.fliped ? 244f : 70f));
             });
         });
 
@@ -155,7 +155,8 @@ public class HudFragment{
                 select.add(mobiles);
 
                 select.button(Icon.admin, style, isize - 12f, () -> adminscfg.show());
-                select.button(look,       style, isize, () -> {});
+                if (mobile) select.button(look, style, isize, () -> {}); // disable shooting
+                else select.button(Icon.book, style, keycomb::show); // show keybind comb
                 select.button(tele,       style, isize, () -> admins.teleport());
                 select.button(Icon.lock,  style, isize, m_input::lockMovement).get().image().color(Pal.gray).width(4).height(bsize).padRight(-dsize + 1.5f + isize);
             }).left().row();

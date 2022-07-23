@@ -19,7 +19,7 @@ public class RendererConfigDialog extends BaseDialog {
         super("@render.name");
         addCloseButton();
 
-        addGroup("@category.general.name", table -> table.button("@keycomb.graphics", () -> show(true)).width(320f),
+        addGroup("@category.general.name", table -> table.button("@keycomb.view_sets", () -> show(true)).width(320f),
                 new Check("power",   this::togglePowerLines, () -> settings.getInt("lasersopacity") != 0),
                 new Check("status",  value -> settings.put("blockstatus", value), () -> settings.getBool("blockstatus")),
                 new Check("light",   value -> enableLight = value, () -> enableLight),

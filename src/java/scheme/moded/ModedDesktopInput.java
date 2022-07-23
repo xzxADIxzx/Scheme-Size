@@ -119,13 +119,14 @@ public class ModedDesktopInput extends DesktopInput implements ModedInputHandler
         if (alt) {
             admins.look();
 
+            if (input.keyTap(Binding.block_info)) keycomb.show();
+
             // alternative + respawn moved to updateMovement because it needs to be called before internal respawn
             if (input.keyTap(Binding.mouse_move)) admins.teleport(input.mouseWorld());
             if (input.keyTap(Binding.pan)) lockMovement();
 
-            // if (input.keyTap(Binding.block_info)) keycomd.show();
-            if (input.keyTap(Binding.schematic_menu)) flushLastRemoved();
             if (input.keyTap(Binding.deselect)) hudfrag.building.flip();
+            if (input.keyTap(Binding.schematic_menu)) flushLastRemoved();
             if (input.keyDown(Binding.rotateplaced)) build.drop(tileX(), tileY());
         }
 
