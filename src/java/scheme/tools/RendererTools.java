@@ -49,7 +49,7 @@ public class RendererTools {
                     Lines.line(x, y, x + 4, y);
         });
 
-        if (ruler) Draw.draw(Layer.overlayUI, () -> {
+        if (ruler) Draw.draw(Layer.legUnit, () -> {
             Lines.stroke(1f, Pal.accent);
 
             int x = Mathf.round(input.mouseWorldX() - 4, tilesize) + 4;
@@ -85,6 +85,7 @@ public class RendererTools {
 
         // asynchrony requires sacrifice
         Draw.draw(Layer.blockUnder, Draw::reset);
+        Draw.draw(Layer.legUnit, Draw::reset);
         Draw.draw(Layer.overlayUI, Draw::reset); 
     }
 
@@ -100,10 +101,6 @@ public class RendererTools {
     public void toggleCoreItems() {
         settings.put("coreitems", !settings.getBool("coreitems"));
 	}
-
-    public void toggleFodOfWar(){
-
-    }
 
     private void drawRadius(Building build, int radius, Color color) {
         Drawf.dashCircle(build.x, build.y, radius * tilesize, color);

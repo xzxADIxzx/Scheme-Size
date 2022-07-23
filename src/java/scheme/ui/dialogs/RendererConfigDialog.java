@@ -22,9 +22,9 @@ public class RendererConfigDialog extends BaseDialog {
         addGroup("@category.general.name", table -> table.button("@keycomb.graphics", () -> show(true)).width(320f),
                 new Check("power",   this::togglePowerLines, () -> settings.getInt("lasersopacity") != 0),
                 new Check("status",  value -> settings.put("blockstatus", value), () -> settings.getBool("blockstatus")),
-                new Check("light",   value -> enableLight = !value, null),
-                new Check("dark",    value -> enableDarkness = !value, null),
-                new Check("fog",     value -> {}, null));
+                new Check("light",   value -> enableLight = value, () -> enableLight),
+                new Check("dark",    value -> enableDarkness = value, () -> enableDarkness),
+                new Check("fog",     value -> state.rules.fog = value, () -> state.rules.fog));
 
         addGroup("@category.add.name", null,
                 new Check("xray",    value -> render.xray = value, null),
