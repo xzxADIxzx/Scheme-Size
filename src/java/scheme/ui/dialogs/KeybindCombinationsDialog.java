@@ -8,6 +8,7 @@ import mindustry.ui.dialogs.BaseDialog;
 import scheme.moded.ModedBinding;
 
 import static arc.Core.*;
+import static mindustry.Vars.*;
 
 public class KeybindCombinationsDialog extends BaseDialog {
 
@@ -23,6 +24,8 @@ public class KeybindCombinationsDialog extends BaseDialog {
 
     /** do NOT call before moded binding has been initialized */
     public void load() {
+        if (mobile) return; // mobiles do not have key bindings
+
         main = bundle.get("keycomb.main");
         code = keybinds.get(ModedBinding.alternative).key.toString();
 
