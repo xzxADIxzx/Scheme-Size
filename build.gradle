@@ -23,7 +23,7 @@ ext {
 
 allprojects {
     tasks.withType(JavaCompile) {
-        options.compilerArgs.addAll(['--release', '8'])
+        options.compilerArgs.addAll(['--release', '8', '-source 16'])
     }
 }
 
