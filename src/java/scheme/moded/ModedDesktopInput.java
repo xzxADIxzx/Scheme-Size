@@ -29,6 +29,16 @@ public class ModedDesktopInput extends DesktopInput implements ModedInputHandler
     public int lastX, lastY, lastSize = 8;
 
     @Override
+    protected void flushPlans(Seq<BuildPlan> plans) {
+        super.flushPlans(plans);
+    }
+
+    @Override
+    protected void removeSelection(int x1, int y1, int x2, int y2, int maxLength) {
+        super.removeSelection(x1, y1, x2, y2, maxSchematicSize);
+    }
+
+    @Override
     public void drawTop() {
         Lines.stroke(1f);
         int cursorX = tileX();
@@ -75,6 +85,18 @@ public class ModedDesktopInput extends DesktopInput implements ModedInputHandler
         buildInput();
     }
 
+    @Override
+    protected void updateMovement(Unit unit) {
+        if (input.keyDown(ModedBinding.alternative) && input.keyTap(Binding.respawn)) admins.despawn();
+
+        if (ai.ai != null 
+                && input.axis(Binding.move_x) == 0 && input.axis(Binding.move_y) == 0
+                && !input.keyDown(Binding.mouse_move) && !input.keyDown(Binding.select)) {
+            ai.update();
+            player.shooting = unit.isShooting;
+        } else if (!movementLocked) super.updateMovement(unit);
+    }
+
     /** Punishment awaits me for this... */
     public void modedInput() {
 
@@ -101,8 +123,8 @@ public class ModedDesktopInput extends DesktopInput implements ModedInputHandler
         if (alt) {
             admins.look();
 
+            // alternative + respawn moved to updateMovement because it needs to be called before internal respawn
             if (input.keyTap(Binding.mouse_move)) admins.teleport(input.mouseWorld());
-            if (input.keyTap(Binding.respawn)) admins.despawn();
 
             // if (input.keyTap(Binding.block_info)) keycomd.show();
             if (input.keyTap(Binding.schematic_menu)) flushLastRemoved();
