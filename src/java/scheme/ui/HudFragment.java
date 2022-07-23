@@ -123,10 +123,12 @@ public class HudFragment{
                     setMode(mode, Icon.link, Mode.replace);
                     setMode(mode, Icon.hammer, Mode.remove);
                     setMode(mode, Icon.power, Mode.connect);
-                }).visible(() -> true);
+                }).visible(() -> true).update(mode -> {
+                    mode.setTranslation(Scl.scl(building.fliped ? -100f : 0f), 0);
+                });
             }).height(254f).update(table -> {
                 if (block != null) table.setTranslation(Scl.scl(4f) - block.getWidth(), 0f);
-                table.setWidth(Scl.scl(building.fliped ? 244f : 46f));
+                table.setWidth(Scl.scl(building.fliped ? 244f : 60f));
             });
         });
 
