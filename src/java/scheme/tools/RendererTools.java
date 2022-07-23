@@ -101,38 +101,37 @@ public class RendererTools {
         settings.put("coreitems", !settings.getBool("coreitems"));
 	}
 
+    public void toggleFodOfWar(){
+
+    }
+
     private void drawRadius(Building build, int radius, Color color) {
         Drawf.dashCircle(build.x, build.y, radius * tilesize, color);
     }
 
-    // TODO: disable fog of war + make this code shorted
     private void drawHealthBar(Unit unit, Color color, float fract) {
-        Draw.color(color, 1); // bruh, too many code
+        Draw.color(color);
 
         float size = Mathf.sqrt(unit.hitSize) * 3f;
-        float x = unit.x - size / 2f;
-        float y = unit.y - size;
+        float x = unit.x - size / 2f, y = unit.y - size;
 
-        float stroke = size * -.35f;
-        float ysize = y + size;
-
+        float height = size * 2f, stroke = size * -.35f, xs = x - size;
         float f1 = Math.min(fract * 2f, 1f), f2 = (fract - .5f) * 2f;
-        float bo = -(1f - f1) * (-size - stroke);
 
+        float bo = -(1f - f1) * (-size - stroke);
         Fill.quad(
                 x, y,
                 x + stroke, y,
-                x - size + bo, ysize * f1,
-                x - size - stroke + bo, ysize * f1);
+                xs + bo, y + size * f1,
+                xs - stroke + bo, y + size * f1);
 
         if (f2 < 0) return;
 
-        float top = size * 2f * fract;
-        float bx = x + (-size - stroke) * (1f - f2);
+        float bx = (1f - f2) * (-size - stroke) + x;
         Fill.quad(
-                x - size, ysize,
-                x - size - stroke, ysize,
-                bx, y + top,
-                bx + stroke, y + top);
+                xs, y + size,
+                xs - stroke, y + size,
+                bx, y + height * fract,
+                bx + stroke, y + height * fract);
     }
 }
