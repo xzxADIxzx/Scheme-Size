@@ -29,6 +29,7 @@ public class Main extends Mod {
         hudfrag.build(ui.hudGroup);
         renderer.addEnvRenderer(0, render::draw);
 
+        if (settings.getBool("welcome")) ui.showText("@welcome.name", "@welcome.text");
         if (settings.getBool("check4update")) SchemeUpdater.check();
 
         try { // run main.js without the wrapper to access the constant values in the game console

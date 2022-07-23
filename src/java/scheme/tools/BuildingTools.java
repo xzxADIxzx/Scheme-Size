@@ -6,7 +6,6 @@ import arc.func.Cons2;
 import arc.func.Cons4;
 import arc.math.Mathf;
 import arc.math.geom.Geometry;
-import arc.math.geom.Point2;
 import arc.struct.Seq;
 import mindustry.content.Items;
 import mindustry.entities.Units;
@@ -20,8 +19,6 @@ import mindustry.input.Placement.NormalizeResult;
 import mindustry.type.Item;
 import mindustry.world.Block;
 import mindustry.world.Tile;
-import mindustry.world.blocks.power.PowerNode;
-import mindustry.world.blocks.power.PowerNode.PowerNodeBuild;
 import mindustry.world.modules.ItemModule;
 import scheme.Main;
 
@@ -39,7 +36,6 @@ public class BuildingTools {
 
     public Seq<BuildPlan> plan = new Seq<>();
     public Seq<BuildPlan> removed = new Seq<>();
-    public Seq<BuildPlan> node = new Seq<>();
 
     public Cons<Building> iterator;
     public Block iterated;
@@ -51,25 +47,6 @@ public class BuildingTools {
 
         Events.on(WorldLoadEvent.class, event -> {
             if (settings.getBool("hardscheme")) state.rules.schematicsAllowed = true;
-        });
-
-        Events.on(ConfigEvent.class, event -> {
-            if (player.unit().plans.isEmpty()) node.clear();
-            if (node.isEmpty()) return;
-
-            PowerNodeBuild build = event.tile instanceof PowerNodeBuild pnb ? pnb : null;
-            if (build == null) return;
-
-            BuildPlan plan = node.find(bp -> bp.x == build.tileX() && bp.y == build.tileY());
-            if (plan == null) return;
-
-            Seq<Point2> config = new Seq<Point2>((Point2[]) plan.config);
-            new Seq<Point2>(build.config()).each(point -> {
-                if (config.contains(point)) return;
-
-                Tile tile = world.tile(build.tileX() + point.x, build.tileY() + point.y);
-                build.onConfigureBuildTapped(tile.build);
-            });
         });
     }
 
@@ -164,10 +141,6 @@ public class BuildingTools {
         Geometry.circle(x, y, size, (px, py) -> {
             if (!Mathf.within(x, y, px, py, size - 1)) plan(px, py, 0);
         });
-    }
-
-    public void save(Seq<BuildPlan> plans) {
-        plans.each(plan -> plan.block instanceof PowerNode, plan -> node.add(plan.copy()));
     }
 
     public void save(int x1, int y1, int x2, int y2, int maxLength) {

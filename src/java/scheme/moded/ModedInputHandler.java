@@ -42,9 +42,8 @@ public interface ModedInputHandler {
     public void flush(Seq<BuildPlan> plans);
 
     public default void flushLastRemoved() {
-        // if (settings.getBool("hardconnect")) build.save(build.removed);
-        // flush(build.removed);
-        // build.removed.clear();
+        flush(build.removed);
+        build.removed.clear();
     }
 
     public default void flushBuildingTools() {
@@ -57,7 +56,7 @@ public interface ModedInputHandler {
 
     // methods that exist but, who knows why, not available
     public default Tile tileAt() {
-        return world.tile(tileX(), tileY());
+        return world.tiles.getc(tileX(), tileY());
     }
 
     public default int tileX() {

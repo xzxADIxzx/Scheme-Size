@@ -32,12 +32,6 @@ public class ModedMobileInput extends MobileInput implements ModedInputHandler {
     }
 
     @Override
-    protected void flushPlans(Seq<BuildPlan> plans) {
-        build.save(plans);
-        super.flushPlans(plans);
-    }
-
-    @Override
     protected void removeSelection(int x1, int y1, int x2, int y2, boolean flush) {
         build.save(x1, y1, x2, y2, maxSchematicSize);
         super.removeSelection(x1, y1, x2, y2, flush, maxSchematicSize);
