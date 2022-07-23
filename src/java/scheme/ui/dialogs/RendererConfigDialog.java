@@ -13,6 +13,8 @@ import static arc.Core.*;
 import static mindustry.Vars.*;
 import static scheme.SchemeVars.*;
 
+import com.github.bsideup.jabel.Desugar;
+
 public class RendererConfigDialog extends BaseDialog {
 
     public RendererConfigDialog() {
@@ -64,5 +66,6 @@ public class RendererConfigDialog extends BaseDialog {
         }
     }
 
+    @Desugar
     public record Check(String text, Boolc listener, Boolp checked) {}
 }

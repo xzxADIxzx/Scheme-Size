@@ -22,6 +22,8 @@ import static arc.Core.*;
 import static mindustry.Vars.*;
 import static scheme.SchemeVars.*;
 
+import com.github.bsideup.jabel.Desugar;
+
 public class TileSelectDialog extends BaseDialog {
 
     public static final int row = mobile ? 8 : 10;
@@ -74,6 +76,7 @@ public class TileSelectDialog extends BaseDialog {
         callback.get(floor != null ? floor.asFloor() : null, block, overlay != null ? overlay.asFloor() : null);
     }
 
+    @Desugar
     public record Folder(String name, Prov<Block> block, Boolf<Block> pred, Cons<Block> callback) {
 
         public String name() {
