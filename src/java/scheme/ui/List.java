@@ -15,6 +15,8 @@ import arc.util.Scaling;
 import mindustry.graphics.Pal;
 import mindustry.ui.Styles;
 
+import static mindustry.Vars.*;
+
 public class List<T> {
 
     public T selected;
@@ -36,7 +38,7 @@ public class List<T> {
     }
 
     public void build(Table parent) {
-        pane = parent.pane(list).size(288f, 630f).scrollX(false);
+        pane = parent.pane(list).size(288f, mobile ? 540f : 630f).scrollX(false);
     }
 
     public void rebuild() {

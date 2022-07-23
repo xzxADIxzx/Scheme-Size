@@ -1,13 +1,31 @@
-// package scheme.ui;
+package scheme.ui;
 
-// import static mindustry.Vars.*;
+import arc.scene.Group;
+import arc.scene.ui.layout.Scl;
+import arc.scene.ui.layout.Table;
 
-// import arc.scene.Element;
-// import arc.util.Log;
+import static mindustry.Vars.*;
 
-// public class PlayerListFragment extends mindustry.ui.fragments.PlayerListFragment {
-    
-// }
+public class PlayerListFragment extends mindustry.ui.fragments.PlayerListFragment {
+
+    public boolean show;
+
+    @Override
+    public void build(Group parent) {
+        super.build(parent);
+        ui.hudGroup.getChildren().remove(11);
+        Table pane = getPane();
+
+        pane.row();
+        pane.check("@players.show", value -> show = value).left().get().setTranslation(0f, Scl.scl(-50f));
+        pane.getChildren().get(2).setTranslation(0f, Scl.scl(50f));
+    }
+
+    private Table getPane() {
+        return ((Table) ((Table) ui.hudGroup.getChildren().get(14)).getChildren().get(0));
+    }
+}
+
 // /**
 //     if(!user.isLocal()){ // это кнопки, куда ставить я уже не помню
 //         button.add().growY();

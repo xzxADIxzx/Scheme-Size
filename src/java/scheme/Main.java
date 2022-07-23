@@ -20,13 +20,16 @@ public class Main extends Mod {
 
         // schematics = m_schematics;
         ui.traces = traces;
+        ui.listfrag = listfrag;
 
         units.load();
         builds.load();
         keycomb.load();
 
-        control.setInput(m_input.asHandler());
         hudfrag.build(ui.hudGroup);
+        listfrag.build(ui.hudGroup);
+
+        control.setInput(m_input.asHandler());
         renderer.addEnvRenderer(0, render::draw);
 
         if (settings.getBool("welcome")) ui.showOkText("@welcome.name", "@welcome.text", () -> {});

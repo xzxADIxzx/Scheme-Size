@@ -8,6 +8,7 @@ import scheme.moded.*;
 import scheme.tools.*;
 import scheme.tools.admins.AdminsTools;
 import scheme.ui.HudFragment;
+import scheme.ui.PlayerListFragment;
 import scheme.ui.dialogs.*;
 
 import static arc.Core.*;
@@ -40,7 +41,7 @@ public class SchemeVars {
     public static TraceDialog traces;
 
     public static HudFragment hudfrag;
-    // public static PlayerListFragment listfrag;
+    public static PlayerListFragment listfrag;
 
     public static void load() {
         // m_schematics = new ModedSchematics();
@@ -74,6 +75,6 @@ public class SchemeVars {
         traces = new TraceDialog();
 
         hudfrag = new HudFragment();
-        // listfrag = new PlayerListFragment();
+        listfrag = new PlayerListFragment();
     }
 }
