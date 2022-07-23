@@ -51,7 +51,7 @@ public enum ModedBinding implements KeyBind {
         if (mobile) return; // mobiles do not have key bindings
 
         KeyBind[] orign = (KeyBind[]) Binding.values();
-        KeyBind[] moded = (KeyBind[]) ModedBinding.values();
+        KeyBind[] moded = (KeyBind[]) values();
         KeyBind[] binds = new KeyBind[orign.length + moded.length];
 
         System.arraycopy(orign, 0, binds, 0, orign.length);

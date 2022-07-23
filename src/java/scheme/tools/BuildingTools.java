@@ -7,6 +7,7 @@ import arc.func.Cons4;
 import arc.math.Mathf;
 import arc.math.geom.Geometry;
 import arc.struct.Seq;
+import arc.util.Strings;
 import mindustry.content.Items;
 import mindustry.entities.Units;
 import mindustry.entities.units.BuildPlan;
@@ -178,7 +179,7 @@ public class BuildingTools {
 
     public void resize(String amount) {
         if (amount.isEmpty()) return;
-        size = Integer.valueOf(amount);
+        size = Strings.parseInt(amount);
         resized();
     }
 

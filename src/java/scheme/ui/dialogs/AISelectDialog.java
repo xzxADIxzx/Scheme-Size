@@ -9,6 +9,7 @@ import mindustry.content.UnitTypes;
 import mindustry.entities.units.AIController;
 import mindustry.game.EventType.*;
 import mindustry.gen.Icon;
+import mindustry.gen.Player;
 import mindustry.graphics.Pal;
 import mindustry.type.UnitType;
 import scheme.ui.List;
@@ -66,6 +67,10 @@ public class AISelectDialog extends ListDialog {
 
     public void deselect() {
         ai = null;
+    }
+
+    public void gotoppl(Player player) {
+        players.set(player); // TODO: gamma ai
     }
 
     @Desugar

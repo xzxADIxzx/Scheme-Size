@@ -51,8 +51,7 @@ public class List<T> {
                 @Override
                 public void draw() {
                     super.draw();
-                    Draw.color(check.isChecked() ? Pal.accent : Pal.gray);
-                    Draw.alpha(parentAlpha);
+                    Draw.color(check.isChecked() ? Pal.accent : Pal.gray, parentAlpha);
                     Lines.stroke(Scl.scl(4f));
                     Lines.rect(x, y, width, height);
                     Draw.reset();
