@@ -41,7 +41,7 @@ public interface AdminsTools {
     }
 
     public default void look() {
-        player.unit().lookAt(input.mouseWorld());
+        for (int i = 0; i < 10; i++) player.unit().lookAt(input.mouseWorld());
     }
 
     public void edit(int sx, int sy, int ex, int ey);
