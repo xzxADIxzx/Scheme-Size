@@ -12,6 +12,7 @@ import mindustry.gen.Icon;
 import mindustry.gen.Player;
 import mindustry.graphics.Pal;
 import mindustry.type.UnitType;
+import scheme.ai.GammaAI;
 import scheme.ui.List;
 
 import static arc.Core.*;
@@ -27,6 +28,10 @@ public class AISelectDialog extends ListDialog {
     public AISelectDialog() {
         super("@select.ai");
 
+        hidden(() -> {
+            if (ai instanceof GammaAI gamma) gamma.cache();
+        });
+
         Events.run(WorldLoadEvent.class, this::deselect);
         Seq<UnitAI> units = Seq.with(
                 new UnitAI(null, null),
@@ -37,7 +42,7 @@ public class AISelectDialog extends ListDialog {
                 new UnitAI(UnitTypes.crawler, new SuicideAI()),
                 new UnitAI(UnitTypes.dagger, new GroundAI()),
                 new UnitAI(UnitTypes.flare, new FlyingAI()),
-                new UnitAI(UnitTypes.gamma, null));
+                new UnitAI(UnitTypes.gamma, new GammaAI()));
 
         list = new List<>(units::each, UnitAI::name, UnitAI::icon, unit -> Pal.accent);
         players.selected = player; // do it once
@@ -70,7 +75,8 @@ public class AISelectDialog extends ListDialog {
     }
 
     public void gotoppl(Player player) {
-        players.set(player); // TODO: gamma ai
+        players.set(player);
+        ((GammaAI) ai).cache();
     }
 
     @Desugar
