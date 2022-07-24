@@ -36,8 +36,8 @@ public class SchemeVars {
     public static ContentSelectDialog<StatusEffect> effect;
     public static ContentSelectDialog<Item> item;
 
+    public static SettingsMenuDialog m_settings;
     public static KeybindCombinationsDialog keycomb;
-    // public static ModedSettingsMenuDialog m_settings;
     public static TraceDialog traces;
 
     public static HudFragment hudfrag;
@@ -70,7 +70,7 @@ public class SchemeVars {
             return value == 0 ? "@select.item.clear" : bundle.format("select.items", UI.formatAmount(value.longValue()));
         });
 
-        // m_settings = new ModSettingsMenuDialog();
+        m_settings = new SettingsMenuDialog();
         keycomb = new KeybindCombinationsDialog();
         traces = new TraceDialog();
 

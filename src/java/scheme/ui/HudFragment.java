@@ -132,7 +132,7 @@ public class HudFragment{
             });
         });
 
-        // TODO: if !showmobilebuttons return
+        if (!settings.getBool("mobilebuttons")) return;
 
         // TODO: refactor
         parent.fill(cont -> { // Mobile Buttons
