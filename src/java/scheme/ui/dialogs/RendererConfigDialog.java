@@ -5,6 +5,7 @@ import arc.func.Boolp;
 import arc.func.Cons;
 import arc.graphics.Color;
 import arc.scene.ui.CheckBox;
+import arc.scene.ui.ScrollPane;
 import arc.scene.ui.TextButton;
 import arc.scene.ui.layout.Cell;
 import arc.scene.ui.layout.Table;
@@ -70,7 +71,7 @@ public class RendererConfigDialog extends BaseDialog {
     }
 
     private TextButton graphics() { // oh no
-        return (TextButton) ((Table) ((Table) ((Table) ui.settings.getChildren().get(1)).getChildren().get(0)).getChildren().get(0)).getChildren().get(1);
+        return (TextButton) ((Table) ((Table) ((ScrollPane) ui.settings.getChildren().get(1)).getChildren().get(0)).getChildren().get(0)).getChildren().get(1);
     }
 
     @Desugar
