@@ -13,6 +13,7 @@ import mindustry.gen.Icon;
 import mindustry.graphics.Pal;
 import mindustry.ui.dialogs.BaseDialog;
 import mindustry.world.Block;
+import mindustry.world.Tile;
 import mindustry.world.blocks.environment.Floor;
 import mindustry.world.blocks.environment.OverlayFloor;
 import mindustry.world.blocks.environment.StaticWall;
@@ -74,6 +75,14 @@ public class TileSelectDialog extends BaseDialog {
 
     public void select(Cons3<Floor, Block, Floor> callback) {
         callback.get(floor != null ? floor.asFloor() : null, block, overlay != null ? overlay.asFloor() : null);
+    }
+
+    public void select(int x, int y) {
+        Tile tile = world.tile(x, y);
+        floor = tile.floor();
+        block = tile.block();
+        overlay = tile.overlay();
+        list.rebuild();
     }
 
     @Desugar

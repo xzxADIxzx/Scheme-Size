@@ -6,6 +6,7 @@ import mindustry.gen.Player;
 import mindustry.type.Item;
 import mindustry.type.StatusEffect;
 import mindustry.type.UnitType;
+import mindustry.world.Block;
 
 import static arc.Core.*;
 import static mindustry.Vars.*;
@@ -64,7 +65,7 @@ public class SlashJs implements AdminsTools {
         if (unusable()) return;
         getPlayer(player);
         js("var tile = player.tileOn()");
-        js("if (tile != null) tile.setNet(tile.build instanceof CoreBuild ? Blocks.air : Blocks.coreShard, player.team(), 0)");
+        js("if (tile != null) tile.setNet(tile.build instanceof CoreBlock.CoreBuild ? Blocks.air : Blocks.coreShard, player.team(), 0)");
     }
 
     public void despawn(Player target) {
@@ -80,7 +81,14 @@ public class SlashJs implements AdminsTools {
         js("player.unit().set" + pos);
     }
 
-    public void edit(int sx, int sy, int ex, int ey) {}
+    public void edit(int sx, int sy, int ex, int ey) {
+        if (unusable()) return;
+        tile.select((floor, block, overlay) -> {
+            js("var floor = " + getBlock(floor) + "; var block = " + getBlock(block) + "; var over = " + getBlock(overlay));
+            js("var todo = tile => { if (floor!=null) tile.setFloorNet(floor); if (block!=null) tile.setNet(block); if (over!=null) tile.setOverlayNet(over) }");
+            js("for (var x = " + sx + "; x <= " + ex + "; x++) for (var y = " + sy + "; y <= " + ey + "; y++) todo(Vars.world.tiles.getc(x, y))");
+        });
+    }
 
     public boolean unusable() {
         if (!settings.getBool("adminsenabled")) {
@@ -91,7 +99,7 @@ public class SlashJs implements AdminsTools {
     }
 
     private static void js(String command) {
-        Call.sendChatMessage("/js" + command);
+        Call.sendChatMessage("/js " + command);
     }
 
     private static void getPlayer(Player target) {
@@ -108,5 +116,9 @@ public class SlashJs implements AdminsTools {
 
     private static String getItem(Item item) {
         return "Vars.content.item(" + item.id + ")";
+    }
+
+    private static String getBlock(Block block) {
+        return block == null ? "null" : "Vars.content.block(" + block.id + ")";
     }
 }

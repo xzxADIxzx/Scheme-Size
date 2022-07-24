@@ -68,7 +68,20 @@ public class Internal implements AdminsTools {
         player.unit().set(pos); // it's always available
     }
 
-    public void edit(int sx, int sy, int ex, int ey) {}
+    public void edit(int sx, int sy, int ex, int ey) {
+        if (unusable()) return;
+        tile.select((floor, block, overlay) -> {
+            for (int x = sx; x <= ex; x++)
+                for (int y = sy; y <= ey; y++) {
+                    Tile tile = world.tile(x, y);
+                    if (tile == null) continue;
+
+                    if (floor != null) tile.setFloorNet(floor);
+                    if (block != null) tile.setNet(block);
+                    if (overlay != null) tile.setOverlayNet(overlay);
+            }
+        });
+    }
 
     public boolean unusable() {
         if (!settings.getBool("adminsenabled")) {
@@ -76,5 +89,5 @@ public class Internal implements AdminsTools {
             return true;
         } else if (net.client()) ui.showInfoFade(available);
         return net.client();
-    };
+    }
 }
