@@ -5,6 +5,7 @@ import arc.func.Boolp;
 import arc.func.Cons;
 import arc.graphics.Color;
 import arc.scene.ui.CheckBox;
+import arc.scene.ui.TextButton;
 import arc.scene.ui.layout.Cell;
 import arc.scene.ui.layout.Table;
 import mindustry.ui.dialogs.BaseDialog;
@@ -54,8 +55,10 @@ public class RendererConfigDialog extends BaseDialog {
     }
 
     public void show(boolean graphics){
-        if (graphics) return; // TODO: show graphics settings
-        else show();
+        if (graphics) {
+            ui.settings.show(); 
+            graphics().fireClick();
+        } else show();
     }
 
     public void togglePowerLines(boolean on) {
@@ -64,6 +67,10 @@ public class RendererConfigDialog extends BaseDialog {
             settings.put("preferredlaseropacity", settings.getInt("lasersopacity"));
             settings.put("lasersopacity", 0);
         }
+    }
+
+    private TextButton graphics() { // oh no
+        return (TextButton) ((Table) ((Table) ((Table) ui.settings.getChildren().get(1)).getChildren().get(0)).getChildren().get(0)).getChildren().get(1);
     }
 
     @Desugar
