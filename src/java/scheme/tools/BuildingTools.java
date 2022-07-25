@@ -44,7 +44,7 @@ public class BuildingTools {
 
     public BuildingTools() {
         this.input = m_input.asHandler();
-        this.useful = Seq.with(Mode.replace, Mode.remove, Mode.connect);
+        this.useful = Seq.with(Mode.drop, Mode.replace, Mode.remove, Mode.connect);
 
         Events.on(WorldLoadEvent.class, event -> {
             if (settings.getBool("hardscheme")) state.rules.schematicsAllowed = true;

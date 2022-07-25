@@ -23,6 +23,7 @@ import mindustry.ui.Fonts;
 import mindustry.ui.Styles;
 import scheme.ai.GammaAI;
 import scheme.ai.GammaAI.Updater;
+import scheme.moded.ModedMobileInput;
 import scheme.tools.BuildingTools.Mode;
 
 import static arc.Core.*;
@@ -106,7 +107,7 @@ public class HudFragment {
                     setBuild(mode, destroy);
                 }).row();
                 pad.labelWrap(GammaAI.tooltip).labelAlign(2, 8).pad(8f, 0f, 8f, 0f).width(150f).get().getStyle().fontColor = Color.lightGray;
-            }).width(150f).margin(0f).update(pad -> pad.setTranslation(0f, settings.getBool("minimap") ? -235f : 0f)).row();
+            }).width(150f).margin(0f).update(pad -> pad.setTranslation(0f, settings.getBool("minimap") ? (mobile ? -260f : -235f) : 0f)).row();
         });
 
         parent.fill(cont -> { // Building Tools
@@ -191,8 +192,10 @@ public class HudFragment {
                 mobiles.flip(); // TODO: fix it later
 
                 select.button(Icon.admin, style, isize - 12f, () -> adminscfg.show());
-                if (mobile) select.button(look, style, isize, () -> {}); // disable shooting
-                else select.button(Icon.book, style, keycomb::show); // show keybind comb
+                if (mobile) select.button(look, style, isize, () -> {
+                    if (m_input instanceof ModedMobileInput mobile) mobile.shootingLocked = !mobile.shootingLocked;
+                });
+                else select.button(Icon.book, style, keycomb::show);
                 select.button(tele,       style, isize, () -> admins.teleport());
                 select.button(Icon.lock,  style, isize, m_input::lockMovement).get().image().color(Pal.gray).width(4).height(bsize).padRight(-dsize + 1.5f + isize);
             }).left().row();

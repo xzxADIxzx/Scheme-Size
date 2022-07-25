@@ -19,7 +19,7 @@ import static scheme.SchemeVars.*;
 /** Last update - Jul 19, 2022 */
 public class ModedMobileInput extends MobileInput implements ModedInputHandler {
 
-    public boolean using, movementLocked, lastTouched;
+    public boolean using, movementLocked, lastTouched, shootingLocked;
     public int buildX = -1, buildY = -1;
     public int lastX, lastY, lastSize = 8;
 
@@ -76,6 +76,7 @@ public class ModedMobileInput extends MobileInput implements ModedInputHandler {
             if (!movementLocked) camera.position.set(unit.x, unit.y);
             ai.update();
         } else if (!movementLocked) super.updateMovement(unit);
+        if (shootingLocked) player.shooting = false;
     }
 
     public void buildInput() {
