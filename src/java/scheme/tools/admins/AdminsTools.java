@@ -14,7 +14,7 @@ import static mindustry.Vars.*;
 public interface AdminsTools {
 
     public String disabled = bundle.format("admins.notenabled", AdminsConfigDialog.keybind());
-    public String available = bundle.format("admins.notavailable", AdminsConfigDialog.keybind());
+    public String unabailable = bundle.format("admins.notavailable", AdminsConfigDialog.keybind());
 
     public void manageUnit();
 

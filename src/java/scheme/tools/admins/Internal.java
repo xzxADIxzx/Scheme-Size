@@ -87,7 +87,7 @@ public class Internal implements AdminsTools {
         if (!settings.getBool("adminsenabled")) {
             ui.showInfoFade(disabled);
             return true;
-        } else if (net.client()) ui.showInfoFade(available);
+        } else if (net.client()) ui.showInfoFade(unabailable);
         return net.client();
     }
 }

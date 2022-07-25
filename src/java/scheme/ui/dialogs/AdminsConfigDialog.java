@@ -1,13 +1,10 @@
 package scheme.ui.dialogs;
 
-import arc.scene.event.Touchable;
-import arc.scene.ui.Label;
-import arc.scene.ui.Slider;
 import arc.scene.ui.layout.Table;
-import mindustry.ui.Styles;
 import mindustry.ui.dialogs.BaseDialog;
 import scheme.moded.ModedBinding;
 import scheme.tools.admins.*;
+import scheme.ui.TextSlider;
 
 import static arc.Core.*;
 import static scheme.SchemeVars.*;
@@ -27,18 +24,9 @@ public class AdminsConfigDialog extends BaseDialog {
             admins = getTools();
         });
 
-        new Table(table -> {
-            table.touchable = Touchable.disabled;
-
-            Label text = table.labelWrap("").style(Styles.outlineLabel).padLeft(32f).growX().left().get();
-            Slider lever = new Slider(0, 1, 1, false);
-
-            lever.moved(value -> text.setText(bundle.format("admins.lever", bundle.get((enabled = value == 1) ? "admins.enabled" : "admins.disabled"))));
-            lever.setValue(enabled ? 1 : 0);
-            lever.change();
-
-            cont.stack(lever, table).width(320f).row();
-        });
+        new TextSlider(0, 1, 1, enabled ? 1 : 0, value -> {
+            return bundle.format("admins.lever", bundle.get((enabled = value == 1) ? "admins.enabled" : "admins.disabled"));
+        }).build(cont).width(320f).row();
 
         cont.labelWrap("@admins.way").padTop(16f).width(320f).row();
         cont.table(table -> {

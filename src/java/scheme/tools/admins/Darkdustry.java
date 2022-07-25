@@ -21,7 +21,7 @@ public class Darkdustry implements AdminsTools {
     public void spawnUnits() {
         if (unusable()) return;
         unit.select(true, true, true, (target, team, unit, amount) -> {
-            send("spawn", unit.id, amount, team.id);
+            send("spawn", unit.id, amount.intValue(), team.id);
             units.refresh();
         });
     }
@@ -33,7 +33,7 @@ public class Darkdustry implements AdminsTools {
 
     public void manageItem() {
         if (unusable()) return;
-        item.select(true, false, true, (target, team, item, amount) -> send("give", item.id, amount, team.id));
+        item.select(true, false, true, (target, team, item, amount) -> send("give", item.id, amount.intValue(), team.id));
     }
 
     public void manageTeam() {

@@ -21,13 +21,16 @@ import mindustry.gen.Tex;
 import mindustry.graphics.Pal;
 import mindustry.ui.Fonts;
 import mindustry.ui.Styles;
+import scheme.ai.GammaAI;
+import scheme.ai.GammaAI.Updater;
 import scheme.tools.BuildingTools.Mode;
 
 import static arc.Core.*;
 import static mindustry.Vars.*;
 import static scheme.SchemeVars.*;
+import static scheme.ai.GammaAI.Updater.*;
 
-public class HudFragment{
+public class HudFragment {
 
     /** Just a short reference to a variable with a long name. */
     public static final ImageButtonStyle style = Styles.clearNonei;
@@ -82,6 +85,30 @@ public class HudFragment{
             cont.button(Icon.edit, check, () -> checked = !checked).checked(t -> checked).size(44f).padLeft(8f);
         }).fillX().visible(() -> settings.getBool("coreitems") && !mobile && ui.hudfrag.shown);
 
+        parent.fill(cont -> { // Gamma UI
+            cont.name = "gammaui";
+            cont.top().right();
+
+            cont.visible(() -> ai.ai instanceof GammaAI && ui.hudfrag.shown);
+
+            cont.table(Tex.pane, pad -> {
+                pad.defaults().growX();
+
+                new TextSlider(40f, 300f, 20f, 80f, value -> bundle.format("gamma.range", GammaAI.range = value)).build(pad).row();
+                pad.table(mode -> {
+                    setMove(mode, follow);
+                    setMove(mode, none);
+                    setMove(mode, circle);
+                }).row();
+                pad.table(mode -> {
+                    setBuild(mode, help);
+                    setBuild(mode, none);
+                    setBuild(mode, destroy);
+                }).row();
+                pad.labelWrap(GammaAI.tooltip).labelAlign(2, 8).padTop(16f).width(150f).get().getStyle().fontColor = Color.lightGray;
+            }).width(150f).margin(0f).update(pad -> pad.setTranslation(0f, settings.getBool("minimap") ? -235f : 0f)).row();
+        });
+
         parent.fill(cont -> { // Building Tools
             cont.name = "buildingtools";
             cont.bottom().right();
@@ -126,9 +153,9 @@ public class HudFragment{
                 }).visible(() -> true).update(mode -> {
                     mode.setTranslation(Scl.scl(building.fliped ? 0f: -87f), 0);
                 });
-            }).height(254f).update(table -> { // more magic numbers to the god of magic numbers
-                if (block != null) table.setTranslation(Scl.scl(building.fliped ? 4f : 178f) - block.getWidth(), 0f);
-                table.setWidth(Scl.scl(building.fliped ? 244f : 70f));
+            }).height(254f).update(pad -> { // more magic numbers to the god of magic numbers
+                if (block != null) pad.setTranslation(Scl.scl(building.fliped ? 4f : 178f) - block.getWidth(), 0f);
+                pad.setWidth(Scl.scl(building.fliped ? 244f : 70f));
             });
         });
 
@@ -202,6 +229,14 @@ public class HudFragment{
 
     private void setMode(Table table, Drawable icon, Mode mode) {
         table.button(icon, check, () -> build.setMode(mode)).checked(t -> build.mode == mode).row();
+    }
+
+    private void setMove(Table table, Updater move) {
+        table.button(move.icon, check, () -> GammaAI.move = move).checked(t -> GammaAI.move == move).tooltip(move.tooltip()).size(50f);
+    }
+
+    private void setBuild(Table table, Updater build) {
+        table.button(build.icon, check, () -> GammaAI.build = build).checked(t -> GammaAI.build == build).tooltip(build.tooltip()).size(50f);
     }
 
     private void updateBlock() {
