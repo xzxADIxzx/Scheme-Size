@@ -94,7 +94,7 @@ public class HudFragment {
             cont.table(Tex.pane, pad -> {
                 pad.defaults().growX();
 
-                new TextSlider(40f, 300f, 20f, 80f, value -> bundle.format("gamma.range", GammaAI.range = value)).build(pad).row();
+                new TextSlider(40f, 340f, 20f, 80f, value -> bundle.format("gamma.range", GammaAI.range = value)).build(pad).row();
                 pad.table(mode -> {
                     setMove(mode, follow);
                     setMove(mode, none);
@@ -105,7 +105,7 @@ public class HudFragment {
                     setBuild(mode, none);
                     setBuild(mode, destroy);
                 }).row();
-                pad.labelWrap(GammaAI.tooltip).labelAlign(2, 8).padTop(16f).width(150f).get().getStyle().fontColor = Color.lightGray;
+                pad.labelWrap(GammaAI.tooltip).labelAlign(2, 8).pad(8f, 0f, 8f, 0f).width(150f).get().getStyle().fontColor = Color.lightGray;
             }).width(150f).margin(0f).update(pad -> pad.setTranslation(0f, settings.getBool("minimap") ? -235f : 0f)).row();
         });
 

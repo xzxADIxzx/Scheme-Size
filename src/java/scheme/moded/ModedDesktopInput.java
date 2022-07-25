@@ -3,7 +3,6 @@ package scheme.moded;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Lines;
 import arc.math.Mathf;
-import arc.scene.ui.TextField;
 import arc.struct.Seq;
 import mindustry.content.Blocks;
 import mindustry.entities.units.BuildPlan;
@@ -75,7 +74,11 @@ public class ModedDesktopInput extends DesktopInput implements ModedInputHandler
     public void update() {
         super.update();
 
-        if (scene.getKeyboardFocus() instanceof TextField || locked()) return;
+        if (locked()) return;
+        if (scene.hasField()) {
+            if (ai.ai != null && !player.dead() && !state.isPaused()) ai.update();
+            return; // update the AI even if the player is typing a message
+        }
 
         modedInput();
         buildInput();
@@ -85,12 +88,11 @@ public class ModedDesktopInput extends DesktopInput implements ModedInputHandler
     protected void updateMovement(Unit unit) {
         if (input.keyDown(ModedBinding.alternative) && input.keyTap(Binding.respawn)) admins.despawn();
 
-        if (ai.ai != null 
+        if (ai.ai != null
                 && input.axis(Binding.move_x) == 0 && input.axis(Binding.move_y) == 0
-                && !input.keyDown(Binding.mouse_move) && !input.keyDown(Binding.select)) {
+                && !input.keyDown(Binding.mouse_move) && !input.keyDown(Binding.select))
             ai.update();
-            player.shooting = unit.isShooting;
-        } else if (!movementLocked) super.updateMovement(unit);
+        else if (!movementLocked) super.updateMovement(unit);
     }
 
     /** Punishment awaits me for this... */

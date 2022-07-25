@@ -61,6 +61,7 @@ public class AISelectDialog extends ListDialog {
     public void update() {
         ai.unit(player.unit());
         ai.updateUnit();
+        player.shooting = player.unit().isShooting;
     }
 
     public void select() {

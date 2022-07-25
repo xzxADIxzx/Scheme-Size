@@ -17,7 +17,7 @@ public class TextSlider extends Table {
     public TextSlider(float min, float max, float step, float def, StringProcessor processor) {
         touchable = Touchable.disabled;
 
-        label = labelWrap("").style(Styles.outlineLabel).padLeft(8f).growX().left().get();
+        label = labelWrap("").style(Styles.outlineLabel).padLeft(12f).growX().left().get();
         slider = new Slider(min, max, step, false);
 
         slider.moved(value -> label.setText(processor.get((int) value)));
