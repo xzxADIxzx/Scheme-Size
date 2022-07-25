@@ -26,6 +26,7 @@ public class Main extends Mod {
         builds.load();
         keycomb.load();
 
+        m_settings.apply(); // sometimes settings are not self-applying
         hudfrag.build(ui.hudGroup);
         listfrag.build(ui.hudGroup);
 

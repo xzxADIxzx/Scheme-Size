@@ -1,5 +1,8 @@
 package scheme.moded;
 
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Lines;
+import arc.struct.Seq;
 import mindustry.content.Blocks;
 import mindustry.core.World;
 import mindustry.entities.units.BuildPlan;
@@ -14,10 +17,6 @@ import scheme.tools.admins.Darkdustry;
 import static arc.Core.*;
 import static mindustry.Vars.*;
 import static scheme.SchemeVars.*;
-
-import arc.graphics.g2d.Draw;
-import arc.graphics.g2d.Lines;
-import arc.struct.Seq;
 
 /** Last update - Jul 19, 2022 */
 public interface ModedInputHandler {

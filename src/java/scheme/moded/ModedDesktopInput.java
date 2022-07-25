@@ -154,9 +154,7 @@ public class ModedDesktopInput extends DesktopInput implements ModedInputHandler
                     if (block instanceof PowerNode == false) block = Blocks.powerNode;
                     build.connect(cursorX, cursorY, (x, y) -> {
                         updateLine(x, y);
-                        build.plan.addAll(linePlans);
-                        linePlans.clear();
-                        build.plan.remove(0);
+                        build.plan.addAll(linePlans).remove(0);
                     });
                 }
 
@@ -165,12 +163,12 @@ public class ModedDesktopInput extends DesktopInput implements ModedInputHandler
                 if (build.mode == Mode.square) build.square(cursorX, cursorY, (x1, y1, x2, y2) -> {
                     updateLine(x1, y1, x2, y2);
                     build.plan.addAll(linePlans);
-                    linePlans.clear();
                 });
 
                 lastX = cursorX;
                 lastY = cursorY;
                 lastSize = build.size;
+                linePlans.clear();
             }
 
             if (input.keyRelease(Binding.select)) {
@@ -181,19 +179,21 @@ public class ModedDesktopInput extends DesktopInput implements ModedInputHandler
                     NormalizeResult result = Placement.normalizeArea(isDarkdustry() ? player.tileX() : buildX, isDarkdustry() ? player.tileY() : buildY, cursorX, cursorY, 0, false, maxSchematicSize);
                     admins.edit(result.x, result.y, result.x2, result.y2);
                 }
-            }
+            } else build.resize(input.axis(Binding.zoom));
         }
 
         if (input.keyTap(Binding.select) && !scene.hasMouse()) {
             buildX = cursorX;
             buildY = cursorY;
             using = true;
+            renderer.minZoom = renderer.maxZoom = renderer.getScale(); // a crutch to lock camera zoom
         }
 
         if (input.keyRelease(Binding.select) || input.keyTap(Binding.deselect) || input.keyTap(Binding.break_block)) {
             buildX = lastX = -1;
             buildY = lastY = -1;
             using = false;
+            m_settings.apply();
         }
     }
 

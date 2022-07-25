@@ -9,9 +9,9 @@ import mindustry.gen.Player;
 import static mindustry.Vars.*;
 import static scheme.SchemeVars.*;
 
-public class GammaAI extends AIController { // TODO: bt change size
+public class GammaAI extends AIController {
 
-    public MovementType move = MovementType.circle;
+    public MovementType move = MovementType.none;
     public BuildType build = BuildType.none;
 
     public Player target;
@@ -47,6 +47,7 @@ public class GammaAI extends AIController { // TODO: bt change size
     }
 
     public enum MovementType {
+        none(ai -> {}),
         circle(ai -> {
             ai.circle(ai.cache, ai.range);
             ai.faceMovement();
@@ -74,7 +75,7 @@ public class GammaAI extends AIController { // TODO: bt change size
         }),
         block(ai -> {
             if (ai.target.unit().plans.isEmpty()) return;
-            ai.target.unit().plans.each(plan -> {
+            ai.target.unit().plans.each(plan -> { // TODO: works bad
                 if (!plan.breaking) ai.unit.addBuild(new BuildPlan(plan.x, plan.y));
             });
         });

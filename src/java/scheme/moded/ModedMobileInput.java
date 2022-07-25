@@ -98,9 +98,7 @@ public class ModedMobileInput extends MobileInput implements ModedInputHandler {
                     if (block instanceof PowerNode == false) block = Blocks.powerNode;
                     build.connect(cursorX, cursorY, (x, y) -> {
                         updateLine(x, y);
-                        build.plan.addAll(linePlans);
-                        linePlans.clear();
-                        build.plan.remove(0);
+                        build.plan.addAll(linePlans).remove(0);
                     });
                 }
 
@@ -109,7 +107,6 @@ public class ModedMobileInput extends MobileInput implements ModedInputHandler {
                 if (build.mode == Mode.square) build.square(cursorX, cursorY, (x1, y1, x2, y2) -> {
                     updateLine(x1, y1, x2, y2);
                     build.plan.addAll(linePlans);
-                    linePlans.clear();
                 });
 
                 lastX = cursorX;
