@@ -107,7 +107,7 @@ public class HudFragment {
                     setBuild(mode, destroy);
                 }).row();
                 pad.labelWrap(GammaAI.tooltip).labelAlign(2, 8).pad(8f, 0f, 8f, 0f).width(150f).get().getStyle().fontColor = Color.lightGray;
-            }).width(150f).margin(0f).update(pad -> pad.setTranslation(0f, settings.getBool("minimap") ? (mobile ? -260f : -235f) : 0f)).row();
+            }).width(150f).margin(0f).update(pad -> pad.setTranslation(0f, settings.getBool("minimap") ? (mobile ? -300f : -235f) : 0f)).row();
         });
 
         parent.fill(cont -> { // Building Tools
