@@ -30,10 +30,6 @@ public interface ModedInputHandler {
 
     public boolean hasMoved(int x, int y);
 
-    public default boolean isDarkdustry() {
-        return admins instanceof Darkdustry;
-    }
-
     public void changePanSpeed(float value);
 
     public void lockMovement();

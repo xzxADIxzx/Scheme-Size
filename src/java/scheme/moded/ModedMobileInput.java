@@ -45,7 +45,7 @@ public class ModedMobileInput extends MobileInput implements ModedInputHandler {
 
         if (using) {
             if (build.mode == Mode.edit)
-                drawEditSelection(isDarkdustry() ? player.tileX() : buildX, isDarkdustry() ? player.tileY() : buildY, lastX, lastY, maxSchematicSize);
+                drawEditSelection(buildX, buildY, lastX, lastY, maxSchematicSize);
 
             if (build.mode == Mode.connect && isPlacing())
                 drawEditSelection(lastX - build.size + 1, lastY - build.size + 1, lastX + build.size - 1, lastY + build.size - 1, 256);
@@ -77,7 +77,7 @@ public class ModedMobileInput extends MobileInput implements ModedInputHandler {
             ai.update();
         } else if (!movementLocked) super.updateMovement(unit);
         if (shootingLocked) {
-            player.shooting = false;
+            player.shooting = unit.isShooting = false;
             unit.aimLook(player.mouseX, player.mouseY);
         }
     }
@@ -122,7 +122,7 @@ public class ModedMobileInput extends MobileInput implements ModedInputHandler {
 
                 if (build.mode == Mode.pick) tile.select(cursorX, cursorY);
                 if (build.mode == Mode.edit) {
-                    NormalizeResult result = Placement.normalizeArea(isDarkdustry() ? player.tileX() : buildX, isDarkdustry() ? player.tileY() : buildY, cursorX, cursorY, 0, false, maxSchematicSize);
+                    NormalizeResult result = Placement.normalizeArea(buildX, buildY, cursorX, cursorY, 0, false, maxSchematicSize);
                     admins.edit(result.x, result.y, result.x2, result.y2);
                 }
             }

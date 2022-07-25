@@ -52,15 +52,16 @@ public class Darkdustry implements AdminsTools {
     }
 
     public void teleport(Position pos) {
-        player.unit().set(pos); // it's always available
+        if (unusable()) return;
+        send("teleport", pos.getX(), pos.getY());
     }
 
     public void edit(int sx, int sy, int ex, int ey) {
         if (unusable()) return;
         tile.select((floor, block, overlay) -> {
-            if (floor != null) send("fill", sx, sy, ex, ey, floor.id);
-            if (block != null) send("fill", sx, sy, ex, ey, block.id);
-            if (overlay != null) send("fill", sx, sy, ex, ey, overlay.id);
+            if (floor != null) send("fill", floor.id, sx, sy, ex, ey);
+            if (block != null) send("fill", block.id, sx, sy, ex, ey);
+            if (overlay != null) send("fill", overlay.id, sx, sy, ex, ey);
         });
     }
 
