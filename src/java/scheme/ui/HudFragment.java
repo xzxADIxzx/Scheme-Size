@@ -166,12 +166,19 @@ public class HudFragment {
             cont.name = "mobilebuttons";
             cont.top().left();
 
+            float dsize = 65f, bsize = dsize - 1.5f, isize = dsize - 28f;
+            ImageButtonStyle style = new ImageButtonStyle(){{
+                up = Tex.wavepane;
+                down = Styles.flatDown;
+                over = Styles.flatOver;
+            }};
+
             cont.visible(() -> ui.hudfrag.shown && !ui.minimapfrag.shown());
             cont.update(() -> {
                 cont.marginTop((mobile ? 201f : 132f) + (state.isEditor() ? 29f : 0f));
             }); // mobile have additional buttons
 
-            float dsize = 65f, bsize = dsize - 1.5f, isize = dsize - 28f;
+            cont.image().color(Pal.gray).height(4f).width(bsize * 5f + 2.5f).row();
 
             cont.table(select -> {
                 select.defaults().size(bsize).left();
@@ -179,7 +186,9 @@ public class HudFragment {
                 Drawable look = atlas.drawable("status-disarmed");
                 Drawable tele = atlas.drawable("status-overdrive");
 
-                select.add(mobiles);
+                select.add(mobiles).get().setStyle(style);
+                mobiles.flip();
+                mobiles.flip(); // TODO: fix it later
 
                 select.button(Icon.admin, style, isize - 12f, () -> adminscfg.show());
                 if (mobile) select.button(look, style, isize, () -> {}); // disable shooting
