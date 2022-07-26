@@ -77,8 +77,9 @@ public class ModedMobileInput extends MobileInput implements ModedInputHandler {
             ai.update();
         } else if (!movementLocked) super.updateMovement(unit);
         if (shootingLocked) {
-            player.shooting = unit.isShooting = false;
             unit.aimLook(player.mouseX, player.mouseY);
+            unit.controlWeapons(true, false);
+            player.shooting = unit.isShooting = false;
         }
     }
 
@@ -152,6 +153,10 @@ public class ModedMobileInput extends MobileInput implements ModedInputHandler {
 
     public void lockMovement() {
         movementLocked = !movementLocked;
+    }
+
+    public void lockShooting() {
+        shootingLocked = !shootingLocked;
     }
 
     public void flush(Seq<BuildPlan> plans) {

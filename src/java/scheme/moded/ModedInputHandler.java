@@ -12,7 +12,6 @@ import mindustry.input.Placement;
 import mindustry.input.Placement.NormalizeDrawResult;
 import mindustry.world.Tile;
 import scheme.tools.BuildingTools.Mode;
-import scheme.tools.admins.Darkdustry;
 
 import static arc.Core.*;
 import static mindustry.Vars.*;
@@ -33,6 +32,8 @@ public interface ModedInputHandler {
     public void changePanSpeed(float value);
 
     public void lockMovement();
+
+    public void lockShooting();
 
     public void flush(Seq<BuildPlan> plans);
 

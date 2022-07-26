@@ -212,6 +212,9 @@ public class ModedDesktopInput extends DesktopInput implements ModedInputHandler
         movementLocked = !movementLocked;
     }
 
+    // there is nothing because, you know, it's desktop
+    public void lockShooting() {}
+
     public void flush(Seq<BuildPlan> plans) {
         flushPlans(plans);
     }

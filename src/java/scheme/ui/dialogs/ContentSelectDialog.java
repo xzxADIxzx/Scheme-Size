@@ -21,8 +21,7 @@ public class ContentSelectDialog<T extends UnlockableContent> extends ListDialog
     public static final int row = mobile ? 8 : 10;
     public static final float size = mobile ? 54f : 64f;
     public static final Seq<UnlockableContent> specials = Seq.with(
-            UnitTypes.latum, UnitTypes.renale, UnitTypes.manifold, UnitTypes.assemblyDrone,
-            content.unit(53), content.unit(55), content.unit(64));
+            UnitTypes.latum, UnitTypes.renale, content.unit(53), content.unit(55), content.unit(64));
 
     public Cons4<Player, Team, T, Float> callback;
     public Func<Float, String> format;

@@ -23,7 +23,6 @@ import mindustry.ui.Fonts;
 import mindustry.ui.Styles;
 import scheme.ai.GammaAI;
 import scheme.ai.GammaAI.Updater;
-import scheme.moded.ModedMobileInput;
 import scheme.tools.BuildingTools.Mode;
 
 import static arc.Core.*;
@@ -192,9 +191,7 @@ public class HudFragment {
                 mobiles.flip(); // TODO: fix it later
 
                 select.button(Icon.admin, style, isize - 12f, () -> adminscfg.show());
-                if (mobile) select.button(look, style, isize, () -> {
-                    if (m_input instanceof ModedMobileInput mobile) mobile.shootingLocked = !mobile.shootingLocked;
-                });
+                if (mobile) select.button(look, style, isize, m_input::lockShooting);
                 else select.button(Icon.book, style, keycomb::show);
                 select.button(tele,       style, isize, () -> admins.teleport());
                 select.button(Icon.lock,  style, isize, m_input::lockMovement).get().image().color(Pal.gray).width(4).height(bsize).padRight(-dsize + 1.5f + isize);

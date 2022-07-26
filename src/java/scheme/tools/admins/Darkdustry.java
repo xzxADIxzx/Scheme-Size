@@ -20,7 +20,7 @@ public class Darkdustry implements AdminsTools {
 
     public void spawnUnits() {
         if (unusable()) return;
-        unit.select(true, true, true, (target, team, unit, amount) -> {
+        unit.select(true, false, true, (target, team, unit, amount) -> {
             send("spawn", unit.id, amount.intValue(), team.id);
             units.refresh();
         });
@@ -28,7 +28,7 @@ public class Darkdustry implements AdminsTools {
 
     public void manageEffect() {
         if (unusable()) return;
-        ui.showInfoFade("@admins.notsupported");
+        effect.select(true, true, false, (target, team, effect, amount) -> send("effect", effect.id, amount.intValue() / 60, target.id));
     }
 
     public void manageItem() {
@@ -53,7 +53,7 @@ public class Darkdustry implements AdminsTools {
 
     public void teleport(Position pos) {
         if (unusable()) return;
-        send("teleport", pos.getX(), pos.getY());
+        send("tp", (int) pos.getX() / tilesize, (int) pos.getY() / tilesize);
     }
 
     public void edit(int sx, int sy, int ex, int ey) {
