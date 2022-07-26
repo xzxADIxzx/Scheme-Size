@@ -77,15 +77,18 @@ public class SlashJs implements AdminsTools {
 
     public void teleport(Position pos) {
         if (unusable()) return;
-        getPlayer(player); // Vec2 and Point2 returns (x, y)
-        js("player.unit().set" + pos);
+        String conpos = "(player.con, " + pos.toString().replace("(", ""); // Vec2 and Point2 returns (x, y)
+        getPlayer(player);
+        js("var spawned = player.unit().spawnedByCore; var unit = player.unit(); unit.spawnedByCore = false; player.clearUnit()");
+        js("unit.set" + pos + "; Call.setPosition" + conpos + "; Call.setCameraPosition" + conpos);
+        js("player.unit(unit); unit.spawnedByCore = spawned");
     }
 
     public void edit(int sx, int sy, int ex, int ey) {
         if (unusable()) return;
         tile.select((floor, block, overlay) -> {
             js("var floor = " + getBlock(floor) + "; var block = " + getBlock(block) + "; var over = " + getBlock(overlay));
-            js("var todo = tile => { tile.setFloorNet(floor==null?tile.floor():floor,overlay==null?tile.overlay():overlay);if(block!=null)tile.setNet(block) }");
+            js("var todo = tile => { tile.setFloorNet(floor==null?tile.floor():floor,over==null?tile.overlay():over); if (block!=null) tile.setNet(block) }");
             js("for (var x = " + sx + "; x <= " + ex + "; x++) for (var y = " + sy + "; y <= " + ey + "; y++) todo(Vars.world.tiles.getc(x, y))");
         });
     }
