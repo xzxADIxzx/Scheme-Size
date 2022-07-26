@@ -105,7 +105,7 @@ public class ModedMobileInput extends MobileInput implements ModedInputHandler {
                     });
                 }
 
-                if (build.mode == Mode.fill) build.fill(lineStartX, lineStartY, cursorX, cursorY, maxSchematicSize);
+                if (build.mode == Mode.fill) build.fill(lastLineX, lastLineY, cursorX, cursorY, maxSchematicSize);
                 if (build.mode == Mode.circle) build.circle(cursorX, cursorY);
                 if (build.mode == Mode.square) build.square(cursorX, cursorY, (x1, y1, x2, y2) -> {
                     updateLine(x1, y1, x2, y2);
@@ -115,6 +115,7 @@ public class ModedMobileInput extends MobileInput implements ModedInputHandler {
                 lastX = cursorX;
                 lastY = cursorY;
                 lastSize = build.size;
+                linePlans.clear();
             }
 
             if (isRelease()) {
@@ -122,7 +123,7 @@ public class ModedMobileInput extends MobileInput implements ModedInputHandler {
 
                 if (build.mode == Mode.pick) tile.select(cursorX, cursorY);
                 if (build.mode == Mode.edit) {
-                    NormalizeResult result = Placement.normalizeArea(lineStartX, lineStartY, cursorX, cursorY, 0, false, maxSchematicSize);
+                    NormalizeResult result = Placement.normalizeArea(lastLineX, lastLineY, cursorX, cursorY, 0, false, maxSchematicSize);
                     admins.edit(result.x, result.y, result.x2, result.y2);
                 }
             }
