@@ -20,7 +20,7 @@ import static scheme.SchemeVars.*;
 public class ModedMobileInput extends MobileInput implements ModedInputHandler {
 
     public boolean using, movementLocked, lastTouched, shootingLocked;
-    public int lastX, lastY, lastSize = 8;
+    public int buildX, buildY, lastX, lastY, lastSize = 8;
 
     private boolean isRelease() {
         return lastTouched && !input.isTouched(0);
@@ -38,13 +38,12 @@ public class ModedMobileInput extends MobileInput implements ModedInputHandler {
 
     @Override
     public void drawTop() {
-        if (mode == schematicSelect) {
+        if (mode == schematicSelect)
             drawSelection(lineStartX, lineStartY, lastLineX, lastLineY, maxSchematicSize);
-        }
 
         if (using) {
             if (build.mode == Mode.edit)
-                drawEditSelection(lastLineX, lastLineY, lastX, lastY, maxSchematicSize);
+                drawEditSelection(buildX, buildY, lastX, lastY, maxSchematicSize);
 
             if (build.mode == Mode.connect && isPlacing())
                 drawEditSelection(lastX - build.size + 1, lastY - build.size + 1, lastX + build.size - 1, lastY + build.size - 1, 256);
@@ -105,7 +104,7 @@ public class ModedMobileInput extends MobileInput implements ModedInputHandler {
                     });
                 }
 
-                if (build.mode == Mode.fill) build.fill(lastLineX, lastLineY, cursorX, cursorY, maxSchematicSize);
+                if (build.mode == Mode.fill) build.fill(buildX, buildY, cursorX, cursorY, maxSchematicSize);
                 if (build.mode == Mode.circle) build.circle(cursorX, cursorY);
                 if (build.mode == Mode.square) build.square(cursorX, cursorY, (x1, y1, x2, y2) -> {
                     updateLine(x1, y1, x2, y2);
@@ -123,15 +122,15 @@ public class ModedMobileInput extends MobileInput implements ModedInputHandler {
 
                 if (build.mode == Mode.pick) tile.select(cursorX, cursorY);
                 if (build.mode == Mode.edit) {
-                    NormalizeResult result = Placement.normalizeArea(lastLineX, lastLineY, cursorX, cursorY, 0, false, maxSchematicSize);
+                    NormalizeResult result = Placement.normalizeArea(buildX, buildY, cursorX, cursorY, 0, false, maxSchematicSize);
                     admins.edit(result.x, result.y, result.x2, result.y2);
                 }
             }
         }
 
         if (isTap() && !scene.hasMouse()) {
-            lastLineX = cursorX;
-            lastLineY = cursorY;
+            buildX = cursorX;
+            buildY = cursorY;
             using = true;
         }
 

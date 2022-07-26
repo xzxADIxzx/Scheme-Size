@@ -24,7 +24,7 @@ import static scheme.SchemeVars.*;
 public class ModedDesktopInput extends DesktopInput implements ModedInputHandler {
 
     public boolean using, movementLocked;
-    public int lastX, lastY, lastSize = 8;
+    public int buildX, buildY, lastX, lastY, lastSize = 8;
 
     @Override
     protected void removeSelection(int x1, int y1, int x2, int y2, int maxLength) {
@@ -48,7 +48,7 @@ public class ModedDesktopInput extends DesktopInput implements ModedInputHandler
 
         if (using) {
             if (build.mode == Mode.edit)
-                drawEditSelection(lastLineX, lastLineY, cursorX, cursorY, maxSchematicSize);
+                drawEditSelection(buildX, buildY, cursorX, cursorY, maxSchematicSize);
 
             if (build.mode == Mode.connect && isPlacing())
                 drawEditSelection(cursorX - build.size, cursorY - build.size, cursorX + build.size, cursorY + build.size, maxSchematicSize);
@@ -159,7 +159,7 @@ public class ModedDesktopInput extends DesktopInput implements ModedInputHandler
                     });
                 }
 
-                if (build.mode == Mode.fill) build.fill(selectX, selectY, cursorX, cursorY, maxSchematicSize);
+                if (build.mode == Mode.fill) build.fill(buildX, buildY, cursorX, cursorY, maxSchematicSize);
                 if (build.mode == Mode.circle) build.circle(cursorX, cursorY);
                 if (build.mode == Mode.square) build.square(cursorX, cursorY, (x1, y1, x2, y2) -> {
                     updateLine(x1, y1, x2, y2);
@@ -177,15 +177,15 @@ public class ModedDesktopInput extends DesktopInput implements ModedInputHandler
 
                 if (build.mode == Mode.pick) tile.select(cursorX, cursorY);
                 if (build.mode == Mode.edit) {
-                    NormalizeResult result = Placement.normalizeArea(lastLineX, lastLineY, cursorX, cursorY, 0, false, maxSchematicSize);
+                    NormalizeResult result = Placement.normalizeArea(buildX, buildY, cursorX, cursorY, 0, false, maxSchematicSize);
                     admins.edit(result.x, result.y, result.x2, result.y2);
                 }
             } else build.resize(input.axis(Binding.zoom));
         }
 
         if (input.keyTap(Binding.select) && !scene.hasMouse()) {
-            lastLineX = cursorX;
-            lastLineY = cursorY;
+            buildX = cursorX;
+            buildY = cursorY;
             using = true;
             renderer.minZoom = renderer.maxZoom = renderer.getScale(); // a crutch to lock camera zoom
         }
