@@ -2,6 +2,7 @@ package scheme.ai;
 
 import arc.func.Cons;
 import arc.math.geom.Position;
+import arc.math.geom.Vec2;
 import arc.scene.style.Drawable;
 import mindustry.entities.units.AIController;
 import mindustry.entities.units.BuildPlan;
@@ -23,6 +24,7 @@ public class GammaAI extends AIController {
 
     public Player target;
     public Position cache;
+    public Position aim;
 
     @Override
     public void updateUnit() {
@@ -30,7 +32,9 @@ public class GammaAI extends AIController {
 
         move.update.get(this);
         build.update.get(this);
+
         player.boosting = target.boosting;
+        aim = new Vec2(target.mouseX, target.mouseY);
     }
 
     public void cache() {
@@ -50,11 +54,8 @@ public class GammaAI extends AIController {
             ai.faceMovement();
             ai.stopShooting();
         }),
-        follow(Icon.resize, ai -> {
-            ai.moveTo(ai.cache, range / 2f);
-            ai.unit.aim(ai.target.mouseX, ai.target.mouseY);
-            ai.unit.controlWeapons(true, ai.target.shooting);
-        }),
+        cursor(Icon.diagonal, ai -> moveTo(ai, ai.aim)),
+        follow(Icon.resize, ai -> moveTo(ai, ai.cache)),
         help(Icon.add, ai -> {
             if (ai.target.unit().plans.isEmpty()) return;
             ai.unit.clearBuilding();
@@ -77,6 +78,14 @@ public class GammaAI extends AIController {
 
         public String tooltip() {
             return "@gamma." + name();
+        }
+
+        private static void moveTo(GammaAI ai, Position pos) {
+            ai.moveTo(pos, range / 3f);
+            if (ai.unit.vel.len() > .5f) ai.faceMovement();
+            else ai.unit.lookAt(ai.aim);
+            ai.unit.aim(ai.aim);
+            ai.unit.controlWeapons(true, ai.target.shooting);
         }
     }
 }

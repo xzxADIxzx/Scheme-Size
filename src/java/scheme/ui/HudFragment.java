@@ -96,8 +96,9 @@ public class HudFragment {
 
                 new TextSlider(40f, 340f, 20f, 80f, value -> bundle.format("gamma.range", GammaAI.range = value)).build(pad).row();
                 pad.table(mode -> {
-                    setMove(mode, follow);
                     setMove(mode, none);
+                    setMove(mode, follow);
+                    setMove(mode, cursor);
                     setMove(mode, circle);
                 }).row();
                 pad.table(mode -> {
@@ -241,7 +242,10 @@ public class HudFragment {
     }
 
     private void setMove(Table table, Updater move) {
-        table.button(move.icon, check, () -> GammaAI.move = move).checked(t -> GammaAI.move == move).tooltip(move.tooltip()).size(50f);
+        table.button(move.icon, check, () -> {
+            GammaAI.move = move;
+            ((GammaAI) ai.ai).cache();
+        }).checked(t -> GammaAI.move == move).tooltip(move.tooltip()).size(37.5f);
     }
 
     private void setBuild(Table table, Updater build) {
