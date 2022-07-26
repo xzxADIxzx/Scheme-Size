@@ -20,7 +20,7 @@ public class Darkdustry implements AdminsTools {
 
     public void spawnUnits() {
         if (unusable()) return;
-        unit.select(true, true, true, (target, team, unit, amount) -> {
+        unit.select(true, false, true, (target, team, unit, amount) -> {
             send("spawn", unit.id, amount.intValue(), team.id);
             units.refresh();
         });
@@ -28,7 +28,7 @@ public class Darkdustry implements AdminsTools {
 
     public void manageEffect() {
         if (unusable()) return;
-        ui.showInfoFade("@admins.notsupported");
+        effect.select(true, true, false, (target, team, effect, amount) -> send("effect", effect.id, amount.intValue() / 60, target.id));
     }
 
     public void manageItem() {
@@ -52,15 +52,16 @@ public class Darkdustry implements AdminsTools {
     }
 
     public void teleport(Position pos) {
-        player.unit().set(pos); // it's always available
+        if (unusable()) return;
+        send("tp", (int) pos.getX() / tilesize, (int) pos.getY() / tilesize);
     }
 
     public void edit(int sx, int sy, int ex, int ey) {
         if (unusable()) return;
         tile.select((floor, block, overlay) -> {
-            if (floor != null) send("fill", sx, sy, ex, ey, floor.id);
-            if (block != null) send("fill", sx, sy, ex, ey, block.id);
-            if (overlay != null) send("fill", sx, sy, ex, ey, overlay.id);
+            if (floor != null) send("fill", floor.id, sx, sy, ex, ey);
+            if (block != null) send("fill", block.id, sx, sy, ex, ey);
+            if (overlay != null) send("fill", overlay.id, sx, sy, ex, ey);
         });
     }
 

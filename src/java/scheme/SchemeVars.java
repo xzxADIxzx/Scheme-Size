@@ -60,10 +60,10 @@ public class SchemeVars {
         team = new TeamSelectDialog();
         tile = new TileSelectDialog();
 
-        unit = new ContentSelectDialog<>("@select.unit", content.units(), 1, 24, 1, value -> {
+        unit = new ContentSelectDialog<>("@select.unit", content.units(), 1, 25, 1, value -> {
             return bundle.format("select.units", value);
         });
-        effect = new ContentSelectDialog<>("@select.effect", content.statusEffects(), 0, 5 * 3600, 60, value -> {
+        effect = new ContentSelectDialog<>("@select.effect", content.statusEffects(), 0, 5 * 3600, 600, value -> {
             return value == 0 ? "@select.effect.clear" : bundle.format("select.seconds", value / 60f);
         });
         item = new ContentSelectDialog<>("@select.item", content.items(), -10000, 10000, 500, value -> {

@@ -76,9 +76,8 @@ public class Internal implements AdminsTools {
                     Tile tile = world.tile(x, y);
                     if (tile == null) continue;
 
-                    if (floor != null) tile.setFloorNet(floor);
+                    tile.setFloorNet(floor == null ? tile.floor() : floor, overlay == null ? tile.overlay() : overlay);
                     if (block != null) tile.setNet(block);
-                    if (overlay != null) tile.setOverlayNet(overlay);
             }
         });
     }

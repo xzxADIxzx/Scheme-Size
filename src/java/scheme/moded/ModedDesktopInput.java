@@ -49,7 +49,7 @@ public class ModedDesktopInput extends DesktopInput implements ModedInputHandler
 
         if (using) {
             if (build.mode == Mode.edit)
-                drawEditSelection(isDarkdustry() ? player.tileX() : buildX, isDarkdustry() ? player.tileY() : buildY, cursorX, cursorY, maxSchematicSize);
+                drawEditSelection(buildX, buildY, cursorX, cursorY, maxSchematicSize);
 
             if (build.mode == Mode.connect && isPlacing())
                 drawEditSelection(cursorX - build.size, cursorY - build.size, cursorX + build.size, cursorY + build.size, maxSchematicSize);
@@ -178,7 +178,7 @@ public class ModedDesktopInput extends DesktopInput implements ModedInputHandler
 
                 if (build.mode == Mode.pick) tile.select(cursorX, cursorY);
                 if (build.mode == Mode.edit) {
-                    NormalizeResult result = Placement.normalizeArea(isDarkdustry() ? player.tileX() : buildX, isDarkdustry() ? player.tileY() : buildY, cursorX, cursorY, 0, false, maxSchematicSize);
+                    NormalizeResult result = Placement.normalizeArea(buildX, buildY, cursorX, cursorY, 0, false, maxSchematicSize);
                     admins.edit(result.x, result.y, result.x2, result.y2);
                 }
             } else build.resize(input.axis(Binding.zoom));
@@ -211,6 +211,9 @@ public class ModedDesktopInput extends DesktopInput implements ModedInputHandler
     public void lockMovement() {
         movementLocked = !movementLocked;
     }
+
+    // there is nothing because, you know, it's desktop
+    public void lockShooting() {}
 
     public void flush(Seq<BuildPlan> plans) {
         flushPlans(plans);

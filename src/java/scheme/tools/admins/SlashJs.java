@@ -85,7 +85,7 @@ public class SlashJs implements AdminsTools {
         if (unusable()) return;
         tile.select((floor, block, overlay) -> {
             js("var floor = " + getBlock(floor) + "; var block = " + getBlock(block) + "; var over = " + getBlock(overlay));
-            js("var todo = tile => { if (floor!=null) tile.setFloorNet(floor); if (block!=null) tile.setNet(block); if (over!=null) tile.setOverlayNet(over) }");
+            js("var todo = tile => { tile.setFloorNet(floor==null?tile.floor():floor,overlay==null?tile.overlay():overlay);if(block!=null)tile.setNet(block) }");
             js("for (var x = " + sx + "; x <= " + ex + "; x++) for (var y = " + sy + "; y <= " + ey + "; y++) todo(Vars.world.tiles.getc(x, y))");
         });
     }
