@@ -68,7 +68,7 @@ public class HudFragment {
             cont.visible(() -> ui.hudfrag.shown && !state.isEditor());
 
             float dif = Scl.scl() % .5f == 0 ? 0f : 1f; // there are also a lot of magic numbers
-            cont.add(new HexBar(() -> player.unit().shield / units.maxShield, icon -> {
+            cont.add(new HexBar(() -> units.shield() / units.maxShield, icon -> {
                 icon.image(player::icon).scaling(Scaling.bounded).grow().maxWidth(54f);
             })).size(92.2f + dif / 2, 80f).padLeft(18.2f - dif).padTop(mobile ? 69f : 0f);
         });

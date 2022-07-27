@@ -4,6 +4,7 @@ import arc.Events;
 import arc.struct.Seq;
 import mindustry.entities.abilities.Ability;
 import mindustry.entities.abilities.ForceFieldAbility;
+import mindustry.entities.abilities.ShieldArcAbility;
 import mindustry.game.EventType.*;
 import mindustry.gen.Groups;
 import mindustry.gen.Unit;
@@ -16,6 +17,7 @@ public class UnitsCache {
     public float maxShield;
     public int maxAccepted;
 
+    public ShieldArcAbility ability;
     public Seq<Unit> cache = new Seq<>();
 
     public void load() {
@@ -30,11 +32,20 @@ public class UnitsCache {
             maxAccepted = player.unit().type.itemCapacity;
 
             maxShield = -1;
+            ability = null;
             for (Ability ability : player.unit().abilities) if (ability instanceof ForceFieldAbility field) {
                 maxShield = field.max;
                 break;
+            } else if (ability instanceof ShieldArcAbility shield) {
+                maxShield = shield.max;
+                this.ability = shield;
+                break;
             }
         });
+    }
+
+    public float shield() {
+        return ability == null ? player.unit().shield : ability.data;
     }
 
     public void refresh() {
@@ -45,7 +56,7 @@ public class UnitsCache {
         Groups.draw.each(drawc -> drawc instanceof Unit, drawc -> {
             Groups.draw.remove(drawc);
             cache.add((Unit) drawc);
-        }); 
+        });
     }
 
     public void uncache() {
