@@ -107,7 +107,7 @@ public class HudFragment {
                     setBuild(mode, destroy);
                 }).row();
                 pad.labelWrap(GammaAI.tooltip).labelAlign(2, 8).pad(8f, 0f, 8f, 0f).width(150f).get().getStyle().fontColor = Color.lightGray;
-            }).width(150f).margin(0f).update(pad -> pad.setTranslation(0f, settings.getBool("minimap") ? (mobile ? -340f : -235f) : 0f)).row();
+            }).width(150f).margin(0f).update(pad -> pad.setTranslation(0f, settings.getBool("minimap") ? -Scl.scl(mobile ? 272f : 188f) : 0f)).row();
         });
 
         parent.fill(cont -> { // Building Tools
@@ -151,77 +151,52 @@ public class HudFragment {
                     setMode(mode, Icon.link, Mode.replace);
                     setMode(mode, Icon.hammer, Mode.remove);
                     setMode(mode, Icon.power, Mode.connect);
-                }).visible(() -> true).update(mode -> {
-                    mode.setTranslation(Scl.scl(building.fliped ? 0f: -87f), 0);
-                });
-            }).height(254f).update(pad -> { // more magic numbers to the god of magic numbers
-                if (block != null) pad.setTranslation(Scl.scl(building.fliped ? 4f : 178f) - block.getWidth(), 0f);
-                pad.setWidth(Scl.scl(building.fliped ? 244f : 70f));
+                }).visible(() -> true).update(mode -> mode.setTranslation(Scl.scl(building.fliped ? 0f : -87f), 0f));
+            }).height(254f).update(pad -> {
+                if (block == null) return; // block is null before the world is loaded
+                pad.setTranslation(Scl.scl(building.fliped ? 4f : 178f) - block.getWidth(), 0f);
+                pad.setWidth(Scl.scl(building.fliped ? 244f : 70f)); // more magic numbers to the god of magic numbers
             });
         });
 
         if (!settings.getBool("mobilebuttons") && !mobile) return;
 
-        // TODO: refactor
         parent.fill(cont -> { // Mobile Buttons
             cont.name = "mobilebuttons";
             cont.top().left();
 
-            float dsize = 65f, bsize = dsize - 1.5f, isize = dsize - 28f;
-            ImageButtonStyle style = new ImageButtonStyle(){{
-                up = Tex.wavepane;
-                down = Styles.flatDown;
-                over = Styles.flatOver;
-            }};
-
             cont.visible(() -> ui.hudfrag.shown && !ui.minimapfrag.shown());
-            cont.update(() -> {
-                cont.marginTop((mobile ? 201f : 132f) + (state.isEditor() ? 29f : 0f));
-            }); // mobile have additional buttons
 
-            cont.image().color(Pal.gray).height(4f).width(bsize * 5f + 2.5f).row();
+            cont.table(Tex.buttonEdge4, pad -> {
+                Cons<Element> translate = element -> element.setTranslation(0f, Scl.scl(mobiles.fliped ? 0f : -62f));
+                pad.image().color(Pal.gray).size(320f, 4f).update(translate::get).row();
 
-            cont.table(select -> {
-                select.defaults().size(bsize).left();
+                partition(pad, mode -> mode.add(mobiles),
+                        Icon.admin, (Runnable) () -> adminscfg.show(),
+                        mobile ? "disarmed" : Icon.book, mobile ? (Runnable) m_input::lockShooting : (Runnable) keycomb::show,
+                        "overdrive", (Runnable) () -> admins.teleport(),
+                        Icon.lock, (Runnable) () -> m_input.lockMovement()
+                ).visible(() -> true).update(translate::get).row();
 
-                Drawable look = atlas.drawable("status-disarmed");
-                Drawable tele = atlas.drawable("status-overdrive");
+                partition(pad, mode -> {},
+                        Icon.effect, (Runnable) () -> admins.placeCore(),
+                        "boss", (Runnable) () -> admins.manageTeam(),
+                        "blasted", (Runnable) () -> admins.despawn(),
+                        Icon.logic, (Runnable) () -> ai.select(),
+                        Icon.image, (Runnable) () -> rendercfg.show()
+                ).row();
 
-                select.add(mobiles).get().setStyle(style);
-                mobiles.flip();
-                mobiles.flip(); // TODO: fix it later
-
-                select.button(Icon.admin, style, isize - 12f, () -> adminscfg.show());
-                if (mobile) select.button(look, style, isize, m_input::lockShooting);
-                else select.button(Icon.book, style, keycomb::show);
-                select.button(tele,       style, isize, () -> admins.teleport());
-                select.button(Icon.lock,  style, isize, m_input::lockMovement).get().image().color(Pal.gray).width(4).height(bsize).padRight(-dsize + 1.5f + isize);
-            }).left().row();
-
-            cont.table(select -> {
-                select.defaults().size(bsize).left();
-
-                Drawable team = atlas.drawable("team-derelict");
-                Drawable kill = atlas.drawable("status-blasted");
-
-                select.button(Icon.effect, style, isize, () -> admins.placeCore());
-                select.button(team,        style, isize, () -> admins.manageTeam());
-                select.button(kill,        style, isize, () -> admins.despawn());
-                select.button(Icon.logic,  style, isize, ai::select);
-                select.button(Icon.image,    style, isize, rendercfg::show).get().image().color(Pal.gray).width(4).height(bsize).padRight(-dsize + 1.5f + isize);
-            }).left().visible(() -> mobiles.fliped).row();
-
-            cont.table(select -> {
-                select.defaults().size(bsize).left();
-
-                Drawable effe = atlas.drawable("status-corroded");
-
-                select.button(Icon.units,      style, isize, () -> admins.manageUnit());
-                select.button(Icon.add,        style, isize, () -> admins.spawnUnits());
-                select.button(effe,            style, isize, () -> admins.manageEffect());
-                select.button(Icon.production, style, isize, () -> admins.manageItem());
-                select.button(Icon.info,       style, isize, render::toggleHistory).get().image().color(Pal.gray).width(4).height(bsize).padRight(-dsize + 1.5f + isize);
-            }).left().visible(() -> mobiles.fliped).row();
+                partition(pad, mode -> {},
+                        Icon.units, (Runnable) () -> admins.manageUnit(),
+                        Icon.add, (Runnable) () -> admins.spawnUnits(),
+                        "corroded", (Runnable) () -> admins.manageEffect(),
+                        Icon.production, (Runnable) () -> admins.manageItem(),
+                        Icon.info, (Runnable) () -> render.toggleHistory()
+                ).row();
+            }).margin(0f).update(pad -> {
+                pad.setTranslation(0f, -Scl.scl((mobile ? 201f : 132f) + (state.isEditor() ? 29f : 0f) - (mobiles.fliped ? 0f : 125f)));
+                pad.setHeight(Scl.scl(mobiles.fliped ? 190.5f : 63.5f));
+            });
         });
     }
 
@@ -235,6 +210,15 @@ public class HudFragment {
             cont.defaults().size(46f).bottom().right();
             cons.get(cont);
         }).visible(() -> building.fliped);
+    }
+
+    private Cell<Table> partition(Table table, Cons<Table> cons, Object... buttons) {
+        return table.table(cont -> {
+            cont.defaults().size(63.5f).left();
+            cons.get(cont); // special for flip button
+            for (int i = 0; i < buttons.length; i++) 
+                cont.button(buttons[i] instanceof String name ? atlas.drawable("status-" + name) : (Drawable) buttons[i], style, 37f, (Runnable) buttons[++i]);
+        }).visible(() -> mobiles.fliped);
     }
 
     private void setMode(Table table, Drawable icon, Mode mode) {
