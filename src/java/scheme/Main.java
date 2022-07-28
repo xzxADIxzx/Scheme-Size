@@ -20,6 +20,7 @@ public class Main extends Mod {
 
         // schematics = m_schematics;
         ui.traces = traces;
+        ui.schematics = schemas;
         ui.listfrag = listfrag;
 
         units.load();
