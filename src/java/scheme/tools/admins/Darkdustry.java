@@ -28,7 +28,7 @@ public class Darkdustry implements AdminsTools {
 
     public void manageEffect() {
         if (unusable()) return;
-        effect.select(true, true, false, (target, team, effect, amount) -> send("effect", effect.id, amount.intValue() / 60, target.id));
+        ui.showInfoFade("@admins.notsupported");
     }
 
     public void manageItem() {
