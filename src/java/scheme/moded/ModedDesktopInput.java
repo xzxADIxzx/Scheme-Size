@@ -3,6 +3,7 @@ package scheme.moded;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Lines;
 import arc.math.Mathf;
+import arc.scene.ui.layout.Scl;
 import arc.struct.Seq;
 import mindustry.content.Blocks;
 import mindustry.entities.units.BuildPlan;
@@ -187,11 +188,12 @@ public class ModedDesktopInput extends DesktopInput implements ModedInputHandler
             buildX = cursorX;
             buildY = cursorY;
             using = true;
-            renderer.minZoom = renderer.maxZoom = renderer.getScale(); // a crutch to lock camera zoom
+            renderer.minZoom = renderer.maxZoom = renderer.getScale() / Scl.scl(); // a crutch to lock camera zoom
         }
 
         if (input.keyRelease(Binding.select) || input.keyTap(Binding.deselect) || input.keyTap(Binding.break_block)) {
             using = false;
+            build.plan.clear();
             m_settings.apply();
         }
     }

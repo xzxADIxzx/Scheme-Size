@@ -5,7 +5,6 @@ import arc.func.Cons;
 import arc.func.Cons2;
 import arc.func.Cons4;
 import arc.math.Mathf;
-import arc.math.geom.Geometry;
 import arc.struct.Seq;
 import arc.util.Strings;
 import mindustry.content.Items;
@@ -140,9 +139,9 @@ public class BuildingTools {
         if (block() == null) return;
 
         ibsize = block().size;
-        Geometry.circle(x, y, size, (px, py) -> {
-            if (!Mathf.within(x, y, px, py, size - 1)) plan(Mathf.round(px, ibsize), Mathf.round(py, ibsize), 0);
-        });
+        for (int dx = -size; dx <= size; dx += ibsize)
+            for (int dy = -size; dy <= size; dy += ibsize)
+                if (Mathf.within(dx, dy, size) && !Mathf.within(dx, dy, size - ibsize)) plan(x + dx, y + dy, 0);
     }
 
     public void save(int x1, int y1, int x2, int y2, int maxLength) {
