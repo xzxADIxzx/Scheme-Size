@@ -68,7 +68,7 @@ public class Internal implements AdminsTools {
         player.unit().set(pos); // it's always available
     }
 
-    public void edit(int sx, int sy, int ex, int ey) {
+    public void fill(int sx, int sy, int ex, int ey) {
         if (unusable()) return;
         tile.select((floor, block, overlay) -> {
             for (int x = sx; x <= ex; x++)

@@ -179,7 +179,7 @@ public class ModedDesktopInput extends DesktopInput implements ModedInputHandler
                 if (build.mode == Mode.pick) tile.select(cursorX, cursorY);
                 if (build.mode == Mode.edit) {
                     NormalizeResult result = Placement.normalizeArea(buildX, buildY, cursorX, cursorY, 0, false, maxSchematicSize);
-                    admins.edit(result.x, result.y, result.x2, result.y2);
+                    admins.fill(result.x, result.y, result.x2, result.y2);
                 }
             } else build.resize(input.axis(Binding.zoom));
         }

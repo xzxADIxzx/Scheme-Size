@@ -84,7 +84,7 @@ public class SlashJs implements AdminsTools {
         js("player.unit(unit); unit.spawnedByCore = spawned");
     }
 
-    public void edit(int sx, int sy, int ex, int ey) {
+    public void fill(int sx, int sy, int ex, int ey) {
         if (unusable()) return;
         tile.select((floor, block, overlay) -> {
             js("var floor = " + getBlock(floor) + "; var block = " + getBlock(block) + "; var over = " + getBlock(overlay));

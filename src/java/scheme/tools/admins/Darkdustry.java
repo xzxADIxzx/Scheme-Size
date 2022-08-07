@@ -57,7 +57,7 @@ public class Darkdustry implements AdminsTools {
         send("tp", (int) pos.getX() / tilesize, (int) pos.getY() / tilesize);
     }
 
-    public void edit(int sx, int sy, int ex, int ey) {
+    public void fill(int sx, int sy, int ex, int ey) {
         if (unusable()) return;
         tile.select((floor, block, overlay) -> send("full", id(floor), id(block), id(overlay), sx, sy, ex, ey));
     }
