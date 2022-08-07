@@ -3,6 +3,7 @@ package scheme.tools.admins;
 import arc.math.geom.Position;
 import mindustry.gen.Call;
 import mindustry.gen.Player;
+import mindustry.world.Block;
 
 import static arc.Core.*;
 import static mindustry.Vars.*;
@@ -58,11 +59,7 @@ public class Darkdustry implements AdminsTools {
 
     public void edit(int sx, int sy, int ex, int ey) {
         if (unusable()) return;
-        tile.select((floor, block, overlay) -> {
-            if (floor != null) send("fill", floor.id, sx, sy, ex, ey);
-            if (block != null) send("fill", block.id, sx, sy, ex, ey);
-            if (overlay != null) send("fill", overlay.id, sx, sy, ex, ey);
-        });
+        tile.select((floor, block, overlay) -> send("full", id(floor), id(block), id(overlay), sx, sy, ex, ey));
     }
 
     public boolean unusable() {
@@ -77,5 +74,9 @@ public class Darkdustry implements AdminsTools {
         StringBuilder message = new StringBuilder(netServer.clientCommands.getPrefix()).append(command);
         for (var arg : args) message.append(" ").append(arg);
         Call.sendChatMessage(message.toString());
+    }
+
+    private static String id(Block block) {
+        return block == null ? "null" : String.valueOf(block.id);
     }
 }
