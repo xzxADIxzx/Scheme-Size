@@ -11,9 +11,7 @@ import arc.scene.ui.TextField;
 import arc.scene.ui.ImageButton.ImageButtonStyle;
 import arc.scene.ui.TextField.TextFieldFilter;
 import arc.scene.ui.TextField.TextFieldStyle;
-import arc.scene.ui.layout.Cell;
-import arc.scene.ui.layout.Scl;
-import arc.scene.ui.layout.Table;
+import arc.scene.ui.layout.*;
 import arc.util.Scaling;
 import mindustry.game.EventType.*;
 import mindustry.gen.Icon;
@@ -194,10 +192,13 @@ public class HudFragment {
                         Icon.info, (Runnable) () -> render.toggleHistory()
                 ).row();
             }).margin(0f).update(pad -> {
-                pad.setTranslation(0f, -Scl.scl((mobile ? 201f : 132f) + (state.isEditor() ? 29f : 0f) - (mobiles.fliped ? 0f : 125f)));
+                pad.setTranslation(0f, -Scl.scl((mobile ? 147f : 78f) + (state.isEditor() ? 61f : 0f) - (mobiles.fliped ? 0f : 125f)));
                 pad.setHeight(Scl.scl(mobiles.fliped ? 190.5f : 63.5f));
             });
         });
+
+        Table info = getInfoTable();
+        info.update(() -> info.setTranslation(0f, -Scl.scl(mobiles.fliped ? 190.5f : 63.5f)));
     }
 
     public void resize(int amount) {
@@ -244,5 +245,9 @@ public class HudFragment {
 
     private Table getCoreItems() {
         return (Table) ((Table) ui.hudGroup.getChildren().get(5)).getChildren().get(1);
+    }
+
+    private Table getInfoTable() {
+        return (Table) ((Table) ((Stack) ((Table) ui.hudGroup.getChildren().get(4)).getChildren().get(0)).getChildren().get(0)).getChildren().get(1);
     }
 }
