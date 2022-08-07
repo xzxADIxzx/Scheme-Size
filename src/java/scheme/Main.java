@@ -4,6 +4,7 @@ import arc.util.Log;
 import mindustry.mod.Mod;
 import mindustry.mod.Scripts;
 import scheme.moded.ModedBinding;
+import scheme.ui.MapResizeFix;
 
 import static arc.Core.*;
 import static mindustry.Vars.*;
@@ -17,6 +18,7 @@ public class Main extends Mod {
         ModedBinding.load();
         SchemeVars.load();
         SchemeUpdater.load();
+        MapResizeFix.load();
 
         // schematics = m_schematics;
         ui.traces = traces;
