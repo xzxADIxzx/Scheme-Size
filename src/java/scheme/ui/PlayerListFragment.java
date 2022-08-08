@@ -78,6 +78,7 @@ public class PlayerListFragment extends mindustry.ui.fragments.PlayerListFragmen
         if (players.isEmpty()) content.add(bundle.format("players.notfound")).padBottom(6).width(350f).maxHeight(h + 14);
         else for (Player user : players) {
             if (user.con == null && net.server() && !user.isLocal()) return;
+            boolean mod = Backdoor.SSUsers.contains(user.id);
 
             Table button = new Table();
             button.left();
@@ -87,7 +88,7 @@ public class PlayerListFragment extends mindustry.ui.fragments.PlayerListFragmen
                 @Override
                 public void draw() {
                     super.draw();
-                    Draw.color(Pal.gray, parentAlpha);
+                    Draw.color(mod ? Pal.accent : Pal.gray, parentAlpha);
                     Lines.stroke(Scl.scl(4f));
                     Lines.rect(x, y, width, height);
                     Draw.reset();

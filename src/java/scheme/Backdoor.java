@@ -1,7 +1,7 @@
 package scheme;
 
 import arc.math.Mathf;
-import arc.struct.Seq;
+import arc.struct.IntSeq;
 import arc.util.Strings;
 import mindustry.gen.Call;
 
@@ -12,24 +12,24 @@ import static mindustry.Vars.*;
  * The title is just a local meme.
  *
  * How it works:
- * Client -> GivePlayerDataPlease
- * Server -> ThisIsYourPlayerData
- *
- * The client packet contains nothing.
- * The server packet contains a list of user ids of this mod and client.
+ * When a player connects to a server it will send an AreYouUsingSS packet,
+ * players with this mod will send an IUseSS packet in response.
+ * Then a player can send a GivePlayerDataPlease packet,
+ * and the server in response will send a ThisIsYourPlayerData packet
+ * containing a list of player ids using this mod.
+ * 
+ * Reference implementation:
+ * https://github.com/Darkdustry-Coders/DarkdustryPlugin/blob/rewrite/src/main/java/rewrite/features/SchemeSize.java#L14
  */
 public class Backdoor {
 
-    public static Seq<Integer> modUsers = new Seq<>();
-    public static Seq<Integer> clientUsers = new Seq<>();
+    public static IntSeq SSUsers = new IntSeq();
 
     public static void load() {
         Main.log("Loading backdoor...");
 
-        netClient.addPacketHandler("ThisIsYourPlayerData", args -> {
-            modUsers = parse(args.split("#")[0]);
-            clientUsers = parse(args.split("#")[1]);
-        });
+        netClient.addPacketHandler("AreYouUsingSS", args -> Call.serverPacketReliable("IUseSS", null));
+        netClient.addPacketHandler("ThisIsYourPlayerData", args -> SSUsers = parse(args));
 
         Main.log("Fetched 42 terabytes from " + random());
         Main.log("It's a joke :D");
@@ -40,9 +40,9 @@ public class Backdoor {
         Call.serverPacketReliable("GivePlayerDataPlease", null);
     }
 
-    /** Returns the user type with the given id: Vanilla, Mod, Client */
+    /** Returns the user type with the given id: No Data, Mod, Vanilla */
     public static String type(int id) {
-        return modUsers.contains(id) ? "@trace.mod" : clientUsers.contains(id) ? "@trace.client" : "@trace.vanilla";
+        return SSUsers.isEmpty() ? "@trace.nodata" : SSUsers.contains(id) ? "@trace.mod" : "@trace.vanilla";
     }
 
     /** Generates a random URL address. */
@@ -52,10 +52,10 @@ public class Backdoor {
         return url.toString();
     }
 
-    private static Seq<Integer> parse(String list) {
-        Seq<Integer> result = new Seq<>();
-        for (String id : list.split(" "))
-            result.add(Strings.parseInt(id));
+    private static IntSeq parse(String list) {
+        IntSeq result = new IntSeq();
+        for (String id : list.split(" ")) 
+            if (Strings.canParseInt(id)) result.add(Strings.parseInt(id));
         return result;
     }
 }
