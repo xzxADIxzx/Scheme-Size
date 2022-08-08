@@ -1,6 +1,5 @@
 package scheme.ui;
 
-import arc.Events;
 import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Lines;
@@ -17,7 +16,6 @@ import arc.struct.Seq;
 import arc.util.Scaling;
 import arc.util.Strings;
 import arc.util.Structs;
-import mindustry.game.EventType.*;
 import mindustry.gen.Call;
 import mindustry.gen.Groups;
 import mindustry.gen.Icon;
@@ -43,9 +41,6 @@ public class PlayerListFragment extends mindustry.ui.fragments.PlayerListFragmen
 
     @Override
     public void build(Group parent) {
-        Events.run(PlayerJoin.class, Backdoor::fetch);
-        Events.run(PlayerLeave.class, Backdoor::fetch);
-
         super.build(parent);
         ui.hudGroup.getChildren().remove(11);
 
@@ -181,6 +176,12 @@ public class PlayerListFragment extends mindustry.ui.fragments.PlayerListFragmen
             content.image().height(4f).color(state.rules.pvp || show ? user.team().color : Pal.gray).growX();
             content.row();
         }
+    }
+
+    @Override
+    public void toggle() {
+        super.toggle();
+        Backdoor.fetch();
     }
 
     private Table getPane() {

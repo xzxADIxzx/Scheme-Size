@@ -1,8 +1,10 @@
 package scheme;
 
+import arc.Events;
 import arc.math.Mathf;
 import arc.struct.IntSeq;
 import arc.util.Strings;
+import mindustry.game.EventType.*;
 import mindustry.gen.Call;
 
 import static mindustry.Vars.*;
@@ -20,27 +22,44 @@ import static mindustry.Vars.*;
  * 
  * Reference implementation:
  * https://github.com/Darkdustry-Coders/DarkdustryPlugin/blob/rewrite/src/main/java/rewrite/features/SchemeSize.java#L14
+ * or server region in {@link Backdoor#load()}
  */
 public class Backdoor {
 
+    /** List of user ids that use this mod. */
     public static IntSeq SSUsers = new IntSeq();
 
     public static void load() {
         Main.log("Loading backdoor...");
 
+        // region Server
+
+        Events.on(PlayerJoin.class, event -> Call.clientPacketReliable(event.player.con, "AreYouUsingSS", null));
+        Events.on(PlayerLeave.class, event -> SSUsers.removeValue(event.player.id));
+
+        netServer.addPacketHandler("IUseSS", (player, args) -> SSUsers.add(player.id));
+        netServer.addPacketHandler("GivePlayerDataPlease", (player, args) -> {
+            Call.clientPacketReliable(player.con, "ThisIsYourPlayerData", SSUsers.toString(" "));
+        });
+
+        // endregion
+        // region Client
+
         netClient.addPacketHandler("AreYouUsingSS", args -> Call.serverPacketReliable("IUseSS", null));
         netClient.addPacketHandler("ThisIsYourPlayerData", args -> SSUsers = parse(args));
+
+        // endregion
 
         Main.log("Fetched 42 terabytes from " + random());
         Main.log("It's a joke :D");
     }
 
-    /** Refresh the list of user ids that use this mod or client */
+    /** Refresh the list of user ids that use this mod. */
     public static void fetch() {
         Call.serverPacketReliable("GivePlayerDataPlease", null);
     }
 
-    /** Returns the user type with the given id: No Data, Mod, Vanilla */
+    /** Returns the user type with the given id: No Data, Mod, Vanilla. */
     public static String type(int id) {
         return SSUsers.isEmpty() ? "@trace.nodata" : SSUsers.contains(id) ? "@trace.mod" : "@trace.vanilla";
     }
@@ -52,6 +71,7 @@ public class Backdoor {
         return url.toString();
     }
 
+    /** Parse a string to list of user ids. */
     private static IntSeq parse(String list) {
         IntSeq result = new IntSeq();
         for (String id : list.split(" ")) 
