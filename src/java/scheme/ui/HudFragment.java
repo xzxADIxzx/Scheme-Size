@@ -249,6 +249,10 @@ public class HudFragment {
     }
 
     private Table getInfoTable() {
-        return (Table) ((Table) ((Stack) ((Table) ui.hudGroup.getChildren().get(4)).getChildren().get(0)).getChildren().get(0)).getChildren().get(1);
+        return (Table) ((Table) getWavesMain().getChildren().get(0)).getChildren().get(1);
+    }
+
+    private Stack getWavesMain() {
+        return (Stack) ((Table) ui.hudGroup.getChildren().get(4)).getChildren().get(mobile ? 1 : 0);
     }
 }
