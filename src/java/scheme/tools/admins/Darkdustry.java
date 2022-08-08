@@ -62,6 +62,11 @@ public class Darkdustry implements AdminsTools {
         tile.select((floor, block, overlay) -> send("full", id(floor), id(block), id(overlay), sx, sy, ex, ey));
     }
 
+    public void brush(int x, int y, int radius) {
+        if (unusable()) return;
+        ui.showInfoFade("@admins.notsupported");
+    }
+
     public boolean unusable() {
         if (!settings.getBool("adminsenabled")) {
             ui.showInfoFade(disabled);

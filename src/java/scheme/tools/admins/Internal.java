@@ -1,8 +1,10 @@
 package scheme.tools.admins;
 
+import arc.math.geom.Geometry;
 import arc.math.geom.Position;
 import mindustry.content.Blocks;
 import mindustry.gen.Player;
+import mindustry.world.Block;
 import mindustry.world.Tile;
 import mindustry.world.blocks.storage.CoreBlock.CoreBuild;
 
@@ -72,14 +74,14 @@ public class Internal implements AdminsTools {
         if (unusable()) return;
         tile.select((floor, block, overlay) -> {
             for (int x = sx; x <= ex; x++)
-                for (int y = sy; y <= ey; y++) {
-                    Tile tile = world.tile(x, y);
-                    if (tile == null) continue;
-
-                    tile.setFloorNet(floor == null ? tile.floor() : floor, overlay == null ? tile.overlay() : overlay);
-                    if (block != null) tile.setNet(block);
-            }
+                for (int y = sy; y <= ey; y++)
+                    edit(floor, block, overlay, x, y);
         });
+    }
+
+    public void brush(int x, int y, int radius) {
+        if (unusable()) return;
+        tile.select((floor, block, overlay) -> Geometry.circle(x, y, radius, (cx, cy) -> edit(floor, block, overlay, cx, cy)));
     }
 
     public boolean unusable() {
@@ -88,5 +90,13 @@ public class Internal implements AdminsTools {
             return true;
         } else if (net.client()) ui.showInfoFade(unabailable);
         return net.client();
+    }
+
+    private static void edit(Block floor, Block block, Block overlay, int x, int y) {
+        Tile tile = world.tile(x, y);
+        if (tile == null) return;
+
+        tile.setFloorNet(floor == null ? tile.floor() : floor, overlay == null ? tile.overlay() : overlay);
+        if (block != null) tile.setNet(block);
     }
 }

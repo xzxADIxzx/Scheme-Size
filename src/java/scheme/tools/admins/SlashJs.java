@@ -87,9 +87,16 @@ public class SlashJs implements AdminsTools {
     public void fill(int sx, int sy, int ex, int ey) {
         if (unusable()) return;
         tile.select((floor, block, overlay) -> {
-            js("var floor = " + getBlock(floor) + "; var block = " + getBlock(block) + "; var over = " + getBlock(overlay));
-            js("var todo = tile => { tile.setFloorNet(floor==null?tile.floor():floor,over==null?tile.overlay():over); if (block!=null) tile.setNet(block) }");
+            edit(floor, block, overlay);
             js("for (var x = " + sx + "; x <= " + ex + "; x++) for (var y = " + sy + "; y <= " + ey + "; y++) todo(Vars.world.tiles.getc(x, y))");
+        });
+    }
+
+    public void brush(int x, int y, int radius) {
+        if (unusable()) return;
+        tile.select((floor, block, overlay) -> {
+            edit(floor, block, overlay);
+            js("Geometry.circle(" + x + ", " + y + ", " + radius + ", (cx, cy) => todo(Vars.world.tiles.getc(cx, cy)))");
         });
     }
 
@@ -123,5 +130,10 @@ public class SlashJs implements AdminsTools {
 
     private static String getBlock(Block block) {
         return block == null ? "null" : "Vars.content.block(" + block.id + ")";
+    }
+
+    private static void edit(Block floor, Block block, Block overlay) {
+        js("var floor = " + getBlock(floor) + "; var block = " + getBlock(block) + "; var over = " + getBlock(overlay));
+        js("var todo = tile => { tile.setFloorNet(floor==null?tile.floor():floor,over==null?tile.overlay():over); if (block!=null) tile.setNet(block) }");
     }
 }

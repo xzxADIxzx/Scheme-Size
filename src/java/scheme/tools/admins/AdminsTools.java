@@ -46,6 +46,8 @@ public interface AdminsTools {
 
     public void fill(int sx, int sy, int ex, int ey);
 
+    public void brush(int x, int y, int radius);
+
     public boolean unusable();
 
     public default int fixAmount(Item item, Float amount) {
