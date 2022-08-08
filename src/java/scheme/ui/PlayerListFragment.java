@@ -1,19 +1,23 @@
 package scheme.ui;
 
+import arc.Events;
 import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Lines;
+import arc.scene.Element;
 import arc.scene.Group;
 import arc.scene.event.Touchable;
 import arc.scene.ui.Image;
-import arc.scene.ui.TextField;
 import arc.scene.ui.ImageButton.ImageButtonStyle;
+import arc.scene.ui.TextField;
+import arc.scene.ui.Tooltip;
 import arc.scene.ui.layout.Scl;
 import arc.scene.ui.layout.Table;
 import arc.struct.Seq;
 import arc.util.Scaling;
 import arc.util.Strings;
 import arc.util.Structs;
+import mindustry.game.EventType.*;
 import mindustry.gen.Call;
 import mindustry.gen.Groups;
 import mindustry.gen.Icon;
@@ -22,6 +26,7 @@ import mindustry.graphics.Pal;
 import mindustry.input.DesktopInput;
 import mindustry.net.Packets.AdminAction;
 import mindustry.ui.Styles;
+import scheme.Backdoor;
 
 import static arc.Core.*;
 import static mindustry.Vars.*;
@@ -38,6 +43,9 @@ public class PlayerListFragment extends mindustry.ui.fragments.PlayerListFragmen
 
     @Override
     public void build(Group parent) {
+        Events.run(PlayerJoin.class, Backdoor::fetch);
+        Events.run(PlayerLeave.class, Backdoor::fetch);
+
         super.build(parent);
         ui.hudGroup.getChildren().remove(11);
 
@@ -53,6 +61,8 @@ public class PlayerListFragment extends mindustry.ui.fragments.PlayerListFragmen
 
     @Override
     public void rebuild() {
+        if (TooltipLocker.locked) return; // tooltips may bug during rebuild
+
         content.clear();
         content.marginBottom(5f);
 
@@ -85,6 +95,7 @@ public class PlayerListFragment extends mindustry.ui.fragments.PlayerListFragmen
             };
             table.margin(8);
             table.add(new Image(user.icon()).setScaling(Scaling.bounded)).grow();
+            table.addListener(new TooltipLocker(user.id));
 
             button.add(table).size(h);
             button.labelWrap(user.coloredName()).width(170f).pad(10);
@@ -181,5 +192,24 @@ public class PlayerListFragment extends mindustry.ui.fragments.PlayerListFragmen
 
     private Table getMenu() {
         return (Table) getPane().getChildren().get(3);
+    }
+
+    public static class TooltipLocker extends Tooltip {
+
+        public static boolean locked;
+
+        public TooltipLocker(int id) {
+            super(table -> table.background(Styles.black6).margin(4f).add(Backdoor.type(id)));
+        }
+
+        public void show(Element element, float x, float y) {
+            super.show(element, x, y);
+            locked = true;
+        }
+
+        public void hide() {
+            super.hide();
+            locked = false;
+        }
     }
 }
