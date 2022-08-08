@@ -253,6 +253,6 @@ public class HudFragment {
     }
 
     private Stack getWavesMain() {
-        return (Stack) ((Table) ui.hudGroup.getChildren().get(4)).getChildren().get(mobile ? 1 : 0);
+        return (Stack) ((Table) ui.hudGroup.getChildren().get(4)).getChildren().get(mobile ? 2 : 0);
     }
 }
