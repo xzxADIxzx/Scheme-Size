@@ -6,7 +6,6 @@ import arc.scene.ui.Dialog;
 import arc.scene.ui.layout.Cell;
 import arc.scene.ui.layout.Table;
 import arc.struct.Seq;
-import arc.util.Log;
 import mindustry.editor.MapResizeDialog;
 
 import static arc.Core.*;
@@ -27,7 +26,6 @@ public class MapResizeFix {
 
         Dialog.setShowAction(() -> {
             app.post(() -> {
-                Log.info(scene.root.getChildren().peek());
                 if (scene.root.getChildren().peek() instanceof MapResizeDialog dialog) fix(dialog);
             });
             return show.get();
