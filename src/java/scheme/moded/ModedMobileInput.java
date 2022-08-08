@@ -49,6 +49,9 @@ public class ModedMobileInput extends MobileInput implements ModedInputHandler {
                 drawEditSelection(lastX - build.size + 1, lastY - build.size + 1, lastX + build.size - 1, lastY + build.size - 1, 256);
         }
 
+        if (build.mode == Mode.brush)
+            drawEditSelection(lastX, lastY, build.size);
+
         drawCommanded();
     }
 
@@ -110,6 +113,8 @@ public class ModedMobileInput extends MobileInput implements ModedInputHandler {
                     updateLine(x1, y1, x2, y2);
                     build.plan.addAll(linePlans);
                 });
+
+                if (build.mode == Mode.brush) admins.brush(cursorX, cursorY, build.size);
 
                 lastX = cursorX;
                 lastY = cursorY;

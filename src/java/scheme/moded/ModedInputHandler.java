@@ -2,6 +2,8 @@ package scheme.moded;
 
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Lines;
+import arc.math.geom.Geometry;
+import arc.math.geom.Vec2;
 import arc.struct.Seq;
 import mindustry.content.Blocks;
 import mindustry.core.World;
@@ -84,5 +86,15 @@ public interface ModedInputHandler {
         Lines.rect(result.x, result.y - 1, result.x2 - result.x, result.y2 - result.y);
         Draw.color(Pal.darkMetal);
         Lines.rect(result.x, result.y, result.x2 - result.x, result.y2 - result.y);
+    }
+
+    public default void drawEditSelection(int x, int y, int radius) {
+        Vec2[] polygons = Geometry.pixelCircle(radius);
+        Lines.stroke(2f);
+
+        Draw.color(Pal.darkerMetal);
+        Lines.poly(polygons, x * tilesize - 4, y * tilesize - 5, tilesize);
+        Draw.color(Pal.darkMetal);
+        Lines.poly(polygons, x * tilesize - 4, y * tilesize - 4, tilesize);
     }
 }

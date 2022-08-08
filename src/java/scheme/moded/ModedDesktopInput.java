@@ -55,6 +55,9 @@ public class ModedDesktopInput extends DesktopInput implements ModedInputHandler
                 drawEditSelection(cursorX - build.size, cursorY - build.size, cursorX + build.size, cursorY + build.size, maxSchematicSize);
         }
 
+        if (build.mode == Mode.brush)
+            drawEditSelection(cursorX, cursorY, build.size);
+
         drawCommanded();
 
         Draw.reset();
@@ -166,6 +169,8 @@ public class ModedDesktopInput extends DesktopInput implements ModedInputHandler
                     updateLine(x1, y1, x2, y2);
                     build.plan.addAll(linePlans);
                 });
+
+                if (build.mode == Mode.brush) admins.brush(cursorX, cursorY, build.size);
 
                 lastX = cursorX;
                 lastY = cursorY;

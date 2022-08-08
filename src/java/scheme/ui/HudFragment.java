@@ -131,8 +131,9 @@ public class HudFragment {
                 });
 
                 partition(pad, mode -> {
-                    mode.button(Icon.pencil, style, tile::show).tooltip("@select.tile").padTop(92f).row();
+                    mode.button(Icon.menu, style, tile::show).tooltip("@select.tile").padTop(46f).row();
                     setMode(mode, Icon.pick, Mode.pick);
+                    setMode(mode, Icon.pencil, Mode.brush);
                     setMode(mode, Icon.editor, Mode.edit);
                 });
 

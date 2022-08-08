@@ -204,6 +204,6 @@ public class BuildingTools {
     }
 
     public enum Mode {
-        none, drop, replace, remove, connect, fill, square, circle, pick, edit;
+        none, drop, replace, remove, connect, fill, square, circle, pick, edit, brush;
     }
 }
