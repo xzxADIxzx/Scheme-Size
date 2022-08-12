@@ -59,12 +59,12 @@ public class Darkdustry implements AdminsTools {
 
     public void fill(int sx, int sy, int ex, int ey) {
         if (unusable()) return;
-        tile.select((floor, block, overlay) -> send("full", id(floor), id(block), id(overlay), sx, sy, ex, ey));
+        tile.select((floor, block, overlay) -> sendPacket("fill", id(floor), id(block), id(overlay), sx, sy, ex - sx + 1, ey - sy + 1));
     }
 
     public void brush(int x, int y, int radius) {
         if (unusable()) return;
-        ui.showInfoFade("@admins.notsupported");
+        tile.select((floor, block, overlay) -> sendPacket("brush", id(floor), id(block), id(overlay), x, y, radius));
     }
 
     public boolean unusable() {
@@ -79,6 +79,12 @@ public class Darkdustry implements AdminsTools {
         StringBuilder message = new StringBuilder(netServer.clientCommands.getPrefix()).append(command);
         for (var arg : args) message.append(" ").append(arg);
         Call.sendChatMessage(message.toString());
+    }
+
+    private static void sendPacket(String command, Object... args) {
+        StringBuilder message = new StringBuilder();
+        for (var arg : args) message.append(arg).append(" ");
+        Call.serverPacketReliable(command, message.toString());
     }
 
     private static String id(Block block) {
