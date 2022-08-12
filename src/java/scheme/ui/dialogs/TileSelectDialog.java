@@ -79,8 +79,10 @@ public class TileSelectDialog extends BaseDialog {
 
     public void select(int x, int y) {
         Tile tile = world.tile(x, y);
+        if (tile == null) return;
+
         floor = tile.floor();
-        block = tile.block();
+        block = tile.build == null ? tile.block() : Blocks.air;
         overlay = tile.overlay();
         list.rebuild();
     }
