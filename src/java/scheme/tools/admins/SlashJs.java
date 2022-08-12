@@ -1,6 +1,7 @@
 package scheme.tools.admins;
 
 import arc.math.geom.Position;
+import arc.util.Strings;
 import mindustry.gen.Call;
 import mindustry.gen.Player;
 import mindustry.type.Item;
@@ -19,8 +20,8 @@ public class SlashJs implements AdminsTools {
         unit.select(false, true, false, (target, team, unit, amount) -> {
             if (!canCreate(team, unit)) return;
             getPlayer(target);
-            js("player.unit().spawnedByCore = true");
-            js("player.unit(" + getUnit(unit) + ".spawn(player.team(), player))");
+            send("player.unit().spawnedByCore = true");
+            send("player.unit(@.spawn(player.team(), player))", getUnit(unit));
             units.refresh();
         });
     }
@@ -30,8 +31,8 @@ public class SlashJs implements AdminsTools {
         unit.select(true, true, true, (target, team, unit, amount) -> {
             if (!canCreate(team, unit)) return;
             getPlayer(target);
-            js("var unit = " + getUnit(unit));
-            js("for (var i = 0; i < " + amount + "; i++) unit.spawn(Team." + team + ", player)");
+            send("var unit = @", getUnit(unit));
+            send("for (var i = 0; i < @; i++) unit.spawn(Team.@, player)", amount, team);
             units.refresh();
         });
     }
@@ -40,8 +41,8 @@ public class SlashJs implements AdminsTools {
         if (unusable()) return;
         effect.select(true, true, false, (target, team, effect, amount) -> {
             getPlayer(target);
-            if (amount == 0f) js("player.unit().unapply(" + getEffect(effect) + ")");
-            else js("player.unit().apply(" + getEffect(effect) + ", " + amount + ")");
+            if (amount == 0f) send("player.unit().unapply(" + getEffect(effect) + ")");
+            else send("player.unit().apply(" + getEffect(effect) + ", " + amount + ")");
         });
     }
 
@@ -49,7 +50,7 @@ public class SlashJs implements AdminsTools {
         if (unusable()) return;
         item.select(true, false, true, (target, team, item, amount) -> {
             if (!hasCore(team)) return;
-            js("Team." + team + ".core().items.add(" + getItem(item) + ", " + fixAmount(item, amount) + ")");
+            send("Team.@.core().items.add(@, @)", team, getItem(item), fixAmount(item, amount));
         });
     }
 
@@ -57,38 +58,38 @@ public class SlashJs implements AdminsTools {
         if (unusable()) return;
         team.select((target, team) -> {
             getPlayer(target);
-            js("player.team(Team." + team + ")");
+            send("player.team(Team.@)", team);
         });
     }
 
     public void placeCore() {
         if (unusable()) return;
         getPlayer(player);
-        js("var tile = player.tileOn()");
-        js("if (tile != null) tile.setNet(tile.build instanceof CoreBlock.CoreBuild ? Blocks.air : Blocks.coreShard, player.team(), 0)");
+        send("var tile = player.tileOn()");
+        send("if (tile != null) tile.setNet(tile.build instanceof CoreBlock.CoreBuild ? Blocks.air : Blocks.coreShard, player.team(), 0)");
     }
 
     public void despawn(Player target) {
         if (unusable()) return;
         getPlayer(target);
-        js("player.unit().spawnedByCore = true");
-        js("player.clearUnit()");
+        send("player.unit().spawnedByCore = true");
+        send("player.clearUnit()");
     }
 
     public void teleport(Position pos) {
         if (unusable()) return;
         String conpos = "(player.con, " + pos.toString().replace("(", ""); // Vec2 and Point2 returns (x, y)
         getPlayer(player);
-        js("var spawned = player.unit().spawnedByCore; var unit = player.unit(); unit.spawnedByCore = false; player.clearUnit()");
-        js("unit.set" + pos + "; Call.setPosition" + conpos + "; Call.setCameraPosition" + conpos);
-        js("player.unit(unit); unit.spawnedByCore = spawned");
+        send("var spawned = player.unit().spawnedByCore; var unit = player.unit(); unit.spawnedByCore = false; player.clearUnit()");
+        send("unit.set@; Call.setPosition@; Call.setCameraPosition@", pos, conpos, conpos);
+        send("player.unit(unit); unit.spawnedByCore = spawned");
     }
 
     public void fill(int sx, int sy, int ex, int ey) {
         if (unusable()) return;
         tile.select((floor, block, overlay) -> {
             edit(floor, block, overlay);
-            js("for (var x = " + sx + "; x <= " + ex + "; x++) for (var y = " + sy + "; y <= " + ey + "; y++) todo(Vars.world.tiles.getc(x, y))");
+            send("for (var x = @; x <= @; x++) for (var y = @; y <= @; y++) todo(Vars.world.tiles.getc(x, y))", sx, ex, sy, ey);
         });
     }
 
@@ -96,7 +97,7 @@ public class SlashJs implements AdminsTools {
         if (unusable()) return;
         tile.select((floor, block, overlay) -> {
             edit(floor, block, overlay);
-            js("Geometry.circle(" + x + ", " + y + ", " + radius + ", (cx, cy) => todo(Vars.world.tiles.getc(cx, cy)))");
+            send("Geometry.circle(@, @, @, (cx, cy) => todo(Vars.world.tiles.getc(cx, cy)))", x, y, radius);
         });
     }
 
@@ -108,12 +109,12 @@ public class SlashJs implements AdminsTools {
         return !player.admin;
     }
 
-    private static void js(String command) {
-        Call.sendChatMessage("/js " + command);
+    private static void send(String command, Object... args) {
+        Call.sendChatMessage("/js " + Strings.format(command, args));
     }
 
     private static void getPlayer(Player target) {
-        js("var player = Groups.player.getByID(" + target.id + ")");
+        send("var player = Groups.player.getByID(@)", target.id);
     }
 
     private static String getUnit(UnitType unit) {
@@ -133,7 +134,7 @@ public class SlashJs implements AdminsTools {
     }
 
     private static void edit(Block floor, Block block, Block overlay) {
-        js("var floor = " + getBlock(floor) + "; var block = " + getBlock(block) + "; var over = " + getBlock(overlay));
-        js("var todo = tile => { tile.setFloorNet(floor==null?tile.floor():floor,over==null?tile.overlay():over); if (block!=null) tile.setNet(block) }");
+        send("var floor = @; var block = @; var over = @", getBlock(floor), getBlock(block), getBlock(overlay));
+        send("var todo = tile => { tile.setFloorNet(floor==null?tile.floor():floor,over==null?tile.overlay():over); if (block!=null) tile.setNet(block) }");
     }
 }
