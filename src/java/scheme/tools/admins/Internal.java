@@ -85,11 +85,12 @@ public class Internal implements AdminsTools {
     }
 
     public boolean unusable() {
+        boolean admin = net.client() && !settings.getBool("adminsalways");
         if (!settings.getBool("adminsenabled")) {
             ui.showInfoFade(disabled);
             return true;
-        } else if (net.client()) ui.showInfoFade(unabailable);
-        return net.client();
+        } else if (admin) ui.showInfoFade(unabailable);
+        return admin;
     }
 
     private static void edit(Block floor, Block block, Block overlay, int x, int y) {

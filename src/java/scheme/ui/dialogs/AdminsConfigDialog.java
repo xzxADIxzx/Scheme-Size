@@ -12,6 +12,7 @@ import static scheme.SchemeVars.*;
 public class AdminsConfigDialog extends BaseDialog {
 
     public boolean enabled = settings.getBool("adminsenabled", false);
+    public boolean always = settings.getBool("adminsalways", false);
     public int way = settings.getInt("adminsway", 0);
 
     public AdminsConfigDialog() {
@@ -20,6 +21,7 @@ public class AdminsConfigDialog extends BaseDialog {
 
         hidden(() -> {
             settings.put("adminsenabled", enabled);
+            settings.put("adminsalways", always);
             settings.put("adminsway", way);
             admins = getTools();
         });
@@ -34,6 +36,11 @@ public class AdminsConfigDialog extends BaseDialog {
             addCheck(table, "@admins.way.slashjs", 1);
             addCheck(table, "@admins.way.darkdustry", 2);
         }).left().row();
+        
+        cont.labelWrap("@admins.always").padTop(16f).width(320f).row();
+        new TextSlider(0, 1, 1, always ? 1 : 0, value -> {
+            return (always = value == 1) ? "@yes" : "@no";
+        }).build(cont).width(320f).row();
     }
 
     private void addCheck(Table table, String text, int way) {
