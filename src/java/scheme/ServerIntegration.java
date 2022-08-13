@@ -66,6 +66,6 @@ public class ServerIntegration {
 
     /** Returns the user type with subtitle. */
     public static String tooltip(int id) {
-        return bundle.get(type(id)) + "\n" + SSUsers.get(id);
+        return bundle.get(type(id)) + (SSUsers.containsKey(id) ? "\n" + SSUsers.get(id) : "");
     }
 }
