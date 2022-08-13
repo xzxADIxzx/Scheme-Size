@@ -22,7 +22,9 @@ public class SettingsMenuDialog {
             table.checkPref("welcome", true);
             table.checkPref("check4update", true);
 
-            table.areaTextPref("subtitle", "I am using Scheme Size btw");
+            table.areaTextPref("subtitle", "I am using Scheme Size btw", value -> {
+                settings.put("subtitle", value.replace("#", "").replace("=", ""));
+            }); // remove all # and = from user input
         });
     }
 

@@ -73,7 +73,7 @@ public class PlayerListFragment extends mindustry.ui.fragments.PlayerListFragmen
         if (players.isEmpty()) content.add(bundle.format("players.notfound")).padBottom(6).width(350f).maxHeight(h + 14);
         else for (Player user : players) {
             if (user.con == null && net.server() && !user.isLocal()) return;
-            boolean mod = ServerIntegration.SSUsers.contains(user.id);
+            boolean mod = ServerIntegration.SSUsers.containsKey(user.id);
 
             Table button = new Table();
             button.left();
@@ -201,7 +201,7 @@ public class PlayerListFragment extends mindustry.ui.fragments.PlayerListFragmen
         public static boolean locked;
 
         public TooltipLocker(int id) {
-            super(table -> table.background(Styles.black6).margin(4f).add(ServerIntegration.type(id)));
+            super(table -> table.background(Styles.black6).margin(4f).add(ServerIntegration.tooltip(id)));
         }
 
         public void show(Element element, float x, float y) {
