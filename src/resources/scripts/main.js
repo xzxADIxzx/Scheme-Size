@@ -12,3 +12,4 @@ const SchemeMain = mod.main
 const SchemeVars = get("scheme.SchemeVars")
 const SchemeUpdater = get("scheme.SchemeUpdater")
 const Backdoor = get("scheme.Backdoor")
+const ServerIntegration = get("scheme.ServerIntegration")
