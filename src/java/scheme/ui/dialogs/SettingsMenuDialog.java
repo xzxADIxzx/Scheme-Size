@@ -21,6 +21,8 @@ public class SettingsMenuDialog {
             table.checkPref("hardscheme", false);
             table.checkPref("welcome", true);
             table.checkPref("check4update", true);
+
+            table.areaTextPref("subtitle", "I am using Scheme Size btw");
         });
     }
 
