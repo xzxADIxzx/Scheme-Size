@@ -15,6 +15,7 @@ public class Main extends Mod {
     @Override
     public void init() {
         Backdoor.load();
+        ServerIntegration.load();
         ModedBinding.load();
         SchemeVars.load();
         SchemeUpdater.load();

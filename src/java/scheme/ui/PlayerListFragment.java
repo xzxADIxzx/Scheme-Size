@@ -24,7 +24,7 @@ import mindustry.graphics.Pal;
 import mindustry.input.DesktopInput;
 import mindustry.net.Packets.AdminAction;
 import mindustry.ui.Styles;
-import scheme.Backdoor;
+import scheme.ServerIntegration;
 
 import static arc.Core.*;
 import static mindustry.Vars.*;
@@ -73,7 +73,7 @@ public class PlayerListFragment extends mindustry.ui.fragments.PlayerListFragmen
         if (players.isEmpty()) content.add(bundle.format("players.notfound")).padBottom(6).width(350f).maxHeight(h + 14);
         else for (Player user : players) {
             if (user.con == null && net.server() && !user.isLocal()) return;
-            boolean mod = Backdoor.SSUsers.contains(user.id);
+            boolean mod = ServerIntegration.SSUsers.contains(user.id);
 
             Table button = new Table();
             button.left();
@@ -181,7 +181,7 @@ public class PlayerListFragment extends mindustry.ui.fragments.PlayerListFragmen
     @Override
     public void toggle() {
         super.toggle();
-        Backdoor.fetch();
+        ServerIntegration.fetch();
     }
 
     private Table getPane() {
@@ -201,7 +201,7 @@ public class PlayerListFragment extends mindustry.ui.fragments.PlayerListFragmen
         public static boolean locked;
 
         public TooltipLocker(int id) {
-            super(table -> table.background(Styles.black6).margin(4f).add(Backdoor.type(id)));
+            super(table -> table.background(Styles.black6).margin(4f).add(ServerIntegration.type(id)));
         }
 
         public void show(Element element, float x, float y) {
