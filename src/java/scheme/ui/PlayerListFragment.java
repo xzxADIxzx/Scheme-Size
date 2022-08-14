@@ -202,6 +202,7 @@ public class PlayerListFragment extends mindustry.ui.fragments.PlayerListFragmen
 
         public TooltipLocker(int id) {
             super(table -> table.background(Styles.black6).margin(4f).add(ServerIntegration.tooltip(id)));
+            allowMobile = true; // why is it false by default?
         }
 
         public void show(Element element, float x, float y) {
