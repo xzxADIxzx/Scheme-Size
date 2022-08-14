@@ -40,7 +40,7 @@ public class AdminsConfigDialog extends BaseDialog {
         cont.labelWrap("@admins.always").padTop(16f).width(320f).row();
         new TextSlider(0, 1, 1, always ? 1 : 0, value -> {
             return (always = value == 1) ? "@yes" : "@no";
-        }).build(cont).width(320f).row();
+        }).update(slider -> slider.setDisabled(!enabled)).build(cont).width(320f).row();
     }
 
     private void addCheck(Table table, String text, int way) {
