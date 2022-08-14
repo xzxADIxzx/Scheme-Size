@@ -119,7 +119,7 @@ public class HudFragment {
             size.changed(() -> build.resize(size.getText()));
 
             cont.table(Tex.buttonEdge2, pad -> {
-                partition(pad, mode -> {
+                partitionbt(pad, mode -> {
                     mode.button(Icon.cancel, style, () -> {
                         control.input.block = null;
                         build.plan.clear();
@@ -130,21 +130,21 @@ public class HudFragment {
                     mode.button(Icon.down, style, () -> build.resize(-1)).row();
                 });
 
-                partition(pad, mode -> {
+                partitionbt(pad, mode -> {
                     mode.button(Icon.menu, style, tile::show).tooltip("@select.tile").padTop(46f).row();
                     setMode(mode, Icon.pick, Mode.pick);
                     setMode(mode, Icon.pencil, Mode.brush);
                     setMode(mode, Icon.editor, Mode.edit);
                 });
 
-                partition(pad, mode -> {
+                partitionbt(pad, mode -> {
                     mode.button(Icon.redo, style, m_input::flushLastRemoved).tooltip("@keycomb.return").padBottom(46f).row();
                     setMode(mode, Icon.fill, Mode.fill);
                     setMode(mode, Icon.grid, Mode.square);
                     setMode(mode, Icon.commandRally, Mode.circle);
                 });
 
-                partition(pad, mode -> {
+                partitionbt(pad, mode -> {
                     mode.add(building).row();
                     setMode(mode, Icon.upload, Mode.drop);
                     setMode(mode, Icon.link, Mode.replace);
@@ -167,34 +167,35 @@ public class HudFragment {
             cont.visible(() -> ui.hudfrag.shown && !ui.minimapfrag.shown());
 
             cont.table(Tex.buttonEdge4, pad -> {
-                Cons<Element> translate = element -> element.setTranslation(0f, Scl.scl(mobiles.fliped ? 0f : -62f));
-                pad.image().color(Pal.gray).size(320f, 4f).update(translate::get).row();
+                partitionmb(pad, mode -> {
+                    mode.add(mobiles);
+                    setAction(mode,
+                            mobile ? "disarmed" : Icon.book,
+                            mobile ? "" : "view_comb",
+                            mobile ? m_input::lockShooting : keycomb::show);
+                    setAction(mode, "blasted",   "despawn",         () -> admins.despawn());
+                    setAction(mode, "overdrive", "teleport",        () -> admins.teleport());
+                    setAction(mode, Icon.lock,   "lock_move",       () -> m_input.lockMovement());
+                }).visible(() -> true).update(mode -> mode.setTranslation(0f, Scl.scl(mobiles.fliped ? 0f : -63.2f))).row();
 
-                partition(pad, mode -> mode.add(mobiles),
-                        Icon.admin, (Runnable) () -> adminscfg.show(),
-                        mobile ? "disarmed" : Icon.book, mobile ? (Runnable) m_input::lockShooting : (Runnable) keycomb::show,
-                        "overdrive", (Runnable) () -> admins.teleport(),
-                        Icon.lock, (Runnable) () -> m_input.lockMovement()
-                ).visible(() -> true).update(translate::get).row();
+                partitionmb(pad, mode -> {
+                    setAction(mode, Icon.effect, "place_core.",     () -> admins.placeCore());
+                    setAction(mode, "boss",      "manage_team.",    () -> admins.manageTeam());
+                    setAction(mode, Icon.logic,  "toggle_ai.",      () -> ai.select());
+                    setAction(mode, Icon.admin,  "adminscfg.",      () -> adminscfg.show());
+                    setAction(mode, Icon.image,  "rendercfg.",      () -> rendercfg.show());
+                }).row();
 
-                partition(pad, mode -> {},
-                        Icon.effect, (Runnable) () -> admins.placeCore(),
-                        "boss", (Runnable) () -> admins.manageTeam(),
-                        "blasted", (Runnable) () -> admins.despawn(),
-                        Icon.logic, (Runnable) () -> ai.select(),
-                        Icon.image, (Runnable) () -> rendercfg.show()
-                ).row();
-
-                partition(pad, mode -> {},
-                        Icon.units, (Runnable) () -> admins.manageUnit(),
-                        Icon.add, (Runnable) () -> admins.spawnUnits(),
-                        "corroded", (Runnable) () -> admins.manageEffect(),
-                        Icon.production, (Runnable) () -> admins.manageItem(),
-                        Icon.info, (Runnable) () -> render.toggleHistory()
-                ).row();
+                partitionmb(pad, mode -> {
+                    setAction(mode, Icon.units,  "manage_unit.",    () -> admins.manageUnit());
+                    setAction(mode, Icon.add,    "spawn_unit",      () -> admins.spawnUnits());
+                    setAction(mode, "corroded",  "manage_effect.",  () -> admins.manageEffect());
+                    setAction(mode, Icon.production,"manage_item.", () -> admins.manageItem());
+                    setAction(mode, Icon.info,   "toggle_history.", () -> render.toggleHistory());
+                }).row();
             }).margin(0f).update(pad -> {
-                pad.setTranslation(0f, -Scl.scl((mobile ? 147f : 78f) + (state.isEditor() ? 61f : 0f) - (mobiles.fliped ? 0f : 125f)));
-                pad.setHeight(Scl.scl(mobiles.fliped ? 190.5f : 63.5f));
+                pad.setTranslation(0f, -Scl.scl((mobile ? 153f : 84f) + (state.isEditor() ? 61f : 0f) - (mobiles.fliped ? 0f : 127f)));
+                pad.setHeight(Scl.scl(mobiles.fliped ? 190.8f : 63.8f));
             });
         });
 
@@ -206,7 +207,7 @@ public class HudFragment {
         size.setText(String.valueOf(amount));
     }
 
-    private Cell<Table> partition(Table table, Cons<Table> cons) {
+    private Cell<Table> partitionbt(Table table, Cons<Table> cons) {
         if (table.hasChildren()) table.image().color(Pal.gray).width(4f).pad(4f).fillY().visible(() -> building.fliped);
         return table.table(cont -> {
             cont.defaults().size(46f).bottom().right();
@@ -214,17 +215,20 @@ public class HudFragment {
         }).visible(() -> building.fliped);
     }
 
-    private Cell<Table> partition(Table table, Cons<Table> cons, Object... buttons) {
+    private Cell<Table> partitionmb(Table table, Cons<Table> cons) {
         return table.table(cont -> {
             cont.defaults().size(63.5f).left();
-            cons.get(cont); // special for flip button
-            for (int i = 0; i < buttons.length; i++) 
-                cont.button(buttons[i] instanceof String name ? atlas.drawable("status-" + name) : (Drawable) buttons[i], style, 37f, (Runnable) buttons[++i]);
+            cons.get(cont);
         }).visible(() -> mobiles.fliped);
     }
 
     private void setMode(Table table, Drawable icon, Mode mode) {
         table.button(icon, check, () -> build.setMode(mode)).checked(t -> build.mode == mode).row();
+    }
+
+    private void setAction(Table table, Object icon, String tooltip, Runnable listener) {
+        tooltip = tooltip.endsWith(".") ? "@keybind." + tooltip + "name" : "@keycomb." + tooltip;
+        table.button(icon instanceof String name ? atlas.drawable("status-" + name) : (Drawable) icon, style, 37f, listener).tooltip(tooltip);
     }
 
     private void setMove(Table table, Updater move) {
