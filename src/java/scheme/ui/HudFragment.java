@@ -8,8 +8,6 @@ import arc.scene.Group;
 import arc.scene.event.Touchable;
 import arc.scene.style.Drawable;
 import arc.scene.ui.TextField;
-import arc.scene.ui.Tooltip;
-import arc.scene.ui.Tooltip.Tooltips;
 import arc.scene.ui.ImageButton.ImageButtonStyle;
 import arc.scene.ui.TextField.TextFieldFilter;
 import arc.scene.ui.TextField.TextFieldStyle;
@@ -24,6 +22,7 @@ import mindustry.ui.Styles;
 import scheme.ai.GammaAI;
 import scheme.ai.GammaAI.Updater;
 import scheme.tools.BuildingTools.Mode;
+import scheme.ui.PlayerListFragment.TooltipLocker;
 
 import static arc.Core.*;
 import static mindustry.Vars.*;
@@ -229,9 +228,8 @@ public class HudFragment {
     }
 
     private void setAction(Table table, Object icon, String tooltip, Runnable listener) {
-        Tooltip tip = Tooltips.getInstance().create(tooltip.endsWith(".") ? "@keybind." + tooltip + "name" : "@keycomb." + tooltip);
-        tip.allowMobile = true; // without it they don't make sense
-        table.button(icon instanceof String name ? atlas.drawable("status-" + name) : (Drawable) icon, style, 37f, listener).get().addListener(tip);
+        table.button(icon instanceof String name ? atlas.drawable("status-" + name) : (Drawable) icon, style, 37f, listener).get().addListener(
+                new TooltipLocker(tooltip.endsWith(".") ? "@keybind." + tooltip + "name" : "@keycomb." + tooltip));
     }
 
     private void setMove(Table table, Updater move) {

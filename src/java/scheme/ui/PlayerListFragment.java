@@ -5,6 +5,7 @@ import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Lines;
 import arc.scene.Element;
 import arc.scene.Group;
+import arc.scene.event.InputEvent;
 import arc.scene.event.Touchable;
 import arc.scene.ui.Image;
 import arc.scene.ui.ImageButton.ImageButtonStyle;
@@ -202,17 +203,29 @@ public class PlayerListFragment extends mindustry.ui.fragments.PlayerListFragmen
 
         public TooltipLocker(int id) {
             super(table -> table.background(Styles.black6).margin(4f).add(ServerIntegration.tooltip(id)));
+        }
+
+        public TooltipLocker(String text) {
+            super(table -> table.background(Styles.black6).margin(4f).add(text));
             allowMobile = true; // why is it false by default?
         }
 
+        @Override
         public void show(Element element, float x, float y) {
             super.show(element, x, y);
             locked = true;
         }
 
+        @Override
         public void hide() {
             super.hide();
             locked = false;
+        }
+
+        @Override
+        public void exit(InputEvent event, float x, float y, int pointer, Element toActor) {
+            if (toActor != null && toActor.isDescendantOf(event.listenerActor)) return;
+            hide(); // hide on exit even if on mobile
         }
     }
 }
