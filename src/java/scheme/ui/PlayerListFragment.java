@@ -202,7 +202,7 @@ public class PlayerListFragment extends mindustry.ui.fragments.PlayerListFragmen
         public static boolean locked;
 
         public TooltipLocker(int id) {
-            super(table -> table.background(Styles.black6).margin(4f).add(ServerIntegration.tooltip(id)));
+            this(ServerIntegration.tooltip(id));
         }
 
         public TooltipLocker(String text) {
