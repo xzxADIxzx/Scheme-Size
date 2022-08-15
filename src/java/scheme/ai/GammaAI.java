@@ -58,8 +58,7 @@ public class GammaAI extends AIController {
         follow(Icon.resize, ai -> moveTo(ai, ai.cache)),
         help(Icon.add, ai -> {
             if (ai.target.unit().plans.isEmpty()) return;
-            ai.unit.clearBuilding();
-            ai.unit.addBuild(ai.target.unit().plans.first());
+            ai.unit.addBuild(ai.target.unit().buildPlan());
         }),
         destroy(Icon.hammer, ai -> {
             if (ai.target.unit().plans.isEmpty()) return;
