@@ -37,6 +37,10 @@ public class GammaAI extends AIController {
         aim = new Vec2(target.mouseX, target.mouseY);
     }
 
+    public void draw() {
+        if (target != null && target != player) render.drawPlans(target.unit(), build != Updater.destroy);
+    }
+
     public void cache() {
         target = ai.players.get();
         cache = target == player ? player.tileOn() : target;

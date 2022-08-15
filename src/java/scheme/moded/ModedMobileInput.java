@@ -9,6 +9,7 @@ import mindustry.input.MobileInput;
 import mindustry.input.Placement;
 import mindustry.input.Placement.NormalizeResult;
 import mindustry.world.blocks.power.PowerNode;
+import scheme.ai.GammaAI;
 import scheme.tools.BuildingTools.Mode;
 
 import static arc.Core.*;
@@ -63,6 +64,7 @@ public class ModedMobileInput extends MobileInput implements ModedInputHandler {
             if (build.mode != Mode.remove) drawPlan(plan);
             else drawBreaking(plan);
         });
+        if (ai.ai instanceof GammaAI gamma) gamma.draw();
     }
 
     @Override

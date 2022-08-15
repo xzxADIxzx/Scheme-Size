@@ -102,6 +102,13 @@ public class RendererTools {
         settings.put("coreitems", !settings.getBool("coreitems"));
 	}
 
+    public void drawPlans(Unit unit, boolean valid) {
+        Draw.draw(Layer.plans, valid ? unit::drawBuildPlans : () -> unit.plans.each(plan -> {
+            plan.animScale = 1f;
+            plan.block.drawPlan(plan, unit.plans, valid);
+        }));
+    }
+
     private void drawRadius(Building build, int radius, Color color) {
         Drawf.dashCircle(build.x, build.y, radius * tilesize, color);
     }
