@@ -193,7 +193,7 @@ public class ModedDesktopInput extends DesktopInput implements ModedInputHandler
             buildX = cursorX;
             buildY = cursorY;
             using = true;
-            renderer.minZoom = renderer.maxZoom = renderer.getScale() / Scl.scl(); // a crutch to lock camera zoom
+            renderer.minZoom = renderer.maxZoom = Mathf.round(renderer.getScale(), 0.5f) / Scl.scl(); // a crutch to lock camera zoom
         }
 
         if (input.keyRelease(Binding.select) || input.keyTap(Binding.deselect) || input.keyTap(Binding.break_block)) {
@@ -209,7 +209,7 @@ public class ModedDesktopInput extends DesktopInput implements ModedInputHandler
 
     public void changePanSpeed(float value) {
         panSpeed = 4.5f * value / 4f;
-        panBoostSpeed = 15f * Mathf.sqrt(value / 4f);
+        panBoostSpeed = 15f * Mathf.sqrt(value / 4f + .1f);
     }
 
     public void lockMovement() {
