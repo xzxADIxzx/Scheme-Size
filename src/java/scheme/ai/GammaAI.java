@@ -6,8 +6,11 @@ import arc.math.geom.Vec2;
 import arc.scene.style.Drawable;
 import mindustry.entities.units.AIController;
 import mindustry.entities.units.BuildPlan;
+import mindustry.gen.Building;
 import mindustry.gen.Icon;
 import mindustry.gen.Player;
+import mindustry.world.Tile;
+import mindustry.world.blocks.ConstructBlock.ConstructBuild;
 import scheme.moded.ModedBinding;
 
 import static arc.Core.*;
@@ -41,6 +44,13 @@ public class GammaAI extends AIController {
         if (target != null && target != player) render.drawPlans(target.unit(), build != Updater.destroy);
     }
 
+    public void block(Tile tile, boolean breaking) {
+        Building build = builds.get(tile);
+        unit.addBuild(breaking
+                ? new BuildPlan(tile.x, tile.y, build.rotation, build instanceof ConstructBuild c ? c.previous : build.block)
+                : new BuildPlan(tile.x, tile.y));
+    }
+
     public void cache() {
         target = ai.players.get();
         cache = target == player ? player.tileOn() : target;
@@ -61,15 +71,10 @@ public class GammaAI extends AIController {
         cursor(Icon.diagonal, ai -> moveTo(ai, ai.aim)),
         follow(Icon.resize, ai -> moveTo(ai, ai.cache)),
         help(Icon.add, ai -> {
-            if (ai.target.unit().plans.isEmpty()) return;
+            if (ai.target.unit().plans.isEmpty() || !ai.target.unit().updateBuilding) return;
             ai.unit.addBuild(ai.target.unit().buildPlan());
         }),
-        destroy(Icon.hammer, ai -> {
-            if (ai.target.unit().plans.isEmpty()) return;
-            ai.target.unit().plans.each(plan -> { // TODO: works bad
-                if (!plan.breaking) ai.unit.addBuild(new BuildPlan(plan.x, plan.y));
-            });
-        });
+        destroy(Icon.hammer, ai -> {}); // works through events
 
         public final Drawable icon;
         public final Cons<GammaAI> update;

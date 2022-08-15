@@ -13,6 +13,7 @@ import mindustry.gen.Player;
 import mindustry.graphics.Pal;
 import mindustry.type.UnitType;
 import scheme.ai.GammaAI;
+import scheme.ai.GammaAI.Updater;
 import scheme.ui.List;
 
 import static arc.Core.*;
@@ -33,6 +34,11 @@ public class AISelectDialog extends ListDialog {
         });
 
         Events.run(WorldLoadEvent.class, this::deselect);
+        Events.on(BlockBuildBeginEvent.class, event -> {
+            if (ai instanceof GammaAI gamma && GammaAI.build == Updater.destroy && event.unit.getPlayer() == gamma.target)
+                gamma.block(event.tile, event.breaking); // crutch but no way
+        });
+
         Seq<UnitAI> units = Seq.with(
                 new UnitAI(null, null),
                 new UnitAI(UnitTypes.mono, new MinerAI()),

@@ -18,6 +18,7 @@ import static mindustry.Vars.*;
 public class BuildsCache {
 
     public TilesQuadtree tiles;
+    public Building[] builds;
 
     public Seq<BaseTurretBuild> turrets = new Seq<>();
     public Seq<NuclearReactorBuild> nuclears = new Seq<>();
@@ -26,6 +27,9 @@ public class BuildsCache {
     public void load() {
         Events.run(WorldLoadEvent.class, this::refresh);
         Events.on(BlockDestroyEvent.class, event -> uncache(event.tile));
+        Events.on(BlockBuildBeginEvent.class, event -> {
+            if (!event.breaking) put(event.tile.build);
+        });
         Events.on(BlockBuildEndEvent.class, event -> {
             if (event.breaking) uncache(event.tile);
             else cache(event.tile.build);
@@ -34,7 +38,11 @@ public class BuildsCache {
 
     public void refresh() {
         tiles = new TilesQuadtree(new Rect(0, 0, world.unitWidth(), world.unitHeight()));
-        world.tiles.eachTile(tile -> tiles.insert(tile));
+        builds = new Building[world.width() * world.height()];
+        world.tiles.eachTile(tile -> {
+            tiles.insert(tile);
+            if (tile.build != null) put(tile.build); // cache all buildings on world load
+        });
 
         turrets.clear();
         nuclears.clear();
@@ -58,6 +66,14 @@ public class BuildsCache {
         tiles.intersect(bounds, tile -> {
             if (tile.build != null) cons.get(tile);
         });
+    }
+
+    public void put(Building build) {
+        builds[build.tileY() * world.width() + build.tileX()] = build;
+    }
+
+    public Building get(Tile tile) {
+        return builds[tile.y * world.width() + tile.x];
     }
 
     public static class TilesQuadtree extends QuadTree<Tile> {
