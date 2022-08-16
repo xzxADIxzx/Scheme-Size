@@ -69,6 +69,7 @@ public class BuildsCache {
     }
 
     public void put(Building build) {
+        if (build == null) return; // idk how is it possible
         builds[build.tileY() * world.width() + build.tileX()] = build;
     }
 
