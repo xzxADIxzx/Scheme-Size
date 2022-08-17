@@ -31,6 +31,7 @@ public class AISelectDialog extends ListDialog {
 
         hidden(() -> {
             if (ai instanceof GammaAI gamma) gamma.cache();
+            if (ai instanceof MissileAI missile) missile.shooter = player.unit();
         });
 
         Events.run(WorldLoadEvent.class, this::deselect);
@@ -48,6 +49,8 @@ public class AISelectDialog extends ListDialog {
                 new UnitAI(UnitTypes.crawler, new SuicideAI()),
                 new UnitAI(UnitTypes.dagger, new GroundAI()),
                 new UnitAI(UnitTypes.flare, new FlyingAI()),
+                new UnitAI(UnitTypes.renale, new HugAI()),
+                new UnitAI(content.unit(64), new MissileAI()),
                 new UnitAI(UnitTypes.gamma, new GammaAI()));
 
         list = new List<>(units::each, UnitAI::name, UnitAI::icon, unit -> Pal.accent);
