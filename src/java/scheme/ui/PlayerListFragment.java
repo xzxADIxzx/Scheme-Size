@@ -5,10 +5,7 @@ import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Lines;
 import arc.scene.Element;
 import arc.scene.Group;
-import arc.scene.event.ClickListener;
-import arc.scene.event.HandCursorListener;
-import arc.scene.event.InputEvent;
-import arc.scene.event.Touchable;
+import arc.scene.event.*;
 import arc.scene.ui.Image;
 import arc.scene.ui.ImageButton.ImageButtonStyle;
 import arc.scene.ui.TextField;
@@ -53,19 +50,16 @@ public class PlayerListFragment extends mindustry.ui.fragments.PlayerListFragmen
         Table menu = getMenu();
 
         pane.row();
-        pane.check("@players.show", value -> show = value).pad(10f).left().get().setTranslation(0f, Scl.scl(60f));
-        menu.setTranslation(0f, Scl.scl(-50f));
+        pane.check("@trace.type.show", value -> show = value).pad(10f).left().get().setTranslation(0f, Scl.scl(61f));
+        menu.setTranslation(0f, Scl.scl(-51f));
         menu.getCells().get(1).padLeft(12f).padRight(12f);
     }
 
     @Override
     public void rebuild() {
-        if (TooltipLocker.locked) return; // tooltips may bug during rebuild
+        if (TooltipLocker.locked || search == null) return; // tooltips may bug during rebuild
 
         content.clear();
-        content.marginBottom(5f);
-
-        if (search == null) return;
         float h = 50f, bs = h / 2f;
 
         Seq<Player> players = new Seq<>();
@@ -78,10 +72,6 @@ public class PlayerListFragment extends mindustry.ui.fragments.PlayerListFragmen
         else for (Player user : players) {
             if (user.con == null && net.server() && !user.isLocal()) return;
             boolean mod = ServerIntegration.SSUsers.containsKey(user.id);
-
-            Table button = new Table();
-            button.left();
-            button.margin(5).marginBottom(10);
 
             ClickListener listener = new ClickListener();
 
@@ -112,11 +102,13 @@ public class PlayerListFragment extends mindustry.ui.fragments.PlayerListFragmen
                 if (control.input instanceof DesktopInput input) input.panning = true;
             });
 
+            Table button = new Table();
+            button.left().margin(5f).marginBottom(10f);
+            button.background(show && mod ? Tex.underlineOver : Tex.underline);
+
             button.add(table).size(h);
             button.labelWrap(user.coloredName()).style(Styles.outlineLabel).width(170f).pad(10f);
             button.add().grow();
-
-            button.background(Tex.underline);
 
             var style = new ImageButtonStyle() {{
                 down = up = Styles.none;
@@ -151,7 +143,7 @@ public class PlayerListFragment extends mindustry.ui.fragments.PlayerListFragmen
                         if (m_input instanceof DesktopInput di) di.panning = true;
                     });
                     t.button(atlas.drawable("status-blasted"), ustyle, () -> admins.despawn(user));
-                }).padRight(12f).padLeft(16f).size(bs + 10f, bs);
+                }).padRight(12f).size(bs + 10f, bs);
             }
 
             if (user.admin && !(!user.isLocal() && net.server())) button.image(Icon.admin).size(h);
@@ -185,7 +177,7 @@ public class PlayerListFragment extends mindustry.ui.fragments.PlayerListFragmen
 
                     t.button(Icon.zoomSmall, ustyle, () -> Call.adminRequest(user, AdminAction.trace));
 
-                }).padRight(12f).padLeft(16f).size(bs + 10f, bs);
+                }).padRight(12f).size(bs + 10f, bs);
             } else if (!user.isLocal() && !user.admin && net.client() && Groups.player.size() >= 3 && player.team() == user.team()) {
                 button.add().growY();
                 button.button(Icon.hammer, ustyle,
@@ -194,7 +186,7 @@ public class PlayerListFragment extends mindustry.ui.fragments.PlayerListFragmen
                 .size(h);
             }
 
-            content.add(button).width(350f).height(h + 14f);
+            content.add(button).width(h + 350f).height(h + 14f);
             content.row();
         }
     }

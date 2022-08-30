@@ -61,7 +61,7 @@ public class ServerIntegration {
 
     /** Returns the user type with the given id: No Data, Mod, Vanilla. */
     public static String type(int id) {
-        return SSUsers.isEmpty() ? "trace.nodata" : SSUsers.containsKey(id) ? "trace.mod" : "trace.vanilla";
+        return SSUsers.isEmpty() ? "trace.type.nodata" : SSUsers.containsKey(id) ? "trace.type.mod" : "trace.type.vanilla";
     }
 
     /** Returns the user type with subtitle. */
