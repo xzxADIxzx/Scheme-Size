@@ -32,8 +32,7 @@ import static scheme.ai.GammaAI.Updater.*;
 public class HudFragment {
 
     /** Just a short reference to a variable with a long name. */
-    public static final ImageButtonStyle style = Styles.clearNonei;
-    public static final ImageButtonStyle check = Styles.clearNoneTogglei;
+    public static final ImageButtonStyle style = Styles.clearNonei, check = Styles.clearNoneTogglei;
     public static final TextFieldStyle input = new TextFieldStyle() {{
         font = Fonts.def;
         fontColor = Color.white;

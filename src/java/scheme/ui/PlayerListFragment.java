@@ -96,7 +96,8 @@ public class PlayerListFragment extends mindustry.ui.fragments.PlayerListFragmen
                     Draw.reset();
                 }
             };
-            table.margin(8);
+
+            table.margin(8f);
             table.add(new Image(user.icon()).setScaling(Scaling.bounded)).grow();
             table.touchable = Touchable.enabled;
 
@@ -117,7 +118,7 @@ public class PlayerListFragment extends mindustry.ui.fragments.PlayerListFragmen
 
             button.background(Tex.underline);
 
-            ImageButtonStyle style = new ImageButtonStyle() {{
+            var style = new ImageButtonStyle() {{
                 down = up = Styles.none;
                 imageCheckedColor = Pal.accent;
                 imageDownColor = Pal.accent;
@@ -125,7 +126,7 @@ public class PlayerListFragment extends mindustry.ui.fragments.PlayerListFragmen
                 imageOverColor = Color.lightGray;
             }};
 
-            ImageButtonStyle ustyle = new ImageButtonStyle() {{
+            var ustyle = new ImageButtonStyle() {{
                 down = up = Styles.none;
                 imageDownColor = Pal.accent;
                 imageUpColor = Color.white;
