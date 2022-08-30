@@ -35,7 +35,6 @@ public class ModedMobileInput extends MobileInput implements ModedInputHandler {
     protected void removeSelection(int x1, int y1, int x2, int y2, boolean flush) {
         build.save(x1, y1, x2, y2, maxSchematicSize);
         super.removeSelection(x1, y1, x2, y2, flush, maxSchematicSize);
-        drawSize(x1, y1, x2, y2, maxSchematicSize);
     }
 
     @Override
@@ -43,7 +42,8 @@ public class ModedMobileInput extends MobileInput implements ModedInputHandler {
         if (mode == schematicSelect) {
             drawSelection(lineStartX, lineStartY, lastLineX, lastLineY, maxSchematicSize);
             drawSize(lineStartX, lineStartY, lastLineX, lastLineY, maxSchematicSize);
-        }
+        } else if (mode == breaking && lineMode)
+            drawSize(lineStartX, lineStartY, lastLineX, lastLineY, maxSchematicSize);
 
         if (using) {
             if (build.mode == Mode.edit)
