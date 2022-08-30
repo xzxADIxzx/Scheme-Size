@@ -126,22 +126,15 @@ public class PlayerListFragment extends mindustry.ui.fragments.PlayerListFragmen
             if (!user.isLocal()) {
                 button.add().growY();
                 button.table(t -> {
-                    t.defaults().size(bs);
+                    t.defaults().size(35f, h);
 
                     t.button(Icon.logic, ustyle, () -> ai.gotoppl(user));
                     t.button(Icon.copy, ustyle, () -> {
                         app.setClipboardText(user.coloredName());
                         ui.showInfoFade("@copied");
                     });
-
-                    t.row();
-
-                    t.button(Icon.eyeSmall, ustyle, () -> {
-                        camera.position.set(user.x, user.y);
-                        if (m_input instanceof DesktopInput di) di.panning = true;
-                    });
                     t.button(atlas.drawable("status-blasted"), ustyle, () -> admins.despawn(user));
-                }).padRight(12f).size(bs + 10f, bs);
+                }).padRight(12f).size(105f, h);
             }
 
             if (user.admin && !(!user.isLocal() && net.server())) button.image(Icon.admin).size(h);
@@ -184,7 +177,7 @@ public class PlayerListFragment extends mindustry.ui.fragments.PlayerListFragmen
                 .size(h);
             }
 
-            content.add(button).width(h + 350f).height(h + 14f);
+            content.add(button).width(350f + 117f).height(h + 14f);
             content.row();
         }
     }
