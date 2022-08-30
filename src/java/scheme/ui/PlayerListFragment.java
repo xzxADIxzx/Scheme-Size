@@ -71,8 +71,6 @@ public class PlayerListFragment extends mindustry.ui.fragments.PlayerListFragmen
         if (players.isEmpty()) content.add(bundle.format("players.notfound")).padBottom(6).width(350f).maxHeight(h + 14);
         else for (Player user : players) {
             if (user.con == null && net.server() && !user.isLocal()) return;
-            boolean mod = ServerIntegration.SSUsers.containsKey(user.id);
-
             ClickListener listener = new ClickListener();
 
             Table table = new Table() {
@@ -104,7 +102,7 @@ public class PlayerListFragment extends mindustry.ui.fragments.PlayerListFragmen
 
             Table button = new Table();
             button.left().margin(5f).marginBottom(10f);
-            button.background(show && mod ? Tex.underlineOver : Tex.underline);
+            button.background(show && ServerIntegration.isModded(user.id) ? Tex.underlineOver : Tex.underline);
 
             button.add(table).size(h);
             button.labelWrap(user.coloredName()).style(Styles.outlineLabel).width(170f).pad(10f);

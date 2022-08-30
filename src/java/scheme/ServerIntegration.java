@@ -59,13 +59,18 @@ public class ServerIntegration {
         Call.serverPacketReliable("GivePlayerDataPlease", null);
     }
 
+    public static boolean isModded(int id) {
+        return SSUsers.containsKey(id) || player.id == id; // of course you are a modded player
+    }
+
     /** Returns the user type with the given id: No Data, Mod, Vanilla. */
     public static String type(int id) {
-        return SSUsers.isEmpty() ? "trace.type.nodata" : SSUsers.containsKey(id) ? "trace.type.mod" : "trace.type.vanilla";
+        return SSUsers.isEmpty() ? "trace.type.nodata" : isModded(id) ? "trace.type.mod" : "trace.type.vanilla";
     }
 
     /** Returns the user type with subtitle. */
     public static String tooltip(int id) {
-        return bundle.get(type(id)) + (SSUsers.containsKey(id) ? "\n" + SSUsers.get(id) : "");
+        if (player.id == id) return "@trace.type.self";
+        return bundle.get(type(id)) + (isModded(id) ? "\n" + SSUsers.get(id) : "");
     }
 }
