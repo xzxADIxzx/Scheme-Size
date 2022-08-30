@@ -5,6 +5,8 @@ import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Lines;
 import arc.scene.Element;
 import arc.scene.Group;
+import arc.scene.event.ClickListener;
+import arc.scene.event.HandCursorListener;
 import arc.scene.event.InputEvent;
 import arc.scene.event.Touchable;
 import arc.scene.ui.Image;
@@ -21,6 +23,7 @@ import mindustry.gen.Call;
 import mindustry.gen.Groups;
 import mindustry.gen.Icon;
 import mindustry.gen.Player;
+import mindustry.gen.Tex;
 import mindustry.graphics.Pal;
 import mindustry.input.DesktopInput;
 import mindustry.net.Packets.AdminAction;
@@ -31,7 +34,7 @@ import static arc.Core.*;
 import static mindustry.Vars.*;
 import static scheme.SchemeVars.*;
 
-/** Last update - Mar 11, 2022 */
+/** Last update - Aug 11, 2022 */
 public class PlayerListFragment extends mindustry.ui.fragments.PlayerListFragment {
 
     /** Did you forget to update the index? */
@@ -63,7 +66,7 @@ public class PlayerListFragment extends mindustry.ui.fragments.PlayerListFragmen
         content.marginBottom(5f);
 
         if (search == null) return;
-        float h = 74f, bs = h / 2f;
+        float h = 50f, bs = h / 2f;
 
         Seq<Player> players = new Seq<>();
         Groups.player.copy(players);
@@ -80,11 +83,14 @@ public class PlayerListFragment extends mindustry.ui.fragments.PlayerListFragmen
             button.left();
             button.margin(5).marginBottom(10);
 
+            ClickListener listener = new ClickListener();
+
             Table table = new Table() {
                 @Override
                 public void draw() {
                     super.draw();
-                    Draw.color(mod ? Pal.accent : Pal.gray, parentAlpha);
+                    Draw.colorMul(user.team().color, listener.isOver() ? 1.3f : 1f);
+                    Draw.alpha(parentAlpha);
                     Lines.stroke(Scl.scl(4f));
                     Lines.rect(x, y, width, height);
                     Draw.reset();
@@ -92,11 +98,24 @@ public class PlayerListFragment extends mindustry.ui.fragments.PlayerListFragmen
             };
             table.margin(8);
             table.add(new Image(user.icon()).setScaling(Scaling.bounded)).grow();
+            table.touchable = Touchable.enabled;
+
+            table.addListener(listener); // viewing players is always available
+            table.addListener(new HandCursorListener());
             table.addListener(new TooltipLocker(user.id));
 
+            table.tapped(() -> {
+                if (user.dead()) return;
+                camera.position.set(user.unit());
+                ui.showInfoFade(bundle.format("viewplayer", user.name), 1f);
+                if (control.input instanceof DesktopInput input) input.panning = true;
+            });
+
             button.add(table).size(h);
-            button.labelWrap(user.coloredName()).width(170f).pad(10);
+            button.labelWrap(user.coloredName()).style(Styles.outlineLabel).width(170f).pad(10f);
             button.add().grow();
+
+            button.background(Tex.underline);
 
             ImageButtonStyle style = new ImageButtonStyle() {{
                 down = up = Styles.none;
@@ -141,14 +160,14 @@ public class PlayerListFragment extends mindustry.ui.fragments.PlayerListFragmen
                 button.table(t -> {
                     t.defaults().size(bs);
 
-                    t.button(Icon.hammer, ustyle,
+                    t.button(Icon.hammerSmall, ustyle,
                     () -> ui.showConfirm("@confirm", bundle.format("confirmban",  user.name()), () -> Call.adminRequest(user, AdminAction.ban)));
-                    t.button(Icon.cancel, ustyle,
+                    t.button(Icon.cancelSmall, ustyle,
                     () -> ui.showConfirm("@confirm", bundle.format("confirmkick",  user.name()), () -> Call.adminRequest(user, AdminAction.kick)));
 
                     t.row();
 
-                    t.button(Icon.admin, style, () -> {
+                    t.button(Icon.adminSmall, style, () -> {
                         if (net.client()) return;
                         if (user.admin) ui.showConfirm("@confirm", bundle.format("confirmunadmin", user.name()), () -> {
                             netServer.admins.unAdminPlayer(user.uuid());
@@ -163,18 +182,18 @@ public class PlayerListFragment extends mindustry.ui.fragments.PlayerListFragmen
                         .touchable(() -> net.client() ? Touchable.disabled : Touchable.enabled)
                         .checked(user.admin);
 
-                    t.button(Icon.zoom, ustyle, () -> Call.adminRequest(user, AdminAction.trace));
+                    t.button(Icon.zoomSmall, ustyle, () -> Call.adminRequest(user, AdminAction.trace));
+
                 }).padRight(12f).padLeft(16f).size(bs + 10f, bs);
             } else if (!user.isLocal() && !user.admin && net.client() && Groups.player.size() >= 3 && player.team() == user.team()) {
                 button.add().growY();
-                button.button(Icon.hammer, ustyle, () -> {
-                    ui.showConfirm("@confirm", bundle.format("confirmvotekick", user.name()), () -> Call.sendChatMessage("/votekick " + user.name()));
-                }).size(h);
+                button.button(Icon.hammer, ustyle,
+                        () -> ui.showConfirm("@confirm", bundle.format("confirmvotekick", user.name()),
+                        () -> Call.sendChatMessage("/votekick " + user.name())))
+                .size(h);
             }
 
-            content.add(button).padBottom(-6).width(350f + h).maxHeight(h + 14f);
-            content.row();
-            content.image().height(4f).color(state.rules.pvp || show ? user.team().color : Pal.gray).growX();
+            content.add(button).width(350f).height(h + 14f);
             content.row();
         }
     }
