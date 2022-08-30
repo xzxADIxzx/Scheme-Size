@@ -80,6 +80,12 @@ public class ModedDesktopInput extends DesktopInput implements ModedInputHandler
         super.update();
 
         if (locked()) return;
+
+        if (movementLocked) {
+            drawLocked(player.unit().x, player.unit().y);
+            panning = true; // panning is always enabled when unit movement is locked
+        }
+
         if (scene.hasField()) {
             if (ai.ai != null && !player.dead() && !state.isPaused()) ai.update();
             return; // update the AI even if the player is typing a message

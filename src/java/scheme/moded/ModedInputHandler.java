@@ -1,10 +1,13 @@
 package scheme.moded;
 
+import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Lines;
+import arc.math.Mathf;
 import arc.math.geom.Geometry;
 import arc.math.geom.Vec2;
 import arc.struct.Seq;
+import arc.util.Time;
 import mindustry.content.Blocks;
 import mindustry.core.World;
 import mindustry.entities.units.BuildPlan;
@@ -96,5 +99,10 @@ public interface ModedInputHandler {
         Lines.poly(polygons, x * tilesize - 4, y * tilesize - 5, tilesize);
         Draw.color(Pal.darkMetal);
         Lines.poly(polygons, x * tilesize - 4, y * tilesize - 4, tilesize);
+    }
+
+    public default void drawLocked(float x, float y) {
+        Color color = Color.orange.cpy().lerp(Color.scarlet, Mathf.absin(Time.time, 3f, 1f));
+        ui.showLabel(bundle.format("movementlocked", color), 0.02f, x, y);
     }
 }
