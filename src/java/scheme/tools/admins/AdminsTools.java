@@ -6,15 +6,15 @@ import mindustry.game.Team;
 import mindustry.gen.Player;
 import mindustry.type.Item;
 import mindustry.type.UnitType;
-import scheme.ui.dialogs.AdminsConfigDialog;
+import scheme.ui.dialogs.KeybindCombinationsDialog;
 
 import static arc.Core.*;
 import static mindustry.Vars.*;
 
 public interface AdminsTools {
 
-    public String disabled = bundle.format("admins.notenabled", AdminsConfigDialog.keybind());
-    public String unabailable = bundle.format("admins.notavailable", AdminsConfigDialog.keybind());
+    public String disabled = bundle.format("admins.notenabled", KeybindCombinationsDialog.adminsConfig);
+    public String unabailable = bundle.format("admins.notavailable", KeybindCombinationsDialog.adminsConfig);
 
     public void manageUnit();
 

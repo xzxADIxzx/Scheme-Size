@@ -7,7 +7,6 @@ import arc.math.Mathf;
 import arc.math.geom.Geometry;
 import arc.math.geom.Vec2;
 import arc.struct.Seq;
-import arc.util.Time;
 import mindustry.content.Blocks;
 import mindustry.core.World;
 import mindustry.entities.units.BuildPlan;
@@ -17,6 +16,7 @@ import mindustry.input.Placement;
 import mindustry.input.Placement.NormalizeDrawResult;
 import mindustry.world.Tile;
 import scheme.tools.BuildingTools.Mode;
+import scheme.ui.dialogs.KeybindCombinationsDialog;
 
 import static arc.Core.*;
 import static mindustry.Vars.*;
@@ -102,7 +102,9 @@ public interface ModedInputHandler {
     }
 
     public default void drawLocked(float x, float y) {
-        Color color = Color.orange.cpy().lerp(Color.scarlet, Mathf.absin(Time.time, 3f, 1f));
-        ui.showLabel(bundle.format("movementlocked", color), 0.02f, x, y);
+        ui.showLabel(bundle.format(
+                Mathf.absin(25f, 1f) < .5f ? "locked.info" : "locked.bind",
+                Color.orange.cpy().lerp(Color.scarlet, Mathf.absin(3f, 1f)),
+                KeybindCombinationsDialog.lockMovement), 0.02f, x, y);
     }
 }

@@ -12,6 +12,13 @@ import static mindustry.Vars.*;
 
 public class KeybindCombinationsDialog extends BaseDialog {
 
+    /** Key to press to open the admins config dialog. */
+    public static final String adminsConfig = "[accent]\uE82C/" + keybind(ModedBinding.adminscfg) + "[]";
+    /** Key to press to lock movement. */
+    public static final String lockMovement = "[scarlet]\uE88D/" + keybind(ModedBinding.alternative) + " + " + keybind(Binding.pan) + "[]";
+    /** Key to press to disable ai. */
+    public static final String resetAI = "[accent]\uE80E/" + keybind(ModedBinding.alternative) + " + " + keybind(ModedBinding.toggle_ai);
+
     public String main;
     public String code;
 
@@ -27,7 +34,7 @@ public class KeybindCombinationsDialog extends BaseDialog {
         if (mobile) return; // mobiles do not have key bindings
 
         main = bundle.get("keycomb.main");
-        code = keybinds.get(ModedBinding.alternative).key.toString();
+        code = keybind(ModedBinding.alternative);
 
         partition("@category.general.name");
 
@@ -47,13 +54,17 @@ public class KeybindCombinationsDialog extends BaseDialog {
         template("drop",       Binding.rotateplaced);
     }
 
+    private static String keybind(KeyBind bind) {
+        return keybinds.get(bind).key.toString();
+    }
+
     private void partition(String title) {
         cont.label(() -> title).color(Color.gray).padTop(10f).row();
         cont.image().color(Color.gray).fillX().height(3f).padBottom(6f).row();
     }
 
     private void template(String name, KeyBind bind) {
-        String key = keybinds.get(bind).key.toString();
+        String key = keybind(bind);
         String sec = bundle.get("keybind." + bind.name() + ".name");
 
         cont.add("@keycomb." + name, Color.white).left().padRight(20f);

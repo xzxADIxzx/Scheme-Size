@@ -2,7 +2,6 @@ package scheme.ui.dialogs;
 
 import arc.scene.ui.layout.Table;
 import mindustry.ui.dialogs.BaseDialog;
-import scheme.moded.ModedBinding;
 import scheme.tools.admins.*;
 import scheme.ui.TextSlider;
 
@@ -52,10 +51,5 @@ public class AdminsConfigDialog extends BaseDialog {
         return new AdminsTools[] {
                 new Internal(), new SlashJs(), new Darkdustry()
         }[settings.getInt("adminsway", 0)];
-    }
-
-    /** Key to press to open the dialog. */
-    public static String keybind() {
-        return "([accent]\uE82C/" + keybinds.get(ModedBinding.adminscfg).key.toString() + "[])";
     }
 }
