@@ -92,7 +92,7 @@ public interface ModedInputHandler {
     }
 
     public default void drawEditSelection(int x, int y, int radius) {
-        Vec2[] polygons = Geometry.pixelCircle(radius);
+        Vec2[] polygons = Geometry.pixelCircle(radius, (index, cx, cy) -> Mathf.dst(cx, cy, index, index) < index);
         Lines.stroke(2f);
 
         Draw.color(Pal.darkerMetal);
