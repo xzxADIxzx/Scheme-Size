@@ -24,6 +24,7 @@ public class GammaAI extends AIController {
     public static Updater move = Updater.none;
     public static Updater build = Updater.none;
     public static float range = 80f;
+    public static float speed = 1f;
 
     public Player target;
     public Position cache;
@@ -56,6 +57,10 @@ public class GammaAI extends AIController {
         cache = target == player ? player.tileOn() : target;
     }
 
+    public float speed() {
+        return unit.speed() * speed / 100f;
+    }
+
     /** Key to press to disable ai. */
     public static String keybind() {
         return keybinds.get(ModedBinding.alternative).key.toString() + " + " + keybinds.get(ModedBinding.toggle_ai).key.toString();
@@ -64,7 +69,7 @@ public class GammaAI extends AIController {
     public enum Updater {
         none(Icon.line, ai -> {}),
         circle(Icon.commandRally, ai -> {
-            ai.circle(ai.cache, range);
+            ai.circle(ai.cache, range, ai.speed());
             ai.faceMovement();
             ai.stopShooting();
         }),
@@ -90,10 +95,11 @@ public class GammaAI extends AIController {
 
         private static void moveTo(GammaAI ai, Position pos) {
             ai.moveTo(pos, range / 3f);
-            if (ai.unit.vel.len() > .5f) ai.faceMovement();
+            ai.unit.vel(ai.unit.vel().limit(ai.speed()));
+            if (ai.unit.moving()) ai.faceMovement();
             else ai.unit.lookAt(ai.aim);
             ai.unit.aim(ai.aim);
-            ai.unit.controlWeapons(true, ai.target.shooting);
+            ai.unit.controlWeapons(true, player.shooting = ai.target.shooting);
         }
     }
 }
