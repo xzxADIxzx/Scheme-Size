@@ -31,8 +31,10 @@ public class Main extends Mod {
         keycomb.load();
 
         m_settings.apply(); // sometimes settings are not self-applying
+
         hudfrag.build(ui.hudGroup);
         listfrag.build(ui.hudGroup);
+        shortfrag.build(ui.hudGroup);
 
         control.setInput(m_input.asHandler());
         renderer.addEnvRenderer(0, render::draw);

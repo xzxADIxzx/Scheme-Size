@@ -9,6 +9,7 @@ import scheme.tools.*;
 import scheme.tools.admins.AdminsTools;
 import scheme.ui.HudFragment;
 import scheme.ui.PlayerListFragment;
+import scheme.ui.ShortcutFragment;
 import scheme.ui.dialogs.*;
 
 import static arc.Core.*;
@@ -43,6 +44,7 @@ public class SchemeVars {
 
     public static HudFragment hudfrag;
     public static PlayerListFragment listfrag;
+    public static ShortcutFragment shortfrag;
 
     public static void load() {
         // m_schematics = new ModedSchematics();
@@ -78,5 +80,6 @@ public class SchemeVars {
 
         hudfrag = new HudFragment();
         listfrag = new PlayerListFragment();
+        shortfrag = new ShortcutFragment();
     }
 }
