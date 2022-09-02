@@ -30,7 +30,7 @@ public class SchemeUpdater {
         String updates = "[orange]"; // coloring description of the mod
         for (String[] names : new String[][] {
                 { "Release!", "Settings", "Java 8", "Controls", "Updater", "Mobile Support", "Admins Tools" },
-                { "Building Tools", "AI Power", "Renderer Tools", "Deep Cleaning" } // TODO: "Cursed Schemes"
+                { "Building Tools", "AI Power", "Renderer Tools", "Deep Cleaning", "Schematic Shortcuts" } // TODO: "Cursed Schemes"
         }) {
             updates += "\n"; // add update names
             for (String name : names) updates += "\n   - " + name;
