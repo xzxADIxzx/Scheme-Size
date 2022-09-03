@@ -91,6 +91,8 @@ public class ModedDesktopInput extends DesktopInput implements ModedInputHandler
             return; // update the AI even if the player is typing a message
         }
 
+        if (scene.hasKeyboard()) return;
+
         modedInput();
         buildInput();
     }
