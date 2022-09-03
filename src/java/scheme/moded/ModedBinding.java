@@ -15,6 +15,7 @@ import static mindustry.Vars.*;
 public enum ModedBinding implements KeyBind {
     adminscfg(KeyCode.f12, "mod"),
     rendercfg(KeyCode.y),
+    schematic_shortcut(KeyCode.g),
     toggle_history(KeyCode.f9),
     toggle_core_items(KeyCode.f7),
     toggle_ai(KeyCode.i),
