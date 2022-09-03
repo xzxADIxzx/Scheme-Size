@@ -32,6 +32,7 @@ public class SchemeVars {
     public static AISelectDialog ai;
     public static TeamSelectDialog team;
     public static TileSelectDialog tile;
+    public static TagSelectDialog tag;
 
     public static ContentSelectDialog<UnitType> unit;
     public static ContentSelectDialog<StatusEffect> effect;
@@ -62,6 +63,7 @@ public class SchemeVars {
         ai = new AISelectDialog();
         team = new TeamSelectDialog();
         tile = new TileSelectDialog();
+        tag = new TagSelectDialog();
 
         unit = new ContentSelectDialog<>("@select.unit", content.units(), 1, 25, 1, value -> {
             return bundle.format("select.units", value);

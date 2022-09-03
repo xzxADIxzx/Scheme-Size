@@ -72,8 +72,4 @@ public class ShortcutFragment {
         lastIndex = -1;
         visible = false;
     }
-
-    public void replace(int index, String tag) {
-        selection.buttons[index].setText(tag);
-    }
 }
