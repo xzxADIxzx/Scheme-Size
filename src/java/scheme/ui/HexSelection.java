@@ -23,6 +23,7 @@ public class HexSelection extends Table {
     public Vec2[] vertices = new Vec2[6];
 
     public int selectedIndex = -1;
+    public boolean updatable = true;
 
     public HexSelection() {
         defaults().size(stroke / Scl.scl()); // unscaled stroke
@@ -41,16 +42,18 @@ public class HexSelection extends Table {
         Lines.stroke(stroke);
         Lines.poly(x, y, 6, size);
 
-        if (Mathf.dst(x, y, input.mouseX(), input.mouseY()) < stroke) selectedIndex = -1;
+        if (Mathf.within(x, y, input.mouseX(), input.mouseY(), stroke)) selectedIndex = -1;
         else {
             float min = Float.POSITIVE_INFINITY;
-            for (int i = 0; i < vertices.length; i++) {
+            if (updatable) for (int i = 0; i < vertices.length; i++) {
                 float dst = Mathf.dst(x + vertices[i].x, y + vertices[i].y, input.mouseX(), input.mouseY());
                 if (dst < min) {
                     min = dst;
                     selectedIndex = i;
                 } // yeah, it is
             }
+
+            if (selectedIndex == -1) return; // please, try to avoid it
             Vec2 offset = vertices[selectedIndex].cpy().limit(half);
 
             Draw.color(Pal.accent);

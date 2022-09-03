@@ -5,9 +5,11 @@ import arc.scene.Group;
 import arc.scene.ui.layout.Table;
 import arc.util.Align;
 import arc.util.Scaling;
+import arc.util.Tmp;
 import mindustry.ui.Styles;
 import mindustry.ui.dialogs.SchematicsDialog.SchematicImage;
 
+import static arc.Core.*;
 import static mindustry.Vars.*;
 
 public class ShortcutFragment {
@@ -44,6 +46,9 @@ public class ShortcutFragment {
                     if (list.getChildren().size % 4 == 0) list.row();
                 });
             }).size(362f, 336f).update(pane -> {
+                Tmp.r1.setSize(pane.getWidth(), pane.getHeight()).setPosition(pane.translation.x + pane.x, pane.translation.y + pane.y).grow(8f);
+                selection.updatable = lastIndex == -1 || !Tmp.r1.contains(input.mouse());
+
                 if (selection.selectedIndex == lastIndex) return;
                 lastIndex = selection.selectedIndex;
                 pane.getWidget().clear();
