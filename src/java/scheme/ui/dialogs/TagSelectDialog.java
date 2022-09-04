@@ -11,6 +11,7 @@ import static arc.Core.*;
 public class TagSelectDialog extends BaseDialog {
 
     public static final float tagh = 42f;
+    public static final String none = "\uE868";
 
     public Cons<String> callback;
     public String current;
@@ -25,7 +26,7 @@ public class TagSelectDialog extends BaseDialog {
             list.left().clear();
             list.defaults().pad(2f).height(tagh);
 
-            Seq<String> tags = settings.getJson("schematic-tags", Seq.class, String.class, Seq::new);
+            Seq<String> tags = settings.getJson("schematic-tags", Seq.class, String.class, Seq::new).add(none);
             tags.each(tag -> { // creating a variable is needed to bring the tag to a string
                 list.button(tag, Styles.togglet, () -> {
                     callback.get(tag);

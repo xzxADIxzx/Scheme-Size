@@ -8,9 +8,11 @@ import arc.util.Scaling;
 import arc.util.Tmp;
 import mindustry.ui.Styles;
 import mindustry.ui.dialogs.SchematicsDialog.SchematicImage;
+import scheme.ui.dialogs.TagSelectDialog;
 
 import static arc.Core.*;
 import static mindustry.Vars.*;
+import static scheme.SchemeVars.*;
 
 public class ShortcutFragment {
 
@@ -19,11 +21,23 @@ public class ShortcutFragment {
 
     public int lastIndex;
     public Runnable rebuild;
+    public Runnable onShown;
 
     public void build(Group parent) {
         parent.fill(cont -> {
             cont.name = "tagselection";
             cont.add(selection).visible(() -> visible).size(24f); // buttons size
+
+            for (int i = 0; i < 6; i++) {
+                String key = "shortcut-tag-" + i;
+                selection.add(settings.getString(key, TagSelectDialog.none), button -> {
+                    tag.show(button.getText().toString(), tag -> {
+                        button.setText(tag);
+                        settings.put(key, tag);
+                    });
+                    hide();
+                });
+            }
         });
 
         parent.fill(cont -> {
@@ -59,12 +73,13 @@ public class ShortcutFragment {
                 Vec2 offset = selection.vertices[lastIndex].cpy().setLength(HexSelection.size * 1.5f);
                 offset.sub(offset.x > 0 ? 0 : pane.getWidth(), offset.y > 0 ? 0 : offset.y == 0 ? pane.getHeight() / 2 : pane.getHeight());
                 pane.setTranslation(selection.x + offset.x - pane.x, selection.y + offset.y - pane.y);
-            });
+            }).with(pane -> onShown = pane.getWidget()::clear);
         });
     }
 
     public void show(int x, int y) {
         selection.setPosition(x, y);
+        onShown.run(); // clear pane
         visible = true;
     }
 
