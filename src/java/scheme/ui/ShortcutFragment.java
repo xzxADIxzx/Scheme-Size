@@ -23,7 +23,7 @@ public class ShortcutFragment {
     public void build(Group parent) {
         parent.fill(cont -> {
             cont.name = "tagselection";
-            cont.add(selection).visible(() -> visible);
+            cont.add(selection).visible(() -> visible).size(24f); // buttons size
         });
 
         parent.fill(cont -> {

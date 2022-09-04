@@ -1,6 +1,6 @@
 package scheme.ui;
 
-import arc.func.Cons2;
+import arc.func.Cons;
 import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Lines;
@@ -8,13 +8,14 @@ import arc.math.Mathf;
 import arc.math.geom.Vec2;
 import arc.scene.ui.TextButton;
 import arc.scene.ui.layout.Scl;
+import arc.scene.ui.layout.Stack;
 import arc.scene.ui.layout.Table;
 import mindustry.graphics.Pal;
 import mindustry.ui.Styles;
 
 import static arc.Core.*;
 
-public class HexSelection extends Table {
+public class HexSelection extends Stack {
 
     public static final float size = Scl.scl(60f), stroke = Scl.scl(24f), half = stroke / 2f;
     public static final Color background = Color.valueOf("00000099");
@@ -26,15 +27,20 @@ public class HexSelection extends Table {
     public boolean updatable = true;
 
     public HexSelection() {
-        defaults().minSize(stroke / Scl.scl()); // unscaled stroke
         for (int deg = 0; deg < 360; deg += 60)
             vertices[deg / 60] = new Vec2(Mathf.cosDeg(deg) * size, Mathf.sinDeg(deg) * size);
     }
 
-    public void set(int index, String icon, Cons2<Integer, TextButton> listener) {
-        buttons[index] = button(icon, Styles.cleart, () -> listener.get(index, buttons[index])).get();
-        buttons[index].setTranslation(vertices[index].x - half - index * stroke, vertices[index].y - half);
-        buttons[index].getLabel().setWrap(false); // someone can use non-single-character tags
+    public void add(String icon, Cons<TextButton> listener) {
+        int i = children.size;
+        addChild(new Table(table -> {
+            table.name = icon;
+            table.defaults().minSize(24f).get(); // unscaled stroke
+
+            buttons[i] = table.button(icon, Styles.cleart, () -> listener.get(buttons[i])).get();
+            buttons[i].setTranslation(vertices[i].x - half, vertices[i].y - half);
+            buttons[i].getLabel().setWrap(false); // someone can use non-single-character tags
+        }));
     }
 
     @Override
