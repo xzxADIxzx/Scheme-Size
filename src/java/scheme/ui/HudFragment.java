@@ -63,7 +63,7 @@ public class HudFragment {
             cont.top().left();
 
             cont.touchable = Touchable.disabled;
-            cont.visible(() -> ui.hudfrag.shown && !state.isEditor());
+            cont.visible(() -> ui.hudfrag.shown && !ui.minimapfrag.shown() && !state.isEditor());
 
             float dif = Scl.scl() % .5f == 0 ? 0f : 1f; // there are also a lot of magic numbers
             cont.add(new HexBar(() -> units.shield() / units.maxShield, icon -> {
@@ -87,7 +87,7 @@ public class HudFragment {
             cont.name = "gammaui";
             cont.top().right();
 
-            cont.visible(() -> ai.ai instanceof GammaAI && ui.hudfrag.shown);
+            cont.visible(() -> ui.hudfrag.shown && !ui.minimapfrag.shown() && ai.ai instanceof GammaAI);
 
             cont.table(Tex.pane, pad -> {
                 pad.defaults().growX();
