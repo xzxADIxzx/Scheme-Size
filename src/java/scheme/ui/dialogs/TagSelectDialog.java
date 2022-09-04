@@ -1,7 +1,9 @@
 package scheme.ui.dialogs;
 
 import arc.func.Cons;
+import arc.graphics.Color;
 import arc.struct.Seq;
+import arc.util.Align;
 import mindustry.ui.Styles;
 import mindustry.ui.dialogs.BaseDialog;
 
@@ -21,6 +23,9 @@ public class TagSelectDialog extends BaseDialog {
     public TagSelectDialog() {
         super("@select.tag");
         addCloseButton();
+
+        cont.labelWrap(() -> bundle.format("select.tagdesc", current)).labelAlign(Align.center).width(700f).row();
+        cont.image().color(Color.darkGray).fillX().height(4f).pad(4f).row();
 
         cont.pane(Styles.noBarPane, list -> rebuild = () -> {
             list.left().clear();

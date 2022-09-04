@@ -220,7 +220,7 @@ public class HudFragment {
     }
 
     private Cell<Table> partitionbt(Table table, Cons<Table> cons) {
-        if (table.hasChildren()) table.image().color(Pal.gray).width(4f).pad(4f).fillY().visible(() -> building.fliped);
+        if (table.hasChildren()) table.image().color(Pal.gray).fillY().width(4f).pad(4f).visible(() -> building.fliped);
         return table.table(cont -> {
             cont.defaults().size(46f).bottom().right();
             cons.get(cont);
