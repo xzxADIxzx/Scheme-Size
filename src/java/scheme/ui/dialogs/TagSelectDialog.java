@@ -26,7 +26,9 @@ public class TagSelectDialog extends BaseDialog {
             list.left().clear();
             list.defaults().pad(2f).height(tagh);
 
-            Seq<String> tags = settings.getJson("schematic-tags", Seq.class, String.class, Seq::new).add(none);
+            Seq<String> tags = settings.getJson("schematic-tags", Seq.class, String.class, Seq::new);
+            tags.insert(0, none); // add none to the beginning
+
             tags.each(tag -> { // creating a variable is needed to bring the tag to a string
                 list.button(tag, Styles.togglet, () -> {
                     callback.get(tag);

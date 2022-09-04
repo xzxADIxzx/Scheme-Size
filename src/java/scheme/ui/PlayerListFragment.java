@@ -35,7 +35,7 @@ import static scheme.SchemeVars.*;
 public class PlayerListFragment extends mindustry.ui.fragments.PlayerListFragment {
 
     /** Did you forget to update the index? */
-    public static final int index = settings.getBool("mobilebuttons") || mobile ? 15 : 14;
+    public static final int index = settings.getBool("mobilebuttons") || mobile ? 16 : 14;
 
     public boolean show;
     public TextField search;

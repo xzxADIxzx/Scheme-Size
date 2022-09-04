@@ -161,6 +161,17 @@ public class HudFragment {
 
         if (!settings.getBool("mobilebuttons") && !mobile) return;
 
+        parent.fill(cont -> { // Shortcut Button
+            cont.name = "shortcutbutton";
+            cont.right();
+
+            cont.visible(() -> ui.hudfrag.shown && !ui.minimapfrag.shown() && (block == null || !getTopTable().visible));
+            cont.button(Icon.paste, Styles.cleari, () -> {
+                if (shortfrag.visible) shortfrag.hide();
+                else shortfrag.show(graphics.getWidth() - (int) Scl.scl(15f), graphics.getHeight() / 2);
+            }).height(80f);
+        });
+
         parent.fill(cont -> { // Mobile Buttons
             cont.name = "mobilebuttons";
             cont.top().left();
@@ -247,6 +258,10 @@ public class HudFragment {
         app.post(() -> { // waiting for blockfrag rebuild
             block = ((Table) ui.hudGroup.getChildren().get(10)).getChildren().get(0);
         });
+    }
+
+    private Table getTopTable() {
+        return (Table) ((Table) block).getChildren().get(0);
     }
 
     private Table getCoreItems() {
