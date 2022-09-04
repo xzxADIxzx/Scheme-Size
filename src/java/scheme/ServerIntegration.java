@@ -45,7 +45,7 @@ public class ServerIntegration {
         netClient.addPacketHandler("GiveYourPlayerData", args -> Call.serverPacketReliable("ThisIsMyPlayerData", settings.getString("subtitle")));
         netClient.addPacketHandler("ThisIsYourPlayerData", args -> {
             SSUsers.clear();
-            for (String data : args.split("|")) {
+            for (String data : args.split("\\|")) {
                 String id = data.split("=")[0];
                 if (Strings.canParseInt(id)) SSUsers.put(Strings.parseInt(id), data.split("=")[1]);
             }
