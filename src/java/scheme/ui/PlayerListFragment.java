@@ -68,7 +68,7 @@ public class PlayerListFragment extends mindustry.ui.fragments.PlayerListFragmen
         players.sort(Structs.comps(Structs.comparing(Player::team), Structs.comparingBool(p -> !p.admin)));
         if (search.getText().length() > 0) players.filter(p -> Strings.stripColors(p.name().toLowerCase()).contains(search.getText().toLowerCase()));
 
-        if (players.isEmpty()) content.add(bundle.format("players.notfound")).padBottom(6).width(350f).maxHeight(h + 14);
+        if (players.isEmpty()) content.add("@players.notfound").padBottom(6).width(350f).maxHeight(h + 14);
         else for (Player user : players) {
             if (user.con == null && net.server() && !user.isLocal()) return;
             ClickListener listener = new ClickListener();
