@@ -1,30 +1,11 @@
 package scheme.moded;
 
-import arc.func.*;
-import arc.util.*;
-import arc.struct.*;
-// import arc.graphics.*;
-// import arc.graphics.gl.*;
-// import arc.graphics.g2d.*;
-import mindustry.gen.*;
-import mindustry.game.Schematic;
-import mindustry.game.Schematic.*;
 import mindustry.game.Schematics;
-import mindustry.input.*;
-import mindustry.input.Placement.*;
-import mindustry.world.*;
-import mindustry.world.blocks.storage.*;
-import mindustry.world.blocks.ConstructBlock.*;
-import mindustry.content.*;
-// import mindustry.entities.units.*;
-
-// import static arc.Core.*;
-import static mindustry.Vars.*;
-// import static scheme.SchemeVars.*;
 
 /** Last update - Sep 11, 2021 */
 public class ModedSchematics extends Schematics {
 
+/**
     public Mode mode = Mode.standard;
     public Interval timer = new Interval();
 
@@ -143,4 +124,5 @@ public class ModedSchematics extends Schematics {
 
         public abstract Schematic get(int x, int y, int x2, int y2);
     }
+*/
 }
