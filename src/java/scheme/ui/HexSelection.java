@@ -26,7 +26,7 @@ public class HexSelection extends Table {
     public boolean updatable = true;
 
     public HexSelection() {
-        defaults().size(stroke / Scl.scl()); // unscaled stroke
+        defaults().minSize(stroke / Scl.scl()); // unscaled stroke
         for (int deg = 0; deg < 360; deg += 60)
             vertices[deg / 60] = new Vec2(Mathf.cosDeg(deg) * size, Mathf.sinDeg(deg) * size);
     }
@@ -34,6 +34,7 @@ public class HexSelection extends Table {
     public void set(int index, String icon, Cons2<Integer, TextButton> listener) {
         buttons[index] = button(icon, Styles.cleart, () -> listener.get(index, buttons[index])).get();
         buttons[index].setTranslation(vertices[index].x - half - index * stroke, vertices[index].y - half);
+        buttons[index].getLabel().setWrap(false); // someone can use non-single-character tags
     }
 
     @Override
