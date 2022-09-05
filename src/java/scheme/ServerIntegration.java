@@ -46,8 +46,9 @@ public class ServerIntegration {
         netClient.addPacketHandler("ThisIsYourPlayerData", args -> {
             SSUsers.clear();
             for (String data : args.split("\\|")) {
-                String id = data.split("=")[0];
-                if (Strings.canParseInt(id)) SSUsers.put(Strings.parseInt(id), data.split("=")[1]);
+                String[] idsub = data.split("="); // id and subtitle
+                if (idsub.length < 2) continue; // server may send invalid data, but there is no sense to throw an exception, as this will close connection
+                if (Strings.canParseInt(idsub[0])) SSUsers.put(Strings.parseInt(idsub[0]), idsub[1]);
             }
         });
 
