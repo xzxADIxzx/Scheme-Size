@@ -41,7 +41,7 @@ public class ServerIntegration {
         netServer.addPacketHandler("GivePlayerDataPlease", (target, args) -> {
             var map = SSUsers.copy(); // no way ,_,
             if (player != null) map.put(player.id, settings.getString("subtitle"));
-            Call.clientPacketReliable(target.con, "ThisIsYourPlayerData", headless ? "S" : "C" + map.toString("|"));
+            Call.clientPacketReliable(target.con, "ThisIsYourPlayerData", (headless ? "S" : "C") + map.toString("|"));
         });
 
         // endregion
