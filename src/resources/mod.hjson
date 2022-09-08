@@ -7,4 +7,3 @@ version: 2.4.10,
 minGameVersion: 138,
 hidden: true,
 main: scheme.Main
-
