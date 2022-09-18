@@ -48,7 +48,7 @@ public class HudFragment {
     public PowerBars power = new PowerBars();
     public boolean checked;
 
-    /** PlacementFragment, OverlayMarker, Testing Utilities Table */
+    /** PlacementFragment, OverlayMarker, Testing Utilities. */
     public Element[] block = new Element[3];
     public TextField size;
 
@@ -211,7 +211,8 @@ public class HudFragment {
                     setAction(mode, Icon.info,   "toggle_history.", () -> render.toggleHistory());
                 }).row();
             }).margin(0f).update(pad -> {
-                pad.setTranslation(0f, -Scl.scl((mobile ? 153f : 84f) + (state.isEditor() ? 61f : 0f) - (mobiles.fliped ? 0f : 127f)));
+                if (block[1] == null) return; // waves main are not null but block is
+                pad.setTranslation(0f, Scl.scl(mobiles.fliped ? 0f : 127f) - block[1].getHeight());
                 pad.setHeight(Scl.scl(mobiles.fliped ? 190.8f : 63.8f));
             });
         });
@@ -262,7 +263,7 @@ public class HudFragment {
     private void updateBlocks() {
         app.post(() -> { // waiting for blockfrag rebuild
             block[0] = ((Table) ui.hudGroup.getChildren().get(10)).getChildren().get(0);
-            block[1] = null;
+            block[1] = ((Table) getWavesMain().getChildren().get(state.isEditor() ? 1 : 0)).getChildren().get(0);
 
             if (SchemeUpdater.installed("test-utils"))
                 block[2] = ((Table) ui.hudGroup.getChildren().get(SchemeUpdater.installed("miner-tools") ? 22 : 21)).getChildren().get(0);
@@ -278,6 +279,6 @@ public class HudFragment {
     }
 
     private Stack getWavesMain() {
-        return (Stack) ((Table) ui.hudGroup.getChildren().get(4)).getChildren().get(mobile ? 2 : 0);
+        return (Stack) ((Table) ui.hudGroup.find("overlaymarker")).getChildren().get(mobile ? 2 : 0);
     }
 }
