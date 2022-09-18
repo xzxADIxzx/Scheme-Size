@@ -36,7 +36,7 @@ public class SchemeUpdater {
             for (String name : names) updates += "\n   - " + name;
         }
 
-        Jval meta = Jval.read(new ZipFi(mod.file).child("mod.json").readString());
+        Jval meta = Jval.read(new ZipFi(mod.file).child("mod.hjson").readString());
         mod.meta.author = meta.getString("author"); // restore colors in mod's meta
         mod.meta.description = meta.getString("description") + updates;
     }
