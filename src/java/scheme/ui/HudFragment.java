@@ -163,13 +163,13 @@ public class HudFragment {
 
         parent.fill(cont -> { // Shortcut Button
             cont.name = "shortcutbutton";
-            cont.right();
+            cont.bottom().left();
 
-            cont.visible(() -> ui.hudfrag.shown && !ui.minimapfrag.shown() && (block == null || !getTopTable().visible));
-            cont.button(Icon.paste, Styles.cleari, () -> {
+            cont.visible(() -> ui.hudfrag.shown && !ui.minimapfrag.shown() && (!mobile || control.input.uiGroup.getChildren().get(0).visible));
+            cont.button(Icon.paste, Styles.squarei, () -> {
                 if (shortfrag.visible) shortfrag.hide();
                 else shortfrag.show(graphics.getWidth() - (int) Scl.scl(15f), graphics.getHeight() / 2);
-            }).height(80f);
+            }).size(155f, 50f).padBottom(mobile ? 50f : 0f); // command button
         });
 
         parent.fill(cont -> { // Mobile Buttons
@@ -258,10 +258,6 @@ public class HudFragment {
         app.post(() -> { // waiting for blockfrag rebuild
             block = ((Table) ui.hudGroup.getChildren().get(10)).getChildren().get(0);
         });
-    }
-
-    private Table getTopTable() {
-        return (Table) ((Table) block).getChildren().get(0);
     }
 
     private Table getCoreItems() {
