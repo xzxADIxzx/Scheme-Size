@@ -188,7 +188,7 @@ public class HudFragment {
                     mode.add(mobiles);
                     setAction(mode,
                             mobile ? "disarmed" : Icon.book,
-                            mobile ? "" : "view_comb",
+                            mobile ? "lock_shoot." : "view_comb",
                             mobile ? m_input::lockShooting : keycomb::show);
                     setAction(mode, "blasted",   "despawn",         () -> admins.despawn());
                     setAction(mode, "overdrive", "teleport",        () -> admins.teleport());
