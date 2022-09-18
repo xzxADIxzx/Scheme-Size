@@ -265,7 +265,7 @@ public class HudFragment {
             block[1] = null;
 
             if (SchemeUpdater.installed("test-utils"))
-                block[2] = ((Table) ui.hudGroup.getChildren().get(SchemeUpdater.installed("miner-tools") ? 22 : 21)).getChildren().get(1);
+                block[2] = ((Table) ui.hudGroup.getChildren().get(SchemeUpdater.installed("miner-tools") ? 22 : 21)).getChildren().get(0);
         });
     }
 
