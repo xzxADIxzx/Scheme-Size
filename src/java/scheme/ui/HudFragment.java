@@ -169,12 +169,13 @@ public class HudFragment {
             cont.bottom().left();
 
             cont.visible(() -> ui.hudfrag.shown && !ui.minimapfrag.shown() && (!mobile || control.input.uiGroup.getChildren().get(1).visible));
-            cont.button(Icon.paste, Styles.squarei, () -> {
+            cont.button("@schematics", Icon.paste, Styles.squareTogglet, () -> {
                 if (shortfrag.visible) shortfrag.hide();
                 else shortfrag.show(graphics.getWidth() - (int) Scl.scl(15f), graphics.getHeight() / 2);
             }).size(155f, 50f).update(button -> { // command button and test utils ui padding
-                button.setTranslation(0f, Scl.scl(mobile ? 46f : 0f) + (block[2] == null ? 0f : block[2].getY(Align.top)));
-            });
+                button.setChecked(shortfrag.visible);
+                button.setTranslation(0f, Scl.scl(mobile ? 46f : 0f) + (block[2] == null ? 0f : block[2].getY(Align.top) - 4f));
+            }).get().getLabel().setFontScale(.92f);
         });
 
         parent.fill(cont -> { // Mobile Buttons
