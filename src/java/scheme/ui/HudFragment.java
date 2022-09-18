@@ -12,6 +12,7 @@ import arc.scene.ui.ImageButton.ImageButtonStyle;
 import arc.scene.ui.TextField.TextFieldFilter;
 import arc.scene.ui.TextField.TextFieldStyle;
 import arc.scene.ui.layout.*;
+import arc.util.Align;
 import arc.util.Scaling;
 import mindustry.game.EventType.*;
 import mindustry.gen.Icon;
@@ -19,6 +20,7 @@ import mindustry.gen.Tex;
 import mindustry.graphics.Pal;
 import mindustry.ui.Fonts;
 import mindustry.ui.Styles;
+import scheme.SchemeUpdater;
 import scheme.ai.GammaAI;
 import scheme.ai.GammaAI.Updater;
 import scheme.tools.BuildingTools.Mode;
@@ -46,8 +48,9 @@ public class HudFragment {
     public PowerBars power = new PowerBars();
     public boolean checked;
 
+    /** PlacementFragment, OverlayMarker, Testing Utilities Table */
+    public Element[] block = new Element[3];
     public TextField size;
-    public Element block;
 
     public void build(Group parent) {
         Events.run(WorldLoadEvent.class, power::refreshNode);
@@ -55,8 +58,8 @@ public class HudFragment {
         Events.run(BlockDestroyEvent.class, power::refreshNode);
         Events.run(ConfigEvent.class, power::refreshNode);
 
-        Events.run(WorldLoadEvent.class, this::updateBlock);
-        Events.run(UnlockEvent.class, this::updateBlock);
+        Events.run(WorldLoadEvent.class, this::updateBlocks);
+        Events.run(UnlockEvent.class, this::updateBlocks);
 
         parent.fill(cont -> { // Shield Bar
             cont.name = "shieldbar";
@@ -153,8 +156,8 @@ public class HudFragment {
                     setMode(mode, Icon.power, Mode.connect);
                 }).visible(() -> true).update(mode -> mode.setTranslation(Scl.scl(building.fliped ? 0f : -87f), 0f));
             }).height(254f).update(pad -> {
-                if (block == null) return; // block is null before the world is loaded
-                pad.setTranslation(Scl.scl(building.fliped ? 4f : 178f) - block.getWidth(), 0f);
+                if (block[0] == null) return; // block is null before the world is loaded
+                pad.setTranslation(Scl.scl(building.fliped ? 4f : 178f) - block[0].getWidth(), 0f);
                 pad.setWidth(Scl.scl(building.fliped ? 244f : 70f)); // more magic numbers to the god of magic numbers
             });
         });
@@ -169,7 +172,9 @@ public class HudFragment {
             cont.button(Icon.paste, Styles.squarei, () -> {
                 if (shortfrag.visible) shortfrag.hide();
                 else shortfrag.show(graphics.getWidth() - (int) Scl.scl(15f), graphics.getHeight() / 2);
-            }).size(155f, 50f).padBottom(mobile ? 46f : 0f); // command button
+            }).size(155f, 50f).update(button -> { // command button and test utils ui padding
+                button.setTranslation(0f, Scl.scl(mobile ? 46f : 0f) + (block[2] == null ? 0f : block[2].getY(Align.top)));
+            });
         });
 
         parent.fill(cont -> { // Mobile Buttons
@@ -254,9 +259,13 @@ public class HudFragment {
         table.button(build.icon, check, () -> GammaAI.build = build).checked(t -> GammaAI.build == build).tooltip(build.tooltip()).size(50f);
     }
 
-    private void updateBlock() {
+    private void updateBlocks() {
         app.post(() -> { // waiting for blockfrag rebuild
-            block = ((Table) ui.hudGroup.getChildren().get(10)).getChildren().get(0);
+            block[0] = ((Table) ui.hudGroup.getChildren().get(10)).getChildren().get(0);
+            block[1] = null;
+
+            if (SchemeUpdater.installed("test-utils"))
+                block[2] = ((Table) ui.hudGroup.getChildren().get(SchemeUpdater.installed("miner-tools") ? 22 : 21)).getChildren().get(1);
         });
     }
 

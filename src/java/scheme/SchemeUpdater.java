@@ -82,4 +82,8 @@ public class SchemeUpdater {
     public static Fi script() {
         return mod.root.child("scripts").child("main.js");
     }
+
+    public static boolean installed(String mod) {
+        return mods.getMod(mod) != null && mods.getMod(mod).enabled();
+    }
 }
