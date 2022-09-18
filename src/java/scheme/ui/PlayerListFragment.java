@@ -34,9 +34,6 @@ import static scheme.SchemeVars.*;
 /** Last update - Aug 11, 2022 */
 public class PlayerListFragment extends mindustry.ui.fragments.PlayerListFragment {
 
-    /** Did you forget to update the index? */
-    public static final int index = settings.getBool("mobilebuttons") || mobile ? 16 : 14;
-
     public boolean show;
     public TextField search;
 
@@ -189,7 +186,7 @@ public class PlayerListFragment extends mindustry.ui.fragments.PlayerListFragmen
     }
 
     private Table getPane() {
-        return ((Table) ((Table) ui.hudGroup.getChildren().get(index)).getChildren().get(0));
+        return ((Table) ((Table) ui.hudGroup.find("playerlist")).getChildren().get(0));
     }
 
     private TextField getSearch() {
