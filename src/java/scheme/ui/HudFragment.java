@@ -212,7 +212,7 @@ public class HudFragment {
                 }).row();
             }).margin(0f).update(pad -> {
                 if (block[1] == null) return; // waves main are not null but block is
-                pad.setTranslation(0f, Scl.scl(mobiles.fliped ? 0f : 127f) - block[1].getHeight());
+                pad.setTranslation(0f, Scl.scl((mobile ? 69f : 0f) + (mobiles.fliped ? 0f : 127f)) - block[1].getHeight());
                 pad.setHeight(Scl.scl(mobiles.fliped ? 190.8f : 63.8f));
             });
         });
