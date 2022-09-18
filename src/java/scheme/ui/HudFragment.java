@@ -165,11 +165,11 @@ public class HudFragment {
             cont.name = "shortcutbutton";
             cont.bottom().left();
 
-            cont.visible(() -> ui.hudfrag.shown && !ui.minimapfrag.shown() && (!mobile || control.input.uiGroup.getChildren().get(0).visible));
+            cont.visible(() -> ui.hudfrag.shown && !ui.minimapfrag.shown() && (!mobile || control.input.uiGroup.getChildren().get(1).visible));
             cont.button(Icon.paste, Styles.squarei, () -> {
                 if (shortfrag.visible) shortfrag.hide();
                 else shortfrag.show(graphics.getWidth() - (int) Scl.scl(15f), graphics.getHeight() / 2);
-            }).size(155f, 50f).padBottom(mobile ? 50f : 0f); // command button
+            }).size(155f, 50f).padBottom(mobile ? 46f : 0f); // command button
         });
 
         parent.fill(cont -> { // Mobile Buttons
