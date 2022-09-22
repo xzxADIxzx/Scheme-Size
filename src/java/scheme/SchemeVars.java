@@ -48,7 +48,7 @@ public class SchemeVars {
     public static ShortcutFragment shortfrag;
 
     public static void load() {
-        // m_schematics = new ModedSchematics();
+        // m_schematics is created in Main to prevent dual loading
         m_input = mobile ? new ModedMobileInput() : new ModedDesktopInput();
 
         admins = AdminsConfigDialog.getTools();

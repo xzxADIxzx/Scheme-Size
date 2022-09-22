@@ -1,10 +1,57 @@
 package scheme.moded;
 
+import arc.files.Fi;
+import arc.util.Log;
+import mindustry.game.Schematic;
 import mindustry.game.Schematics;
+
+import static mindustry.Vars.*;
+
+import java.io.DataInputStream;
 
 /** Last update - Sep 11, 2021 */
 public class ModedSchematics extends Schematics {
 
+    /** Too large schematic file extension. */
+    public static final String largeSchematicExtension = "mtls";
+
+    /** Copu paste from {@link Schematics}. */
+    public static final byte[] header = { 'm', 's', 'c', 'h' };
+
+    @Override
+    public void loadSync() {
+        for (Fi file : schematicDirectory.list())
+            fix(file);
+        super.loadSync();
+    }
+
+    public void fix(Fi file) {
+        if (!isTooLarge(file)) return;
+
+        try {
+            if (file.extension().equals(schematicExtension))
+                Log.info("Rename file @ to @", file.name(), file.nameWithoutExtension() + "." + largeSchematicExtension);
+        } catch (Throwable error) {
+            Log.err("Failed to read schematic from file '@'", file);
+            Log.err(error);
+        }
+    }
+
+    public static boolean isTooLarge(Fi file) {
+        try (DataInputStream stream = new DataInputStream(file.read())) {
+            for (byte b : header)
+                if (stream.read() != b) {
+                    return false; // missing header
+                }
+
+            stream.skip(1L); // schematic version or idk what is it
+
+            // next two shorts is a width and height
+            return stream.readShort() > 128 || stream.readShort() > 128;
+        } catch (Throwable ignored) {
+            return false;
+        }
+    }
 /**
     public Mode mode = Mode.standard;
     public Interval timer = new Interval();

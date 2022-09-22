@@ -1,9 +1,11 @@
 package scheme;
 
 import arc.util.Log;
+import mindustry.game.Schematics;
 import mindustry.mod.Mod;
 import mindustry.mod.Scripts;
 import scheme.moded.ModedBinding;
+import scheme.moded.ModedSchematics;
 import scheme.ui.MapResizeFix;
 
 import static arc.Core.*;
@@ -15,6 +17,9 @@ public class Main extends Mod {
     public Main() {
         // well, after the 136th build, it became much easier
         maxSchematicSize = 512;
+
+        // create here so as not to load schemas twice
+        schematics = m_schematics = new ModedSchematics();
     }
 
     @Override
@@ -26,7 +31,6 @@ public class Main extends Mod {
         SchemeUpdater.load();
         MapResizeFix.load();
 
-        // schematics = m_schematics;
         ui.traces = traces;
         ui.schematics = schemas;
         ui.listfrag = listfrag;
