@@ -1,6 +1,3 @@
-// well, after the 136th build, it became much easier
-Vars.maxSchematicSize = 512;
-
 // it is really useful for development
 var mod = Vars.mods.getMod("scheme-size")
 var get = (pkg) => mod.loader.loadClass(pkg).newInstance()

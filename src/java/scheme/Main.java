@@ -12,6 +12,11 @@ import static scheme.SchemeVars.*;
 
 public class Main extends Mod {
 
+    public Main() {
+        // well, after the 136th build, it became much easier
+        maxSchematicSize = 512;
+    }
+
     @Override
     public void init() {
         Backdoor.load();
