@@ -18,6 +18,9 @@ public class Main extends Mod {
         // well, after the 136th build, it became much easier
         maxSchematicSize = 512;
 
+        // mod reimported through mods dialog
+        if (schematics.getClass().getSimpleName().startsWith("Moded")) return;
+
         assets.load(schematics = m_schematics = new ModedSchematics());
         assets.unload(Schematics.class.getSimpleName()); // prevent dual loading
     }

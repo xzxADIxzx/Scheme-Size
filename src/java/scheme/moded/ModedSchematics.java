@@ -8,6 +8,7 @@ import mindustry.game.Schematics;
 import static mindustry.Vars.*;
 
 import java.io.DataInputStream;
+import java.util.zip.InflaterInputStream;
 
 /** Last update - Sep 11, 2021 */
 public class ModedSchematics extends Schematics {
@@ -40,14 +41,12 @@ public class ModedSchematics extends Schematics {
     public static boolean isTooLarge(Fi file) {
         try (DataInputStream stream = new DataInputStream(file.read())) {
             for (byte b : header)
-                if (stream.read() != b) {
-                    return false; // missing header
-                }
+                if (stream.read() != b) return false; // missing header
 
             stream.skip(1L); // schematic version or idk what is it
 
-            // next two shorts is a width and height
-            return stream.readShort() > 128 || stream.readShort() > 128;
+            DataInputStream dis = new DataInputStream(new InflaterInputStream(stream));
+            return dis.readShort() > 128 || dis.readShort() > 128; // next two shorts is a width and height
         } catch (Throwable ignored) {
             return false;
         }
