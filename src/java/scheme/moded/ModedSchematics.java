@@ -25,7 +25,6 @@ import mindustry.world.blocks.storage.Unloader;
 import static mindustry.Vars.*;
 
 import java.io.DataInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.zip.InflaterInputStream;
@@ -41,24 +40,24 @@ public class ModedSchematics extends Schematics {
 
     @Override
     public void loadSync() {
-        for (Fi file : schematicDirectory.list())
-            fix(file);
         super.loadSync();
+        for (Fi file : schematicDirectory.list()) fix(file);
     }
 
     public void fix(Fi file) {
         if (!isTooLarge(file)) return;
 
         try {
-            if (file.extension().equals(schematicExtension))
-                Log.info("Rename file @ to @", file.name(), file.nameWithoutExtension() + "." + largeSchematicExtension);
+            if (file.extension().equals(schematicExtension)) // TODO may be add some notification for user?
+                file = rename(file, file.nameWithoutExtension() + "." + largeSchematicExtension);
+            all().add(read(file));
         } catch (Throwable error) {
             Log.err("Failed to read schematic from file '@'", file);
             Log.err(error);
         }
     }
 
-    public static boolean isTooLarge(Fi file) {
+    private static boolean isTooLarge(Fi file) {
         try (DataInputStream stream = new DataInputStream(file.read())) {
             for (byte b : header)
                 if (stream.read() != b) return false; // missing header
@@ -70,6 +69,12 @@ public class ModedSchematics extends Schematics {
         } catch (Throwable ignored) {
             return false;
         }
+    }
+
+    private static Fi rename(Fi file, String to) {
+        Fi dest = file.parent().child(to);
+        file.file().renameTo(dest.file());
+        return dest;
     }
 
     public static Schematic read(Fi file) throws IOException {
