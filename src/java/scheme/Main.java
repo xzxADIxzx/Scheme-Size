@@ -18,8 +18,8 @@ public class Main extends Mod {
         // well, after the 136th build, it became much easier
         maxSchematicSize = 512;
 
-        // create here so as not to load schemas twice
-        schematics = m_schematics = new ModedSchematics();
+        assets.load(schematics = m_schematics = new ModedSchematics());
+        assets.unload(Schematics.class.getSimpleName()); // prevent dual loading
     }
 
     @Override
