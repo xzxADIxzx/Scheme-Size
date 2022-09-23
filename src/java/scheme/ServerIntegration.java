@@ -20,7 +20,7 @@ import static mindustry.Vars.*;
  * containing a list of ids and subtitles of players who use this mod.
  * </p>
  * Reference implementation:
- * https://github.com/Darkdustry-Coders/DarkdustryPlugin/blob/rewrite/src/main/java/darkdustry/features/SchemeSize.java
+ * https://github.com/Darkdustry-Coders/DarkdustryPlugin/blob/master/src/main/java/darkdustry/features/SchemeSize.java
  * or server region in {@link ServerIntegration#load()}
  */
 public class ServerIntegration {
