@@ -1,16 +1,36 @@
 package scheme.moded;
 
 import arc.files.Fi;
+import arc.math.geom.Point2;
+import arc.struct.IntMap;
+import arc.struct.Seq;
+import arc.struct.StringMap;
 import arc.util.Log;
+import arc.util.io.Reads;
+import mindustry.content.Blocks;
+import mindustry.ctype.ContentType;
 import mindustry.game.Schematic;
 import mindustry.game.Schematics;
+import mindustry.game.Schematic.Stile;
+import mindustry.io.JsonIO;
+import mindustry.io.SaveFileReader;
+import mindustry.io.TypeIO;
+import mindustry.world.Block;
+import mindustry.world.blocks.distribution.*;
+import mindustry.world.blocks.legacy.LegacyBlock;
+import mindustry.world.blocks.power.LightBlock;
+import mindustry.world.blocks.sandbox.*;
+import mindustry.world.blocks.storage.Unloader;
 
 import static mindustry.Vars.*;
 
 import java.io.DataInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.zip.InflaterInputStream;
 
-/** Last update - Sep 11, 2021 */
+/** Last update - Aug 26, 2022 */
 public class ModedSchematics extends Schematics {
 
     /** Too large schematic file extension. */
@@ -51,6 +71,66 @@ public class ModedSchematics extends Schematics {
             return false;
         }
     }
+
+    public static Schematic read(Fi file) throws IOException {
+        Schematic schematic = read(new DataInputStream(file.read(1024))); // may be try to create own InputStream?
+        schematic.file = file;
+
+        if (!schematic.tags.containsKey("name")) schematic.tags.put("name", file.nameWithoutExtension());
+
+        return schematic;
+    }
+
+    public static Schematic read(InputStream input) throws IOException {
+        input.skip(4L); // header bytes already checked
+        int ver = input.read();
+
+        try (DataInputStream stream = new DataInputStream(new InflaterInputStream(input))) {
+            short width = stream.readShort(), height = stream.readShort();
+
+            StringMap map = new StringMap();
+            int tags = stream.readUnsignedByte();
+            for (int i = 0; i < tags; i++)
+                map.put(stream.readUTF(), stream.readUTF());
+
+            String[] labels = null;
+            try { // try to read the categories, but skip if it fails
+                labels = JsonIO.read(String[].class, map.get("labels", "[]"));
+            } catch (Exception ignored) {}
+
+            IntMap<Block> blocks = new IntMap<>();
+            byte length = stream.readByte();
+            for (int i = 0; i < length; i++) {
+                String name = stream.readUTF();
+                Block block = content.getByName(ContentType.block, SaveFileReader.fallback.get(name, name));
+                blocks.put(i, block == null || block instanceof LegacyBlock ? Blocks.air : block);
+            }
+
+            int total = stream.readInt();
+            Seq<Stile> tiles = new Seq<>(total);
+            for(int i = 0; i < total; i++){
+                Block block = blocks.get(stream.readByte());
+                int position = stream.readInt();
+                Object config = ver == 0 ? mapConfig(block, stream.readInt(), position) : TypeIO.readObject(Reads.get(stream));
+                byte rotation = stream.readByte();
+                if (block != Blocks.air)
+                    tiles.add(new Stile(block, Point2.x(position), Point2.y(position), config, rotation));
+            }
+
+            Schematic out = new Schematic(tiles, map, width, height);
+            if (labels != null) out.labels.addAll(labels);
+            return out;
+        }
+    }
+
+    private static Object mapConfig(Block block, int value, int position) {
+        if (block instanceof Sorter || block instanceof Unloader || block instanceof ItemSource) return content.item(value);
+        if (block instanceof LiquidSource) return content.liquid(value);
+        if (block instanceof MassDriver || block instanceof ItemBridge) return Point2.unpack(value).sub(Point2.x(position), Point2.y(position));
+        if (block instanceof LightBlock) return value;
+        return null;
+    }
+
 /**
     public Mode mode = Mode.standard;
     public Interval timer = new Interval();
