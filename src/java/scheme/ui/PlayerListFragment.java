@@ -43,13 +43,14 @@ public class PlayerListFragment extends mindustry.ui.fragments.PlayerListFragmen
         ui.hudGroup.getChildren().remove(11);
 
         search = getSearch();
-        Table pane = getPane();
-        Table menu = getMenu();
+        Table pane = getPane(), menu = getMenu();
 
         pane.row();
-        pane.check("@trace.type.show", value -> show = value).pad(10f).left().get().setTranslation(0f, Scl.scl(61f));
-        menu.setTranslation(0f, Scl.scl(-51f));
-        menu.getCells().get(1).padLeft(12f).padRight(12f);
+        pane.check("@trace.type.show", value -> show = value).pad(10f).padBottom(0f).left().row();
+        menu.getCells().get(1).padLeft(10f).padRight(10f); // looks better
+
+        pane.getCells().insert(3, pane.getCells().remove(4));
+        pane.row(); // idk why but it crashes without it
     }
 
     @Override
@@ -65,7 +66,7 @@ public class PlayerListFragment extends mindustry.ui.fragments.PlayerListFragmen
         players.sort(Structs.comps(Structs.comparing(Player::team), Structs.comparingBool(p -> !p.admin)));
         if (search.getText().length() > 0) players.filter(p -> Strings.stripColors(p.name().toLowerCase()).contains(search.getText().toLowerCase()));
 
-        if (players.isEmpty()) content.add("@players.notfound").padBottom(6).width(350f).maxHeight(h + 14);
+        if (players.isEmpty()) content.add("@players.notfound").padBottom(6f).width(350f).maxHeight(h + 14);
         else for (Player user : players) {
             if (user.con == null && net.server() && !user.isLocal()) return;
             ClickListener listener = new ClickListener();
