@@ -6,6 +6,7 @@ import arc.struct.IntMap;
 import arc.struct.Seq;
 import arc.struct.StringMap;
 import arc.util.Log;
+import arc.util.Reflect;
 import arc.util.io.Reads;
 import mindustry.content.Blocks;
 import mindustry.ctype.ContentType;
@@ -16,11 +17,7 @@ import mindustry.io.JsonIO;
 import mindustry.io.SaveFileReader;
 import mindustry.io.TypeIO;
 import mindustry.world.Block;
-import mindustry.world.blocks.distribution.*;
 import mindustry.world.blocks.legacy.LegacyBlock;
-import mindustry.world.blocks.power.LightBlock;
-import mindustry.world.blocks.sandbox.*;
-import mindustry.world.blocks.storage.Unloader;
 
 import static mindustry.Vars.*;
 
@@ -44,7 +41,7 @@ public class ModedSchematics extends Schematics {
         for (Fi file : schematicDirectory.list()) fix(file);
     }
 
-    public void fix(Fi file) {
+    private void fix(Fi file) {
         if (!isTooLarge(file)) return;
 
         try {
@@ -78,7 +75,7 @@ public class ModedSchematics extends Schematics {
     }
 
     public static Schematic read(Fi file) throws IOException {
-        Schematic schematic = read(new DataInputStream(file.read(1024))); // may be try to create own InputStream?
+        Schematic schematic = read(new DataInputStream(file.read(1024)));
         schematic.file = file;
 
         if (!schematic.tags.containsKey("name")) schematic.tags.put("name", file.nameWithoutExtension());
@@ -113,27 +110,20 @@ public class ModedSchematics extends Schematics {
 
             int total = stream.readInt();
             Seq<Stile> tiles = new Seq<>(total);
-            for(int i = 0; i < total; i++){
+            for (int i = 0; i < total; i++) {
                 Block block = blocks.get(stream.readByte());
                 int position = stream.readInt();
-                Object config = ver == 0 ? mapConfig(block, stream.readInt(), position) : TypeIO.readObject(Reads.get(stream));
-                byte rotation = stream.readByte();
+                Object config = ver == 0 ?
+                        Reflect.invoke(Schematics.class, "mapConfig", new Object[] { block, stream.readInt(), position }, Block.class, int.class, int.class) :
+                        TypeIO.readObject(Reads.get(stream));
                 if (block != Blocks.air)
-                    tiles.add(new Stile(block, Point2.x(position), Point2.y(position), config, rotation));
+                    tiles.add(new Stile(block, Point2.x(position), Point2.y(position), config, stream.readByte()));
             }
 
             Schematic out = new Schematic(tiles, map, width, height);
             if (labels != null) out.labels.addAll(labels);
             return out;
         }
-    }
-
-    private static Object mapConfig(Block block, int value, int position) {
-        if (block instanceof Sorter || block instanceof Unloader || block instanceof ItemSource) return content.item(value);
-        if (block instanceof LiquidSource) return content.liquid(value);
-        if (block instanceof MassDriver || block instanceof ItemBridge) return Point2.unpack(value).sub(Point2.x(position), Point2.y(position));
-        if (block instanceof LightBlock) return value;
-        return null;
     }
 
 /**
