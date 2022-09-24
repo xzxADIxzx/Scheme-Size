@@ -41,8 +41,8 @@ public class ModedSchematics extends Schematics {
         for (Fi file : schematicDirectory.list()) fix(file);
     }
 
-    private void fix(Fi file) {
-        if (!isTooLarge(file)) return;
+    private void fix(Fi file) { // dont check size for mtls files
+        if (!file.extension().equals(largeSchematicExtension) && !isTooLarge(file)) return;
 
         try {
             if (file.extension().equals(schematicExtension)) // TODO may be add some notification for user?
