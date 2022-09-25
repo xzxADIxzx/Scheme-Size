@@ -51,6 +51,7 @@ public class Main extends Mod {
         control.setInput(m_input.asHandler());
         renderer.addEnvRenderer(0, render::draw);
 
+        if (ModedSchematics.requiresDialog) ui.showOkText("@rename.name", "@rename.text", () -> {});
         if (settings.getBool("welcome")) ui.showOkText("@welcome.name", "@welcome.text", () -> {});
         if (settings.getBool("check4update")) SchemeUpdater.check();
 
