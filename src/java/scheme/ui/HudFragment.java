@@ -266,8 +266,10 @@ public class HudFragment {
             block[0] = ((Table) ui.hudGroup.getChildren().get(10)).getChildren().get(0);
             block[1] = ((Table) getWavesMain().getChildren().get(state.isEditor() ? 1 : 0)).getChildren().get(0);
 
-            if (SchemeUpdater.installed("test-utils"))
-                block[2] = ((Table) ui.hudGroup.getChildren().get(SchemeUpdater.installed("miner-tools") ? 22 : 21)).getChildren().get(0);
+            if (SchemeUpdater.installed("test-utils")) 
+                block[2] = ((Table) ui.hudGroup.getChildren().get( // more indexes for god of magic numbers!
+                        (settings.getBool("mobilebuttons") || mobile ? 21 : 19) + (SchemeUpdater.installed("miner-tools") ? 1 : 0)
+                )).getChildren().get(0);
         });
     }
 
