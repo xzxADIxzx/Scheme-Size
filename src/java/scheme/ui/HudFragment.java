@@ -104,9 +104,10 @@ public class HudFragment {
                     setMove(mode, circle);
                 }).row();
                 pad.table(mode -> {
-                    setBuild(mode, help);
                     setBuild(mode, none);
+                    setBuild(mode, help);
                     setBuild(mode, destroy);
+                    setBuild(mode, repair);
                 }).row();
                 pad.labelWrap(GammaAI.tooltip).labelAlign(2, 8).pad(8f, 0f, 8f, 0f).width(150f).get().getStyle().fontColor = Color.lightGray;
             }).width(150f).margin(0f).update(pad -> pad.setTranslation(0f, settings.getBool("minimap") ? -Scl.scl(mobile ? 272f : 188f) : 0f)).row();
@@ -258,7 +259,7 @@ public class HudFragment {
     }
 
     private void setBuild(Table table, Updater build) {
-        table.button(build.icon, check, () -> GammaAI.build = build).checked(t -> GammaAI.build == build).tooltip(build.tooltip()).size(50f);
+        table.button(build.icon, check, () -> GammaAI.build = build).checked(t -> GammaAI.build == build).tooltip(build.tooltip()).size(37.5f);
     }
 
     private void updateBlocks() {

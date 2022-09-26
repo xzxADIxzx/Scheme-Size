@@ -4,8 +4,10 @@ import arc.func.Cons;
 import arc.math.geom.Position;
 import arc.math.geom.Vec2;
 import arc.scene.style.Drawable;
+import arc.struct.Seq;
 import mindustry.entities.units.AIController;
 import mindustry.entities.units.BuildPlan;
+import mindustry.game.Teams.BlockPlan;
 import mindustry.gen.Building;
 import mindustry.gen.Icon;
 import mindustry.gen.Player;
@@ -74,7 +76,12 @@ public class GammaAI extends AIController {
             if (ai.target.unit().plans.isEmpty() || !ai.target.unit().updateBuilding) return;
             ai.unit.addBuild(ai.target.unit().buildPlan());
         }),
-        destroy(Icon.hammer, ai -> {}); // works through events
+        destroy(Icon.hammer, ai -> {}), // works through events
+        repair(Icon.wrench, ai -> {
+            if (ai.target.team().data().plans.isEmpty() || !ai.target.unit().updateBuilding) return;
+            BlockPlan plan = Seq.with(ai.target.team().data().plans).min(p -> ai.unit.dst(p.x * tilesize, p.y * tilesize));
+            ai.unit.addBuild(new BuildPlan(plan.x, plan.y, plan.rotation, content.block(plan.block), plan.config));
+        });
 
         public final Drawable icon;
         public final Cons<GammaAI> update;
