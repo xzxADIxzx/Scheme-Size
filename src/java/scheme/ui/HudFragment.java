@@ -12,7 +12,6 @@ import arc.scene.ui.ImageButton.ImageButtonStyle;
 import arc.scene.ui.TextField.TextFieldFilter;
 import arc.scene.ui.TextField.TextFieldStyle;
 import arc.scene.ui.layout.*;
-import arc.util.Align;
 import arc.util.Scaling;
 import mindustry.game.EventType.*;
 import mindustry.gen.Icon;
@@ -48,7 +47,7 @@ public class HudFragment {
     public PowerBars power = new PowerBars();
     public boolean checked;
 
-    /** PlacementFragment, OverlayMarker, Testing Utilities. */
+    /** PlacementFragment and OverlayMarker. */
     public Element[] block = new Element[3];
     public TextField size;
 
@@ -165,18 +164,16 @@ public class HudFragment {
 
         if (!settings.getBool("mobilebuttons") && !mobile) return;
 
-        parent.fill(cont -> { // Shortcut Button
-            cont.name = "shortcutbutton";
-            cont.bottom().left();
+        getCommandButton(cont -> { // Shortcut Button
+            if (!SchemeUpdater.installed("test-utils")) // hardcoded paddings
+                cont.row(); // for command button
 
-            cont.visible(() -> ui.hudfrag.shown && !ui.minimapfrag.shown() && (!mobile || control.input.uiGroup.getChildren().get(1).visible));
             cont.button("@schematics", Icon.paste, Styles.squareTogglet, () -> {
                 if (shortfrag.visible) shortfrag.hide();
                 else shortfrag.show(graphics.getWidth() - (int) Scl.scl(15f), graphics.getHeight() / 2);
-            }).size(155f, 50f).update(button -> { // command button and test utils ui padding
-                button.setChecked(shortfrag.visible);
-                button.setTranslation(0f, Scl.scl(mobile ? 46f : 0f) + (block[2] == null ? 0f : block[2].getY(Align.top) - 4f));
-            }).get().getLabel().setFontScale(.92f);
+            }).size(155f, 50f).margin(8f);
+
+            // schematic layer for cursed schematics update
         });
 
         parent.fill(cont -> { // Mobile Buttons
@@ -266,11 +263,6 @@ public class HudFragment {
         app.post(() -> { // waiting for blockfrag rebuild
             block[0] = ((Table) ui.hudGroup.getChildren().get(10)).getChildren().get(0);
             block[1] = ((Table) getWavesMain().getChildren().get(state.isEditor() ? 1 : 0)).getChildren().get(0);
-
-            if (SchemeUpdater.installed("test-utils")) 
-                block[2] = ((Table) ui.hudGroup.getChildren().get( // more indexes for god of magic numbers!
-                        (settings.getBool("mobilebuttons") || mobile ? 21 : 19) + (SchemeUpdater.installed("miner-tools") ? 1 : 0)
-                )).getChildren().get(0);
         });
     }
 
@@ -284,5 +276,19 @@ public class HudFragment {
 
     private Stack getWavesMain() {
         return (Stack) ((Table) ui.hudGroup.find("overlaymarker")).getChildren().get(mobile ? 2 : 0);
+    }
+
+    private void getCommandButton(Cons<Table> cons) {
+        if (mobile) Events.run(ClientLoadEvent.class, () -> { // the command button is created after the client is loaded
+            cons.get((Table) control.input.uiGroup.getChildren().get(1));
+        });
+        else ui.hudGroup.fill(cont -> {
+            cont.name = "shortcutbutton"; // it's here because there's no sense in renaming an already created table
+            cont.bottom().left();
+
+            cont.visible(() -> ui.hudfrag.shown && !ui.minimapfrag.shown());
+            cont.marginBottom(SchemeUpdater.installed("test-utils") ? 120f : 0f);
+            cons.get(cont);
+        });
     }
 }
