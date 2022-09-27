@@ -3,6 +3,7 @@ package scheme.ui;
 import arc.Events;
 import arc.func.Cons;
 import arc.graphics.Color;
+import arc.math.Mathf;
 import arc.scene.Element;
 import arc.scene.Group;
 import arc.scene.event.Touchable;
@@ -12,6 +13,7 @@ import arc.scene.ui.ImageButton.ImageButtonStyle;
 import arc.scene.ui.TextField.TextFieldFilter;
 import arc.scene.ui.TextField.TextFieldStyle;
 import arc.scene.ui.layout.*;
+import arc.util.Align;
 import arc.util.Scaling;
 import mindustry.game.EventType.*;
 import mindustry.gen.Icon;
@@ -160,6 +162,18 @@ public class HudFragment {
                 pad.setTranslation(Scl.scl(building.fliped ? 4f : 178f) - block[0].getWidth(), 0f);
                 pad.setWidth(Scl.scl(building.fliped ? 244f : 70f)); // more magic numbers to the god of magic numbers
             });
+        });
+
+        parent.fill(cont -> { // Wave Approaching
+            cont.name = "waveapproaching";
+            cont.table(Styles.black6, pad -> {
+                pad.add("@approaching.info").labelAlign(Align.center, Align.center).update(label -> {
+                    label.setColor(Color.white.cpy().lerp(Color.scarlet, Mathf.absin(10f, 1f)));
+                });
+                pad.button(Icon.info, style, () -> ui.showInfoText("@approaching.name", "@approaching.text")).grow().padLeft(6f);
+            }).margin(6f).update(pad -> pad.color.a = Mathf.lerpDelta(pad.color.a, Mathf.num(
+                settings.getBool("approachenabled") && state.wavetime > 600f && state.wavetime < 1800f
+            ), .1f));
         });
 
         if (!settings.getBool("mobilebuttons") && !mobile) return;
