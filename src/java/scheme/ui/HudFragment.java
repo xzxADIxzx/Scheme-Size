@@ -172,12 +172,19 @@ public class HudFragment {
                 });
                 pad.button(Icon.info, style, () -> { // TODO custom dialog... may be... huh, no 100% need
                     units.refreshWaveInfo();
-                    StringBuilder builder = new StringBuilder();
-                    units.waveUnits.forEach(entry -> builder.append(entry.value).append(entry.key.emoji()).append(", "));
+
+                    StringBuilder tunits = new StringBuilder();
+                    units.waveUnits.forEach(entry -> tunits.append(entry.value).append(entry.key.emoji()).append(", "));
+
+                    StringBuilder bosses = new StringBuilder();
+                    units.waveBosses.forEach(entry -> bosses.append(entry.value).append(entry.key.emoji()).append(", "));
 
                     ui.showOkText(
                             bundle.format("approaching.name", state.wave + 1),
-                            bundle.format("approaching.text", units.waveHealth, units.waveShield, builder.substring(0, builder.length() - 2)), () -> {});
+                            bundle.format("approaching.text", units.waveHealth, units.waveShield,
+                                    tunits.length() == 0 ? bundle.get("none") : tunits.substring(0, tunits.length() - 2),
+                                    bosses.length() == 0 ? bundle.get("none") : bosses.substring(0, bosses.length() - 2)),
+                            () -> {});
                 }).grow().padLeft(6f);
             }).margin(6f).update(pad -> pad.color.a = Mathf.lerpDelta(pad.color.a, Mathf.num(
                 settings.getBool("approachenabled") && state.wavetime > 600f && state.wavetime < 1800f

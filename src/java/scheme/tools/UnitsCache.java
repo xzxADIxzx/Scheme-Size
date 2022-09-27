@@ -3,6 +3,7 @@ package scheme.tools;
 import arc.Events;
 import arc.struct.ObjectIntMap;
 import arc.struct.Seq;
+import mindustry.content.StatusEffects;
 import mindustry.entities.abilities.Ability;
 import mindustry.entities.abilities.ForceFieldAbility;
 import mindustry.entities.abilities.ShieldArcAbility;
@@ -26,6 +27,7 @@ public class UnitsCache {
     public float waveShield;
 
     public ObjectIntMap<UnitType> waveUnits = new ObjectIntMap<>();
+    public ObjectIntMap<UnitType> waveBosses = new ObjectIntMap<>();
 
     public void load() {
         Events.run(WorldLoadEvent.class, () -> app.post(this::refresh));
@@ -62,6 +64,7 @@ public class UnitsCache {
     public void refreshWaveInfo() {
 		waveHealth = waveShield = 0;
         waveUnits.clear();
+        waveBosses.clear();
 
         state.rules.spawns.each(group -> group.type != null, group -> {
             int amount = group.getSpawned(state.wave);
@@ -70,6 +73,7 @@ public class UnitsCache {
             waveHealth += group.type.health * amount;
             waveShield += group.getShield(state.wave);
             waveUnits.put(group.type, amount);
+            if (group.effect == StatusEffects.boss) waveBosses.put(group.type, amount);
         });
     }
 
