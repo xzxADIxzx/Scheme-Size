@@ -1,6 +1,7 @@
 package scheme.tools;
 
 import arc.Events;
+import arc.struct.ObjectIntMap;
 import arc.struct.Seq;
 import mindustry.entities.abilities.Ability;
 import mindustry.entities.abilities.ForceFieldAbility;
@@ -8,6 +9,7 @@ import mindustry.entities.abilities.ShieldArcAbility;
 import mindustry.game.EventType.*;
 import mindustry.gen.Groups;
 import mindustry.gen.Unit;
+import mindustry.type.UnitType;
 
 import static arc.Core.*;
 import static mindustry.Vars.*;
@@ -19,6 +21,11 @@ public class UnitsCache {
 
     public ShieldArcAbility ability;
     public Seq<Unit> cache = new Seq<>();
+
+    public float waveHealth;
+    public float waveShield;
+
+    public ObjectIntMap<UnitType> waveUnits = new ObjectIntMap<>();
 
     public void load() {
         Events.run(WorldLoadEvent.class, () -> app.post(this::refresh));
@@ -50,6 +57,20 @@ public class UnitsCache {
 
     public void refresh() {
         if (!cache.isEmpty()) cache();
+    }
+
+    public void refreshWaveInfo() {
+		waveHealth = waveShield = 0;
+        waveUnits.clear();
+
+        state.rules.spawns.each(group -> group.type != null, group -> {
+            int amount = group.getSpawned(state.wave);
+            if (amount == 0) return;
+
+            waveHealth += group.type.health * amount;
+            waveShield += group.getShield(state.wave);
+            waveUnits.put(group.type, amount);
+        });
     }
 
     public void cache() {

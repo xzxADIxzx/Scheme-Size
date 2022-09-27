@@ -170,7 +170,15 @@ public class HudFragment {
                 pad.add("@approaching.info").labelAlign(Align.center, Align.center).update(label -> {
                     label.setColor(Color.white.cpy().lerp(Color.scarlet, Mathf.absin(10f, 1f)));
                 });
-                pad.button(Icon.info, style, () -> ui.showInfoText("@approaching.name", "@approaching.text")).grow().padLeft(6f);
+                pad.button(Icon.info, style, () -> { // TODO custom dialog... may be... huh, no 100% need
+                    units.refreshWaveInfo();
+                    StringBuilder builder = new StringBuilder();
+                    units.waveUnits.forEach(entry -> builder.append(entry.value).append(entry.key.emoji()).append(", "));
+
+                    ui.showOkText(
+                            bundle.format("approaching.name", state.wave + 1),
+                            bundle.format("approaching.text", units.waveHealth, units.waveShield, builder.substring(0, builder.length() - 2)), () -> {});
+                }).grow().padLeft(6f);
             }).margin(6f).update(pad -> pad.color.a = Mathf.lerpDelta(pad.color.a, Mathf.num(
                 settings.getBool("approachenabled") && state.wavetime > 600f && state.wavetime < 1800f
             ), .1f));
