@@ -48,7 +48,7 @@ public class ModedSchematics extends Schematics {
         if (!file.extension().equals(largeSchematicExtension) && !isTooLarge(file)) return;
 
         try {
-            if (file.extension().equals(schematicExtension)) // TODO may be add some notification for user?
+            if (file.extension().equals(schematicExtension))
                 file = rename(file, file.nameWithoutExtension() + "." + largeSchematicExtension);
             all().add(read(file));
         } catch (Throwable error) {

@@ -173,7 +173,7 @@ public class HudFragment {
                 else shortfrag.show(graphics.getWidth() - (int) Scl.scl(15f), graphics.getHeight() / 2);
             }).size(155f, 50f).margin(8f);
 
-            // schematic layer for cursed schematics update
+            // TODO schematic layer button for cursed schematics update
         });
 
         parent.fill(cont -> { // Mobile Buttons
