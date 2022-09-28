@@ -67,11 +67,11 @@ public class UnitsCache {
         waveBosses.clear();
 
         state.rules.spawns.each(group -> group.type != null, group -> {
-            int amount = group.getSpawned(state.wave);
+            int amount = group.getSpawned(state.wave - 1);
             if (amount == 0) return;
 
             waveHealth += group.type.health * amount;
-            waveShield += group.getShield(state.wave);
+            waveShield += group.getShield(state.wave - 1);
             waveUnits.put(group.type, amount);
             if (group.effect == StatusEffects.boss) waveBosses.put(group.type, amount);
         });
