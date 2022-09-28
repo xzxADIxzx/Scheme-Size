@@ -14,7 +14,7 @@ public class Darkdustry implements AdminsTools {
     public void manageUnit() {
         if (unusable()) return;
         unit.select(false, true, false, (target, team, unit, amount) -> {
-            send("unit", unit.id, target.id);
+            send("unit", unit.id, "#" + target.id);
             units.refresh();
         });
     }
@@ -39,7 +39,7 @@ public class Darkdustry implements AdminsTools {
 
     public void manageTeam() {
         if (unusable()) return;
-        team.select((target, team) -> send("team", team.id, target.id));
+        team.select((target, team) -> send("team", team.id, "#" + target.id));
     }
 
     public void placeCore() {
@@ -49,7 +49,7 @@ public class Darkdustry implements AdminsTools {
 
     public void despawn(Player target) {
         if (unusable()) return;
-        send("despawn", target.id);
+        send("despawn", "#" + target.id);
     }
 
     public void teleport(Position pos) {
