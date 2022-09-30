@@ -56,9 +56,11 @@ public class WaveApproachingDialog extends BaseDialog {
         table.clear();
 
         if (units.isEmpty()) table.add("@none");
-        else units.entries().forEachRemaining(entry -> table.stack(
+        else for (var entry : units) {
+            table.stack(
                     new Image(entry.key.uiIcon).setScaling(Scaling.fit),
                     new Table(pad -> pad.bottom().left().add(String.valueOf(entry.value)))
-        ).size(32f).padRight(8f));
+            ).size(32f).padRight(8f);
+        }
     }
 }
