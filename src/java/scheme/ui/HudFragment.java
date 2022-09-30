@@ -188,7 +188,7 @@ public class HudFragment {
             cont.button("@schematics", Icon.paste, Styles.squareTogglet, () -> {
                 if (shortfrag.visible) shortfrag.hide();
                 else shortfrag.show(graphics.getWidth() - (int) Scl.scl(15f), graphics.getHeight() / 2);
-            }).size(155f, 50f).margin(8f);
+            }).size(155f, 50f).margin(8f).checked(t -> shortfrag.visible);
 
             // TODO schematic layer button for cursed schematics update
         });
