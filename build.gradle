@@ -1,4 +1,4 @@
-apply plugin: "java"
+apply plugin: 'java'
 
 version '1.0'
 
@@ -17,8 +17,8 @@ repositories {
 
 ext {
     mindustryVersion = 'v138'
-    jabelVersion = "0.4.1"
-    sdkRoot = System.getenv("ANDROID_HOME") ?: System.getenv("ANDROID_SDK_ROOT")
+    jabelVersion = '0.4.2'
+    sdkRoot = System.getenv('ANDROID_HOME') ?: System.getenv('ANDROID_SDK_ROOT')
 }
 
 allprojects {
@@ -47,12 +47,12 @@ jar {
     }
 
     from(rootDir) {
-        include "mod.hjson"
+        include 'mod.hjson'
     }
 }
 
 task jarAndroid {
-    dependsOn "jar"
+    dependsOn 'jar'
 
     doLast {
         if(!sdkRoot || !new File(sdkRoot).exists()) throw new GradleException("No valid Android SDK found. Ensure that ANDROID_HOME is set to your Android SDK directory.");
