@@ -170,7 +170,7 @@ public class HudFragment {
                 pad.add("@approaching.info").labelAlign(Align.center, Align.center).update(label -> {
                     label.setColor(Color.white.cpy().lerp(Color.scarlet, Mathf.absin(10f, 1f)));
                 });
-                pad.button(Icon.info, style, approaching::show).grow().padLeft(6f);
+                pad.button(Icon.info, style, approaching::show).grow().padLeft(6f).visible(() -> pad.color.a > .001f); // geniusly
             }).margin(6f).update(pad -> pad.color.a = Mathf.lerpDelta(pad.color.a, Mathf.num(
                 settings.getBool("approachenabled") && state.wavetime > 600f && state.wavetime < 1800f
             ), .1f));
