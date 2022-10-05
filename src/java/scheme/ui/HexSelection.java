@@ -33,9 +33,9 @@ public class HexSelection extends Stack {
 
     public void add(String icon, Cons<TextButton> listener) {
         int i = children.size;
-        addChild(new Table(table -> {
+        add(new Table(table -> {
             table.name = icon;
-            table.defaults().minSize(24f).get(); // unscaled stroke
+            table.defaults().minSize(24f); // unscaled stroke
 
             buttons[i] = table.button(icon, Styles.cleart, () -> listener.get(buttons[i])).get();
             buttons[i].setTranslation(vertices[i].x - half, vertices[i].y - half);
@@ -45,8 +45,7 @@ public class HexSelection extends Stack {
 
     @Override
     public void draw() {
-        Draw.color(background);
-        Lines.stroke(stroke);
+        Lines.stroke(stroke, background);
         Lines.poly(x, y, 6, size);
 
         if (Mathf.within(x, y, input.mouseX(), input.mouseY(), stroke)) selectedIndex = -1;
