@@ -40,7 +40,6 @@ public class SchemeVars {
 
     public static SettingsMenuDialog m_settings;
     public static KeybindCombinationsDialog keycomb;
-    public static TraceDialog traces;
     public static SchematicsDialog schemas;
     public static WaveApproachingDialog approaching;
 
@@ -78,7 +77,6 @@ public class SchemeVars {
 
         m_settings = new SettingsMenuDialog();
         keycomb = new KeybindCombinationsDialog();
-        traces = new TraceDialog();
         schemas = new SchematicsDialog();
         approaching = new WaveApproachingDialog();
 

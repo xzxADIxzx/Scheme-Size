@@ -34,7 +34,6 @@ public class Main extends Mod {
         SchemeUpdater.load();
         MapResizeFix.load();
 
-        ui.traces = traces;
         ui.schematics = schemas;
         ui.listfrag = listfrag;
 
