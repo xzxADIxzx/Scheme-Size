@@ -31,7 +31,7 @@ import static arc.Core.*;
 import static mindustry.Vars.*;
 import static scheme.SchemeVars.*;
 
-/** Last update - Aug 11, 2022 */
+/** Last update - Sep 15, 2022 */
 public class PlayerListFragment extends mindustry.ui.fragments.PlayerListFragment {
 
     public boolean show;
@@ -171,7 +171,7 @@ public class PlayerListFragment extends mindustry.ui.fragments.PlayerListFragmen
                 button.add().growY();
                 button.button(Icon.hammer, ustyle,
                         () -> ui.showConfirm("@confirm", bundle.format("confirmvotekick", user.name()),
-                        () -> Call.sendChatMessage("/votekick " + user.name())))
+                        () -> Call.sendChatMessage("/votekick #" + user.id)))
                 .size(h);
             }
 
