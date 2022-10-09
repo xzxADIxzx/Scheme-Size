@@ -47,7 +47,7 @@ public class RendererConfigDialog extends BaseDialog {
     }
 
     private void partition(String title, Cons<Table> cons) {
-        cont.labelWrap("@category." + title).padTop(16f).row();
+        cont.add("@category." + title).padTop(16f).row();
         cont.table(cons).left().row();
     }
 
@@ -57,7 +57,7 @@ public class RendererConfigDialog extends BaseDialog {
 
     private void check(Table table, String name, Boolc listener, Boolp checked) {
         table.check("@render." + name, listener).left().with(check -> {
-            if (check != null) check.update(() -> check.setChecked(checked.get()));
+            if (checked != null) check.update(() -> check.setChecked(checked.get()));
         }).row();
     }
 
