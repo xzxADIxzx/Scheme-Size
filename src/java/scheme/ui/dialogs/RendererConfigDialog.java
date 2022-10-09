@@ -4,10 +4,8 @@ import arc.func.Boolc;
 import arc.func.Boolp;
 import arc.func.Cons;
 import arc.graphics.Color;
-import arc.scene.ui.CheckBox;
 import arc.scene.ui.ScrollPane;
 import arc.scene.ui.TextButton;
-import arc.scene.ui.layout.Cell;
 import arc.scene.ui.layout.Table;
 import mindustry.ui.dialogs.BaseDialog;
 
@@ -15,44 +13,49 @@ import static arc.Core.*;
 import static mindustry.Vars.*;
 import static scheme.SchemeVars.*;
 
-import com.github.bsideup.jabel.Desugar;
-
 public class RendererConfigDialog extends BaseDialog {
 
     public RendererConfigDialog() {
         super("@render.name");
         addCloseButton();
 
-        addGroup("@category.general.name", table -> table.button("@keycomb.view_sets", () -> show(true)).width(320f),
-                new Check("power",   this::togglePowerLines, () -> settings.getInt("lasersopacity") != 0),
-                new Check("status",  value -> settings.put("blockstatus", value), () -> settings.getBool("blockstatus")),
-                new Check("light",   value -> enableLight = value, () -> enableLight),
-                new Check("dark",    value -> enableDarkness = value, () -> enableDarkness),
-                new Check("fog",     value -> state.rules.fog = value, () -> state.rules.fog));
+        partition("general.name", part -> {
+            check(part, "power",  this::togglePowerLines,                      () -> settings.getInt("lasersopacity") != 0);
+            check(part, "status", value -> settings.put("blockstatus", value), () -> settings.getBool("blockstatus"));
+            check(part, "light",  value -> enableLight = value,                () -> enableLight);
+            check(part, "dark",   value -> enableDarkness = value,             () -> enableDarkness);
+            check(part, "fog",    value -> state.rules.fog = value,            () -> state.rules.fog);
+        });
 
-        addGroup("@category.add.name", null,
-                new Check("xray",    value -> render.xray = value, null),
-                new Check("hide",    render::showUnits, null),
-                new Check("grid",    value -> render.grid = value, null),
-                new Check("ruler",   value -> render.ruler = value, null),
-                new Check("info",    value -> render.unitInfo = value, null),
-                new Check("unit",    value -> render.unitRadius = value, null),
-                new Check("turret",  value -> render.turretRadius = value, null),
-                new Check("reactor", value -> render.reactorRadius = value, null));
+        cont.button("@keycomb.view_sets", () -> show(true)).width(320f).row();
+
+        partition("add.name", part -> {
+            check(part, "xray",   value -> render.xray = value);
+            check(part, "hide",   render::showUnits);
+            check(part, "grid",   value -> render.grid = value);
+            check(part, "ruler",  value -> render.ruler = value);
+            check(part, "info",   value -> render.unitInfo = value);
+            check(part, "unit",   value -> render.unitRadius = value);
+            check(part, "turret", value -> render.turretRadius = value);
+            check(part, "reactor",value -> render.reactorRadius = value);
+        });
 
         cont.labelWrap("@render.desc").labelAlign(2, 8).padTop(16f).width(320f).get().getStyle().fontColor = Color.lightGray;
     }
 
-    private void addGroup(String title, Cons<Table> cons, Check... checks) {
-        cont.label(() -> title).padTop(16f).row();
-        cont.table(table -> {
-            for (Check check : checks) {
-                Cell<CheckBox> cell = table.check("@render." + check.text, check.listener).left();
-                if (check.checked != null) cell.checked(t -> check.checked.get());
-                cell.row(); // it was possible to do without if, but again the code would become larger
-            }
-            if (cons != null) cons.get(table);
-        }).left().row(); // bruh, but this saves a huge array of code
+    private void partition(String title, Cons<Table> cons) {
+        cont.labelWrap("@category." + title).padTop(16f).row();
+        cont.table(cons).left().row();
+    }
+
+    private void check(Table table, String name, Boolc listener) {
+        check(table, name, listener, null);
+    }
+
+    private void check(Table table, String name, Boolc listener, Boolp checked) {
+        table.check("@render." + name, listener).left().with(check -> {
+            if (check != null) check.update(() -> check.setChecked(checked.get()));
+        }).row();
     }
 
     public void show(boolean graphics){
