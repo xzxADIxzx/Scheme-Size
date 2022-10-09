@@ -34,12 +34,12 @@ public class HexSelection extends Stack {
     public void add(String icon, Cons<TextButton> listener) {
         int i = children.size;
         add(new Table(table -> {
-            table.name = icon;
-            table.defaults().minSize(24f); // unscaled stroke
+            table.button(icon, Styles.cleart, () -> listener.get(buttons[i])).with(button -> {
+                buttons[i] = button;
 
-            buttons[i] = table.button(icon, Styles.cleart, () -> listener.get(buttons[i])).get();
-            buttons[i].setTranslation(vertices[i].x - half, vertices[i].y - half);
-            buttons[i].getLabel().setWrap(false); // someone can use non-single-character tags
+                button.setTranslation(vertices[i].x - half, vertices[i].y - half);
+                button.getLabel().setWrap(false); // someone can use non-single-character tags
+            }).minSize(24f); // unscaled stroke;
         }));
     }
 
