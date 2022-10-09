@@ -35,6 +35,9 @@ public class RendererConfigDialog extends BaseDialog {
             check(part, "grid",   value -> render.grid = value);
             check(part, "ruler",  value -> render.ruler = value);
             check(part, "info",   value -> render.unitInfo = value);
+        });
+
+        partition("radius.name", part -> {
             check(part, "unit",   value -> render.unitRadius = value);
             check(part, "turret", value -> render.turretRadius = value);
             check(part, "reactor",value -> render.reactorRadius = value);
@@ -58,15 +61,16 @@ public class RendererConfigDialog extends BaseDialog {
         }).row();
     }
 
-    public void show(boolean graphics){
+    public void show(boolean graphics) {
         if (graphics) {
-            ui.settings.show(); 
+            ui.settings.show();
             graphics().fireClick();
         } else show();
     }
 
-    public void togglePowerLines(boolean on) {
-        if (on) settings.put("lasersopacity", settings.getInt("preferredlaseropacity", 100));
+    private void togglePowerLines(boolean on) {
+        if (on)
+            settings.put("lasersopacity", settings.getInt("preferredlaseropacity", 100));
         else {
             settings.put("preferredlaseropacity", settings.getInt("lasersopacity"));
             settings.put("lasersopacity", 0);
@@ -76,7 +80,4 @@ public class RendererConfigDialog extends BaseDialog {
     private TextButton graphics() { // oh no
         return (TextButton) ((Table) ((Table) ((ScrollPane) ui.settings.getChildren().get(1)).getChildren().get(0)).getChildren().get(0)).getChildren().get(1);
     }
-
-    @Desugar
-    public record Check(String text, Boolc listener, Boolp checked) {}
 }
