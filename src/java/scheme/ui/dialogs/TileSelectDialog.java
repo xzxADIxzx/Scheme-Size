@@ -16,6 +16,7 @@ import mindustry.world.Block;
 import mindustry.world.Tile;
 import mindustry.world.blocks.environment.Floor;
 import mindustry.world.blocks.environment.OverlayFloor;
+import mindustry.world.blocks.environment.Prop;
 import mindustry.world.blocks.environment.StaticWall;
 import scheme.ui.List;
 
@@ -43,7 +44,7 @@ public class TileSelectDialog extends BaseDialog {
 
         Seq<Folder> folders = Seq.with(
                 new Folder("select.floor", () -> floor, b -> b instanceof Floor && !(b instanceof OverlayFloor), b -> floor = b),
-                new Folder("select.block", () -> block, b -> b instanceof StaticWall, b -> block = b),
+                new Folder("select.block", () -> block, b -> b instanceof Prop, b -> block = b),
                 new Folder("select.overlay", () -> overlay, b -> b instanceof OverlayFloor, b -> overlay = b));
 
         list = new List<>(folders::each, Folder::name, Folder::icon, folder -> Pal.accent);
