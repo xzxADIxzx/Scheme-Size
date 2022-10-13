@@ -166,12 +166,14 @@ public class HudFragment {
 
         parent.fill(cont -> { // Wave Approaching
             cont.name = "waveapproaching";
+            cont.bottom();
+
             cont.table(Styles.black6, pad -> {
                 pad.add("@approaching.info").labelAlign(Align.center, Align.center).update(label -> {
                     label.setColor(Color.white.cpy().lerp(Color.scarlet, Mathf.absin(10f, 1f)));
                 });
                 pad.button(Icon.info, style, approaching::show).grow().padLeft(6f);
-            }).margin(6f).update(pad -> {
+            }).margin(6f).padBottom(mobile ? 350f : 100f).update(pad -> {
                 pad.color.a = Mathf.lerpDelta(pad.color.a, Mathf.num(
                         settings.getBool("approachenabled") && state.wavetime > 600f && state.wavetime < 1800f
                 ), .1f);
