@@ -17,7 +17,6 @@ import mindustry.world.Tile;
 import mindustry.world.blocks.environment.Floor;
 import mindustry.world.blocks.environment.OverlayFloor;
 import mindustry.world.blocks.environment.Prop;
-import mindustry.world.blocks.environment.StaticWall;
 import scheme.ui.List;
 
 import static arc.Core.*;
