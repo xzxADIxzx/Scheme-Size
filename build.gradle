@@ -28,13 +28,8 @@ allprojects {
 }
 
 dependencies {
-    compileOnly("com.github.Anuken.Arc:arc-core:$mindustryVersion")
-    compileOnly("com.github.Anuken.Mindustry:core:$mindustryVersion") {
-        exclude group: 'com.github.Anuken.Arc', module: 'flabel'
-        exclude group: 'com.github.Anuken.Arc', module: 'freetype'
-        exclude group: 'com.github.Anuken.Arc', module: 'fx'
-        exclude group: 'com.github.Anuken.Arc', module: 'g3d'
-    }
+    compileOnly "com.github.Anuken.Arc:arc-core:$mindustryVersion"
+    compileOnly "com.github.Anuken.MindustryJitpack:core:$mindustryVersion"
 
     compileOnly "com.github.bsideup.jabel:jabel-javac-plugin:$jabelVersion"
     annotationProcessor "com.github.bsideup.jabel:jabel-javac-plugin:$jabelVersion"
