@@ -4,6 +4,7 @@ import arc.math.geom.Position;
 import mindustry.gen.Call;
 import mindustry.gen.Player;
 import mindustry.world.Block;
+import scheme.tools.MessageQueue;
 
 import static arc.Core.*;
 import static mindustry.Vars.*;
@@ -79,7 +80,7 @@ public class Darkdustry implements AdminsTools {
     private static void send(String command, Object... args) {
         StringBuilder message = new StringBuilder(netServer.clientCommands.getPrefix()).append(command);
         for (var arg : args) message.append(" ").append(arg);
-        Call.sendChatMessage(message.toString());
+        MessageQueue.send(message.toString());
     }
 
     private static void sendPacket(String command, Object... args) {

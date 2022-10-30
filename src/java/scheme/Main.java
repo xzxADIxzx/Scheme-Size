@@ -6,6 +6,7 @@ import mindustry.mod.Mod;
 import mindustry.mod.Scripts;
 import scheme.moded.ModedBinding;
 import scheme.moded.ModedSchematics;
+import scheme.tools.MessageQueue;
 import scheme.ui.MapResizeFix;
 
 import static arc.Core.*;
@@ -33,6 +34,7 @@ public class Main extends Mod {
         SchemeVars.load();
         SchemeUpdater.load();
         MapResizeFix.load();
+        MessageQueue.load();
 
         ui.schematics = schemas;
         ui.listfrag = listfrag;

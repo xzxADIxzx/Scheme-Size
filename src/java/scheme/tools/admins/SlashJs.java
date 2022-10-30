@@ -2,12 +2,12 @@ package scheme.tools.admins;
 
 import arc.math.geom.Position;
 import arc.util.Strings;
-import mindustry.gen.Call;
 import mindustry.gen.Player;
 import mindustry.type.Item;
 import mindustry.type.StatusEffect;
 import mindustry.type.UnitType;
 import mindustry.world.Block;
+import scheme.tools.MessageQueue;
 
 import static arc.Core.*;
 import static mindustry.Vars.*;
@@ -111,7 +111,7 @@ public class SlashJs implements AdminsTools {
     }
 
     private static void send(String command, Object... args) {
-        Call.sendChatMessage("/js " + Strings.format(command, args));
+        MessageQueue.send("/js " + Strings.format(command, args));
     }
 
     private static void getPlayer(Player target) {
