@@ -40,7 +40,7 @@ public class SchemeVars {
 
     public static SettingsMenuDialog m_settings;
     public static KeybindCombinationsDialog keycomb;
-    public static SchematicsDialog schemas;
+    public static SchemasDialog schemas;
     public static WaveApproachingDialog approaching;
 
     public static HudFragment hudfrag;
@@ -77,7 +77,7 @@ public class SchemeVars {
 
         m_settings = new SettingsMenuDialog();
         keycomb = new KeybindCombinationsDialog();
-        schemas = new SchematicsDialog();
+        schemas = new SchemasDialog();
         approaching = new WaveApproachingDialog();
 
         hudfrag = new HudFragment();

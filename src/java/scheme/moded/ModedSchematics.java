@@ -8,22 +8,19 @@ import arc.struct.StringMap;
 import arc.util.Log;
 import arc.util.Reflect;
 import arc.util.io.Reads;
+import arc.util.serialization.Base64Coder;
 import mindustry.content.Blocks;
 import mindustry.ctype.ContentType;
 import mindustry.game.Schematic;
 import mindustry.game.Schematics;
 import mindustry.game.Schematic.Stile;
-import mindustry.io.JsonIO;
-import mindustry.io.SaveFileReader;
-import mindustry.io.TypeIO;
+import mindustry.io.*;
 import mindustry.world.Block;
 import mindustry.world.blocks.legacy.LegacyBlock;
 
 import static mindustry.Vars.*;
 
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.zip.InflaterInputStream;
 
 /** Last update - Aug 26, 2022 */
@@ -77,6 +74,14 @@ public class ModedSchematics extends Schematics {
         Fi dest = file.parent().child(to);
         file.file().renameTo(dest.file());
         return dest;
+    }
+
+    public static Schematic readBase64(String schematic) {
+        try {
+            return read(new ByteArrayInputStream(Base64Coder.decode(schematic.trim())));
+        } catch (IOException error) {
+            throw new RuntimeException(error);
+        }
     }
 
     public static Schematic read(Fi file) throws IOException {
