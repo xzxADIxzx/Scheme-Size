@@ -1,11 +1,12 @@
 package scheme.ui.dialogs;
 
-import arc.scene.ui.Dialog;
+import mindustry.ui.dialogs.BaseDialog;
+import mindustry.ui.dialogs.SchematicsDialog;
 import scheme.moded.ModedBinding;
 
 import static arc.Core.*;
 
-public class SchematicsDialog extends mindustry.ui.dialogs.SchematicsDialog {
+public class SchemasDialog extends SchematicsDialog {
 
     @Override
     public Dialog show() {
