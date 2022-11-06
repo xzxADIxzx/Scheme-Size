@@ -27,18 +27,9 @@ public class SchemeUpdater {
         mod = mods.getMod(Main.class);
         url = ghApi + "/repos/" + repo + "/releases/latest";
 
-        String updates = "[orange]"; // coloring description of the mod
-        for (String[] names : new String[][] {
-                { "Release!", "Settings", "Java 8", "Controls", "Updater", "Mobile Support", "Admins Tools" },
-                { "Building Tools", "AI Power", "Renderer Tools", "Deep Cleaning", "Schematic Shortcuts" } // TODO: "Cursed Schemes"
-        }) {
-            updates += "\n"; // add update names
-            for (String name : names) updates += "\n   - " + name;
-        }
-
         Jval meta = Jval.read(new ZipFi(mod.file).child("mod.hjson").readString());
         mod.meta.author = meta.getString("author"); // restore colors in mod's meta
-        mod.meta.description = meta.getString("description") + updates;
+        mod.meta.description = meta.getString("description");
     }
 
     public static void check() {
