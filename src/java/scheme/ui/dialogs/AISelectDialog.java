@@ -60,6 +60,8 @@ public class AISelectDialog extends ListDialog {
             players.build(cont);
             players.onChanged = player -> list.set(units.peek());
 
+            players.pane.padRight(16f);
+
             list.build(cont);
             list.onChanged = unit -> ai = unit.ai;
         }).row();
