@@ -86,6 +86,7 @@ public class ModedMobileInput extends MobileInput implements ModedInputHandler {
             if (!movementLocked) camera.position.set(unit.x, unit.y);
             ai.update();
         } else if (!movementLocked) super.updateMovement(unit);
+
         if (shootingLocked) {
             unit.aimLook(player.mouseX, player.mouseY);
             unit.controlWeapons(true, false);

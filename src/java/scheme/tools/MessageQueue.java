@@ -17,7 +17,7 @@ public class MessageQueue {
         Timer.schedule(() -> {
             if (messages.isEmpty()) return;
             Call.sendChatMessage(messages.removeFirst());
-        }, 0f, .5f);
+        }, 0f, .25f);
     }
 
     public static void send(String message) {

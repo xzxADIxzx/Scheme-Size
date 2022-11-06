@@ -77,7 +77,8 @@ public class ModedDesktopInput extends DesktopInput implements ModedInputHandler
 
     @Override
     public void update() {
-        super.update();
+        if (input.keyDown(ModedBinding.alternative) && input.keyTap(Binding.respawn)) admins.despawn();
+        else super.update(); // prevent unit clear, is it a crutch?
 
         if (locked()) return;
 
@@ -99,8 +100,6 @@ public class ModedDesktopInput extends DesktopInput implements ModedInputHandler
 
     @Override
     protected void updateMovement(Unit unit) {
-        if (input.keyDown(ModedBinding.alternative) && input.keyTap(Binding.respawn)) admins.despawn();
-
         if (ai.ai != null
                 && input.axis(Binding.move_x) == 0 && input.axis(Binding.move_y) == 0
                 && !input.keyDown(Binding.mouse_move) && !input.keyDown(Binding.select))
@@ -139,7 +138,7 @@ public class ModedDesktopInput extends DesktopInput implements ModedInputHandler
 
             if (input.keyTap(Binding.block_info)) keycomb.show();
 
-            // alternative + respawn moved to updateMovement because it needs to be called before internal respawn
+            // alternative + respawn moved to update because it needs to be called before internal respawn
             if (input.keyTap(Binding.mouse_move)) admins.teleport(input.mouseWorld());
             if (input.keyTap(Binding.pan)) lockMovement();
 
