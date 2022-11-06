@@ -4,6 +4,7 @@ import arc.math.geom.Position;
 import mindustry.gen.Call;
 import mindustry.gen.Player;
 import mindustry.world.Block;
+import mindustry.world.blocks.storage.CoreBlock.CoreBuild;
 import scheme.tools.MessageQueue;
 
 import static arc.Core.*;
@@ -45,7 +46,9 @@ public class Darkdustry implements AdminsTools {
 
     public void placeCore() {
         if (unusable()) return;
-        send("core");
+        if (player.tileOn().build instanceof CoreBuild)
+            sendPacket("fill", "null 0 null", player.tileX(), player.tileY(), 1, 1);
+        else send("core");
     }
 
     public void despawn(Player target) {
