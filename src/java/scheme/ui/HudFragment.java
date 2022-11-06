@@ -178,7 +178,7 @@ public class HudFragment {
                         settings.getBool("approachenabled") && state.wavetime > 600f && state.wavetime < 1800f
                 ), .1f);
                 pad.touchable = pad.color.a > .001f ? Touchable.childrenOnly : Touchable.disabled; // geniusly
-            });
+            }).get().color.a(0f); // hide on startup
         });
 
         if (!settings.getBool("mobilebuttons") && !mobile) return;
