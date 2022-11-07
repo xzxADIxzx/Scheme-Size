@@ -1,7 +1,9 @@
 package scheme.tools.admins;
 
 import arc.math.geom.Position;
+import arc.struct.Seq;
 import mindustry.entities.Units;
+import mindustry.entities.units.BuildPlan;
 import mindustry.game.Team;
 import mindustry.gen.Player;
 import mindustry.type.Item;
@@ -47,6 +49,8 @@ public interface AdminsTools {
     public void fill(int sx, int sy, int ex, int ey);
 
     public void brush(int x, int y, int radius);
+
+    public void flush(Seq<BuildPlan> plans);
 
     public boolean unusable();
 

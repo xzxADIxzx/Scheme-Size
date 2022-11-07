@@ -38,6 +38,12 @@ public class ModedMobileInput extends MobileInput implements ModedInputHandler {
     }
 
     @Override
+    protected void flushPlans(Seq<BuildPlan> plans) {
+        if (plans.isEmpty() || plans.first().block.isVisible()) super.flushPlans(plans);
+        else admins.flush(plans);
+    }
+
+    @Override
     public void drawTop() {
         if (mode == schematicSelect) {
             drawSelection(lineStartX, lineStartY, lastLineX, lastLineY, maxSchematicSize);

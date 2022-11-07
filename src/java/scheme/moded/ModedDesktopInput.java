@@ -35,6 +35,12 @@ public class ModedDesktopInput extends DesktopInput implements ModedInputHandler
     }
 
     @Override
+    protected void flushPlans(Seq<BuildPlan> plans) {
+        if (plans.isEmpty() || plans.first().block.isVisible()) super.flushPlans(plans);
+        else admins.flush(plans);
+    }
+
+    @Override
     public void drawTop() {
         Lines.stroke(1f);
         int cursorX = tileX();

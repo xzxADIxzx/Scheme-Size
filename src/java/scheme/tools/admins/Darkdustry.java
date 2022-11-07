@@ -1,6 +1,8 @@
 package scheme.tools.admins;
 
 import arc.math.geom.Position;
+import arc.struct.Seq;
+import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Call;
 import mindustry.gen.Player;
 import mindustry.world.Block;
@@ -69,6 +71,11 @@ public class Darkdustry implements AdminsTools {
     public void brush(int x, int y, int radius) {
         if (unusable()) return;
         tile.select((floor, block, overlay) -> sendPacket("brush", id(floor), id(block), id(overlay), x, y, radius));
+    }
+
+    public void flush(Seq<BuildPlan> plans) {
+        if (unusable()) return;
+        ui.showInfoFade("@admins.notsupported");
     }
 
     public boolean unusable() {

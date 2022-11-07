@@ -2,10 +2,13 @@ package scheme.tools.admins;
 
 import arc.math.geom.Geometry;
 import arc.math.geom.Position;
+import arc.struct.Seq;
 import mindustry.content.Blocks;
+import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Player;
 import mindustry.world.Block;
 import mindustry.world.Tile;
+import mindustry.world.blocks.environment.Prop;
 import mindustry.world.blocks.storage.CoreBlock.CoreBuild;
 
 import static arc.Core.*;
@@ -82,6 +85,17 @@ public class Internal implements AdminsTools {
     public void brush(int x, int y, int radius) {
         if (unusable()) return;
         tile.select((floor, block, overlay) -> Geometry.circle(x, y, radius, (cx, cy) -> edit(floor, block, overlay, cx, cy)));
+    }
+
+    public void flush(Seq<BuildPlan> plans) {
+        plans.each(plan -> {
+            if (plan.block.isFloor() && !plan.block.isOverlay())
+                edit(plan.block, null, null, plan.x, plan.y);
+            else if (plan.block instanceof Prop)
+                edit(null, plan.block, null, plan.x, plan.y);
+            else if (plan.block.isOverlay())
+                edit(null, null, plan.block, plan.x, plan.y);
+        });
     }
 
     public boolean unusable() {

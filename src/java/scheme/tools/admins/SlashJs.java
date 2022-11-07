@@ -1,7 +1,9 @@
 package scheme.tools.admins;
 
 import arc.math.geom.Position;
+import arc.struct.Seq;
 import arc.util.Strings;
+import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Player;
 import mindustry.type.Item;
 import mindustry.type.StatusEffect;
@@ -99,6 +101,11 @@ public class SlashJs implements AdminsTools {
             edit(floor, block, overlay);
             send("Geometry.circle(@, @, @, (cx, cy) => todo(Vars.world.tiles.getc(cx, cy)))", x, y, radius);
         });
+    }
+
+    public void flush(Seq<BuildPlan> plans) {
+        if (unusable()) return;
+        ui.showInfoFade("@admins.notsupported");
     }
 
     public boolean unusable() {
