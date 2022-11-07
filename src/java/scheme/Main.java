@@ -1,10 +1,14 @@
 package scheme;
 
 import arc.util.Log;
+import arc.util.Tmp;
 import mindustry.content.Blocks;
 import mindustry.game.Schematics;
+import mindustry.gen.Building;
 import mindustry.mod.Mod;
 import mindustry.mod.Scripts;
+import mindustry.type.Item;
+import mindustry.world.Tile;
 import mindustry.world.blocks.distribution.Router;
 import scheme.moded.ModedBinding;
 import scheme.moded.ModedSchematics;
@@ -66,7 +70,22 @@ public class Main extends Mod {
         Blocks.distributor.buildType = () -> ((Router) Blocks.distributor).new RouterBuild() {
             @Override
             public boolean canControl() { return true; }
-        }; // TODO distributor fix
+
+            @Override
+            public Building getTileTarget(Item item, Tile from, boolean set) {
+                Building target = super.getTileTarget(item, from, set);
+
+                if (unit != null && isControlled() && unit.isShooting()) {
+                    float angle = angleTo(unit.aimX(), unit.aimY());
+                    Tmp.v1.set(block.size * tilesize, 0f).rotate(angle).add(this);
+
+                    Building other = world.buildWorld(Tmp.v1.x, Tmp.v1.y);
+                    if (other != null && other.acceptItem(this, item)) target = other;
+                }
+
+                return target;
+            }
+        };
     }
 
     public static void log(String info) {
