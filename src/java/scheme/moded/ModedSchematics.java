@@ -33,7 +33,7 @@ public class ModedSchematics extends Schematics {
     public static final byte[] header = { 'm', 's', 'c', 'h' };
 
     /** Do need to show the dialog. */
-    public static boolean requiresDialog;
+    public boolean requiresDialog;
 
     @Override
     public void loadSync() {
@@ -68,7 +68,7 @@ public class ModedSchematics extends Schematics {
         }
     }
 
-    private static Fi rename(Fi file, String to) {
+    private Fi rename(Fi file, String to) {
         requiresDialog = true; // show dialog on startup
 
         Fi dest = file.parent().child(to);
