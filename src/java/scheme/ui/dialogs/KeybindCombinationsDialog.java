@@ -45,7 +45,7 @@ public class KeybindCombinationsDialog extends BaseDialog {
         template("despawn",    Binding.respawn);
         template("teleport",   Binding.mouse_move);
         template("lock_move",  Binding.pan);
-        // template("schematic",  Binding.schematic_select);
+        template("schematic",  Binding.schematic_select);
 
         partition("@category.bt.name");
 

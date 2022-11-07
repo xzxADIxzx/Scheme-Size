@@ -150,6 +150,10 @@ public class ModedSchematics extends Schematics {
     // endregion
     // region cursed schematics
 
+    public Layer nextLayer() {
+        return layer = layer.next();
+    }
+
     @Override
     public Seq<BuildPlan> toPlans(Schematic schem, int x, int y) {
         int dx = x - schem.width / 2, dy = y - schem.height / 2;
