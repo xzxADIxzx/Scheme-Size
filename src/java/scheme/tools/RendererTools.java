@@ -9,7 +9,6 @@ import arc.math.geom.Rect;
 import arc.struct.Seq;
 import arc.util.Tmp;
 import mindustry.gen.Building;
-import mindustry.gen.Call;
 import mindustry.gen.Groups;
 import mindustry.gen.Unit;
 import mindustry.graphics.Drawf;
@@ -92,10 +91,6 @@ public class RendererTools {
     public void showUnits(boolean hide) {
         if (hide) units.cache();
         else units.uncache();
-    }
-
-    public void toggleHistory() {
-        Call.sendChatMessage("/history");
     }
 
     public void toggleCoreItems() {

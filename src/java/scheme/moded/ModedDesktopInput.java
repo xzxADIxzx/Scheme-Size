@@ -118,7 +118,6 @@ public class ModedDesktopInput extends DesktopInput implements ModedInputHandler
         if (input.keyTap(ModedBinding.schematic_shortcut)) shortfrag.show(input.mouseX(), input.mouseY());
         if (input.keyRelease(ModedBinding.schematic_shortcut)) shortfrag.hide();
 
-        if (input.keyTap(ModedBinding.toggle_history)) render.toggleHistory();
         if (input.keyTap(ModedBinding.toggle_core_items)) render.toggleCoreItems();
         if (input.keyTap(ModedBinding.toggle_ai))
             if (alt) ai.deselect();

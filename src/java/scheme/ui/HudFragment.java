@@ -226,7 +226,6 @@ public class HudFragment {
                     setAction(mode, Icon.add,    "spawn_unit",      () -> admins.spawnUnits());
                     setAction(mode, "corroded",  "manage_effect.",  () -> admins.manageEffect());
                     setAction(mode, Icon.production,"manage_item.", () -> admins.manageItem());
-                    setAction(mode, Icon.info,   "toggle_history.", () -> render.toggleHistory());
                 }).row();
             }).margin(0f).update(pad -> {
                 if (block[1] == null) return; // waves main are not null but block is
