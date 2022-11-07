@@ -1,9 +1,11 @@
 package scheme;
 
 import arc.util.Log;
+import mindustry.content.Blocks;
 import mindustry.game.Schematics;
 import mindustry.mod.Mod;
 import mindustry.mod.Scripts;
+import mindustry.world.blocks.distribution.Router;
 import scheme.moded.ModedBinding;
 import scheme.moded.ModedSchematics;
 import scheme.tools.MessageQueue;
@@ -60,6 +62,11 @@ public class Main extends Mod {
             Scripts scripts = mods.getScripts();
             scripts.context.evaluateReader(scripts.scope, SchemeUpdater.script().reader(), "main.js", 0);
         } catch (Throwable e) { error(e); }
+
+        Blocks.distributor.buildType = () -> ((Router) Blocks.distributor).new RouterBuild() {
+            @Override
+            public boolean canControl() { return true; }
+        };
     }
 
     public static void log(String info) {
