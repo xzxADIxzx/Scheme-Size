@@ -202,7 +202,11 @@ public class HudFragment {
                 else shortfrag.show(graphics.getWidth() - (int) Scl.scl(15f), graphics.getHeight() / 2);
             }).size(155f, 50f).margin(8f).checked(t -> shortfrag.visible);
 
-            // TODO schematic layer button for cursed schematics update
+            if (!SchemeUpdater.installed("test-utils")) cont.row();
+
+            cont.button("@schematics", Icon.menu, Styles.squareTogglet, () -> {
+                m_schematics.nextLayer();
+            }).size(155f, 50f).margin(8f).update(button -> button.setText(bundle.get("layer." + m_schematics.layer)));
         });
 
         parent.fill(cont -> { // Mobile Buttons
