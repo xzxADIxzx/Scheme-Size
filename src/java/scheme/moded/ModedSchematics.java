@@ -1,5 +1,6 @@
 package scheme.moded;
 
+import arc.Events;
 import arc.files.Fi;
 import arc.func.Func;
 import arc.math.geom.Point2;
@@ -16,6 +17,7 @@ import mindustry.ctype.ContentType;
 import mindustry.entities.units.BuildPlan;
 import mindustry.game.Schematic;
 import mindustry.game.Schematics;
+import mindustry.game.EventType.*;
 import mindustry.game.Schematic.Stile;
 import mindustry.input.Placement;
 import mindustry.input.Placement.NormalizeResult;
@@ -50,6 +52,8 @@ public class ModedSchematics extends Schematics {
     public void loadSync() {
         super.loadSync();
         for (Fi file : schematicDirectory.list()) fix(file);
+
+        Events.run(WorldLoadEvent.class, () -> layer = Layer.building);
     }
 
     private void fix(Fi file) { // dont check size for mtls files

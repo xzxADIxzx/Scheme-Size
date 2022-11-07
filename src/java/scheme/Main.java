@@ -66,7 +66,7 @@ public class Main extends Mod {
         Blocks.distributor.buildType = () -> ((Router) Blocks.distributor).new RouterBuild() {
             @Override
             public boolean canControl() { return true; }
-        };
+        }; // TODO distributor fix
     }
 
     public static void log(String info) {

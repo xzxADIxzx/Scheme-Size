@@ -14,6 +14,7 @@ import arc.scene.ui.TextField.TextFieldFilter;
 import arc.scene.ui.TextField.TextFieldStyle;
 import arc.scene.ui.layout.*;
 import arc.util.Align;
+import arc.util.Interval;
 import arc.util.Scaling;
 import mindustry.game.EventType.*;
 import mindustry.gen.Icon;
@@ -52,6 +53,7 @@ public class HudFragment {
     /** PlacementFragment and OverlayMarker. */
     public Element[] block = new Element[3];
     public TextField size;
+    public Interval timer = new Interval();
 
     public void build(Group parent) {
         Events.run(WorldLoadEvent.class, power::refreshNode);
@@ -75,7 +77,7 @@ public class HudFragment {
             })).size(92.2f + dif / 2, 80f).padLeft(18.2f - dif).padTop(mobile ? 69f : 0f);
         });
 
-        getCoreItems().table(cont -> { // Power Bars
+        getCoreItems().collapser(cont -> { // Power Bars
             cont.name = "powerbars";
             cont.background(Styles.black6).margin(8f, 8f, 8f, 0f);
 
@@ -85,7 +87,15 @@ public class HudFragment {
                 bars.add(power.stored()).padTop(8f);
             }).growX();
             cont.button(Icon.edit, check, () -> checked = !checked).checked(t -> checked).size(44f).padLeft(8f);
-        }).fillX().visible(() -> settings.getBool("coreitems") && !mobile && ui.hudfrag.shown);
+        }, () -> settings.getBool("coreitems") && !mobile && ui.hudfrag.shown).fillX().row();
+
+        getCoreItems().collapser(cont -> { // Schematic Layer
+            cont.name = "powerbars";
+            cont.background(Styles.black6).margin(8f, 8f, 8f, 0f);
+
+            timer.reset(0, 240f);
+            cont.label(() -> bundle.format("layer", bundle.get("layer." + m_schematics.layer)));
+        }, true, () -> !timer.check(0, 240f) && !mobile && ui.hudfrag.shown).fillX();
 
         parent.fill(cont -> { // Gamma UI
             cont.name = "gammaui";
@@ -240,6 +250,10 @@ public class HudFragment {
 
     public void resize(int amount) {
         size.setText(String.valueOf(amount));
+    }
+
+    public void nextLayer() {
+        if (!timer.get(240f)) m_schematics.nextLayer();
     }
 
     private Cell<Table> partitionbt(Table table, Cons<Table> cons) {
