@@ -11,6 +11,7 @@ import mindustry.type.Item;
 import mindustry.world.Tile;
 import mindustry.world.blocks.distribution.Router;
 import scheme.moded.ModedBinding;
+import scheme.moded.ModedGlyphLayout;
 import scheme.moded.ModedSchematics;
 import scheme.tools.MessageQueue;
 import scheme.ui.MapResizeFix;
@@ -37,6 +38,7 @@ public class Main extends Mod {
         Backdoor.load();
         ServerIntegration.load();
         ModedBinding.load();
+        ModedGlyphLayout.load();
         SchemeVars.load();
         SchemeUpdater.load();
         MapResizeFix.load();
