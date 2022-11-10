@@ -193,7 +193,7 @@ public class HudFragment {
 
         if (!settings.getBool("mobilebuttons") && !mobile) return;
 
-        getCommandButton(cont -> { // Shortcut Button
+        getCommandButton(cont -> { // Shortcut and cursed schematics button
             if (!SchemeUpdater.installed("test-utils")) // hardcoded paddings
                 cont.row(); // for command button
 
@@ -204,7 +204,7 @@ public class HudFragment {
 
             if (!SchemeUpdater.installed("test-utils")) cont.row();
 
-            cont.button("@schematics", Icon.menu, Styles.squareTogglet, () -> {
+            cont.button("@none", Icon.menu, Styles.flatBordert, () -> {
                 m_schematics.nextLayer();
             }).size(155f, 50f).margin(8f).update(button -> button.setText(bundle.get("layer." + m_schematics.layer)));
         });
