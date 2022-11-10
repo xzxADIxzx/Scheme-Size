@@ -36,8 +36,8 @@ public class ModedDesktopInput extends DesktopInput implements ModedInputHandler
 
     @Override
     protected void flushPlans(Seq<BuildPlan> plans) {
-        if (plans.isEmpty() || plans.first().block.isVisible()) super.flushPlans(plans);
-        else admins.flush(plans);
+        if (m_schematics.isCursed(plans)) admins.flush(plans);
+        else super.flushPlans(plans);
     }
 
     @Override
