@@ -76,8 +76,13 @@ public class RendererTools {
                 Lines.line(unit.x + Tmp.v1.x, unit.y + Tmp.v1.y, unit.aimX, unit.aimY);
             }
 
-            drawHealthBar(unit, Pal.darkishGray, 1f);
-            drawHealthBar(unit, Pal.health, Mathf.clamp(unit.health / unit.maxHealth));
+            drawBar(unit, 3f, Pal.darkishGray, 1f);
+            drawBar(unit, 3f, Pal.health, Mathf.clamp(unit.health / unit.maxHealth));
+
+            if (!state.rules.unitAmmo) return;
+
+            drawBar(unit, -3f, unit.type.ammoType.color(), 1f);
+            drawBar(unit, -3f, Pal.darkishGray, 1f - Mathf.clamp(unit.ammo / unit.type.ammoCapacity));
         }));
 
         if (unitRadius) Draw.draw(Layer.overlayUI, () -> units.each(unit -> Drawf.circles(unit.x, unit.y, unit.range(), unit.team.color)));
@@ -108,10 +113,10 @@ public class RendererTools {
         Drawf.dashCircle(build.x, build.y, radius * tilesize, color);
     }
 
-    private void drawHealthBar(Unit unit, Color color, float fract) {
+    private void drawBar(Unit unit, float size, Color color, float fract) {
         Draw.color(color);
 
-        float size = Mathf.sqrt(unit.hitSize) * 3f;
+        size = Mathf.sqrt(unit.hitSize) * size;
         float x = unit.x - size / 2f, y = unit.y - size;
 
         float height = size * 2f, stroke = size * -.35f, xs = x - size;
