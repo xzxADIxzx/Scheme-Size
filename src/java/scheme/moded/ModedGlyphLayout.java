@@ -58,7 +58,6 @@ public class ModedGlyphLayout extends GlyphLayout {
         while (true) {
             // each run is delimited by newline or left square bracket.
             int runEnd = -1;
-            boolean newline = false;
 
             if (start == end) {
                 if (runStart == end) break; // end of string with no run to process, we're done
@@ -66,8 +65,6 @@ public class ModedGlyphLayout extends GlyphLayout {
             } else switch (str.charAt(start++)) {
                 case '\n': // end of line
                     runEnd = start - 1;
-                    newline = true;
-
                     break;
                 case '[': // possible color tag
                     int length = Reflect.invoke(GlyphLayout.class, this, "parseColorMarkup", new Object[] {
@@ -110,7 +107,7 @@ public class ModedGlyphLayout extends GlyphLayout {
                     run.x = x;
                     run.y = y;
 
-                    if (newline || runEnd == end) Reflect.invoke(GlyphLayout.class, this, "adjustLastGlyph", new Object[] {
+                    if (runEnd == end) Reflect.invoke(GlyphLayout.class, this, "adjustLastGlyph", new Object[] {
                             fontData, run
                     }, FontData.class, GlyphRun.class);
                     runs.add(run);
@@ -215,20 +212,6 @@ public class ModedGlyphLayout extends GlyphLayout {
                         run = next;
                         lastGlyph = null;
                     }
-                }
-
-                if (newline) { // next run will be on the next line
-                    width = Math.max(width, x);
-                    x = 0;
-
-                    float down = fontData.down;
-                    if (runEnd == runStart) { // blank line
-                        down *= fontData.blankLineScale;
-                        blankLines++;
-                    } else lines++;
-
-                    y += down;
-                    lastGlyph = null;
                 }
 
                 runStart = start;
