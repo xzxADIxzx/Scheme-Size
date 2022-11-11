@@ -29,12 +29,11 @@ public class ModedGlyphLayout extends GlyphLayout {
 
     @Override
     public void setText(Font font, CharSequence str, int start, int end, Color color, float targetWidth, int halign, boolean wrap, String truncate) {
-        if (input.keyDown(ModedBinding.alternative)) {
-            super.setText(font, str, start, end, color, targetWidth, halign, wrap, truncate);
-            return; // use default renderer if alt key pressed
-        }
-
         FontData fontData = font.getData();
+        if (fontData.markupEnabled || input.keyDown(ModedBinding.alternative)) {
+            super.setText(font, str, start, end, color, targetWidth, halign, wrap, truncate);
+            return; // use default renderer if alt key is pressed or markup is enabled
+        }
 
         if (truncate != null)
             wrap = true; // causes truncate code to run, doesn't actually cause wrapping
@@ -79,12 +78,8 @@ public class ModedGlyphLayout extends GlyphLayout {
                     if (length >= 0) {
                         runEnd = start - 1;
 
-                        if (fontData.markupEnabled)
-                            start += length + 1;
-                        else {
-                            start--;
-                            skip = length + 2;
-                        }
+                        start--;
+                        skip = length + 2;
 
                         nextColor = colorStack.peek();
                     } else if (length == -2) {
