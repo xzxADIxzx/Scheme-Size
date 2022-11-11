@@ -6,7 +6,6 @@ import arc.graphics.g2d.GlyphLayout;
 import arc.graphics.g2d.Font.FontData;
 import arc.graphics.g2d.Font.Glyph;
 import arc.struct.Seq;
-import arc.util.Align;
 import arc.util.Reflect;
 import arc.util.pooling.Pool;
 import arc.util.pooling.Pools;
@@ -247,31 +246,6 @@ public class ModedGlyphLayout extends GlyphLayout {
         for (int i = 1, n = colorStack.size; i < n; i++)
             colorPool.free(colorStack.get(i));
         colorStack.clear();
-
-        // align runs to center or right of targetWidth
-        if ((halign & Align.left) == 0) { // not left aligned, so must be center or right aligned
-            boolean center = (halign & Align.center) != 0;
-            float lineWidth = 0, lineY = Integer.MIN_VALUE;
-            int lineStart = 0;
-
-            for (int i = 0; i < runs.size; i++) {
-                GlyphRun run = runs.get(i);
-                if (run.y != lineY) {
-                    lineY = run.y;
-
-                    float shift = targetWidth - lineWidth;
-                    if (center) shift /= 2;
-
-                    while (lineStart < i) runs.get(lineStart++).x += shift;
-                    lineWidth = 0;
-                }
-                lineWidth = Math.max(lineWidth, run.x + run.width);
-            }
-
-            float shift = targetWidth - lineWidth;
-            if (center) shift /= 2;
-            while (lineStart < runs.size) runs.get(lineStart++).x += shift;
-        }
 
         this.width = width;
         this.height = fontData.capHeight - lines * fontData.down - blankLines * fontData.down * fontData.blankLineScale;
