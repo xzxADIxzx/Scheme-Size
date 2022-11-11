@@ -240,9 +240,13 @@ public class ModedGlyphLayout extends GlyphLayout {
                 runStart = start;
                 color = nextColor;
             }
+
+            if (skip > 0) {
+                start += skip;
+                skip = 0;
+            }
         }
 
-        if (skip > 0) start += skip;
         width = Math.max(width, x);
 
         for (int i = 1, n = colorStack.size; i < n; i++)
