@@ -311,7 +311,7 @@ public class HudFragment {
     }
 
     private Stack getWavesMain() {
-        return (Stack) ((Table) ui.hudGroup.find("overlaymarker")).getChildren().get(mobile ? 2 : 0);
+        return (Stack) ((Table) ui.hudGroup.find("overlaymarker")).getChildren().get(mobile ? 3 : 0);
     }
 
     private void getCommandButton(Cons<Table> cons) {
