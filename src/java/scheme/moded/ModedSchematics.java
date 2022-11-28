@@ -3,6 +3,7 @@ package scheme.moded;
 import arc.Events;
 import arc.files.Fi;
 import arc.func.Func;
+import arc.math.Mathf;
 import arc.math.geom.Point2;
 import arc.struct.IntMap;
 import arc.struct.Seq;
@@ -184,12 +185,17 @@ public class ModedSchematics extends Schematics {
         building(null),
         floor(Tile::floor),
         block(tile -> tile.build == null && tile.block() != Blocks.air ? tile.block() : null),
-        overlay(tile -> tile.overlay() != Blocks.air ? tile.overlay() : null);
+        overlay(tile -> tile.overlay() != Blocks.air ? tile.overlay() : null),
+        terrain();
 
-        private final Func<Tile, Block> provider;
+        private final Func<NormalizeResult, Schematic> create;
 
         private Layer(Func<Tile, Block> provider) {
-            this.provider = provider;
+            this.create = result -> create(result.x, result.y, result.x2, result.y2, provider);
+        }
+
+        private Layer() {
+            this.create = result -> createTerrain(result.x, result.y, result.x2, result.y2);
         }
 
         public Layer next() {
@@ -198,7 +204,7 @@ public class ModedSchematics extends Schematics {
 
         public Schematic create(int x, int y, int x2, int y2) {
             NormalizeResult result = Placement.normalizeArea(x, y, x2, y2, 0, false, maxSchematicSize);
-            return create(result.x, result.y, result.x2, result.y2, provider);
+            return create.get(result);
         }
 
         private Schematic create(int x1, int y1, int x2, int y2, Func<Tile, Block> provider) {
@@ -225,6 +231,27 @@ public class ModedSchematics extends Schematics {
             });
 
             return new Schematic(tiles, new StringMap(), tiles.max(st -> st.x).x + 1, tiles.max(st -> st.y).y + 1);
+        }
+
+        private Schematic createTerrain(int x1, int y1, int x2, int y2) {
+            x1 = Mathf.clamp(x1, 0, world.width()); y1 = Mathf.clamp(y1, 0, world.height());
+            x2 = Mathf.clamp(x2, 0, world.width()); y2 = Mathf.clamp(y2, 0, world.height());
+
+            Seq<Stile> tiles = new Seq<>();
+            int width = x2 - x1 + 1, height = y2 - y1 + 1;
+
+            for (int x = 0; x <= width; x++) {
+                for (int y = 0; y <= height; y++) {
+                    Tile tile = world.tile(x, y);
+                    if (tile == null) continue;
+
+                    tiles.add(new Stile(tile.floor(), x, y, null, (byte) 0));
+                    if (tile.block() != Blocks.air && tile.build == null) tiles.add(new Stile(tile.block(), x, y, null, (byte) 0));
+                    if (tile.overlay() != Blocks.air) tiles.add(new Stile(tile.block(), x, y, null, (byte) 0));
+                }
+            }
+
+            return new Schematic(tiles, new StringMap(), width, height);
         }
     }
 }

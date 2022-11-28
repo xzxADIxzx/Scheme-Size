@@ -21,7 +21,7 @@ A mod that increases the schematic size limit to 512 blocks! Adds admins, render
    - Cursed Schematics
 ",
 author: "[#0096FF]xzxADIxzx",
-version: 2.5.12,
+version: 2.5.13,
 minGameVersion: 140.3,
 hidden: true,
 main: scheme.Main
