@@ -3,15 +3,14 @@ package scheme.moded;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Lines;
 import arc.math.Mathf;
+import arc.math.geom.Vec2;
 import arc.scene.ui.layout.Scl;
 import arc.struct.Seq;
+import arc.util.Time;
 import mindustry.content.Blocks;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Unit;
-import mindustry.input.Binding;
-import mindustry.input.DesktopInput;
-import mindustry.input.InputHandler;
-import mindustry.input.Placement;
+import mindustry.input.*;
 import mindustry.input.Placement.NormalizeResult;
 import mindustry.world.blocks.power.PowerNode;
 import scheme.ai.GammaAI;
@@ -27,6 +26,8 @@ public class ModedDesktopInput extends DesktopInput implements ModedInputHandler
 
     public boolean using, movementLocked;
     public int buildX, buildY, lastX, lastY, lastSize = 8;
+
+    public Vec2 lastCamera = new Vec2();
 
     @Override
     protected void removeSelection(int x1, int y1, int x2, int y2, int maxLength) {
@@ -83,14 +84,26 @@ public class ModedDesktopInput extends DesktopInput implements ModedInputHandler
 
     @Override
     public void update() {
+        lastCamera.set(camera.position);
+
         if (input.keyDown(ModedBinding.alternative) && input.keyTap(Binding.respawn)) admins.despawn();
         else super.update(); // prevent unit clear, is it a crutch?
 
         if (locked()) return;
 
-        if (movementLocked) {
+        if (movementLocked && !scene.hasKeyboard()) {
             drawLocked(player.unit().x, player.unit().y);
             panning = true; // panning is always enabled when unit movement is locked
+
+            float speed = (input.keyDown(Binding.boost) ? panBoostSpeed : panSpeed) * Time.delta;
+
+            movement.set(input.axis(Binding.move_x), input.axis(Binding.move_y)).nor().scl(speed);
+            camera.position.set(lastCamera).add(movement);
+
+            if (input.keyDown(Binding.pan)) {
+                camera.position.x += Mathf.clamp((input.mouseX() - graphics.getWidth() / 2f) * panScale, -1, 1) * speed;
+                camera.position.y += Mathf.clamp((input.mouseY() - graphics.getHeight() / 2f) * panScale, -1, 1) * speed;
+            }
         }
 
         if (scene.hasField()) {
