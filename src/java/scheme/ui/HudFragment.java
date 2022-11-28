@@ -218,10 +218,8 @@ public class HudFragment {
             cont.table(Tex.buttonEdge4, pad -> {
                 partitionmb(pad, mode -> {
                     mode.add(mobiles);
-                    setAction(mode,
-                            mobile ? "disarmed" : Icon.book,
-                            mobile ? "lock_shoot." : "view_comb",
-                            mobile ? m_input::lockShooting : keycomb::show);
+                    if (mobile) setAction(mode, "disarmed", "lock_shoot.", m_input::lockShooting);
+                    else setAction(mode, Icon.book, "view_comb", keycomb::show);
                     setAction(mode, "blasted",   "despawn",         () -> admins.despawn());
                     setAction(mode, "overdrive", "teleport",        () -> admins.teleport());
                     setAction(mode, Icon.lock,   "lock_move",       () -> m_input.lockMovement());
@@ -276,12 +274,14 @@ public class HudFragment {
     }
 
     private void setMode(Table table, Drawable icon, Mode mode) {
-        table.button(icon, check, () -> build.setMode(mode)).checked(t -> build.mode == mode).row();
+        table.button(icon, check, () -> build.setMode(mode)).checked(t -> build.mode == mode).with(button -> {
+            button.addListener(new TooltipLocker("@tooltip." + mode));
+        }).row();
     }
 
     private void setAction(Table table, Object icon, String tooltip, Runnable listener) {
-        table.button(icon instanceof String name ? atlas.drawable("status-" + name) : (Drawable) icon, style, 37f, listener).get().addListener(
-                new TooltipLocker(tooltip.endsWith(".") ? "@keybind." + tooltip + "name" : "@keycomb." + tooltip));
+        table.button(icon instanceof String name ? atlas.drawable("status-" + name) : (Drawable) icon, style, 37f, listener).get()
+                .addListener(new TooltipLocker(tooltip.endsWith(".") ? "@keybind." + tooltip + "name" : "@keycomb." + tooltip));
     }
 
     private void setMove(Table table, Updater move) {
