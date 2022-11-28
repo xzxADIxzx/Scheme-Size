@@ -199,7 +199,7 @@ public class ModedSchematics extends Schematics {
         }
 
         public Layer next() {
-            return values()[(new Seq<Layer>(values()).indexOf(this) + 1) % 4];
+            return values()[(new Seq<Layer>(values()).indexOf(this) + 1) % 5];
         }
 
         public Schematic create(int x, int y, int x2, int y2) {
@@ -240,14 +240,14 @@ public class ModedSchematics extends Schematics {
             Seq<Stile> tiles = new Seq<>();
             int width = x2 - x1 + 1, height = y2 - y1 + 1;
 
-            for (int x = 0; x <= width; x++) {
-                for (int y = 0; y <= height; y++) {
-                    Tile tile = world.tile(x, y);
+            for (int x = 0; x < width; x++) {
+                for (int y = 0; y < height; y++) {
+                    Tile tile = world.tile(x + x1, y + y1);
                     if (tile == null) continue;
 
                     tiles.add(new Stile(tile.floor(), x, y, null, (byte) 0));
                     if (tile.block() != Blocks.air && tile.build == null) tiles.add(new Stile(tile.block(), x, y, null, (byte) 0));
-                    if (tile.overlay() != Blocks.air) tiles.add(new Stile(tile.block(), x, y, null, (byte) 0));
+                    if (tile.overlay() != Blocks.air) tiles.add(new Stile(tile.overlay(), x, y, null, (byte) 0));
                 }
             }
 
