@@ -5,6 +5,7 @@ import arc.math.geom.Position;
 import arc.struct.Seq;
 import mindustry.content.Blocks;
 import mindustry.entities.units.BuildPlan;
+import mindustry.gen.Groups;
 import mindustry.gen.Player;
 import mindustry.world.Block;
 import mindustry.world.Tile;
@@ -30,6 +31,11 @@ public class Internal implements AdminsTools {
     public void spawnUnits() {
         if (unusable()) return;
         unit.select(true, true, true, (target, team, unit, amount) -> {
+            if (amount == 0f) {
+                Groups.unit.each(u -> u.team == team && u.type == unit, u -> u.spawnedByCore(true));
+                return;
+            }
+
             if (!canCreate(team, unit)) return;
             for (int i = 0; i < amount; i++) unit.spawn(team, target);
             units.refresh();

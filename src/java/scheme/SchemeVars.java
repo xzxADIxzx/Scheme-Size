@@ -65,8 +65,8 @@ public class SchemeVars {
         tile = new TileSelectDialog();
         tag = new TagSelectDialog();
 
-        unit = new ContentSelectDialog<>("@select.unit", content.units(), 1, 25, 1, value -> {
-            return bundle.format("select.units", value);
+        unit = new ContentSelectDialog<>("@select.unit", content.units(), 0, 25, 1, value -> {
+            return value == 0 ? "@select.unit.clear" : bundle.format("select.units", value);
         });
         effect = new ContentSelectDialog<>("@select.effect", content.statusEffects(), 0, 5 * 3600, 600, value -> {
             return value == 0 ? "@select.effect.clear" : bundle.format("select.seconds", value / 60f);

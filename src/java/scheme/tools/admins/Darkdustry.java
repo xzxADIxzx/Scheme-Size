@@ -26,6 +26,11 @@ public class Darkdustry implements AdminsTools {
     public void spawnUnits() {
         if (unusable()) return;
         unit.select(true, false, true, (target, team, unit, amount) -> {
+            if (amount == 0f) {
+                send("despawn");
+                return;
+            }
+
             send("spawn", unit.id, amount.intValue(), team.id);
             units.refresh();
         });

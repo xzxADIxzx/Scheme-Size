@@ -31,6 +31,11 @@ public class SlashJs implements AdminsTools {
     public void spawnUnits() {
         if (unusable()) return;
         unit.select(true, true, true, (target, team, unit, amount) -> {
+            if (amount == 0f) {
+                send("Groups.unit.each(u => u.team == Team.@ && u.type == @, u => u.spawnedByCore = true)", team, getUnit(unit));
+                return;
+            }
+
             if (!canCreate(team, unit)) return;
             getPlayer(target);
             send("var unit = @", getUnit(unit));
