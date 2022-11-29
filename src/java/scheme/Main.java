@@ -56,6 +56,7 @@ public class Main extends Mod {
         hudfrag.build(ui.hudGroup);
         listfrag.build(ui.hudGroup);
         shortfrag.build(ui.hudGroup);
+        consolefrag.build();
 
         control.setInput(m_input.asHandler());
         renderer.addEnvRenderer(0, render::draw);

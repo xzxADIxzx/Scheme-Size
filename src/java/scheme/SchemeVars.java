@@ -7,9 +7,7 @@ import mindustry.type.UnitType;
 import scheme.moded.*;
 import scheme.tools.*;
 import scheme.tools.admins.AdminsTools;
-import scheme.ui.HudFragment;
-import scheme.ui.PlayerListFragment;
-import scheme.ui.ShortcutFragment;
+import scheme.ui.*;
 import scheme.ui.dialogs.*;
 
 import static arc.Core.*;
@@ -46,6 +44,7 @@ public class SchemeVars {
     public static HudFragment hudfrag;
     public static PlayerListFragment listfrag;
     public static ShortcutFragment shortfrag;
+    public static ConsoleFragment consolefrag;
 
     public static void load() {
         // m_schematics is created in Main to prevent dual loading
@@ -83,5 +82,6 @@ public class SchemeVars {
         hudfrag = new HudFragment();
         listfrag = new PlayerListFragment();
         shortfrag = new ShortcutFragment();
+        consolefrag = new ConsoleFragment();
     }
 }
