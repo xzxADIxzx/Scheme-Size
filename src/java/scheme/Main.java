@@ -67,6 +67,7 @@ public class Main extends Mod {
         try { // run main.js without the wrapper to access the constant values in the game console
             Scripts scripts = mods.getScripts();
             scripts.context.evaluateReader(scripts.scope, SchemeUpdater.script().reader(), "main.js", 0);
+            log("Added constant variables to developer console.");
         } catch (Throwable e) { error(e); }
 
         Blocks.distributor.buildType = () -> ((Router) Blocks.distributor).new RouterBuild() {

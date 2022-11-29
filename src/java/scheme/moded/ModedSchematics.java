@@ -181,6 +181,8 @@ public class ModedSchematics extends Schematics {
             return layer.create(x, y, x2, y2);
     }
 
+    // endregion
+
     public enum Layer {
         building(null),
         floor(Tile::floor),
