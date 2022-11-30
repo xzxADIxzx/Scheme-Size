@@ -100,7 +100,7 @@ public class ConsoleFragment extends Table {
 
             cont.table(input -> {
                 input.add(chat = new ResizableArea()).growX().padRight(4f);
-                input.button("Send", style, () -> {
+                input.button("@console.multiline.send", style, () -> {
                     TextField field = Reflect.get(ui.consolefrag, "chatfield");
                     field.setText(chat.getText());
 
