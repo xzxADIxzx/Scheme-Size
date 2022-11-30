@@ -5,6 +5,8 @@ import arc.scene.ui.TextButton.TextButtonStyle;
 import arc.scene.ui.layout.Scl;
 import arc.scene.ui.layout.Table;
 import arc.struct.Seq;
+import arc.util.Timer;
+import arc.util.Timer.Task;
 import mindustry.ui.Fonts;
 import mindustry.ui.Styles;
 
@@ -64,11 +66,22 @@ public class ConsoleFragment extends Table {
             cont.setFillParent(true);
         }));
 
-        tabs.add(new Table(Styles.black5, cont -> {
+        tabs.add(new Table(cont -> {
             cont.setFillParent(true);
+            cont.top().defaults().growX();
+
+            Table list = new Table();
+            list.defaults().growX().padBottom(4f);
+
+            cont.pane(list).row();
+            cont.button("@console.schedule.new", style, () -> {
+                list.add(new TaskButton()).row();
+            }).height(28f);
         }));
 
         // endregion
+
+        showTab(ConsoleTab.classic);
     }
 
     public void showTab(ConsoleTab tab) {
@@ -87,6 +100,24 @@ public class ConsoleFragment extends Table {
 
         public ConsoleTab next() {
             return values()[(id() + 1) % 3];
+        }
+    }
+
+    public class TaskButton extends Table {
+
+        public Task task;
+        public String output = "null";
+
+        public TaskButton() {
+            super(Styles.black5);
+            margin(4f);
+
+            area("// write your code here", code -> {
+                if (task != null) task.cancel();
+                task = Timer.schedule(() -> output = mods.getScripts().runConsole(code), 0f, 1f);
+            }).with(area -> area.setPrefRows(5)).growX().row();
+
+            label(() -> bundle.get("@console.schedule.output") + (output.contains("\n") ? "\n" : " ") + output).left();
         }
     }
 }
