@@ -3,14 +3,17 @@ package scheme.ui;
 import arc.func.Cons;
 import arc.input.KeyCode;
 import arc.scene.ui.TextArea;
+import arc.scene.ui.TextField;
 import arc.scene.ui.TextButton.TextButtonStyle;
 import arc.scene.ui.TextField.TextFieldFilter;
 import arc.scene.ui.layout.Scl;
 import arc.scene.ui.layout.Table;
 import arc.struct.Seq;
+import arc.util.Reflect;
 import arc.util.Strings;
 import arc.util.Timer;
 import arc.util.Timer.Task;
+import mindustry.input.Binding;
 import mindustry.ui.Fonts;
 import mindustry.ui.Styles;
 
@@ -23,6 +26,10 @@ public class ConsoleFragment extends Table {
     public ConsoleTab last;
 
     public Table cont;
+    public ResizableArea chat;
+
+    public Seq<String> history = Reflect.get(ui.consolefrag, "history");
+    public int position;
 
     public ConsoleFragment() {
         scene.add(this);
@@ -37,6 +44,16 @@ public class ConsoleFragment extends Table {
             // don't ask, please
             ui.consolefrag.setPosition(-5f, -5f);
             ui.consolefrag.getChildren().get(1).setWidth(graphics.getWidth() - Scl.scl(26f));
+
+            if (last != ConsoleTab.multiline || scene.getKeyboardFocus() != chat) return;
+
+            if (input.keyTap(Binding.chat_history_prev) && position < history.size - 1) {
+                if (position == 0) history.set(0, chat.getText());
+                chat.setText(history.get(++position));
+            }
+
+            if (input.keyTap(Binding.chat_history_next) && position > 0)
+                chat.setText(history.get(--position));
         });
     }
 
@@ -67,6 +84,15 @@ public class ConsoleFragment extends Table {
 
         tabs.add(new Table(cont -> {
             cont.setFillParent(true);
+            cont.bottom();
+
+            cont.add(chat = new ResizableArea()).growX().padRight(4f);
+            cont.button("Send", style, () -> {
+                TextField field = Reflect.get(ui.consolefrag, "chatfield");
+                field.setText(chat.getText());
+
+                Reflect.invoke(ui.consolefrag, "sendMessage");
+            }).width(100f).fillY();
         }));
 
         tabs.add(new Table(cont -> {
@@ -76,7 +102,7 @@ public class ConsoleFragment extends Table {
             Table list = new Table();
             list.defaults().growX().padBottom(4f);
 
-            cont.pane(list).padBottom(4f).row();
+            cont.pane(list).row();
             cont.button("@console.schedule.new", style, () -> {
                 list.add(new TaskButton()).row();
             }).height(28f);
@@ -150,6 +176,13 @@ public class ConsoleFragment extends Table {
         public TextArea area;
         public int last;
 
+        public ResizableArea() {
+            super(Styles.black5);
+
+            this.area = new TextArea("");
+            rebuild();
+        }
+
         public ResizableArea(String text, Cons<String> listener) {
             this.area = new TextArea(text);
             this.area.changed(() -> {
@@ -172,6 +205,15 @@ public class ConsoleFragment extends Table {
 
             area.setCursorPosition(pos);
             scene.setKeyboardFocus(area);
+        }
+
+        public void setText(String text) {
+            area.setText(text);
+            area.setCursorPosition(text.length());
+        }
+
+        public String getText() {
+            return area.getText();
         }
     }
 }
