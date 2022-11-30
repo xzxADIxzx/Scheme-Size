@@ -128,7 +128,7 @@ public class ConsoleFragment extends Table {
 
                 input.field("1.0", TextFieldFilter.floatsOnly, num -> {
                     interval = Strings.parseFloat(num, 1f);
-                    if (interval <= 0.01f) interval = 1f;
+                    if (interval < 0.01f) interval = 1f;
 
                     restart.run(); // update task
                 }).update(field -> {
@@ -136,12 +136,12 @@ public class ConsoleFragment extends Table {
                 }).width(200f).tooltip("@console.schedule.tooltip").row();
             }).row();
 
-            labelWrap(() -> bundle.format("@console.schedule.output", output != null && output.contains("\n") ? "\n" : " ", output)).row();
+            labelWrap(() -> bundle.format("console.schedule.output", output != null && output.contains("\n") ? "\n" : " ", output)).row();
 
             button("@console.schedule.cancel", Styles.cleart, () -> {
                 if (task != null) task.cancel();
                 parent.removeChild(this);
-            });
+            }).padBottom(0f);
         }
     }
 
