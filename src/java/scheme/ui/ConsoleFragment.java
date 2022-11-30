@@ -4,9 +4,11 @@ import arc.func.Cons;
 import arc.input.KeyCode;
 import arc.scene.ui.TextArea;
 import arc.scene.ui.TextButton.TextButtonStyle;
+import arc.scene.ui.TextField.TextFieldFilter;
 import arc.scene.ui.layout.Scl;
 import arc.scene.ui.layout.Table;
 import arc.struct.Seq;
+import arc.util.Strings;
 import arc.util.Timer;
 import arc.util.Timer.Task;
 import mindustry.ui.Fonts;
@@ -107,18 +109,39 @@ public class ConsoleFragment extends Table {
     public class TaskButton extends Table {
 
         public Task task;
+        public float interval = 1f;
         public String output;
+        public Runnable restart;
 
         public TaskButton() {
             super(Styles.black5);
-            margin(4f);
+            margin(4f).defaults().growX().padBottom(4f);
 
             add(new ResizableArea("// write your code here", code -> {
                 if (task != null) task.cancel();
-                task = Timer.schedule(() -> output = mods.getScripts().runConsole(code), 0f, 1f);
-            })).growX().padBottom(4f).row();
+                task = Timer.schedule(() -> output = mods.getScripts().runConsole(code), 0f, interval);
+            })).with(area -> restart = area.area::change).row();
 
-            labelWrap(() -> bundle.get("@console.schedule.output") + (output != null && output.contains("\n") ? "\n" : " ") + output).growX().left();
+            table(input -> {
+                input.left();
+                input.add("@console.schedule.interval");
+
+                input.field("1.0", TextFieldFilter.floatsOnly, num -> {
+                    interval = Strings.parseFloat(num, 1f);
+                    if (interval <= 0.01f) interval = 1f;
+
+                    restart.run(); // update task
+                }).update(field -> {
+                    if (scene.getKeyboardFocus() != field) field.setText(String.valueOf(interval));
+                }).width(200f).tooltip("@console.schedule.tooltip").row();
+            }).row();
+
+            labelWrap(() -> bundle.format("@console.schedule.output", output != null && output.contains("\n") ? "\n" : " ", output)).row();
+
+            button("@console.schedule.cancel", Styles.cleart, () -> {
+                if (task != null) task.cancel();
+                parent.removeChild(this);
+            });
         }
     }
 
