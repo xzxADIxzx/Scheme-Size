@@ -1,6 +1,8 @@
 package scheme.ui;
 
+import arc.func.Cons;
 import arc.input.KeyCode;
+import arc.scene.ui.TextArea;
 import arc.scene.ui.TextButton.TextButtonStyle;
 import arc.scene.ui.layout.Scl;
 import arc.scene.ui.layout.Table;
@@ -37,8 +39,7 @@ public class ConsoleFragment extends Table {
     }
 
     public void build() {
-        setFillParent(true);
-        margin(4f).clear();
+        margin(4f).setFillParent(true);
 
         var style = new TextButtonStyle() {{
             font = Fonts.def;
@@ -73,7 +74,7 @@ public class ConsoleFragment extends Table {
             Table list = new Table();
             list.defaults().growX().padBottom(4f);
 
-            cont.pane(list).row();
+            cont.pane(list).padBottom(4f).row();
             cont.button("@console.schedule.new", style, () -> {
                 list.add(new TaskButton()).row();
             }).height(28f);
@@ -106,18 +107,48 @@ public class ConsoleFragment extends Table {
     public class TaskButton extends Table {
 
         public Task task;
-        public String output = "null";
+        public String output;
 
         public TaskButton() {
             super(Styles.black5);
             margin(4f);
 
-            area("// write your code here", code -> {
+            add(new ResizableArea("// write your code here", code -> {
                 if (task != null) task.cancel();
                 task = Timer.schedule(() -> output = mods.getScripts().runConsole(code), 0f, 1f);
-            }).with(area -> area.setPrefRows(5)).growX().row();
+            })).growX().padBottom(4f).row();
 
-            label(() -> bundle.get("@console.schedule.output") + (output.contains("\n") ? "\n" : " ") + output).left();
+            labelWrap(() -> bundle.get("@console.schedule.output") + (output != null && output.contains("\n") ? "\n" : " ") + output).growX().left();
+        }
+    }
+
+    public class ResizableArea extends Table {
+
+        public TextArea area;
+        public int last;
+
+        public ResizableArea(String text, Cons<String> listener) {
+            this.area = new TextArea(text);
+            this.area.changed(() -> {
+                listener.get(area.getText());
+            });
+
+            rebuild();
+        }
+
+        public void rebuild() {
+            last = area.getLines();
+            area.setPrefRows(Math.max(last + 1, 3));
+
+            int pos = area.getCursorPosition();
+
+            clear();
+            add(area).grow().update(area -> {
+                if (area.getLines() != last) rebuild();
+            });
+
+            area.setCursorPosition(pos);
+            scene.setKeyboardFocus(area);
         }
     }
 }
