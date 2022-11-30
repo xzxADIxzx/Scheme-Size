@@ -45,7 +45,7 @@ public class ConsoleFragment extends Table {
             ui.consolefrag.setPosition(-5f, -5f);
             ui.consolefrag.getChildren().get(1).setWidth(graphics.getWidth() - Scl.scl(26f));
 
-            if (last != ConsoleTab.multiline || scene.getKeyboardFocus() != chat) return;
+            if (last != ConsoleTab.multiline || scene.getKeyboardFocus() != chat.area) return;
 
             if (input.keyTap(Binding.chat_history_prev) && position < history.size - 1) {
                 if (position == 0) history.set(0, chat.getText());
@@ -84,15 +84,29 @@ public class ConsoleFragment extends Table {
 
         tabs.add(new Table(cont -> {
             cont.setFillParent(true);
-            cont.bottom();
+            cont.bottom().defaults().growX();
 
-            cont.add(chat = new ResizableArea()).growX().padRight(4f);
-            cont.button("Send", style, () -> {
-                TextField field = Reflect.get(ui.consolefrag, "chatfield");
-                field.setText(chat.getText());
+            Table list = new Table(Styles.black5);
+            list.margin(4f).defaults().growX().padBottom(3f);
 
-                Reflect.invoke(ui.consolefrag, "sendMessage");
-            }).width(100f).fillY();
+            Seq<String> messages = Reflect.get(ui.consolefrag, "messages");
+            cont.pane(list).update(pane -> {
+                int current = list.getChildren().size;
+                if (current == messages.size) return;
+
+                for (int i = current; i < messages.size; i++)
+                    list.labelWrap(messages.get(messages.size - i - 1)).row();
+            }).padBottom(4f).row();
+
+            cont.table(input -> {
+                input.add(chat = new ResizableArea()).growX().padRight(4f);
+                input.button("Send", style, () -> {
+                    TextField field = Reflect.get(ui.consolefrag, "chatfield");
+                    field.setText(chat.getText());
+
+                    Reflect.invoke(ui.consolefrag, "sendMessage");
+                }).width(100f).fillY();
+            });
         }));
 
         tabs.add(new Table(cont -> {
