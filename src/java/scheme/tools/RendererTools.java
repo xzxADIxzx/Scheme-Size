@@ -77,12 +77,12 @@ public class RendererTools {
             }
 
             drawBar(unit, 3f, Pal.darkishGray, 1f);
-            drawBar(unit, 3f, Pal.health, Mathf.clamp(unit.health / unit.maxHealth));
+            drawBar(unit, 3f, Pal.health, Mathf.clamp(unit.healthf()));
 
             if (!state.rules.unitAmmo) return;
 
             drawBar(unit, -3f, unit.type.ammoType.color(), 1f);
-            drawBar(unit, -3f, Pal.darkishGray, 1f - Mathf.clamp(unit.ammo / unit.type.ammoCapacity));
+            drawBar(unit, -3f, Pal.darkishGray, 1f - Mathf.clamp(unit.ammof()));
         }));
 
         if (unitRadius) Draw.draw(Layer.overlayUI, () -> units.each(unit -> Drawf.circles(unit.x, unit.y, unit.range(), unit.team.color)));
