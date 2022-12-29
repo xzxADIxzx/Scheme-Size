@@ -206,7 +206,7 @@ public class HudFragment {
 
             cont.button("@none", Icon.menu, Styles.flatBordert, () -> {
                 m_schematics.nextLayer();
-            }).size(155f, 50f).margin(8f).update(button -> button.setText(bundle.get("layer." + m_schematics.layer)));
+            }).size(155f, 50f).margin(6f).update(button -> button.setText(bundle.get("layer." + m_schematics.layer)));
         });
 
         parent.fill(cont -> { // Mobile Buttons
