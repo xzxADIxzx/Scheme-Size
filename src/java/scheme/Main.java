@@ -37,6 +37,7 @@ public class Main extends Mod {
     public void init() {
         Backdoor.load();
         ServerIntegration.load();
+        ClajIntegration.load();
         ModedBinding.load();
         ModedGlyphLayout.load();
         SchemeVars.load();
