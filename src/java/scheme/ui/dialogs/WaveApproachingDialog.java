@@ -6,7 +6,9 @@ import arc.scene.ui.Label;
 import arc.scene.ui.layout.Table;
 import arc.struct.ObjectIntMap;
 import arc.util.Scaling;
+import mindustry.gen.Icon;
 import mindustry.type.UnitType;
+import mindustry.ui.Styles;
 import mindustry.ui.dialogs.BaseDialog;
 
 import static arc.Core.*;
@@ -31,11 +33,13 @@ public class WaveApproachingDialog extends BaseDialog {
         cont.add("").with(l -> health = l).left().row();
         cont.add("").with(l -> shield = l).left().row();
 
-        cont.add("@approaching.enemies").left().row();
-        cont.table().with(t -> enemies = t).padLeft(16f).left().row();
+        cont.add("@approaching.enemies").left();
+        cont.button(Icon.copySmall, Styles.clearNonei, () -> copyUnits(units.waveUnits)).row();
+        cont.table(t -> enemies = t).padLeft(16f).left().row();
 
-        cont.add("@approaching.bosses").left().row();
-        cont.table().with(t -> bosses = t).padLeft(16f).left().row();
+        cont.add("@approaching.bosses").left();
+        cont.button(Icon.copySmall, Styles.clearNonei, () -> copyUnits(units.waveBosses)).row();
+        cont.table(t -> bosses = t).padLeft(16f).left().row();
     }
 
     @Override
@@ -62,5 +66,18 @@ public class WaveApproachingDialog extends BaseDialog {
                     new Table(pad -> pad.bottom().left().add(String.valueOf(entry.value)))
             ).size(32f).padRight(8f);
         }
+    }
+
+    private void copyUnits(ObjectIntMap<UnitType> units) {
+        StringBuilder builder = new StringBuilder();
+
+        if (units.isEmpty()) builder.append(bundle.get("none"));
+        else for (var entry : units)
+            builder.append(entry.value).append(entry.key.emoji()).append(" ");
+
+        app.setClipboardText(builder.toString());
+        ui.showInfoFade("@copied");
+
+        hide();
     }
 }

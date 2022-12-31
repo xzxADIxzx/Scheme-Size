@@ -54,7 +54,7 @@ public class ClajIntegration {
         return client;
     }
 
-    public static void joinRoom(String link, Runnable disconnected) throws IOException {
+    public static void joinRoom(String link) throws IOException {
         if (!link.startsWith("CLaJ")) throw new IOException("Invalid link: missing CLaJ prefix!");
 
         var keyAddress = link.split("#");

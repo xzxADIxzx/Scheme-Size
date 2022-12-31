@@ -181,8 +181,9 @@ public class HudFragment {
             cont.table(Styles.black6, pad -> {
                 pad.add("@approaching.info").labelAlign(Align.center, Align.center).update(label -> {
                     label.setColor(Color.white.cpy().lerp(Color.scarlet, Mathf.absin(10f, 1f)));
-                });
-                pad.button(Icon.info, style, approaching::show).grow().padLeft(6f);
+                }).padRight(6f);
+                pad.button(Icon.info, style, approaching::show).grow();
+                pad.button(Icon.eyeOffSmall, style, () -> settings.put("approachenabled", false)).grow();
             }).margin(6f).padBottom(mobile ? 350f : 100f).update(pad -> {
                 pad.color.a = Mathf.lerpDelta(pad.color.a, Mathf.num(
                         settings.getBool("approachenabled") && state.wavetime > 600f && state.wavetime < 1800f
