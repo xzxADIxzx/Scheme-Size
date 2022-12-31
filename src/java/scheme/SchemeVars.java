@@ -40,6 +40,7 @@ public class SchemeVars {
     public static KeybindCombinationsDialog keycomb;
     public static SchemasDialog schemas;
     public static WaveApproachingDialog approaching;
+    public static JoinViaClajDialog joinViaClaj;
 
     public static HudFragment hudfrag;
     public static PlayerListFragment listfrag;
@@ -78,6 +79,7 @@ public class SchemeVars {
         keycomb = new KeybindCombinationsDialog();
         schemas = new SchemasDialog();
         approaching = new WaveApproachingDialog();
+        joinViaClaj = new JoinViaClajDialog();
 
         hudfrag = new HudFragment();
         listfrag = new PlayerListFragment();
