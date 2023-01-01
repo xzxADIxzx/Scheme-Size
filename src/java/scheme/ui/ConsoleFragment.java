@@ -180,7 +180,7 @@ public class ConsoleFragment extends Table {
 
             button("@console.schedule.cancel", Styles.cleart, () -> {
                 if (task != null) task.cancel();
-                parent.removeChild(this);
+                remove();
             }).padBottom(0f);
         }
     }
