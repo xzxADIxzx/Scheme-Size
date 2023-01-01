@@ -100,4 +100,9 @@ public class Main extends Mod {
     public static void error(Throwable info) {
         app.post(() -> Log.err("Scheme", info));
     }
+
+    public static void copy(String text) {
+        app.setClipboardText(text);
+        ui.showInfoFade("@copied");
+    }
 }

@@ -10,6 +10,7 @@ import mindustry.gen.Icon;
 import mindustry.type.UnitType;
 import mindustry.ui.Styles;
 import mindustry.ui.dialogs.BaseDialog;
+import scheme.Main;
 
 import static arc.Core.*;
 import static mindustry.Vars.*;
@@ -75,9 +76,7 @@ public class WaveApproachingDialog extends BaseDialog {
         else for (var entry : units)
             builder.append(entry.value).append(entry.key.emoji()).append(" ");
 
-        app.setClipboardText(builder.toString());
-        ui.showInfoFade("@copied");
-
+        Main.copy(builder.toString());
         hide();
     }
 }
