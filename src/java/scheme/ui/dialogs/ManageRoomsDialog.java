@@ -49,12 +49,15 @@ public class ManageRoomsDialog extends BaseDialog {
     private void fixPausedDialog() {
         var root = ui.paused.cont;
 
+        if (mobile) {
+            root.row().buttonRow("@manage.name", Icon.planet, this::show).colspan(3).disabled(button -> !net.server());
+            return;
+        }
+
         root.row();
         root.button("@manage.name", Icon.planet, this::show).colspan(2).width(450).disabled(button -> !net.server()).row();
 
-        int index = 5; // TODO mobile index
-        if (!state.isCampaign() && !state.isEditor()) index += 2;
-
+        int index = state.isCampaign() || state.isEditor() ? 5 : 7;
         root.getCells().insert(index, root.getCells().remove(index + 1));
     }
 
