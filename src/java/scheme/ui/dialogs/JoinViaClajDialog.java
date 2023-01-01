@@ -25,11 +25,24 @@ public class JoinViaClajDialog extends BaseDialog {
         buttons.button("@cancel", this::hide);
         buttons.button("@ok", () -> {
             try {
-                ClajIntegration.joinRoom(lastLink);
+                if (player.name.trim().isEmpty()) {
+                    ui.showInfo("@noname");
+                    return;
+                }
+
+                ClajIntegration.joinRoom(lastLink, () -> {
+                    ui.join.hide();
+                    hide();
+                });
+
+                ui.loadfrag.show("@connecting");
+                ui.loadfrag.setButton(() -> {
+                    ui.loadfrag.hide();
+                    netClient.disconnectQuietly();
+                });
             } catch (Throwable ignored) {
                 ui.showErrorMessage(ignored.getMessage());
             }
-            this.hide();
         }).disabled(button -> lastLink.isEmpty() || net.active());
 
         ui.join.shown(this::fixJoinDialog);

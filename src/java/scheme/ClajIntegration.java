@@ -54,7 +54,7 @@ public class ClajIntegration {
         return client;
     }
 
-    public static void joinRoom(String link) throws IOException {
+    public static void joinRoom(String link, Runnable success) throws IOException {
         if (!link.startsWith("CLaJ")) throw new IOException("Invalid link: missing CLaJ prefix!");
 
         var keyAddress = link.split("#");
@@ -64,10 +64,13 @@ public class ClajIntegration {
         if (keyAddress.length != 2) throw new IOException("Invalid link: it must contain exactly one : character!");
 
         try {
-            ui.join.connect(ipPort[0], Integer.parseInt(ipPort[1]));
-            ui.join.hidden(() -> {
-                ui.join.hidden(() -> {}); // for safety
+            logic.reset();
+            net.reset();
+
+            netClient.beginConnecting();
+            net.connect(ipPort[0], Integer.parseInt(ipPort[1]), () -> {
                 if (!net.client()) return;
+                success.run();
 
                 ByteBuffer buffer = ByteBuffer.allocate(8192);
                 buffer.put(Serializer.linkID);
@@ -79,7 +82,6 @@ public class ClajIntegration {
         } catch (Throwable ignored) {
             throw new IOException("Invalid link", ignored);
         }
-
     }
 
     public static void clear() {
@@ -110,14 +112,16 @@ public class ClajIntegration {
 
         public static void writeString(ByteBuffer buffer, String message) {
             buffer.putInt(message.length());
-            for (char chara : message.toCharArray()) buffer.putChar(chara);
+            for (char chara : message.toCharArray())
+                buffer.putChar(chara);
         }
 
         public static String readString(ByteBuffer buffer) {
             int length = buffer.getInt();
 
             StringBuilder builder = new StringBuilder();
-            for (int i = 0; i < length; i++) builder.append(buffer.getChar());
+            for (int i = 0; i < length; i++)
+                builder.append(buffer.getChar());
 
             return builder.toString();
         }
