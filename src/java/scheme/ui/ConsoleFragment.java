@@ -115,6 +115,7 @@ public class ConsoleFragment extends Table {
 
             Table list = new Table();
             list.defaults().growX().padBottom(4f);
+            list.update(() -> list.getCells().filter(cell -> cell.get() != null));
 
             cont.pane(list).row();
             cont.button("@console.schedule.new", style, () -> {
