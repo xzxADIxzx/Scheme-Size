@@ -39,7 +39,7 @@ public class ManageRoomsDialog extends BaseDialog {
                     ui.showErrorMessage(ignored.getMessage());
                 }
             }).disabled(button -> list.getChildren().size >= 8);
-        }).height(600f).row();
+        }).height(550f).row();
 
         cont.labelWrap("@manage.tooltip").labelAlign(2, 8).padTop(16f).width(400f).get().getStyle().fontColor = Color.lightGray;
 

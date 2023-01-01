@@ -15,11 +15,18 @@ public class JoinViaClajDialog extends BaseDialog {
 
     public String lastLink = "CLaJLink#ip:port";
 
+    public boolean valid;
+    public String output;
+
     public JoinViaClajDialog() {
         super("@join.name");
 
-        cont.add("@join.link").padRight(5f).left();
-        cont.field(lastLink, link -> lastLink = link).size(550f, 54f).maxTextLength(100).get();
+        cont.table(table -> {
+            table.add("@join.link").padRight(5f).left();
+            table.field(lastLink, this::setLink).size(550f, 54f).maxTextLength(100).valid(this::setLink);
+        }).row();
+
+        cont.label(() -> output).width(550f).left();
 
         buttons.defaults().size(140f, 60f).pad(4f);
         buttons.button("@cancel", this::hide);
@@ -30,7 +37,8 @@ public class JoinViaClajDialog extends BaseDialog {
                     return;
                 }
 
-                ClajIntegration.joinRoom(lastLink, () -> {
+                var link = ClajIntegration.parseLink(lastLink);
+                ClajIntegration.joinRoom(link.ip(), link.port(), link.key(), () -> {
                     ui.join.hide();
                     hide();
                 });
@@ -46,6 +54,23 @@ public class JoinViaClajDialog extends BaseDialog {
         }).disabled(button -> lastLink.isEmpty() || net.active());
 
         ui.join.shown(this::fixJoinDialog);
+    }
+
+    public boolean setLink(String link) {
+        if (lastLink.equals(link)) return valid;
+
+        try {
+            ClajIntegration.parseLink(link);
+
+            output = "@join.valid";
+            valid = true;
+        } catch (Throwable ignored) {
+            output = ignored.getMessage();
+            valid = false;
+        }
+
+        lastLink = link;
+        return valid;
     }
 
     private void fixJoinDialog() {

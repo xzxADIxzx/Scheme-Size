@@ -15,6 +15,8 @@ import static mindustry.Vars.*;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
+import com.github.bsideup.jabel.Desugar;
+
 public class ClajIntegration {
 
     public static Seq<Client> clients = new Seq<>();
@@ -25,6 +27,8 @@ public class ClajIntegration {
         var server = Reflect.get(provider, "server");
         serverListener = Reflect.get(server, "dispatchListener");
     }
+
+    // region room management
 
     public static Client createRoom(String ip, int port, Cons<String> link, Runnable disconnected) throws IOException {
         Client client = new Client(8192, 8192, new Serializer());
@@ -54,40 +58,53 @@ public class ClajIntegration {
         return client;
     }
 
-    public static void joinRoom(String link, Runnable success) throws IOException {
-        if (!link.startsWith("CLaJ")) throw new IOException("Invalid link: missing CLaJ prefix!");
+    public static void joinRoom(String ip, int port, String key, Runnable success) {
+        logic.reset();
+        net.reset();
 
-        var keyAddress = link.split("#");
-        if (keyAddress.length != 2) throw new IOException("Invalid link: it must contain exactly one # character!");
+        netClient.beginConnecting();
+        net.connect(ip, port, () -> {
+            if (!net.client()) return;
+            success.run();
 
-        var ipPort = keyAddress[1].split(":");
-        if (keyAddress.length != 2) throw new IOException("Invalid link: it must contain exactly one : character!");
+            ByteBuffer buffer = ByteBuffer.allocate(8192);
+            buffer.put(Serializer.linkID);
+            Serializer.writeString(buffer, key);
 
-        try {
-            logic.reset();
-            net.reset();
-
-            netClient.beginConnecting();
-            net.connect(ipPort[0], Integer.parseInt(ipPort[1]), () -> {
-                if (!net.client()) return;
-                success.run();
-
-                ByteBuffer buffer = ByteBuffer.allocate(8192);
-                buffer.put(Serializer.linkID);
-                Serializer.writeString(buffer, keyAddress[0]);
-
-                buffer.limit(buffer.position()).position(0);
-                net.send(buffer, true);
-            });
-        } catch (Throwable ignored) {
-            throw new IOException("Invalid link", ignored);
-        }
+            buffer.limit(buffer.position()).position(0);
+            net.send(buffer, true);
+        });
     }
 
     public static void clear() {
         clients.each(Client::close);
         clients.clear();
     }
+
+    // endregion
+
+    public static Link parseLink(String link) throws IOException {
+        link = link.trim();
+        if (!link.startsWith("CLaJ")) throw new IOException("@join.missing-prefix");
+
+        int hash = link.indexOf('#');
+        if (hash != 42 + 4) throw new IOException("@join.wrong-key-length");
+
+        int semicolon = link.indexOf(':');
+        if (semicolon == -1) throw new IOException("@join.semicolon-not-found");
+
+        int port;
+        try {
+            port = Integer.parseInt(link.substring(semicolon + 1));
+        } catch (Throwable ignored) {
+            throw new IOException("@join.failed-to-parse");
+        }
+
+        return new Link(link.substring(0, hash), link.substring(hash + 1, semicolon), port);
+    }
+
+    @Desugar
+    public record Link(String key, String ip, int port) {}
 
     public static class Serializer extends PacketSerializer {
 
