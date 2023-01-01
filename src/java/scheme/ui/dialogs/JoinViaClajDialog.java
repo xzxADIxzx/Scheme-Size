@@ -55,5 +55,4 @@ public class JoinViaClajDialog extends BaseDialog {
     private float targetWidth() {
         return Math.min(graphics.getWidth() / Scl.scl() * .9f, 550f);
     }
-
 }

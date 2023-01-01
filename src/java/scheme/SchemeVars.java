@@ -41,6 +41,7 @@ public class SchemeVars {
     public static SchemasDialog schemas;
     public static WaveApproachingDialog approaching;
     public static JoinViaClajDialog joinViaClaj;
+    public static ManageRoomsDialog manageRooms;
 
     public static HudFragment hudfrag;
     public static PlayerListFragment listfrag;
@@ -80,6 +81,7 @@ public class SchemeVars {
         schemas = new SchemasDialog();
         approaching = new WaveApproachingDialog();
         joinViaClaj = new JoinViaClajDialog();
+        manageRooms = new ManageRoomsDialog();
 
         hudfrag = new HudFragment();
         listfrag = new PlayerListFragment();
