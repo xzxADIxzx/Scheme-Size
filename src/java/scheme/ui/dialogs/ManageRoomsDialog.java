@@ -25,10 +25,11 @@ public class ManageRoomsDialog extends BaseDialog {
         addCloseButton();
 
         cont.table(rooms -> {
-            rooms.defaults().width(750f);
+            float w = mobile ? 550f : 750f;
+            rooms.defaults().width(w);
 
             Table list = new Table();
-            list.defaults().width(750f).padBottom(8f);
+            list.defaults().width(w).padBottom(8f);
             list.update(() -> list.getCells().filter(cell -> cell.get() != null));
             rooms.add(list).row();
 
@@ -77,7 +78,7 @@ public class ManageRoomsDialog extends BaseDialog {
             client = ClajIntegration.createRoom(serverIP, serverPort, link -> this.link = link, this::close);
 
             table(Tex.underline, cont -> {
-                cont.label(() -> link).growX().left().fontScale(.7f);
+                cont.label(() -> link).growX().left().fontScale(.7f).ellipsis(true);
             }).growX();
 
             table(btns -> {
