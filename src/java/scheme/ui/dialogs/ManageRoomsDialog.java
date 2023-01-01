@@ -50,7 +50,7 @@ public class ManageRoomsDialog extends BaseDialog {
         var root = ui.paused.cont;
 
         root.row();
-        root.button("manage.name", Icon.planet, this::show).colspan(2).width(450).disabled(button -> !net.server()).row();
+        root.button("@manage.name", Icon.planet, this::show).colspan(2).width(450).disabled(button -> !net.server()).row();
 
         int index = 5; // TODO mobile index
         if (!state.isCampaign() && !state.isEditor()) index += 2;
