@@ -38,8 +38,11 @@ public class HexSelection extends Stack {
             table.button(icon, Styles.cleart, () -> listener.get(buttons[i])).with(button -> {
                 buttons[i] = button;
 
-                button.setTranslation(vertices[i].x - half, vertices[i].y - half);
                 button.getLabel().setWrap(false); // someone can use non-single-character tags
+                button.update(() -> {
+                    Vec2 offset = selectedIndex == i ? vertices[i].cpy().limit(stroke / 3f) : Vec2.ZERO;
+                    button.setTranslation(vertices[i].x + offset.x - half, vertices[i].y + offset.y - half);
+                });
             }).minSize(24f); // unscaled stroke;
         }));
     }
