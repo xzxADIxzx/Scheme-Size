@@ -10,6 +10,7 @@ import arc.scene.ui.TextButton;
 import arc.scene.ui.layout.Scl;
 import arc.scene.ui.layout.Stack;
 import arc.scene.ui.layout.Table;
+import arc.util.Align;
 import mindustry.graphics.Pal;
 import mindustry.ui.Styles;
 
@@ -41,6 +42,13 @@ public class HexSelection extends Stack {
                 button.getLabel().setWrap(false); // someone can use non-single-character tags
             }).minSize(24f); // unscaled stroke;
         }));
+    }
+
+    public void updateAlignment() {
+        for (int i = 0; i < buttons.length; i++) {
+            int align = buttons[i].getText().length() == 1 ? Align.center : (i <= 1 || i == 5 ? Align.left : Align.right);
+            buttons[i].getLabel().setAlignment(Align.center, align);
+        }
     }
 
     @Override

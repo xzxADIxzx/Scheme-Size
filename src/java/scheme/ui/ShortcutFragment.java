@@ -34,10 +34,14 @@ public class ShortcutFragment {
                     tag.show(button.getText().toString(), tag -> {
                         button.setText(tag);
                         settings.put(key, tag);
+
+                        selection.updateAlignment();
                     });
                     hide();
                 });
             }
+
+            selection.updateAlignment();
         });
 
         parent.fill(cont -> {
