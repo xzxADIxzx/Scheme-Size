@@ -24,6 +24,8 @@ public class ClajIntegration {
 
     public static void load() {
         var provider = Reflect.get(net, "provider");
+        if (steam) provider = Reflect.get(provider, "provider"); // thanks
+
         var server = Reflect.get(provider, "server");
         serverListener = Reflect.get(server, "dispatchListener");
     }
