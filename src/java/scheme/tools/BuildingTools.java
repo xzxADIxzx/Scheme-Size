@@ -51,18 +51,20 @@ public class BuildingTools {
     }
 
     public void drop(int x, int y) {
+        if (!MessageQueue.drop()) return;
+
         Tile tile = world.tile(x, y);
         if (tile == null || tile.build == null) return;
 
         ItemModule items = tile.build.items;
         if (items == null || items.empty()) return;
-        else if (items.has(Items.sand)) drop(tile.build, Items.sand);
-        else if (items.has(Items.coal)) drop(tile.build, Items.coal);
-        else drop(tile.build, items.first());
+        else if (items.has(Items.sand)) drop(tile, Items.sand);
+        else if (items.has(Items.coal)) drop(tile, Items.coal);
+        else drop(tile, items.first());
     }
 
-    private void drop(Building build, Item item) {
-        Call.requestItem(player, build, item, units.maxAccepted);
+    private void drop(Tile tile, Item item) {
+        Call.requestItem(player, tile.build, item, units.maxAccepted);
         Call.dropItem(units.maxAccepted);
     }
 
