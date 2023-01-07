@@ -13,6 +13,7 @@ import mindustry.gen.Player;
 import mindustry.graphics.Pal;
 import mindustry.type.UnitType;
 import scheme.ai.GammaAI;
+import scheme.ai.NetMinerAI;
 import scheme.ai.GammaAI.Updater;
 import scheme.ui.List;
 
@@ -42,7 +43,7 @@ public class AISelectDialog extends ListDialog {
 
         Seq<UnitAI> units = Seq.with(
                 new UnitAI(null, null),
-                new UnitAI(UnitTypes.mono, new MinerAI()),
+                new UnitAI(UnitTypes.mono, new NetMinerAI()),
                 new UnitAI(UnitTypes.poly, new BuilderAI()),
                 new UnitAI(UnitTypes.mega, new RepairAI()),
                 new UnitAI(UnitTypes.oct, new DefenderAI()),
