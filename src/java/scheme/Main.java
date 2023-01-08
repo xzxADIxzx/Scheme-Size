@@ -102,6 +102,8 @@ public class Main extends Mod {
     }
 
     public static void copy(String text) {
+        if (text == null) return;
+
         app.setClipboardText(text);
         ui.showInfoFade("@copied");
     }
