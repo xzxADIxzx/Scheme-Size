@@ -8,6 +8,7 @@ import arc.net.NetListener;
 import arc.struct.Seq;
 import arc.util.Reflect;
 import arc.util.Threads;
+import mindustry.gen.Call;
 import mindustry.net.ArcNetProvider.*;
 
 import static mindustry.Vars.*;
@@ -50,7 +51,12 @@ public class ClajIntegration {
 
             @Override
             public void received(Connection connection, Object object) {
-                if (object instanceof String key) link.get(key + "#" + ip + ":" + port);
+                if (object instanceof String message) {
+                    if (message.startsWith("CLaJ"))
+                        link.get(message + "#" + ip + ":" + port);
+                    else
+                        Call.sendChatMessage(message);
+                }
             }
         });
 
