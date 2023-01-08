@@ -1,6 +1,9 @@
 package scheme;
 
+import arc.graphics.Color;
+import arc.struct.Seq;
 import mindustry.core.UI;
+import mindustry.game.Team;
 import mindustry.type.Item;
 import mindustry.type.StatusEffect;
 import mindustry.type.UnitType;
@@ -48,6 +51,9 @@ public class SchemeVars {
     public static ShortcutFragment shortfrag;
     public static ConsoleFragment consolefrag;
 
+    /** Just for fun :D */
+    public static Seq<Team> rainbow;
+
     public static void load() {
         // m_schematics is created in Main to prevent dual loading
         m_input = mobile ? new ModedMobileInput() : new ModedDesktopInput();
@@ -87,5 +93,14 @@ public class SchemeVars {
         listfrag = new PlayerListFragment();
         shortfrag = new ShortcutFragment();
         consolefrag = new ConsoleFragment();
+
+        rainbow = new Seq<>(Team.all);
+        rainbow.filter(team -> {
+            int[] hsv = Color.RGBtoHSV(team.color);
+            return hsv[2] > 85;
+        }).sort(team -> {
+            int[] hsv = Color.RGBtoHSV(team.color);
+            return hsv[0] * 1000 + hsv[1];
+        });
     }
 }
