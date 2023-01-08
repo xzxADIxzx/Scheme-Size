@@ -55,7 +55,7 @@ public class ClajIntegration {
                     if (message.startsWith("CLaJ"))
                         link.get(message + "#" + ip + ":" + port);
                     else
-                        Call.sendChatMessage(message);
+                        Call.sendMessage(message);
                 }
             }
         });
