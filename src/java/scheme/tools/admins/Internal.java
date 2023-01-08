@@ -1,8 +1,13 @@
 package scheme.tools.admins;
 
+import arc.math.Mathf;
 import arc.math.geom.Geometry;
 import arc.math.geom.Position;
+import arc.struct.IntMap;
 import arc.struct.Seq;
+import arc.util.Time;
+import arc.util.Timer;
+import arc.util.Timer.Task;
 import mindustry.content.Blocks;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Groups;
@@ -17,6 +22,8 @@ import static mindustry.Vars.*;
 import static scheme.SchemeVars.*;
 
 public class Internal implements AdminsTools {
+
+    public static IntMap<Task> rainbows = new IntMap<>();
 
     public void manageUnit() {
         if (unusable()) return;
@@ -60,7 +67,16 @@ public class Internal implements AdminsTools {
 
     public void manageTeam() {
         if (unusable()) return;
-        team.select((target, team) -> target.team(team));
+        team.select((target, team) -> {
+            Task task = rainbows.get(target.id);
+            if (task != null) task.cancel();
+
+            if (team != null) target.team(team);
+            else {
+                task = Timer.schedule(() -> target.team(rainbow.get(Mathf.floor(Time.time / 6f % rainbow.size))), 0f, .1f);
+                rainbows.put(target.id, task);
+            }
+        });
     }
 
     public void placeCore() {

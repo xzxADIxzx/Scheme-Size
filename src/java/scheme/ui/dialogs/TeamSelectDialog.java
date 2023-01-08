@@ -40,7 +40,7 @@ public class TeamSelectDialog extends ListDialog {
             t.image().height(4f).growX().bottom().padTop(4f).update(image -> image.setColor(Color.HSVtoRGB(Time.time % 360f, 100f, 100f)));
         }).size(170f, 74f).pad(10f);
 
-        teams.list.add(check).checked(button -> teams.selected == null).row();
+        teams.list.add(check).row();
 
         this.callback = callback;
         show();
