@@ -1,7 +1,6 @@
 package scheme.ui;
 
-import arc.func.Cons;
-import arc.func.Func;
+import arc.func.*;
 import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Lines;
@@ -43,29 +42,19 @@ public class List<T> {
 
     public void rebuild() {
         list.clear();
+        list.defaults().size(264f, 74f).padBottom(16f);
+
         iterator.get(item -> {
             Button check = new Button(Styles.cleart);
             check.changed(() -> set(item));
 
-            Table icon = new Table() {
-                @Override
-                public void draw() {
-                    super.draw();
-                    Draw.color(check.isChecked() ? Pal.accent : Pal.gray, parentAlpha);
-                    Lines.stroke(Scl.scl(4f));
-                    Lines.rect(x, y, width, height);
-                    Draw.reset();
-                }
-            };
-            icon.image(texture.get(item)).scaling(Scaling.bounded).pad(8f).grow();
-
-            check.add(icon).size(74f);
+            check.add(new IconTable(check::isChecked, texture.get(item))).size(74f);
             check.table(t -> {
                 t.labelWrap(title.get(item)).growX().row();
                 t.image().height(4f).color(color.get(item)).growX().bottom().padTop(4f);
             }).size(170f, 74f).pad(10f);
 
-            list.add(check).checked(button -> selected == item).size(264f, 74f).padBottom(16f).row();
+            list.add(check).checked(button -> selected == item).row();
         });
     }
 
@@ -76,5 +65,24 @@ public class List<T> {
     public void set(T item) {
         selected = item;
         onChanged.get(item);
+    }
+
+    public static class IconTable extends Table {
+
+        public Boolp active;
+
+        public IconTable(Boolp active, TextureRegion region) {
+            this.active = active;
+            image(region).scaling(Scaling.bounded).pad(8f).grow();
+        }
+
+        @Override
+        public void draw() {
+            super.draw();
+            Draw.color(active.get() ? Pal.accent : Pal.gray, parentAlpha);
+            Lines.stroke(Scl.scl(4f));
+            Lines.rect(x, y, width, height);
+            Draw.reset();
+        }
     }
 }
