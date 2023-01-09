@@ -180,12 +180,6 @@ public class PlayerListFragment extends mindustry.ui.fragments.PlayerListFragmen
         }
     }
 
-    @Override
-    public void toggle() {
-        super.toggle();
-        ServerIntegration.fetch();
-    }
-
     private Table getPane() {
         return ((Table) ((Table) ui.hudGroup.find("playerlist")).getChildren().get(0));
     }
