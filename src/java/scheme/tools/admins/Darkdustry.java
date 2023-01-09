@@ -48,7 +48,7 @@ public class Darkdustry implements AdminsTools {
 
     public void manageTeam() {
         if (unusable()) return;
-        team.select((target, team) -> send("team", team.id, "#" + target.id));
+        team.select((target, team) -> send("team", team != null ? team.id : "rainbow", "#" + target.id));
     }
 
     public void placeCore() {
