@@ -94,7 +94,7 @@ public class SchemeVars {
         shortfrag = new ShortcutFragment();
         consolefrag = new ConsoleFragment();
 
-        rainbow = new Seq<>(Team.all);
+        rainbow = Seq.with(Team.all);
         rainbow.filter(team -> {
             int[] hsv = Color.RGBtoHSV(team.color);
             return hsv[2] > 85;

@@ -49,7 +49,7 @@ public class ServerIntegration {
 
         netClient.addPacketHandler("SendMeSubtitle", args -> {
             Call.serverPacketReliable("MySubtitle", settings.getString("subtitle"));
-            hostID = Strings.parseInt(args, -1);
+            if (args != null) hostID = Strings.parseInt(args, -1);
         });
 
         netClient.addPacketHandler("Subtitles", args -> {
@@ -76,7 +76,7 @@ public class ServerIntegration {
     /** Returns the user type with the given id: host, no data, mod or vanilla. */
     public static String type(int id) {
         if (hostID == id) return "trace.type.host";
-        return SSUsers.isEmpty() ? "trace.type.nodata" : isModded(id) ? "trace.type.mod" : "trace.type.vanilla";
+        return SSUsers.size == 1 ? "trace.type.nodata" : isModded(id) ? "trace.type.mod" : "trace.type.vanilla";
     }
 
     /** Returns the user type with subtitle. */
