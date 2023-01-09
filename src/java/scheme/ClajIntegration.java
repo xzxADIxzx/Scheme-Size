@@ -1,5 +1,6 @@
 package scheme;
 
+import arc.Events;
 import arc.func.Cons;
 import arc.net.Client;
 import arc.net.Connection;
@@ -8,6 +9,7 @@ import arc.net.NetListener;
 import arc.struct.Seq;
 import arc.util.Reflect;
 import arc.util.Threads;
+import mindustry.game.EventType.*;
 import mindustry.gen.Call;
 import mindustry.net.ArcNetProvider.*;
 
@@ -24,6 +26,9 @@ public class ClajIntegration {
     public static NetListener serverListener;
 
     public static void load() {
+        Events.run(HostEvent.class, ClajIntegration::clear);
+        Events.run(ClientPreConnectEvent.class, ClajIntegration::clear);
+
         var provider = Reflect.get(net, "provider");
         if (steam) provider = Reflect.get(provider, "provider"); // thanks
 
