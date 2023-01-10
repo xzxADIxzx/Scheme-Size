@@ -28,7 +28,7 @@ public class RainbowTeam {
                 if (Groups.player.getByID(entry.key) == null) members.remove(entry.key);
 
             Team team = rainbow.get(Mathf.floor(Time.time / 6f % rainbow.size));
-            members.forEach(entry -> entry.value.get(team));
+            for (var entry : members) entry.value.get(team);
         }, 0f, .3f);
 
         rainbow = Seq.with(Team.all);

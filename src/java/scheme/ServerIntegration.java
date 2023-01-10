@@ -25,7 +25,7 @@ import static mindustry.Vars.*;
 public class ServerIntegration {
 
     /** List of user ids that use this mod. */
-    public static IntMap<String> SSUsers = new IntMap<>();
+    public static IntMap<String> SSUsers = new IntMap<>(8);
 
     /** Host's player id. If you're joining a headless server it will be -1. */
     public static int hostID = -1;
