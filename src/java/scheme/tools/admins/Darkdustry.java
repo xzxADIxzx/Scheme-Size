@@ -8,6 +8,7 @@ import mindustry.gen.Player;
 import mindustry.world.Block;
 import mindustry.world.blocks.storage.CoreBlock.CoreBuild;
 import scheme.tools.MessageQueue;
+import scheme.tools.RainbowTeam;
 
 import static arc.Core.*;
 import static mindustry.Vars.*;
@@ -48,7 +49,13 @@ public class Darkdustry implements AdminsTools {
 
     public void manageTeam() {
         if (unusable()) return;
-        team.select((target, team) -> send("team", team != null ? team.id : "rainbow", "#" + target.id));
+        team.select((target, team) -> {
+            if (team != null) {
+                RainbowTeam.remove(target);
+                send("team", team.id, "#" + target.id);
+            } else
+                RainbowTeam.add(target, t -> send("team", t.id, "#" + target.id));
+        });
     }
 
     public void placeCore() {

@@ -10,6 +10,7 @@ import mindustry.type.StatusEffect;
 import mindustry.type.UnitType;
 import mindustry.world.Block;
 import scheme.tools.MessageQueue;
+import scheme.tools.RainbowTeam;
 
 import static arc.Core.*;
 import static mindustry.Vars.*;
@@ -64,8 +65,11 @@ public class SlashJs implements AdminsTools {
     public void manageTeam() {
         if (unusable()) return;
         team.select((target, team) -> {
-            getPlayer(target);
-            send("player.team(Team.@)", team);
+            if (team != null) {
+                RainbowTeam.remove(target);
+                send("roups.player.getByID(@).team(Team.@)", target.id, team.id);
+            } else
+                RainbowTeam.add(target, t -> send("Groups.player.getByID(@).team(Team.get(@))", target.id, t.id));
         });
     }
 

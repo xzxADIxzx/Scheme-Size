@@ -14,6 +14,7 @@ import scheme.moded.ModedBinding;
 import scheme.moded.ModedGlyphLayout;
 import scheme.moded.ModedSchematics;
 import scheme.tools.MessageQueue;
+import scheme.tools.RainbowTeam;
 import scheme.ui.MapResizeFix;
 
 import static arc.Core.*;
@@ -44,6 +45,7 @@ public class Main extends Mod {
         SchemeUpdater.load();
         MapResizeFix.load();
         MessageQueue.load();
+        RainbowTeam.load();
 
         ui.schematics = schemas;
         ui.listfrag = listfrag;
