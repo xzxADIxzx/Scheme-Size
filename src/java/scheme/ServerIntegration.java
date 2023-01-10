@@ -30,6 +30,9 @@ public class ServerIntegration {
     /** Host's player id. If you're joining a headless server it will be -1. */
     public static int hostID = -1;
 
+    /** Whether the player received subtitles from the server. */
+    public static boolean hasData;
+
     public static void load() {
         // region Server
 
@@ -54,6 +57,7 @@ public class ServerIntegration {
 
         netClient.addPacketHandler("Subtitles", args -> {
             SSUsers = JsonIO.read(IntMap.class, args);
+            hasData = true;
         });
 
         // endregion
@@ -63,6 +67,7 @@ public class ServerIntegration {
     public static void clear() {
         SSUsers.clear();
         hostID = -1;
+        hasData = false;
 
         // put the host's subtitle so that you do not copy the int map later
         SSUsers.put(player.id, settings.getString("subtitle"));
@@ -76,7 +81,7 @@ public class ServerIntegration {
     /** Returns the user type with the given id: host, no data, mod or vanilla. */
     public static String type(int id) {
         if (hostID == id) return "trace.type.host";
-        return SSUsers.size == 1 ? "trace.type.nodata" : isModded(id) ? "trace.type.mod" : "trace.type.vanilla";
+        return !hasData && net.client() ? "trace.type.nodata" : isModded(id) ? "trace.type.mod" : "trace.type.vanilla";
     }
 
     /** Returns the user type with subtitle. */
