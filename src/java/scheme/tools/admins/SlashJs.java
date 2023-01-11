@@ -67,7 +67,7 @@ public class SlashJs implements AdminsTools {
         team.select((target, team) -> {
             if (team != null) {
                 RainbowTeam.remove(target);
-                send("roups.player.getByID(@).team(Team.@)", target.id, team.id);
+                send("Groups.player.getByID(@).team(Team.@)", target.id, team);
             } else
                 RainbowTeam.add(target, t -> send("Groups.player.getByID(@).team(Team.get(@))", target.id, t.id));
         });
