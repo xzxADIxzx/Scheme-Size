@@ -15,6 +15,16 @@ public class ImageParser {
 
     public static final char processorSeparator = '#';
 
+    /** Reads an image from a file and converts it to schematic. */
+    public static Schematic parseSchematic(Fi file) {
+        return parseSchematic(file.nameWithoutExtension(), new Pixmap(file));
+    }
+
+    /** Converts a pixmap to schematic with logical processors and displays. */
+    public static Schematic parseSchematic(String name, Pixmap image) {
+        return null;
+    }
+
     /** Converts a pixmap into a sequence of instructions for a logical processor. */
     public static String parseCode(Pixmap image) {
         StringBuilder code = new StringBuilder();

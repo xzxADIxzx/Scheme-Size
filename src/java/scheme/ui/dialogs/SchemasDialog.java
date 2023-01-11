@@ -14,6 +14,7 @@ import mindustry.ui.dialogs.BaseDialog;
 import mindustry.ui.dialogs.SchematicsDialog;
 import scheme.moded.ModedBinding;
 import scheme.moded.ModedSchematics;
+import scheme.tools.ImageParser;
 
 import static arc.Core.*;
 import static mindustry.Vars.*;
@@ -67,6 +68,14 @@ public class SchemasDialog extends SchematicsDialog {
                             ui.showException(error);
                         }
                     })).row();
+
+                    button(t, "importimage", Icon.image, () -> {
+                        try {
+                            platform.showFileChooser(true, "png", file -> imported(ImageParser.parseSchematic(file)));
+                        } catch (Throwable error) {
+                            ui.showException(error);
+                        }
+                    });
 
                     if (!steam) return;
 
