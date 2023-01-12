@@ -1,6 +1,5 @@
 package scheme.tools;
 
-import arc.Core;
 import arc.files.Fi;
 import arc.graphics.Color;
 import arc.graphics.Pixmap;
@@ -8,30 +7,32 @@ import arc.struct.Seq;
 import arc.util.Strings;
 import mindustry.game.Schematic;
 import mindustry.logic.LExecutor;
+import mindustry.world.blocks.logic.LogicDisplay;
 
 import com.github.bsideup.jabel.Desugar;
 
 public class ImageParser {
 
-    public static final char processorSeparator = '#';
+    public static final String processorSeparator = "#";
+    public static final String flush = "drawflush display1\n";
 
     /** Reads an image from a file and converts it to schematic. */
-    public static Schematic parseSchematic(Fi file) {
-        return parseSchematic(file.nameWithoutExtension(), new Pixmap(file));
+    public static Schematic parseSchematic(Fi file, LogicDisplay display, int rows, int columns) {
+        return parseSchematic(file.nameWithoutExtension(), new Pixmap(file), display, rows, columns);
     }
 
     /** Converts a pixmap to schematic with logical processors and displays. */
-    public static Schematic parseSchematic(String name, Pixmap image) {
         return null;
+    public static Schematic parseSchematic(String name, Pixmap image, LogicDisplay display, int rows, int columns) {
     }
 
-    /** Converts a pixmap into a sequence of instructions for a logical processor. */
-    public static String parseCode(Pixmap image) {
+    /** Converts a display into a sequence of instructions for a logical processor. */
+    public static String parseCode(Display display) {
         StringBuilder code = new StringBuilder();
 
         Color last = null;
         int instructions = 0;
-        for (Line rect : parseLines(image).sort(rect -> rect.color.abgr())) {
+        for (Line rect : parseLines(display).sort(rect -> rect.color.abgr())) {
             if (!rect.color.equals(last)) {
                 last = rect.color;
 
@@ -43,38 +44,49 @@ public class ImageParser {
             instructions++;
 
             if (instructions + 2 >= LExecutor.maxInstructions) {
-                code.append(processorSeparator);
+                code.append(flush).append(processorSeparator);
                 instructions = 0;
+                last = null;
+
+                continue;
             }
 
             if (instructions % LExecutor.maxGraphicsBuffer <= 1) {
-                code.append("drawflush display1\n");
-                instructions++;
+                code.append(flush).append(rect.colorCode());
+                instructions += 2;
             }
         }
 
-        return code.append("drawflush display1").toString();
+        return code.append(flush).toString();
     }
 
-    /** Converts a pixmap into a sequence of colored lines. */
-    public static Seq<Line> parseLines(Pixmap image) {
+    /** Converts a display into a sequence of colored lines. */
+    public static Seq<Line> parseLines(Display display) {
         var result = new Seq<Line>();
 
-        for (int y = 0; y < image.width; y++) {
-            for (int x = 0; x < image.height; x++) {
-                int raw = image.getRaw(x, y);
+        for (int y = 0; y < display.size; y++) {
+            for (int x = 0; x < display.size; x++) {
+                int raw = display.get(x, y);
 
                 int length = 1;
-                for (int i = x + 1; i < image.width; i++)
-                    if (image.getRaw(i, y) == raw) length++;
+                for (int i = x + 1; i < display.size; i++)
+                    if (display.get(i, y) == raw) length++;
                     else break;
 
-                result.add(new Line(new Color(raw), x, image.height - y - 1, length));
+                result.add(new Line(new Color(raw), x, y, length));
                 x += length - 1; // skip same pixels
             }
         }
 
         return result;
+    }
+
+    @Desugar
+    public static record Display(Pixmap pixmap, int x, int y, int size) {
+
+        public int get(int x, int y) {
+            return pixmap.getRaw(this.x + x, this.y + size - y - 1);
+        }
     }
 
     @Desugar
