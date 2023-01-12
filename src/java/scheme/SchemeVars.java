@@ -39,6 +39,7 @@ public class SchemeVars {
     public static SettingsMenuDialog m_settings;
     public static KeybindCombinationsDialog keycomb;
     public static SchemasDialog schemas;
+    public static ImageParserDialog parser;
     public static WaveApproachingDialog approaching;
     public static JoinViaClajDialog joinViaClaj;
     public static ManageRoomsDialog manageRooms;
@@ -79,6 +80,7 @@ public class SchemeVars {
         m_settings = new SettingsMenuDialog();
         keycomb = new KeybindCombinationsDialog();
         schemas = new SchemasDialog();
+        parser = new ImageParserDialog();
         approaching = new WaveApproachingDialog();
         joinViaClaj = new JoinViaClajDialog();
         manageRooms = new ManageRoomsDialog();

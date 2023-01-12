@@ -14,10 +14,10 @@ import mindustry.ui.dialogs.BaseDialog;
 import mindustry.ui.dialogs.SchematicsDialog;
 import scheme.moded.ModedBinding;
 import scheme.moded.ModedSchematics;
-import scheme.tools.ImageParser;
 
 import static arc.Core.*;
 import static mindustry.Vars.*;
+import static scheme.SchemeVars.*;
 
 public class SchemasDialog extends SchematicsDialog {
 
@@ -32,7 +32,7 @@ public class SchemasDialog extends SchematicsDialog {
         new ImportDialog().show();
     }
 
-    private void imported(Schematic schematic) {
+    public void imported(Schematic schematic) {
         Reflect.invoke(SchematicsDialog.class, this, "setup", null);
         Reflect.invoke(SchematicsDialog.class, this, "checkTags", new Object[] { schematic }, Schematic.class);
         showInfo(schematic);
@@ -69,12 +69,8 @@ public class SchemasDialog extends SchematicsDialog {
                         }
                     })).row();
 
-                    button(t, "importimage", Icon.image, () -> {
-                        try {
-                            platform.showFileChooser(true, "png", file -> imported(ImageParser.parseSchematic(file)));
-                        } catch (Throwable error) {
-                            ui.showException(error);
-                        }
+                    button(t, "importimage", Icon.image, () -> { // do not replace with :: because null pointer
+                        platform.showFileChooser(true, "png", file -> parser.show(file));
                     });
 
                     if (!steam) return;
