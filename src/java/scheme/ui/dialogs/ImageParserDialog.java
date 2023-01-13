@@ -29,7 +29,7 @@ public class ImageParserDialog extends BaseDialog {
         super("@parser.name");
         addCloseButton();
 
-        cont.defaults().width(550f);
+        cont.defaults().width(450f);
         cont.table(t -> image = t).row();
 
         new TextSlider(1f, 10f, 1f, 1f, value -> {
@@ -42,20 +42,22 @@ public class ImageParserDialog extends BaseDialog {
             return bundle.format("parser.column", columns = value);
         }).build(cont).row();
 
-        cont.check("@parser.filter", value -> {}).left();
+        cont.check("@parser.filter", value -> {}).width(0f).left();
 
         buttons.button("@parser.import", () -> {
             SchemeVars.schemas.imported(last);
             hide();
-        });
+        }).disabled(button -> last == null);
     }
 
     public void rebuild() {
-        if (file == null) return;
+        if (file == null) return; // don't do this
+
         last = ImageParser.parseSchematic(file, display, rows, columns);
+        if (last == null) return; // an error occurred while parsing the schema
 
         image.clear();
-        image.add(new SchematicImage(last)).size(550f);
+        image.add(new SchematicImage(last)).size(450f);
     }
 
     public void show(Fi file) {
