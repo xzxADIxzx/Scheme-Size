@@ -37,7 +37,11 @@ public class ImageParser {
         final int size = cfg.display.size, pixels = cfg.display.displaySize;
         final int width = cfg.columns * size, height = cfg.rows * size;
 
-        image = Pixmaps.scale(image, (float) pixels * cfg.columns / image.width, (float) pixels * cfg.rows / image.height);
+        Pixmaps.flip(image);
+        if (cfg.filter)
+            image = Pixmaps.scale(image, pixels * cfg.columns, pixels * cfg.rows, true);
+        else
+            image = Pixmaps.scale(image, (float) pixels * cfg.columns / image.width, (float) pixels * cfg.rows / image.height);
 
         // region creating tiles
 
@@ -51,13 +55,13 @@ public class ImageParser {
                 int x = column * size - cfg.offset(), y = row * size - cfg.offset();
                 tiles.add(new Stile(cfg.display, x, y, null, (byte) 0));
 
-                Display block = new Display(image, column * pixels, image.height - row * pixels, pixels);
+                Display block = new Display(image, column * pixels, row * pixels, pixels);
                 for (String code : parseCode(block).split(processorSeparator)) {
 
-                    var pos = next(available, x, y, cfg.processor.range);
+                    var pos = next(available, x, y, cfg.range());
                     if (pos == null) refill(available, layer++, width, height);
 
-                    pos = next(available, x, y, cfg.processor.range);
+                    pos = next(available, x, y, cfg.range());
                     if (pos == null) return null; // processor range is too small
 
                     byte[] compressed = LogicBlock.compress(code, Seq.with(new LogicLink(x - pos.x, y - pos.y, "display1", true)));
@@ -69,8 +73,8 @@ public class ImageParser {
 
         // endregion
 
-        int minx = tiles.min(st -> st.x + st.block.sizeOffset).x;
-        int miny = tiles.min(st -> st.y + st.block.sizeOffset).y;
+        int minx = tiles.min(st -> st.x).x;
+        int miny = tiles.min(st -> st.y).y;
 
         tiles.each(st -> {
             st.x -= minx;
@@ -153,7 +157,7 @@ public class ImageParser {
     }
 
     private static Point2 next(Seq<Point2> available, int x, int y, float range) {
-        var inRange = available.select(point -> point.dst(x, y) < range / tilesize);
+        var inRange = available.select(point -> point.dst(x, y) < range);
         return inRange.isEmpty() ? null : inRange.first();
     }
 
@@ -163,7 +167,7 @@ public class ImageParser {
     public record Display(Pixmap pixmap, int x, int y, int size) {
 
         public int get(int x, int y) {
-            return pixmap.getRaw(this.x + x, this.y - y - 1);
+            return pixmap.getRaw(this.x + x, this.y + y);
         }
     }
 
@@ -189,6 +193,10 @@ public class ImageParser {
 
         public int offset() {
             return display.sizeOffset;
+        }
+
+        public float range() {
+            return processor.range / tilesize + display.size / 2 - 1;
         }
     }
 }
