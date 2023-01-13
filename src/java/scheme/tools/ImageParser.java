@@ -3,11 +3,20 @@ package scheme.tools;
 import arc.files.Fi;
 import arc.graphics.Color;
 import arc.graphics.Pixmap;
+import arc.graphics.Pixmaps;
+import arc.math.geom.Point2;
 import arc.struct.Seq;
+import arc.struct.StringMap;
 import arc.util.Strings;
+import mindustry.content.Blocks;
 import mindustry.game.Schematic;
+import mindustry.game.Schematic.Stile;
 import mindustry.logic.LExecutor;
+import mindustry.world.blocks.logic.LogicBlock;
 import mindustry.world.blocks.logic.LogicDisplay;
+import mindustry.world.blocks.logic.LogicBlock.LogicLink;
+
+import static mindustry.Vars.*;
 
 import com.github.bsideup.jabel.Desugar;
 
@@ -21,9 +30,54 @@ public class ImageParser {
         return parseSchematic(file.nameWithoutExtension(), new Pixmap(file), display, rows, columns);
     }
 
+    // region parse
+
     /** Converts a pixmap to schematic with logical processors and displays. */
-        return null;
     public static Schematic parseSchematic(String name, Pixmap image, LogicDisplay display, int rows, int columns) {
+        final int size = display.size, pixels = display.displaySize;
+        final int width = columns * size, height = rows * size;
+
+        image = Pixmaps.scale(image, (float) pixels * columns / image.width, (float) pixels * rows / image.height);
+
+        // region creating tiles
+
+        int layer = 0; // the current layer on which the processors are located
+        Seq<Point2> available = new Seq<>(); // sequence of all positions available to the processor
+
+        Seq<Stile> tiles = new Seq<>();
+        for (int row = 0; row < rows; row++) {
+            for (int column = 0; column < columns; column++) {
+
+                int x = column * size - display.sizeOffset, y = row * size - display.sizeOffset;
+                tiles.add(new Stile(display, x, y, null, (byte) 0));
+
+                Display block = new Display(image, column * pixels, image.height - row * pixels, pixels);
+                for (String code : parseCode(block).split(processorSeparator)) {
+
+                    var pos = next(available, x, y, ((LogicBlock) Blocks.microProcessor).range);
+                    if (pos == null) refill(available, layer++, width, height);
+
+                    pos = next(available, x, y, ((LogicBlock) Blocks.microProcessor).range);
+                    if (pos == null) return null; // processor range is too small
+
+                    byte[] compressed = LogicBlock.compress(code, Seq.with(new LogicLink(x - pos.x, y - pos.y, "display1", true)));
+                    tiles.add(new Stile(Blocks.microProcessor, pos.x, pos.y, compressed, (byte) 0));
+                    available.remove(pos); // this position is now filled
+                }
+            }
+        }
+
+        // endregion
+
+        int minx = tiles.min(st -> st.x + st.block.sizeOffset).x;
+        int miny = tiles.min(st -> st.y + st.block.sizeOffset).y;
+
+        tiles.each(st -> {
+            st.x -= minx;
+            st.y -= miny;
+        });
+
+        return new Schematic(tiles, StringMap.of("name", name), width + layer * 2, height + layer * 2);
     }
 
     /** Converts a display into a sequence of instructions for a logical processor. */
@@ -81,11 +135,35 @@ public class ImageParser {
         return result;
     }
 
+    // endregion
+    // region available positions
+
+    private static void refill(Seq<Point2> available, int layer, int width, int height) {
+        int amount = 2 * (width + height) + 8 * layer + 4;
+        Point2 pos = new Point2(-layer - 1, -layer), dir = new Point2(0, 1);
+
+        for (int i = 0; i < amount; i++) {
+            available.add(pos.cpy());
+            pos.add(dir);
+
+            if (pos.equals(-layer - 1, height + layer)) dir.set(1, 0);
+            if (pos.equals(width + layer, height + layer)) dir.set(0, -1);
+            if (pos.equals(width + layer, -layer - 1)) dir.set(-1, 0);
+        }
+    }
+
+    private static Point2 next(Seq<Point2> available, int x, int y, float range) {
+        var inRange = available.select(point -> point.dst(x, y) < range / tilesize);
+        return inRange.isEmpty() ? null : inRange.first();
+    }
+
+    // endregion
+
     @Desugar
     public static record Display(Pixmap pixmap, int x, int y, int size) {
 
         public int get(int x, int y) {
-            return pixmap.getRaw(this.x + x, this.y + size - y - 1);
+            return pixmap.getRaw(this.x + x, this.y - y - 1);
         }
     }
 
