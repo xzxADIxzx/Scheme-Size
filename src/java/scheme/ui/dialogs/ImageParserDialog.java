@@ -2,14 +2,12 @@ package scheme.ui.dialogs;
 
 import arc.files.Fi;
 import arc.scene.ui.layout.Table;
-import mindustry.content.Blocks;
 import mindustry.game.Schematic;
 import mindustry.ui.dialogs.BaseDialog;
 import mindustry.ui.dialogs.SchematicsDialog.SchematicImage;
-import mindustry.world.blocks.logic.LogicBlock;
-import mindustry.world.blocks.logic.LogicDisplay;
 import scheme.SchemeVars;
 import scheme.tools.ImageParser;
+import scheme.tools.ImageParser.Config;
 import scheme.ui.TextSlider;
 
 import static arc.Core.*;
@@ -20,10 +18,7 @@ public class ImageParserDialog extends BaseDialog {
     public Schematic last;
 
     public Table image;
-
-    public LogicBlock processor = (LogicBlock) Blocks.microProcessor;
-    public LogicDisplay display = (LogicDisplay) Blocks.logicDisplay;
-    public int rows, columns; // TODO class ParseConfig
+    public Config config = new Config();
 
     public ImageParserDialog() {
         super("@parser.name");
@@ -34,15 +29,18 @@ public class ImageParserDialog extends BaseDialog {
 
         new TextSlider(1f, 10f, 1f, 1f, value -> {
             app.post(this::rebuild);
-            return bundle.format("parser.row", rows = value);
+            return bundle.format("parser.row", config.rows = value);
         }).build(cont).row();
 
         new TextSlider(1f, 10f, 1f, 1f, value -> {
             app.post(this::rebuild);
-            return bundle.format("parser.column", columns = value);
+            return bundle.format("parser.column", config.columns = value);
         }).build(cont).row();
 
-        cont.check("@parser.filter", value -> {}).width(0f).left();
+        cont.check("@parser.filter", true, value -> {
+            app.post(this::rebuild);
+            config.filter = value;
+        }).width(0f).left();
 
         buttons.button("@parser.import", () -> {
             SchemeVars.schemas.imported(last);
@@ -53,7 +51,7 @@ public class ImageParserDialog extends BaseDialog {
     public void rebuild() {
         if (file == null) return; // don't do this
 
-        last = ImageParser.parseSchematic(file, display, rows, columns);
+        last = ImageParser.parseSchematic(file, config);
         if (last == null) return; // an error occurred while parsing the schema
 
         image.clear();

@@ -25,19 +25,19 @@ public class ImageParser {
     public static final String processorSeparator = "#";
     public static final String flush = "drawflush display1\n";
 
-    /** Reads an image from a file and converts it to schematic. */
-    public static Schematic parseSchematic(Fi file, LogicDisplay display, int rows, int columns) {
-        return parseSchematic(file.nameWithoutExtension(), new Pixmap(file), display, rows, columns);
-    }
-
     // region parse
 
-    /** Converts a pixmap to schematic with logical processors and displays. */
-    public static Schematic parseSchematic(String name, Pixmap image, LogicDisplay display, int rows, int columns) {
-        final int size = display.size, pixels = display.displaySize;
-        final int width = columns * size, height = rows * size;
+    /** Reads an image from a file and converts it to schematic. */
+    public static Schematic parseSchematic(Fi file, Config cfg) {
+        return parseSchematic(file.nameWithoutExtension(), new Pixmap(file), cfg);
+    }
 
-        image = Pixmaps.scale(image, (float) pixels * columns / image.width, (float) pixels * rows / image.height);
+    /** Converts a pixmap to schematic with logical processors and displays. */
+    public static Schematic parseSchematic(String name, Pixmap image, Config cfg) {
+        final int size = cfg.display.size, pixels = cfg.display.displaySize;
+        final int width = cfg.columns * size, height = cfg.rows * size;
+
+        image = Pixmaps.scale(image, (float) pixels * cfg.columns / image.width, (float) pixels * cfg.rows / image.height);
 
         // region creating tiles
 
@@ -45,23 +45,23 @@ public class ImageParser {
         Seq<Point2> available = new Seq<>(); // sequence of all positions available to the processor
 
         Seq<Stile> tiles = new Seq<>();
-        for (int row = 0; row < rows; row++) {
-            for (int column = 0; column < columns; column++) {
+        for (int row = 0; row < cfg.rows; row++) {
+            for (int column = 0; column < cfg.columns; column++) {
 
-                int x = column * size - display.sizeOffset, y = row * size - display.sizeOffset;
-                tiles.add(new Stile(display, x, y, null, (byte) 0));
+                int x = column * size - cfg.offset(), y = row * size - cfg.offset();
+                tiles.add(new Stile(cfg.display, x, y, null, (byte) 0));
 
                 Display block = new Display(image, column * pixels, image.height - row * pixels, pixels);
                 for (String code : parseCode(block).split(processorSeparator)) {
 
-                    var pos = next(available, x, y, ((LogicBlock) Blocks.microProcessor).range);
+                    var pos = next(available, x, y, cfg.processor.range);
                     if (pos == null) refill(available, layer++, width, height);
 
-                    pos = next(available, x, y, ((LogicBlock) Blocks.microProcessor).range);
+                    pos = next(available, x, y, cfg.processor.range);
                     if (pos == null) return null; // processor range is too small
 
                     byte[] compressed = LogicBlock.compress(code, Seq.with(new LogicLink(x - pos.x, y - pos.y, "display1", true)));
-                    tiles.add(new Stile(Blocks.microProcessor, pos.x, pos.y, compressed, (byte) 0));
+                    tiles.add(new Stile(cfg.processor, pos.x, pos.y, compressed, (byte) 0));
                     available.remove(pos); // this position is now filled
                 }
             }
@@ -160,7 +160,7 @@ public class ImageParser {
     // endregion
 
     @Desugar
-    public static record Display(Pixmap pixmap, int x, int y, int size) {
+    public record Display(Pixmap pixmap, int x, int y, int size) {
 
         public int get(int x, int y) {
             return pixmap.getRaw(this.x + x, this.y - y - 1);
@@ -176,6 +176,19 @@ public class ImageParser {
 
         public String rectCode() {
             return Strings.format("draw rect @ @ @ 1\n", x, y, length);
+        }
+    }
+
+    public static class Config {
+
+        public LogicBlock processor = (LogicBlock) Blocks.microProcessor;
+        public LogicDisplay display = (LogicDisplay) Blocks.logicDisplay;
+
+        public int rows, columns;
+        public boolean filter;
+
+        public int offset() {
+            return display.sizeOffset;
         }
     }
 }
