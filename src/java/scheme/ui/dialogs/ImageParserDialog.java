@@ -45,7 +45,7 @@ public class ImageParserDialog extends BaseDialog {
         cont.check("@parser.filter", true, value -> {
             app.post(this::rebuild);
             config.filter = value;
-        }).left().row();
+        }).left().tooltip("@parser.filter.tooltip").row();
 
         buttons.button("@parser.import", () -> {
             SchemeVars.schemas.imported(last);
