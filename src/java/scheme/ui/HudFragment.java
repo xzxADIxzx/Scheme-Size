@@ -8,6 +8,7 @@ import arc.scene.Element;
 import arc.scene.Group;
 import arc.scene.event.Touchable;
 import arc.scene.style.Drawable;
+import arc.scene.ui.ImageButton;
 import arc.scene.ui.TextField;
 import arc.scene.ui.ImageButton.ImageButtonStyle;
 import arc.scene.ui.TextField.TextFieldFilter;
@@ -63,6 +64,12 @@ public class HudFragment {
 
         Events.run(WorldLoadEvent.class, this::updateBlocks);
         Events.run(UnlockEvent.class, this::updateBlocks);
+
+        if (mobile) {
+            var button = getSchematicsButton();
+            button.getListeners().remove(2);
+            button.clicked(ui.schematics::show);
+        }
 
         parent.fill(cont -> { // Shield Bar
             cont.name = "shieldbar";
@@ -313,6 +320,10 @@ public class HudFragment {
 
     private Stack getWavesMain() {
         return (Stack) ((Table) ui.hudGroup.find("overlaymarker")).getChildren().get(mobile ? 3 : 0);
+    }
+
+    private ImageButton getSchematicsButton() {
+        return (ImageButton) ((Table) ((Table) ui.hudGroup.find("overlaymarker")).getChildren().get(1)).getChildren().get(2);
     }
 
     private void getCommandButton(Cons<Table> cons) {
