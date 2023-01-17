@@ -159,7 +159,7 @@ public class ModedDesktopInput extends DesktopInput implements ModedInputHandler
             // alternative + respawn moved to update because it needs to be called before internal respawn
             if (input.keyTap(Binding.mouse_move)) admins.teleport(input.mouseWorld());
             if (input.keyTap(Binding.pan)) lockMovement();
-            if (input.keyTap(Binding.schematic_select)) hudfrag.nextLayer();
+            if (input.keyTap(Binding.schematic_select)) corefrag.nextLayer();
 
             if (input.keyTap(Binding.deselect)) hudfrag.building.flip();
             if (input.keyTap(Binding.schematic_menu)) flushLastRemoved();
@@ -167,7 +167,7 @@ public class ModedDesktopInput extends DesktopInput implements ModedInputHandler
         }
 
         if (input.keyTap(Binding.select) && !scene.hasMouse()) {
-            if (hudfrag.power.setNode(tileAt().build)) hudfrag.checked = false;
+            if (corefrag.power.setNode(tileAt().build)) corefrag.checked = false;
         } // power node selection
     }
 

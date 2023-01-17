@@ -48,6 +48,7 @@ public class SchemeVars {
     public static PlayerListFragment listfrag;
     public static ShortcutFragment shortfrag;
     public static ConsoleFragment consolefrag;
+    public static CoreInfoFragment corefrag;
 
     public static void load() {
         // m_schematics is created in Main to prevent dual loading
@@ -89,5 +90,6 @@ public class SchemeVars {
         listfrag = new PlayerListFragment();
         shortfrag = new ShortcutFragment();
         consolefrag = new ConsoleFragment();
+        corefrag = new CoreInfoFragment();
     }
 }

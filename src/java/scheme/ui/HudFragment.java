@@ -15,7 +15,6 @@ import arc.scene.ui.TextField.TextFieldFilter;
 import arc.scene.ui.TextField.TextFieldStyle;
 import arc.scene.ui.layout.*;
 import arc.util.Align;
-import arc.util.Interval;
 import arc.util.Scaling;
 import mindustry.game.EventType.*;
 import mindustry.gen.Icon;
@@ -48,20 +47,11 @@ public class HudFragment {
     public FlipButton mobiles = new FlipButton();
     public FlipButton building = new FlipButton();
 
-    public PowerBars power = new PowerBars();
-    public boolean checked;
-
     /** PlacementFragment and OverlayMarker. */
     public Element[] block = new Element[3];
     public TextField size;
-    public Interval timer = new Interval();
 
     public void build(Group parent) {
-        Events.run(WorldLoadEvent.class, power::refreshNode);
-        Events.run(BlockBuildEndEvent.class, power::refreshNode);
-        Events.run(BlockDestroyEvent.class, power::refreshNode);
-        Events.run(ConfigEvent.class, power::refreshNode);
-
         Events.run(WorldLoadEvent.class, this::updateBlocks);
         Events.run(UnlockEvent.class, this::updateBlocks);
 
@@ -83,26 +73,6 @@ public class HudFragment {
                 icon.image(player::icon).scaling(Scaling.bounded).grow().maxWidth(54f);
             })).size(92.2f + dif / 2, 80f).padLeft(18.2f - dif).padTop(mobile ? 69f : 0f);
         });
-
-        getCoreItems().collapser(cont -> { // Power Bars
-            cont.name = "powerbars";
-            cont.background(Styles.black6).margin(8f, 8f, 8f, 0f);
-
-            cont.table(bars -> {
-                bars.defaults().height(18f).growX();
-                bars.add(power.balance()).row();
-                bars.add(power.stored()).padTop(8f);
-            }).growX();
-            cont.button(Icon.edit, check, () -> checked = !checked).checked(t -> checked).size(44f).padLeft(8f);
-        }, () -> settings.getBool("coreitems") && !mobile && ui.hudfrag.shown).fillX().row();
-
-        getCoreItems().collapser(cont -> { // Schematic Layer
-            cont.name = "powerbars";
-            cont.background(Styles.black6).margin(8f, 8f, 8f, 0f);
-
-            timer.reset(0, 240f);
-            cont.label(() -> bundle.format("layer", bundle.get("layer." + m_schematics.layer)));
-        }, true, () -> !timer.check(0, 240f) && !mobile && ui.hudfrag.shown).fillX();
 
         parent.fill(cont -> { // Gamma UI
             cont.name = "gammaui";
@@ -258,10 +228,6 @@ public class HudFragment {
         info.update(() -> info.setTranslation(0f, -Scl.scl(mobiles.fliped ? 190.5f : 63.5f)));
     }
 
-    public void nextLayer() {
-        if (!timer.get(240f)) m_schematics.nextLayer();
-    }
-
     private Cell<Table> partitionbt(Table table, Cons<Table> cons) {
         if (table.hasChildren()) table.image().color(Pal.gray).fillY().width(4f).pad(4f).visible(() -> building.fliped);
         return table.table(cont -> {
@@ -304,10 +270,6 @@ public class HudFragment {
             block[0] = ((Table) ui.hudGroup.getChildren().get(10)).getChildren().get(0);
             block[1] = ((Table) getWavesMain().getChildren().get(state.isEditor() ? 1 : 0)).getChildren().get(0);
         });
-    }
-
-    private Table getCoreItems() {
-        return (Table) ((Table) ui.hudGroup.getChildren().get(5)).getChildren().get(1);
     }
 
     private Table getInfoTable() {
