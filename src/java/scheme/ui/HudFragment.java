@@ -113,8 +113,8 @@ public class HudFragment {
             cont.table(Tex.pane, pad -> {
                 pad.defaults().growX();
 
-                new TextSlider(0f, 600f, 20f, 80f, value -> bundle.format("gamma.range", GammaAI.range = value)).build(pad).row();
-                new TextSlider(0f, 110f, 10f, 100f, value -> bundle.format("gamma.speed", GammaAI.speed = value)).build(pad).row();
+                new TextSlider(0, 600, 20, 80, value -> bundle.format("gamma.range", GammaAI.range = value)).build(pad).row();
+                new TextSlider(0, 110, 10, 100, value -> bundle.format("gamma.speed", GammaAI.speed = value)).build(pad).row();
                 pad.table(mode -> {
                     setMove(mode, none);
                     setMove(mode, follow);

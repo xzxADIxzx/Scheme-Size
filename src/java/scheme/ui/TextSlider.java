@@ -17,7 +17,7 @@ public class TextSlider extends Table implements Disableable{
     public Label label;
     public Slider slider;
 
-    public TextSlider(float min, float max, float step, float def, StringProcessor processor) {
+    public TextSlider(int min, int max, int step, int def, StringProcessor processor) {
         touchable = Touchable.disabled;
 
         label = labelWrap("").style(Styles.outlineLabel).padLeft(12f).growX().left().get();
