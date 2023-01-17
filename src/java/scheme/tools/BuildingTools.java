@@ -163,7 +163,7 @@ public class BuildingTools {
 
     public void resized() {
         size = Mathf.clamp(size, 1, 512);
-        hudfrag.resize(size);
+        hudfrag.size.setText(String.valueOf(size));
     }
 
     public void resize(int amount) {

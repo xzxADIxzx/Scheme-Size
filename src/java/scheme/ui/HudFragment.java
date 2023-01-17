@@ -258,10 +258,6 @@ public class HudFragment {
         info.update(() -> info.setTranslation(0f, -Scl.scl(mobiles.fliped ? 190.5f : 63.5f)));
     }
 
-    public void resize(int amount) {
-        size.setText(String.valueOf(amount));
-    }
-
     public void nextLayer() {
         if (!timer.get(240f)) m_schematics.nextLayer();
     }
