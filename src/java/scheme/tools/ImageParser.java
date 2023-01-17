@@ -29,7 +29,11 @@ public class ImageParser {
 
     /** Reads an image from a file and converts it to schematic. */
     public static Schematic parseSchematic(Fi file, Config cfg) {
-        return parseSchematic(file.nameWithoutExtension(), new Pixmap(file), cfg);
+        try {
+            return parseSchematic(file.nameWithoutExtension(), new Pixmap(file), cfg);
+        } catch (Throwable ingored) { // file is corrupted or idk what
+            return null;
+        }
     }
 
     /** Converts a pixmap to schematic with logical processors and displays. */
