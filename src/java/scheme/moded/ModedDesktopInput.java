@@ -166,9 +166,7 @@ public class ModedDesktopInput extends DesktopInput implements ModedInputHandler
             if (input.keyDown(Binding.rotateplaced)) build.drop(tileX(), tileY());
         }
 
-        if (input.keyTap(Binding.select) && !scene.hasMouse()) {
-            if (corefrag.power.setNode(tileAt().build)) corefrag.checked = false;
-        } // power node selection
+        if (input.keyTap(Binding.select) && !scene.hasMouse()) corefrag.trySetNode(tileX(), tileY()); // power node selection
     }
 
     public void buildInput() {
