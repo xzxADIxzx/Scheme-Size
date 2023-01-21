@@ -1,12 +1,15 @@
 package scheme.ui;
 
 import arc.Events;
+import arc.graphics.Color;
+import arc.math.Mathf;
 import arc.scene.Group;
 import arc.scene.style.Drawable;
 import arc.scene.style.TextureRegionDrawable;
 import arc.scene.ui.layout.Table;
 import arc.struct.ObjectSet;
 import arc.util.Interval;
+import arc.util.Time;
 import mindustry.core.UI;
 import mindustry.game.Team;
 import mindustry.game.EventType.*;
@@ -59,7 +62,7 @@ public class CoreInfoFragment {
                     .update(i -> i.getStyle().imageUp = chosenTeamRegion);
         }, () -> settings.getBool("coreitems")).row();
 
-        root.collapser(cont -> { // Team selection
+        root.collapser(cont -> { // Team Selection
             cont.background(Styles.black6).margin(8f).left();
 
             int[] amount = new int[1];
@@ -84,7 +87,7 @@ public class CoreInfoFragment {
                 amount[0] = active.size;
                 rebuild.run();
             });
-        }, true, () -> choosesTeam).visible(() -> settings.getBool("coreitems")).row();
+        }, true, () -> settings.getBool("coreitems") && choosesTeam).row();
 
         root.collapser(cont -> { // Power Bars
             cont.background(Styles.black6).margin(8f);
@@ -96,6 +99,22 @@ public class CoreInfoFragment {
             }).growX();
             cont.button(Icon.edit, Styles.clearNoneTogglei, () -> choosesNode = !choosesNode).checked(t -> choosesNode).size(44f).padLeft(8f);
         }, () -> settings.getBool("coreitems")).row();
+
+        float[] coreAttackTime = new float[1];
+        Events.run(Trigger.teamCoreDamage, () -> coreAttackTime[0] = 240f);
+
+        root.collapser(cont -> { // Core Under Attack
+            cont.background(Styles.black6).margin(8f);
+            cont.add("@coreattack").update(label -> label.color.set(Color.orange).lerp(Color.scarlet, Mathf.absin(Time.time, 2f, 1f)));
+        }, true, () -> {
+            if (state.isPaused()) return false;
+            if (state.isMenu() || player.team().data().noCores()) {
+                coreAttackTime[0] = 0f;
+                return false;
+            }
+
+            return (coreAttackTime[0] -= Time.delta) > 0;
+        }).row();
 
         root.collapser(cont -> { // Schematic Layer
             cont.background(Styles.black6).margin(8f);
@@ -113,7 +132,7 @@ public class CoreInfoFragment {
         if (!timer.get(240f)) m_schematics.nextLayer();
     }
 
-    public Drawable texture(Team team) {
+    public static Drawable texture(Team team) {
         if (team.id < 6)
             return new TextureRegionDrawable(ListDialog.texture(team));
         else {
@@ -153,4 +172,3 @@ public class CoreInfoFragment {
         }
     }
 }
-
