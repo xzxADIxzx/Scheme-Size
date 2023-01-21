@@ -2,6 +2,7 @@ package scheme.ui;
 
 import arc.Events;
 import arc.scene.Group;
+import arc.scene.style.TextureRegionDrawable;
 import arc.scene.ui.layout.Table;
 import arc.struct.ObjectSet;
 import arc.util.Interval;
@@ -11,6 +12,7 @@ import mindustry.game.EventType.*;
 import mindustry.gen.Icon;
 import mindustry.type.Item;
 import mindustry.ui.Styles;
+import scheme.ui.dialogs.ListDialog;
 
 import static arc.Core.*;
 import static mindustry.Vars.*;
@@ -21,8 +23,8 @@ public class CoreInfoFragment {
     public CoreItemsDisplay items = new CoreItemsDisplay();
     public PowerBars power = new PowerBars();
 
-    /** Whether the player chooses a power node. */
-    public boolean checked;
+    /** Whether the player chooses a power node or a team. */
+    public boolean choosesTeam, choosesNode;
     /** Used when changing the schematic layer. */
     public Interval timer = new Interval();
 
@@ -33,19 +35,44 @@ public class CoreInfoFragment {
         Events.run(ConfigEvent.class, power::refreshNode);
 
         Events.run(ResetEvent.class, items::resetUsed);
+        Events.run(WorldLoadEvent.class, () -> items.rebuild(player.team()));
 
         var root = (Table) ((Table) ui.hudGroup.find("coreinfo")).getChildren().get(1);
 
-        root.defaults().fillX();
+        root.defaults().fillX().top();
         root.visible(() -> !mobile && ui.hudfrag.shown);
 
         root.clear();
         root.collapser(cont -> { // Core Items Display
             cont.background(Styles.black6).margin(8f);
 
-            cont.add(items);
-            cont.button(Icon.modePvp, Styles.clearNoneTogglei, () -> items.rebuild(player.team())).size(44f).top().right().padLeft(8f);
-        }, () -> settings.getBool("coreitems")).fillX().row();
+            cont.add(items).growX();
+            cont.button(Icon.modePvp, Styles.clearNoneTogglei, () -> choosesTeam = !choosesTeam).checked(t -> choosesTeam).size(44f).top().right().padLeft(8f);
+        }, () -> settings.getBool("coreitems")).row();
+
+        root.collapser(cont -> {
+            cont.background(Styles.black6).margin(8f).left();
+
+            int[] amount = new int[1];
+            Runnable rebuild = () -> {
+                cont.clear();
+
+                for (Team team : Team.baseTeams) {
+                    if (!team.active()) continue;
+
+                    var texture = new TextureRegionDrawable(ListDialog.texture(team));
+                    cont.button(texture, Styles.clearNoneTogglei, 36f, () -> items.rebuild(team)).checked(i -> items.team == team).size(44f);
+                }
+            };
+
+            cont.update(() -> {
+                var active = state.teams.getActive();
+                if (amount[0] == active.size) return;
+
+                amount[0] = active.size;
+                rebuild.run();
+            });
+        }, true, () -> choosesTeam).visible(() -> settings.getBool("coreitems")).row();
 
         root.collapser(cont -> { // Power Bars
             cont.background(Styles.black6).margin(8f);
@@ -55,7 +82,7 @@ public class CoreInfoFragment {
                 bars.add(power.balance()).row();
                 bars.add(power.stored()).padTop(8f);
             }).growX();
-            cont.button(Icon.edit, Styles.clearNoneTogglei, () -> checked = !checked).checked(t -> checked).size(44f).padLeft(8f);
+            cont.button(Icon.edit, Styles.clearNoneTogglei, () -> choosesNode = !choosesNode).checked(t -> choosesNode).size(44f).padLeft(8f);
         }, () -> settings.getBool("coreitems")).row();
 
         root.collapser(cont -> { // Schematic Layer
@@ -67,7 +94,7 @@ public class CoreInfoFragment {
     }
 
     public void trySetNode(int x, int y) {
-        if (checked && power.setNode(world.build(x, y))) checked = false;
+        if (choosesNode && power.setNode(world.build(x, y))) choosesNode = false;
     }
 
     public void nextLayer() {
@@ -78,6 +105,7 @@ public class CoreInfoFragment {
     public class CoreItemsDisplay extends Table {
 
         public final ObjectSet<Item> used = new ObjectSet<>();
+        public Team team;
 
         public void resetUsed() {
             used.clear();
@@ -85,6 +113,7 @@ public class CoreInfoFragment {
         }
 
         public void rebuild(Team team) {
+            this.team = team;
             var core = team.core();
 
             clear();
