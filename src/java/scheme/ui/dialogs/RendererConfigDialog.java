@@ -41,6 +41,7 @@ public class RendererConfigDialog extends BaseDialog {
             check(part, "unit",   value -> render.unitRadius = value);
             check(part, "turret", value -> render.turretRadius = value);
             check(part, "reactor",value -> render.reactorRadius = value);
+            check(part, "drive",  value -> render.overdriveRadius = value);
         });
 
         cont.labelWrap("@render.desc").labelAlign(2, 8).padTop(16f).width(320f).get().getStyle().fontColor = Color.lightGray;

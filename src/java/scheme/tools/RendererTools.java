@@ -25,7 +25,7 @@ import static scheme.SchemeVars.*;
 public class RendererTools {
 
     public Rect bounds = new Rect();
-    public boolean xray, grid, ruler, unitInfo, unitRadius, turretRadius, reactorRadius;
+    public boolean xray, grid, ruler, unitInfo, unitRadius, turretRadius, reactorRadius, overdriveRadius;
 
     public void draw() {
         camera.bounds(bounds); // do NOT use Tmp.r1 
@@ -66,6 +66,8 @@ public class RendererTools {
             builds.nuclears.each(nuclear -> drawRadius(nuclear, ((NuclearReactor) nuclear.block).explosionRadius, Pal.thoriumPink));
             builds.impacts.each(impact -> drawRadius(impact, ((ImpactReactor) impact.block).explosionRadius, Pal.meltdownHit));
         });
+
+        if (overdriveRadius) Draw.draw(Layer.overlayUI, () -> builds.overdrives.each(Building::drawSelect));
 
         Seq<Unit> units = unitInfo || unitRadius ? Groups.unit.intersect(bounds.x, bounds.y, bounds.width, bounds.height) : null;
 

@@ -9,6 +9,7 @@ import mindustry.game.EventType.*;
 import mindustry.gen.Building;
 import mindustry.gen.Groups;
 import mindustry.world.Tile;
+import mindustry.world.blocks.defense.OverdriveProjector.OverdriveBuild;
 import mindustry.world.blocks.defense.turrets.BaseTurret.BaseTurretBuild;
 import mindustry.world.blocks.power.ImpactReactor.ImpactReactorBuild;
 import mindustry.world.blocks.power.NuclearReactor.NuclearReactorBuild;
@@ -23,6 +24,7 @@ public class BuildsCache {
     public Seq<BaseTurretBuild> turrets = new Seq<>();
     public Seq<NuclearReactorBuild> nuclears = new Seq<>();
     public Seq<ImpactReactorBuild> impacts = new Seq<>();
+    public Seq<OverdriveBuild> overdrives = new Seq<>();
 
     public void load() {
         Events.run(WorldLoadEvent.class, this::refresh);
@@ -47,6 +49,7 @@ public class BuildsCache {
         turrets.clear();
         nuclears.clear();
         impacts.clear();
+        overdrives.clear();
         Groups.build.each(this::cache);
     }
 
@@ -54,6 +57,7 @@ public class BuildsCache {
         if (build instanceof BaseTurretBuild turret) turrets.add(turret);
         if (build instanceof NuclearReactorBuild nuclear) nuclears.add(nuclear);
         if (build instanceof ImpactReactorBuild impact) impacts.add(impact);
+        if (build instanceof OverdriveBuild overdrive) overdrives.add(overdrive);
     }
 
     public void uncache(Tile tile) {
