@@ -54,6 +54,9 @@ public class HudFragment {
     public void build(Group parent) {
         Events.run(WorldLoadEvent.class, this::updateBlocks);
         Events.run(UnlockEvent.class, this::updateBlocks);
+        Events.run(ResizeEvent.class, () -> app.post(() -> { // idk why, but after resizing shortcut appears in the center of the screen
+            if (shortfrag.visible) shortfrag.show(graphics.getWidth() - (int) Scl.scl(15f), graphics.getHeight() / 2);
+        }));
 
         if (mobile) {
             var button = getSchematicsButton();
