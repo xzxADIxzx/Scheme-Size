@@ -7,10 +7,13 @@ import arc.math.geom.Vec2;
 import arc.scene.ui.layout.Scl;
 import arc.struct.Seq;
 import arc.util.Time;
+import arc.util.Tmp;
 import mindustry.content.Blocks;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Unit;
+import mindustry.graphics.Pal;
 import mindustry.input.*;
+import mindustry.input.Placement.NormalizeDrawResult;
 import mindustry.input.Placement.NormalizeResult;
 import mindustry.world.blocks.power.PowerNode;
 import scheme.ai.GammaAI;
@@ -21,7 +24,7 @@ import static mindustry.Vars.*;
 import static mindustry.input.PlaceMode.*;
 import static scheme.SchemeVars.*;
 
-/** Last update - Jun 14, 2022 */
+/** Last update - Nov 8, 2022 */
 public class ModedDesktopInput extends DesktopInput implements ModedInputHandler {
 
     public boolean using, movementLocked;
@@ -53,6 +56,17 @@ public class ModedDesktopInput extends DesktopInput implements ModedInputHandler
         } else if (input.keyDown(Binding.schematic_select) && !scene.hasKeyboard()) {
             drawSelection(schemX, schemY, cursorX, cursorY, maxSchematicSize);
             drawSize(schemX, schemY, cursorX, cursorY, maxSchematicSize);
+        } else if (input.keyDown(Binding.rebuild_select)) {
+            drawSelection(schemX, schemY, cursorX, cursorY, 0, Pal.sapBulletBack, Pal.sapBullet);
+
+            NormalizeDrawResult result = Placement.normalizeDrawArea(Blocks.air, schemX, schemY, cursorX, cursorY, false, 0, 1f);
+            Tmp.r1.set(result.x, result.y, result.x2 - result.x, result.y2 - result.y);
+
+            for (var plan : player.team().data().plans) {
+                var block = content.block(plan.block);
+                if (block.bounds(plan.x, plan.y, Tmp.r2).overlaps(Tmp.r1))
+                    drawSelected(plan.x, plan.y, content.block(plan.block), Pal.sapBullet);
+            }
         }
 
         if (using) {
