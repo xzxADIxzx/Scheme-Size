@@ -2,6 +2,7 @@ package scheme.ui;
 
 import arc.Events;
 import arc.scene.Group;
+import arc.scene.style.Drawable;
 import arc.scene.style.TextureRegionDrawable;
 import arc.scene.ui.layout.Table;
 import arc.struct.ObjectSet;
@@ -10,8 +11,10 @@ import mindustry.core.UI;
 import mindustry.game.Team;
 import mindustry.game.EventType.*;
 import mindustry.gen.Icon;
+import mindustry.gen.Tex;
 import mindustry.type.Item;
 import mindustry.ui.Styles;
+import mindustry.world.blocks.storage.CoreBlock.CoreBuild;
 import scheme.ui.dialogs.ListDialog;
 
 import static arc.Core.*;
@@ -27,6 +30,8 @@ public class CoreInfoFragment {
     public boolean choosesTeam, choosesNode;
     /** Used when changing the schematic layer. */
     public Interval timer = new Interval();
+    /** Icon of the selected team. */
+    public Drawable chosenTeamRegion;
 
     public void build(Group parent) {
         Events.run(WorldLoadEvent.class, power::refreshNode);
@@ -35,7 +40,10 @@ public class CoreInfoFragment {
         Events.run(ConfigEvent.class, power::refreshNode);
 
         Events.run(ResetEvent.class, items::resetUsed);
-        Events.run(WorldLoadEvent.class, () -> items.rebuild(player.team()));
+        Events.run(WorldLoadEvent.class, () -> {
+            items.rebuild(player.team());
+            chosenTeamRegion = texture(player.team());
+        });
 
         var root = (Table) ((Table) ui.hudGroup.find("coreinfo")).getChildren().get(1);
 
@@ -47,21 +55,25 @@ public class CoreInfoFragment {
             cont.background(Styles.black6).margin(8f);
 
             cont.add(items).growX();
-            cont.button(Icon.modePvp, Styles.clearNoneTogglei, () -> choosesTeam = !choosesTeam).checked(t -> choosesTeam).size(44f).top().right().padLeft(8f);
+            cont.button(Icon.edit, Styles.clearNoneTogglei, () -> choosesTeam = !choosesTeam).checked(t -> choosesTeam).size(44f).top().padLeft(8f)
+                    .update(i -> i.getStyle().imageUp = chosenTeamRegion);
         }, () -> settings.getBool("coreitems")).row();
 
-        root.collapser(cont -> {
+        root.collapser(cont -> { // Team selection
             cont.background(Styles.black6).margin(8f).left();
 
             int[] amount = new int[1];
             Runnable rebuild = () -> {
                 cont.clear();
 
-                for (Team team : Team.baseTeams) {
+                for (Team team : Team.all) {
                     if (!team.active()) continue;
 
-                    var texture = new TextureRegionDrawable(ListDialog.texture(team));
-                    cont.button(texture, Styles.clearNoneTogglei, 36f, () -> items.rebuild(team)).checked(i -> items.team == team).size(44f);
+                    var texture = texture(team);
+                    cont.button(texture, Styles.clearNoneTogglei, 36f, () -> {
+                        items.rebuild(team);
+                        chosenTeamRegion = texture;
+                    }).checked(i -> items.team == team).size(44f);
                 }
             };
 
@@ -101,10 +113,21 @@ public class CoreInfoFragment {
         if (!timer.get(240f)) m_schematics.nextLayer();
     }
 
+    public Drawable texture(Team team) {
+        if (team.id < 6)
+            return new TextureRegionDrawable(ListDialog.texture(team));
+        else {
+            var white = (TextureRegionDrawable) Tex.whiteui;
+            return white.tint(team.color);
+        }
+    }
+
     /** Same as vanilla, but supports display of any team. */
     public class CoreItemsDisplay extends Table {
 
         public final ObjectSet<Item> used = new ObjectSet<>();
+
+        public CoreBuild core;
         public Team team;
 
         public void resetUsed() {
@@ -114,10 +137,10 @@ public class CoreInfoFragment {
 
         public void rebuild(Team team) {
             this.team = team;
-            var core = team.core();
 
             clear();
             update(() -> {
+                core = team.core();
                 if (core != null && content.items().contains(item -> core.items.get(item) > 0 && used.add(item))) rebuild(team);
             });
 
