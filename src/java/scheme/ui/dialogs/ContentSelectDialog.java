@@ -7,6 +7,7 @@ import arc.scene.ui.Label;
 import arc.scene.ui.Slider;
 import arc.scene.ui.layout.Table;
 import arc.struct.Seq;
+import mindustry.content.StatusEffects;
 import mindustry.content.UnitTypes;
 import mindustry.ctype.UnlockableContent;
 import mindustry.game.Team;
@@ -21,7 +22,8 @@ public class ContentSelectDialog<T extends UnlockableContent> extends ListDialog
     public static final int row = mobile ? 8 : 10;
     public static final float size = mobile ? 54f : 64f;
     public static final Seq<UnlockableContent> specials = Seq.with(
-            UnitTypes.latum, UnitTypes.renale, content.unit(53), content.unit(55), content.unit(64));
+            UnitTypes.latum, UnitTypes.renale, content.unit(53), content.unit(55), content.unit(64),
+            StatusEffects.muddy, StatusEffects.shielded, StatusEffects.corroded, StatusEffects.disarmed,StatusEffects.invincible);
 
     public Cons4<Player, Team, T, Float> callback;
     public Func<Float, String> format;
@@ -39,8 +41,8 @@ public class ContentSelectDialog<T extends UnlockableContent> extends ListDialog
         slider.moved(value -> label.setText(format.get(value)));
         slider.change(); // update label
 
-        Table table = new Table(); // T::logicVisible
-        content.each(item -> item.logicVisible() || specials.contains(item), item -> {
+        Table table = new Table();
+        content.each(this::visible, item -> {
             table.button(new TextureRegionDrawable(item.uiIcon), () -> {
                 callback.get(players.get(), teams.get(), item, slider.getValue());
                 hide();
@@ -56,7 +58,7 @@ public class ContentSelectDialog<T extends UnlockableContent> extends ListDialog
             cont.add(label).center().padTop(16f).visible(() -> showSlider).row();
             cont.table(slide -> {
                 slide.button(Icon.add, () -> {
-                    content.each(T::logicVisible, item -> callback.get(players.get(), teams.get(), item, slider.getValue()));
+                    content.each(this::visible, item -> callback.get(players.get(), teams.get(), item, slider.getValue()));
                     hide();
                 }).tooltip("@select.all");
                 slide.add(slider).padLeft(8f).growX();
@@ -76,5 +78,9 @@ public class ContentSelectDialog<T extends UnlockableContent> extends ListDialog
         this.showSlider = showSlider;
         this.callback = callback;
         show();
+    }
+
+    public boolean visible(T item) {
+        return item.logicVisible() || specials.contains(item);
     }
 }
