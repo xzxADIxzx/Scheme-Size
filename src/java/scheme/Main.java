@@ -8,6 +8,7 @@ import mindustry.gen.Building;
 import mindustry.mod.Mod;
 import mindustry.mod.Scripts;
 import mindustry.type.Item;
+import mindustry.ui.CoreItemsDisplay;
 import mindustry.world.Tile;
 import mindustry.world.blocks.distribution.Router;
 import scheme.moded.ModedBinding;
@@ -68,6 +69,11 @@ public class Main extends Mod {
         if (m_schematics.requiresDialog) ui.showOkText("@rename.name", "@rename.text", () -> {});
         if (settings.getBool("welcome")) ui.showOkText("@welcome.name", "@welcome.text", () -> {});
         if (settings.getBool("check4update")) SchemeUpdater.check();
+
+        if (SchemeUpdater.installed("miner-tools")) { // very sad but they are incompatible
+            ui.hudGroup.addChild(new CoreItemsDisplay()); // crutch to prevent crash
+            ui.showOkText("@incompatible.name", "@incompatible.text", () -> {});
+        }
 
         try { // run main.js without the wrapper to access the constant values in the game console
             Scripts scripts = mods.getScripts();
