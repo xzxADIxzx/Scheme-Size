@@ -17,6 +17,7 @@ import arc.scene.ui.TextField.TextFieldStyle;
 import arc.scene.ui.layout.*;
 import arc.util.Align;
 import arc.util.Scaling;
+import arc.util.Time;
 import mindustry.game.EventType.*;
 import mindustry.gen.Icon;
 import mindustry.gen.Tex;
@@ -57,7 +58,7 @@ public class HudFragment {
     public void build(Group parent) {
         Events.run(WorldLoadEvent.class, this::updateBlocks);
         Events.run(UnlockEvent.class, this::updateBlocks);
-        Events.run(ResizeEvent.class, () -> app.post(() -> { // idk why, but after resizing shortcut appears in the center of the screen
+        Events.run(ResizeEvent.class, () -> Time.run(10f, () -> { // idk why, but after resizing shortcut appears in the center of the screen
             if (shortfrag.visible) shortfrag.show(graphics.getWidth() - (int) Scl.scl(15f), graphics.getHeight() / 2);
         }));
 

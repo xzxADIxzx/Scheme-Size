@@ -64,6 +64,7 @@ public class BuildsCache {
         turrets.filter(turret -> turret.tile != tile);
         nuclears.filter(nuclear -> nuclear.tile != tile);
         impacts.filter(impact -> impact.tile != tile);
+        overdrives.filter(overdrive -> overdrive.tile != tile);
     }
 
     public void each(Rect bounds, Cons<Tile> cons) {
