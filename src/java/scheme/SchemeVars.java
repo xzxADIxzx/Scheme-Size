@@ -1,6 +1,10 @@
 package scheme;
 
+import arc.graphics.Texture;
+import arc.graphics.Texture.TextureFilter;
+import mindustry.content.StatusEffects;
 import mindustry.core.UI;
+import mindustry.graphics.Pal;
 import mindustry.type.Item;
 import mindustry.type.StatusEffect;
 import mindustry.type.UnitType;
@@ -51,6 +55,13 @@ public class SchemeVars {
     public static CoreInfoFragment corefrag;
 
     public static void load() {
+        var pixmap = atlas.getPixmap("scheme-size-status-invincible").pixmap.outline(Pal.gray, 3);
+        var texture = new Texture(pixmap);
+        texture.setFilter(TextureFilter.linear);
+
+        atlas.addRegion("status-invincible-ui", texture, 0, 0, 34, 34);
+        StatusEffects.invincible.loadIcon(); // slip a mod texture under the guise of vanilla
+
         // m_schematics is created in Main to prevent dual loading
         m_input = mobile ? new ModedMobileInput() : new ModedDesktopInput();
 

@@ -56,7 +56,7 @@ public class ModedDesktopInput extends DesktopInput implements ModedInputHandler
         } else if (input.keyDown(Binding.schematic_select) && !scene.hasKeyboard()) {
             drawSelection(schemX, schemY, cursorX, cursorY, maxSchematicSize);
             drawSize(schemX, schemY, cursorX, cursorY, maxSchematicSize);
-        } else if (input.keyDown(Binding.rebuild_select)) {
+        } else if (input.keyDown(Binding.rebuild_select) && !scene.hasKeyboard()) {
             drawSelection(schemX, schemY, cursorX, cursorY, 0, Pal.sapBulletBack, Pal.sapBullet);
 
             NormalizeDrawResult result = Placement.normalizeDrawArea(Blocks.air, schemX, schemY, cursorX, cursorY, false, 0, 1f);
