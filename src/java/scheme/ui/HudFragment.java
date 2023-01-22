@@ -116,7 +116,7 @@ public class HudFragment {
             cont.table(Tex.pane, pad -> {
                 pad.table(mode -> {
                     Events.run(UnitChangeEvent.class, () -> {
-                        mode.left().clear();
+                        mode.clear();
                         mode.button(Icon.line, check, () -> NetMinerAI.priorityItem = null).checked(t -> NetMinerAI.priorityItem == null).size(37.5f);
 
                         content.items().each(item -> item.hardness <= player.unit().type.mineTier && indexer.hasOre(item), item -> {
@@ -124,7 +124,7 @@ public class HudFragment {
                             if (mode.getChildren().size % 4 == 0) mode.row();
                         });
                     });
-                }).row();
+                }).left().row();
                 pad.labelWrap(GammaAI.tooltip).labelAlign(2, 8).pad(8f, 0f, 8f, 0f).width(150f).get().getStyle().fontColor = Color.lightGray;
             }).width(150f).margin(0f).update(pad -> pad.setTranslation(0f, settings.getBool("minimap") ? -Scl.scl(mobile ? 272f : 188f) : 0f)).row();
         });
