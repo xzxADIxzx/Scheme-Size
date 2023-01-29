@@ -23,7 +23,7 @@ public class MessageQueue {
     }
 
     public static void send(String message) {
-        messages.add(message);
+        if (messages.isEmpty() || !messages.last().equals(message)) messages.add(message);
     }
 
     public static boolean allow() {
