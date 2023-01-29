@@ -71,8 +71,11 @@ public class Main extends Mod {
         if (settings.getBool("check4update")) SchemeUpdater.check();
 
         if (SchemeUpdater.installed("miner-tools")) { // very sad but they are incompatible
-            ui.hudGroup.addChild(new CoreItemsDisplay()); // crutch to prevent crash
             ui.showOkText("@incompatible.name", "@incompatible.text", () -> {});
+            ui.hudGroup.fill(cont -> { // crutch to prevent crash
+                cont.visible = false;
+                cont.add(new CoreItemsDisplay());
+            });
         }
 
         try { // run main.js without the wrapper to access the constant values in the game console
