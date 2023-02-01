@@ -60,7 +60,7 @@ public class Darkdustry implements AdminsTools {
 
     public void placeCore() {
         if (unusable()) return;
-        if (player.tileOn().build instanceof CoreBuild)
+        if (player.buildOn() instanceof CoreBuild)
             sendPacket("fill", "null 0 null", player.tileX(), player.tileY(), 1, 1);
         else send("core");
     }
