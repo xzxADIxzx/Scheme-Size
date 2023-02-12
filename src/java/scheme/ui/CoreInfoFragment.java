@@ -163,7 +163,9 @@ public class CoreInfoFragment {
                 if (core != null && content.items().contains(item -> core.items.get(item) > 0 && used.add(item))) rebuild(team);
             });
 
-            used.each(item -> {
+            content.items().each(item -> {
+                if (!used.contains(item)) return;
+
                 image(item.uiIcon).size(iconSmall).padRight(3).tooltip(t -> t.background(Styles.black6).margin(4f).add(item.localizedName).style(Styles.outlineLabel));
                 label(() -> core == null ? "0" : UI.formatAmount(core.items.get(item))).padRight(3f).minWidth(52f).left();
 
