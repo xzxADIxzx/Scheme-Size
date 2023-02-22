@@ -65,7 +65,7 @@ public class BuildingTools {
 
     private void drop(Tile tile, Item item) {
         Call.requestItem(player, tile.build, item, units.maxAccepted);
-        Call.dropItem(units.maxAccepted);
+        if (player.unit().stack.amount > 0) Call.dropItem(units.maxAccepted);
     }
 
     public void replace(int x, int y) {
