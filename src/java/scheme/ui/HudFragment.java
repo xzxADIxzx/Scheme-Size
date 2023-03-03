@@ -225,26 +225,26 @@ public class HudFragment {
             cont.table(Tex.buttonEdge4, pad -> {
                 partitionmb(pad, mode -> {
                     mode.add(mobiles);
-                    if (mobile) setAction(mode, "disarmed", "lock_shoot.", m_input::lockShooting);
-                    else setAction(mode, Icon.book, "view_comb", keycomb::show);
-                    setAction(mode, "blasted",   "despawn",         () -> admins.despawn());
-                    setAction(mode, "overdrive", "teleport",        () -> admins.teleport());
-                    setAction(mode, Icon.lock,   "lock_move",       () -> m_input.lockMovement());
+                    if (mobile) setAction(mode, "disarmed", m_input::lockShooting);
+                    else setAction(mode, Icon.book, keycomb::show);
+                    setAction(mode, "blasted",   () -> admins.despawn());
+                    setAction(mode, "overdrive", () -> admins.teleport());
+                    setAction(mode, Icon.lock,   () -> m_input.lockMovement());
                 }).visible(() -> true).update(mode -> mode.setTranslation(0f, Scl.scl(mobiles.fliped ? 0f : -63.2f))).row();
 
                 partitionmb(pad, mode -> {
-                    setAction(mode, Icon.effect, "place_core.",     () -> admins.placeCore());
-                    setAction(mode, "boss",      "manage_team.",    () -> admins.manageTeam());
-                    setAction(mode, Icon.logic,  "toggle_ai.",      () -> ai.select());
-                    setAction(mode, Icon.admin,  "adminscfg.",      () -> adminscfg.show());
-                    setAction(mode, Icon.image,  "rendercfg.",      () -> rendercfg.show());
+                    setAction(mode, Icon.effect, () -> admins.placeCore());
+                    setAction(mode, "boss",      () -> admins.manageTeam());
+                    setAction(mode, Icon.logic,  () -> ai.select());
+                    setAction(mode, Icon.admin,  () -> adminscfg.show());
+                    setAction(mode, Icon.image,  () -> rendercfg.show());
                 }).row();
 
                 partitionmb(pad, mode -> {
-                    setAction(mode, Icon.units,  "manage_unit.",    () -> admins.manageUnit());
-                    setAction(mode, Icon.add,    "spawn_unit",      () -> admins.spawnUnits());
-                    setAction(mode, "corroded",  "manage_effect.",  () -> admins.manageEffect());
-                    setAction(mode, Icon.production,"manage_item.", () -> admins.manageItem());
+                    setAction(mode, Icon.units,  () -> admins.manageUnit());
+                    setAction(mode, Icon.add,    () -> admins.spawnUnits());
+                    setAction(mode, "corroded",  () -> admins.manageEffect());
+                    setAction(mode, Icon.production, () -> admins.manageItem());
                 }).row();
             }).margin(0f).update(pad -> {
                 if (block[1] == null) return; // waves main are not null but block is
@@ -278,9 +278,8 @@ public class HudFragment {
         }).row();
     }
 
-    private void setAction(Table table, Object icon, String tooltip, Runnable listener) {
-        table.button(icon instanceof String name ? atlas.drawable("status-" + name) : (Drawable) icon, style, 37f, listener).get()
-                .addListener(new TooltipLocker(tooltip.endsWith(".") ? "@keybind." + tooltip + "name" : "@keycomb." + tooltip));
+    private void setAction(Table table, Object icon, Runnable listener) {
+        table.button(icon instanceof String name ? atlas.drawable("status-" + name) : (Drawable) icon, style, 37f, listener);
     }
 
     private void setMove(Table table, Updater move) {
