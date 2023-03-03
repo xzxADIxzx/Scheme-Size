@@ -236,7 +236,9 @@ public class ModedDesktopInput extends DesktopInput implements ModedInputHandler
             buildX = cursorX;
             buildY = cursorY;
             using = true;
-            renderer.minZoom = renderer.maxZoom = Mathf.round(renderer.getScale(), 0.5f) / Scl.scl(); // a crutch to lock camera zoom
+
+            var scl = renderer.getScale() == Scl.scl(renderer.minZoom) ? renderer.getScale() : Mathf.round(renderer.getScale(), 0.5f);
+            renderer.minZoom = renderer.maxZoom = scl / Scl.scl(); // a crutch to lock camera zoom
         }
 
         if (input.keyRelease(Binding.select) || input.keyTap(Binding.deselect) || input.keyTap(Binding.break_block)) {

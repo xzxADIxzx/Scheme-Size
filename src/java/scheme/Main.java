@@ -110,8 +110,8 @@ public class Main extends Mod {
             @Override
             public void draw() {
                 super.draw();
-                Draw.draw(Draw.z(), () -> {
-                    if (render.borderless) Draw.rect(Draw.wrap(buffer.getTexture()), x, y, block.region.width * Draw.scl, -block.region.height * Draw.scl);
+                if (render.borderless) Draw.draw(Draw.z(), () -> {
+                    Draw.rect(Draw.wrap(buffer.getTexture()), x, y, block.region.width * Draw.scl, -block.region.height * Draw.scl);
                 });
             }
         });
