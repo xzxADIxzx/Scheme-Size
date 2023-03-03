@@ -35,6 +35,7 @@ public class RendererConfigDialog extends BaseDialog {
             check(part, "grid",   value -> render.grid = value);
             check(part, "ruler",  value -> render.ruler = value);
             check(part, "info",   value -> render.unitInfo = value);
+            check(part, "border", value -> render.borderless = value);
         });
 
         partition("radius.name", part -> {

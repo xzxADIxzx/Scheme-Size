@@ -25,7 +25,7 @@ import static scheme.SchemeVars.*;
 public class RendererTools {
 
     public Rect bounds = new Rect();
-    public boolean xray, grid, ruler, unitInfo, unitRadius, turretRadius, reactorRadius, overdriveRadius;
+    public boolean xray, grid, ruler, unitInfo, borderless, unitRadius, turretRadius, reactorRadius, overdriveRadius;
 
     public void draw() {
         camera.bounds(bounds); // do NOT use Tmp.r1 

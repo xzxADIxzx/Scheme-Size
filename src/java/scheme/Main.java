@@ -1,5 +1,6 @@
 package scheme;
 
+import arc.graphics.g2d.Draw;
 import arc.util.Log;
 import arc.util.Tmp;
 import mindustry.content.Blocks;
@@ -11,6 +12,7 @@ import mindustry.type.Item;
 import mindustry.ui.CoreItemsDisplay;
 import mindustry.world.Tile;
 import mindustry.world.blocks.distribution.Router;
+import mindustry.world.blocks.logic.LogicDisplay;
 import scheme.moded.ModedBinding;
 import scheme.moded.ModedGlyphLayout;
 import scheme.moded.ModedSchematics;
@@ -103,6 +105,16 @@ public class Main extends Mod {
                 return target;
             }
         };
+
+        content.blocks().each(block -> block instanceof LogicDisplay, block -> block.buildType = () -> ((LogicDisplay) block).new LogicDisplayBuild() {
+            @Override
+            public void draw() {
+                super.draw();
+                Draw.draw(Draw.z(), () -> {
+                    if (render.borderless) Draw.rect(Draw.wrap(buffer.getTexture()), x, y, block.region.width * Draw.scl, -block.region.height * Draw.scl);
+                });
+            }
+        });
     }
 
     public static void log(String info) {
