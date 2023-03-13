@@ -41,10 +41,13 @@ public class ClajIntegration {
 
     public static Client createRoom(String ip, int port, Cons<String> link, Runnable disconnected) throws IOException {
         Client client = new Client(8192, 8192, new Serializer());
-        Threads.daemon("CLaJ Client", client::run);
+        Threads.daemon("CLaJ Room", client::run);
 
-        client.addListener(serverListener);
         client.addListener(new NetListener() {
+
+            /** Used when creating redirectors. */
+            public String key;
+
             @Override
             public void connected(Connection connection) {
                 client.sendTCP("new");
@@ -58,9 +61,14 @@ public class ClajIntegration {
             @Override
             public void received(Connection connection, Object object) {
                 if (object instanceof String message) {
-                    if (message.startsWith("CLaJ"))
-                        link.get(message + "#" + ip + ":" + port);
-                    else
+                    if (message.startsWith("CLaJ")) {
+                        this.key = message;
+                        link.get(key + "#" + ip + ":" + port);
+                    } else if (message.equals("new")) {
+                        try {
+                            createRedirector(ip, port, key);
+                        } catch (Exception ignored) {}
+                    } else
                         Call.sendMessage(message);
                 }
             }
@@ -70,6 +78,22 @@ public class ClajIntegration {
         clients.add(client);
 
         return client;
+    }
+
+    public static void createRedirector(String ip, int port, String key) throws IOException {
+        Client client = new Client(8192, 8192, new Serializer());
+        Threads.daemon("CLaJ Redirector", client::run);
+
+        client.addListener(serverListener);
+        client.addListener(new NetListener() {
+            @Override
+            public void connected(Connection connection) {
+                client.sendTCP("host" + key);
+            }
+        });
+
+        client.connect(5000, ip, port, port);
+        clients.add(client);
     }
 
     public static void joinRoom(String ip, int port, String key, Runnable success) {
@@ -83,7 +107,7 @@ public class ClajIntegration {
 
             ByteBuffer buffer = ByteBuffer.allocate(8192);
             buffer.put(Serializer.linkID);
-            TypeIO.writeString(buffer, key);
+            TypeIO.writeString(buffer, "join" + key);
 
             buffer.limit(buffer.position()).position(0);
             net.send(buffer, true);
