@@ -11,6 +11,7 @@ import arc.util.Reflect;
 import arc.util.Threads;
 import mindustry.game.EventType.*;
 import mindustry.gen.Call;
+import mindustry.io.TypeIO;
 import mindustry.net.ArcNetProvider.*;
 
 import static mindustry.Vars.*;
@@ -82,7 +83,7 @@ public class ClajIntegration {
 
             ByteBuffer buffer = ByteBuffer.allocate(8192);
             buffer.put(Serializer.linkID);
-            Serializer.writeString(buffer, key);
+            TypeIO.writeString(buffer, key);
 
             buffer.limit(buffer.position()).position(0);
             net.send(buffer, true);
@@ -127,33 +128,17 @@ public class ClajIntegration {
         public void write(ByteBuffer buffer, Object object) {
             if (object instanceof String link) {
                 buffer.put(linkID);
-                writeString(buffer, link);
+                TypeIO.writeString(buffer, link);
             } else
                 super.write(buffer, object);
         }
 
         @Override
         public Object read(ByteBuffer buffer) {
-            if (buffer.get() == linkID) return readString(buffer);
+            if (buffer.get() == linkID) return TypeIO.readString(buffer);
 
             buffer.position(buffer.position() - 1);
             return super.read(buffer);
-        }
-
-        public static void writeString(ByteBuffer buffer, String message) {
-            buffer.putInt(message.length());
-            for (char chara : message.toCharArray())
-                buffer.putChar(chara);
-        }
-
-        public static String readString(ByteBuffer buffer) {
-            int length = buffer.getInt();
-
-            StringBuilder builder = new StringBuilder();
-            for (int i = 0; i < length; i++)
-                builder.append(buffer.getChar());
-
-            return builder.toString();
         }
     }
 }
