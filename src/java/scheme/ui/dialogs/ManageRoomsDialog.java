@@ -2,6 +2,7 @@ package scheme.ui.dialogs;
 
 import arc.graphics.Color;
 import arc.net.Client;
+import arc.scene.ui.TextField;
 import arc.scene.ui.layout.Table;
 import arc.util.Strings;
 import mindustry.gen.Icon;
@@ -10,47 +11,58 @@ import mindustry.ui.Styles;
 import mindustry.ui.dialogs.BaseDialog;
 import scheme.ClajIntegration;
 import scheme.Main;
+import scheme.ui.FlipButton;
 
 import static mindustry.Vars.*;
+import static scheme.SchemeVars.*;
 
 import java.io.IOException;
 
 public class ManageRoomsDialog extends BaseDialog {
 
-    public String serverIP = "darkdustry.net";
-    public int serverPort = 3917;
+    public String serverIP;
+    public int serverPort;
+
+    public Table list;
+    public TextField field;
+    public FlipButton flip;
+    public boolean valid;
 
     public ManageRoomsDialog() {
         super("@manage.name");
         addCloseButton();
 
-        cont.table(rooms -> {
-            float w = mobile ? 550f : 750f;
-            rooms.defaults().width(w);
+        cont.defaults().width(mobile ? 550f : 750f);
 
-            Table list = new Table();
-            list.defaults().width(w).padBottom(8f);
-            list.update(() -> list.getCells().filter(cell -> cell.get() != null));
-            rooms.add(list).row();
+        cont.table(list -> {
+            list.defaults().growX().padBottom(8f);
+            list.update(() -> list.getCells().filter(cell -> cell.get() != null)); // remove closed rooms
 
-            rooms.field("darkdustry.net:3917", address -> {
-                int semicolon = address.indexOf(':');
+            this.list = list;
+        }).row();
 
-                serverIP = address.substring(0, semicolon);
-                serverPort = Strings.parseInt(address.substring(semicolon + 1));
-            }).maxTextLength(100).valid(address -> address.contains(":")).row();
+        cont.table(url -> {
+            url.field(clajURLs.first(), this::setURL).maxTextLength(100).valid(this::validURL).with(f -> field = f).growX();
+            url.add(flip = new FlipButton()).size(48f).padLeft(8f);
+        }).row();
 
-            rooms.button("@manage.create", () -> {
-                try {
-                    list.add(new Room()).row();
-                } catch (Throwable ignored) {
-                    ui.showErrorMessage(ignored.getMessage());
-                }
-            }).disabled(button -> list.getChildren().size >= 4).padTop(8f);
-        }).height(550f).row();
+        cont.collapser(list -> {
+            clajURLs.each(url -> {
+                list.button(url, Styles.cleart, () -> setURL(url)).height(32f).growX().row();
+            });
+        }, true, () -> flip.fliped).row();
+
+        cont.button("@manage.create", () -> {
+            try {
+                list.add(new Room()).row();
+            } catch (Exception ignored) {
+                ui.showErrorMessage(ignored.getMessage());
+            }
+        }).disabled(b -> list.getChildren().size >= 4 || !valid).row();
 
         cont.labelWrap("@manage.tooltip").labelAlign(2, 8).padTop(16f).width(400f).get().getStyle().fontColor = Color.lightGray;
 
+        setURL(clajURLs.first());
         ui.paused.shown(this::fixPausedDialog);
     }
 
@@ -68,6 +80,22 @@ public class ManageRoomsDialog extends BaseDialog {
         int index = state.isCampaign() || state.isEditor() ? 5 : 7;
         root.getCells().insert(index, root.getCells().remove(index + 1));
     }
+
+    // region URL
+
+    public void setURL(String url) {
+        field.setText(url);
+
+        int semicolon = url.indexOf(':');
+        serverIP = url.substring(0, semicolon);
+        serverPort = Strings.parseInt(url.substring(semicolon + 1));
+    }
+
+    public boolean validURL(String url) {
+        return valid = url.contains(":") && Strings.canParseInt(url.substring(url.indexOf(':') + 1));
+    }
+
+    // endregion
 
     public class Room extends Table {
 

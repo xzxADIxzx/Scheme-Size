@@ -2,6 +2,7 @@ package scheme;
 
 import arc.graphics.Texture;
 import arc.graphics.Texture.TextureFilter;
+import arc.struct.Seq;
 import mindustry.content.StatusEffects;
 import mindustry.core.UI;
 import mindustry.graphics.Pal;
@@ -53,6 +54,11 @@ public class SchemeVars {
     public static ShortcutFragment shortfrag;
     public static ConsoleFragment consolefrag;
     public static CoreInfoFragment corefrag;
+
+    public static Seq<String> clajURLs = Seq.with(
+            "darkdustry.net:3917",
+            "45.82.176.157:3917",
+            "claj.phoenix-network.dev:4000");
 
     public static void load() {
         var pixmap = atlas.getPixmap("scheme-size-status-invincible").pixmap.outline(Pal.gray, 3);
