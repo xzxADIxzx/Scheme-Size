@@ -100,7 +100,7 @@ public class SlashJs implements AdminsTools {
         if (unusable()) return;
         tile.select((floor, block, overlay) -> {
             edit(floor, block, overlay);
-            send("for (var x = @; x <= @; x++) for (var y = @; y <= @; y++) todo(Vars.world.tiles.getc(x, y))", sx, ex, sy, ey);
+            send("for (var x = @; x <= @; x++) for (var y = @; y <= @; y++) todo(Vars.world.tile(x, y))", sx, ex, sy, ey);
         });
     }
 
@@ -108,7 +108,7 @@ public class SlashJs implements AdminsTools {
         if (unusable()) return;
         tile.select((floor, block, overlay) -> {
             edit(floor, block, overlay);
-            send("Geometry.circle(@, @, @, (cx, cy) => todo(Vars.world.tiles.getc(cx, cy)))", x, y, radius);
+            send("Geometry.circle(@, @, @, (cx, cy) => todo(Vars.world.tile(cx, cy)))", x, y, radius);
         });
     }
 
@@ -151,7 +151,10 @@ public class SlashJs implements AdminsTools {
     }
 
     private static void edit(Block floor, Block block, Block overlay) {
-        send("var floor = @; var block = @; var over = @", getBlock(floor), getBlock(block), getBlock(overlay));
-        send("var todo = tile => { tile.setFloorNet(floor==null?tile.floor():floor,over==null?tile.overlay():over); if (block!=null) tile.setNet(block) }");
+        boolean fo = floor != null || overlay != null;
+
+        send("f = @; b = @; o = @", getBlock(floor), getBlock(block), getBlock(overlay));
+        send("todo = tile => { if(tile!=null){" + (fo ? "sflr(tile);" : "") + (block != null ? "if(tile.block()!=b)tile.setNet(b)" : "") + "} }");
+        if (fo) send("sflr = tile => { if(tile.floor()!=f||tile.overlay()!=o)tile.setFloorNet(f==null?tile.floor():f,o==null?tile.overlay():o) }");
     }
 }
