@@ -3,6 +3,7 @@ package scheme.moded;
 import arc.struct.Seq;
 import mindustry.content.Blocks;
 import mindustry.entities.units.BuildPlan;
+import mindustry.gen.Player;
 import mindustry.gen.Unit;
 import mindustry.input.*;
 import mindustry.input.Placement.NormalizeResult;
@@ -20,6 +21,8 @@ public class ModedMobileInput extends MobileInput implements ModedInputHandler {
 
     public boolean using, movementLocked, lastTouched, shootingLocked;
     public int buildX, buildY, lastX, lastY, lastSize = 8;
+
+    public Player observed;
 
     private boolean isRelease() {
         return lastTouched && !input.isTouched(0);
@@ -79,6 +82,11 @@ public class ModedMobileInput extends MobileInput implements ModedInputHandler {
         super.update();
 
         if (locked()) return;
+
+        if (observed != null) {
+            camera.position.set(observed.unit()); // idk why, but unit moves smoother
+            if (input.isTouched(0) && !scene.hasMouse()) observed = null;
+        }
 
         buildInput();
         if (movementLocked) drawLocked(player.unit().x, player.unit().y);
@@ -171,6 +179,10 @@ public class ModedMobileInput extends MobileInput implements ModedInputHandler {
 
     public void lockShooting() {
         shootingLocked = !shootingLocked;
+    }
+
+    public void observe(Player target) {
+        observed = target;
     }
 
     public void flush(Seq<BuildPlan> plans) {

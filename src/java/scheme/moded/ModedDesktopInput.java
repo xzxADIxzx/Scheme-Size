@@ -10,6 +10,7 @@ import arc.util.Time;
 import arc.util.Tmp;
 import mindustry.content.Blocks;
 import mindustry.entities.units.BuildPlan;
+import mindustry.gen.Player;
 import mindustry.gen.Unit;
 import mindustry.graphics.Pal;
 import mindustry.input.*;
@@ -31,6 +32,7 @@ public class ModedDesktopInput extends DesktopInput implements ModedInputHandler
     public int buildX, buildY, lastX, lastY, lastSize = 8;
 
     public Vec2 lastCamera = new Vec2();
+    public Player observed;
 
     @Override
     protected void removeSelection(int x1, int y1, int x2, int y2, int maxLength) {
@@ -105,7 +107,15 @@ public class ModedDesktopInput extends DesktopInput implements ModedInputHandler
 
         if (locked()) return;
 
-        if (movementLocked && !scene.hasKeyboard()) {
+        if (observed != null) {
+            camera.position.set(observed.unit()); // idk why, but unit moves smoother
+            panning = true;
+
+            // stop viewing a player if movement key is pressed
+            if ((input.axis(Binding.move_x) != 0 || input.axis(Binding.move_y) != 0 || input.keyDown(Binding.pan)) && !scene.hasKeyboard()) observed = null;
+        }
+
+        if (movementLocked && !scene.hasKeyboard() && observed == null) {
             drawLocked(player.unit().x, player.unit().y);
             panning = true; // panning is always enabled when unit movement is locked
 
@@ -142,7 +152,6 @@ public class ModedDesktopInput extends DesktopInput implements ModedInputHandler
 
     /** Punishment awaits me for this... */
     public void modedInput() {
-
         boolean alt = input.keyDown(ModedBinding.alternative);
 
         if (input.keyTap(ModedBinding.adminscfg)) adminscfg.show();
@@ -263,6 +272,10 @@ public class ModedDesktopInput extends DesktopInput implements ModedInputHandler
 
     // there is nothing because, you know, it's desktop
     public void lockShooting() {}
+
+    public void observe(Player target) {
+        observed = target;
+    }
 
     public void flush(Seq<BuildPlan> plans) {
         flushPlans(plans);

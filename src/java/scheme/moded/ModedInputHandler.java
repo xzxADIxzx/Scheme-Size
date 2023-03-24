@@ -10,6 +10,7 @@ import arc.struct.Seq;
 import mindustry.content.Blocks;
 import mindustry.core.World;
 import mindustry.entities.units.BuildPlan;
+import mindustry.gen.Player;
 import mindustry.graphics.Pal;
 import mindustry.input.InputHandler;
 import mindustry.input.Placement;
@@ -39,6 +40,8 @@ public interface ModedInputHandler {
     public void lockMovement();
 
     public void lockShooting();
+
+    public void observe(Player target);
 
     public void flush(Seq<BuildPlan> plans);
 

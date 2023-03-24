@@ -22,7 +22,6 @@ import mindustry.gen.Icon;
 import mindustry.gen.Player;
 import mindustry.gen.Tex;
 import mindustry.graphics.Pal;
-import mindustry.input.DesktopInput;
 import mindustry.net.Packets.AdminAction;
 import mindustry.ui.Styles;
 import scheme.ServerIntegration;
@@ -93,9 +92,9 @@ public class PlayerListFragment extends mindustry.ui.fragments.PlayerListFragmen
 
             table.tapped(() -> {
                 if (user.dead()) return;
-                camera.position.set(user.unit());
+
+                m_input.observe(user);
                 ui.showInfoFade(bundle.format("viewplayer", user.name), 1f);
-                if (control.input instanceof DesktopInput input) input.panning = true;
             });
 
             Table button = new Table();
