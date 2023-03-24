@@ -60,6 +60,11 @@ public class SchemeVars {
             "45.82.176.157:3917",
             "claj.phoenix-network.dev:4000");
 
+    /** List of ip servers that block the mod. */
+    public static Seq<String> antiModIPs = Seq.with(
+            "play.thedimas.pp.ua",
+            "91.209.226.11");
+
     public static void load() {
         var pixmap = atlas.getPixmap("scheme-size-status-invincible").pixmap.outline(Pal.gray, 3);
         var texture = new Texture(pixmap);

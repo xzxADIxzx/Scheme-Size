@@ -2,6 +2,7 @@ package scheme;
 
 import arc.Events;
 import arc.struct.IntMap;
+import arc.util.Reflect;
 import arc.util.Strings;
 import mindustry.game.EventType.*;
 import mindustry.gen.Call;
@@ -9,6 +10,7 @@ import mindustry.io.JsonIO;
 
 import static arc.Core.*;
 import static mindustry.Vars.*;
+import static scheme.SchemeVars.*;
 
 /**
  * Package manager for getting player data from the server.
@@ -51,6 +53,8 @@ public class ServerIntegration {
         Events.run(ClientPreConnectEvent.class, ServerIntegration::clear);
 
         netClient.addPacketHandler("SendMeSubtitle", args -> {
+            if (antiModIPs.contains(Reflect.<String>get(ui.join, "lastIp"))) return;
+
             Call.serverPacketReliable("MySubtitle", settings.getString("subtitle"));
             if (args != null) hostID = Strings.parseInt(args, -1);
         });
