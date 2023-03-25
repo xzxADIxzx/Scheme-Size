@@ -71,7 +71,7 @@ public class SchemasDialog extends SchematicsDialog {
 
                     button(t, "importimage", Icon.image, () -> { // do not replace with :: because null pointer
                         platform.showFileChooser(true, "png", file -> parser.show(file));
-                    });
+                    }).row();
 
                     if (!steam) return;
 
