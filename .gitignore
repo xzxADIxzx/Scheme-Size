@@ -10,3 +10,4 @@ build/*
 *.project
 *.bat
 *.xml
+*.directory
