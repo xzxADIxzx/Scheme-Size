@@ -97,7 +97,9 @@ public class ModedDesktopInput extends DesktopInput implements ModedInputHandler
         });
         if (ai.ai instanceof GammaAI gamma) gamma.draw();
     }
-
+    public boolean isStopViewing(){
+        return (input.axis(Binding.move_x) != 0 || input.axis(Binding.move_y) != 0 || input.keyDown(Binding.pan)) && !scene.hasKeyboard();
+    }
     @Override
     public void update() {
         lastCamera.set(camera.position);
@@ -112,7 +114,7 @@ public class ModedDesktopInput extends DesktopInput implements ModedInputHandler
             panning = true;
 
             // stop viewing a player if movement key is pressed
-            if ((input.axis(Binding.move_x) != 0 || input.axis(Binding.move_y) != 0 || input.keyDown(Binding.pan)) && !scene.hasKeyboard()) observed = null;
+            if (isStopViewing()) observed = null;
         }
 
         if (movementLocked && !scene.hasKeyboard() && observed == null) {
