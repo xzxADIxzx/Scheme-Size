@@ -13,7 +13,7 @@ import mindustry.world.blocks.defense.OverdriveProjector.OverdriveBuild;
 import mindustry.world.blocks.defense.turrets.BaseTurret.BaseTurretBuild;
 import mindustry.world.blocks.power.ImpactReactor.ImpactReactorBuild;
 import mindustry.world.blocks.power.NuclearReactor.NuclearReactorBuild;
-
+import java.util.*;
 import static mindustry.Vars.*;
 
 public class BuildsCache {
@@ -53,12 +53,66 @@ public class BuildsCache {
         Groups.build.each(this::cache);
     }
 
-    public void cache(Building build) {
-        if (build instanceof BaseTurretBuild turret) turrets.add(turret);
-        if (build instanceof NuclearReactorBuild nuclear) nuclears.add(nuclear);
-        if (build instanceof ImpactReactorBuild impact) impacts.add(impact);
-        if (build instanceof OverdriveBuild overdrive) overdrives.add(overdrive);
+    public interface BuildingCache {
+        void cache(Building build);
     }
+
+    public class TurretCache implements BuildingCache {
+        private List<BaseTurretBuild> turrets = new ArrayList<>();
+
+        @Override
+        public void cache(Building build) {
+            if (build instanceof BaseTurretBuild turret) {
+                turrets.add(turret);
+            }
+        }
+    }
+
+    public class NuclearCache implements BuildingCache {
+        private List<NuclearReactorBuild> nuclears = new ArrayList<>();
+
+        @Override
+        public void cache(Building build) {
+            if (build instanceof NuclearReactorBuild nuclear) {
+                nuclears.add(nuclear);
+            }
+        }
+    }
+
+    public class ImpactCache implements BuildingCache {
+        private List<ImpactReactorBuild> impacts = new ArrayList<>();
+
+        @Override
+        public void cache(Building build) {
+            if (build instanceof ImpactReactorBuild impact) {
+                impacts.add(impact);
+            }
+        }
+    }
+
+    public class OverdriveCache implements BuildingCache {
+        private List<OverdriveBuild> overdrives = new ArrayList<>();
+
+        @Override
+        public void cache(Building build) {
+            if (build instanceof OverdriveBuild overdrive) {
+                overdrives.add(overdrive);
+            }
+        }
+    }
+
+    public void cache(Building build) {
+        BuildingCache turretCache = new TurretCache();
+        BuildingCache nuclearCache = new NuclearCache();
+        BuildingCache impactCache = new ImpactCache();
+        BuildingCache overdriveCache = new OverdriveCache();
+
+        turretCache.cache(build);
+        nuclearCache.cache(build);
+        impactCache.cache(build);
+        overdriveCache.cache(build);
+    }
+
 
     public void uncache(Tile tile) {
         turrets.filter(turret -> turret.tile != tile);
