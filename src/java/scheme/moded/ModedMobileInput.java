@@ -106,6 +106,54 @@ public class ModedMobileInput extends MobileInput implements ModedInputHandler {
         }
     }
 
+    public void buildInputHas(int cursorX,int cursorY){
+
+        if (build.mode == Mode.replace) build.replace(cursorX, cursorY);
+        if (build.mode == Mode.remove) build.remove(cursorX, cursorY);
+        if (build.mode == Mode.connect) {
+            if (block instanceof PowerNode == false) block = Blocks.powerNode;
+            build.connect(cursorX, cursorY, (x, y) -> {
+                updateLine(x, y);
+                build.plan.addAll(linePlans).remove(0);
+            });
+        }
+
+        if (build.mode == Mode.fill) build.fill(buildX, buildY, cursorX, cursorY, maxSchematicSize);
+        if (build.mode == Mode.circle) build.circle(cursorX, cursorY);
+        if (build.mode == Mode.square) build.square(cursorX, cursorY, (x1, y1, x2, y2) -> {
+            updateLine(x1, y1, x2, y2);
+            build.plan.addAll(linePlans);
+        });
+
+        if (build.mode == Mode.brush) admins.brush(cursorX, cursorY, build.size);
+
+        lastX = cursorX;
+        lastY = cursorY;
+        lastSize = build.size;
+        linePlans.clear();
+
+
+    }
+
+    public void buildInputUsing(int cursorX,int cursorY,boolean has){
+
+        if (build.mode == Mode.drop) build.drop(cursorX, cursorY);
+        if (has) {
+            buildInputHas(cursorX,cursorY);
+        }
+
+        if (isRelease()) {
+            flushBuildingTools();
+
+            if (build.mode == Mode.pick) tile.select(cursorX, cursorY);
+            if (build.mode == Mode.edit) {
+                NormalizeResult result = Placement.normalizeArea(buildX, buildY, cursorX, cursorY, 0, false, maxSchematicSize);
+                admins.fill(result.x, result.y, result.x2, result.y2);
+            }
+        }
+
+    }
+
     public void buildInput() {
         if (!hudfrag.building.fliped) build.setMode(Mode.none);
         if (build.mode == Mode.none) return;
@@ -117,42 +165,7 @@ public class ModedMobileInput extends MobileInput implements ModedInputHandler {
         if (has) build.plan.clear();
 
         if (using) {
-            if (build.mode == Mode.drop) build.drop(cursorX, cursorY);
-            if (has) {
-                if (build.mode == Mode.replace) build.replace(cursorX, cursorY);
-                if (build.mode == Mode.remove) build.remove(cursorX, cursorY);
-                if (build.mode == Mode.connect) {
-                    if (block instanceof PowerNode == false) block = Blocks.powerNode;
-                    build.connect(cursorX, cursorY, (x, y) -> {
-                        updateLine(x, y);
-                        build.plan.addAll(linePlans).remove(0);
-                    });
-                }
-
-                if (build.mode == Mode.fill) build.fill(buildX, buildY, cursorX, cursorY, maxSchematicSize);
-                if (build.mode == Mode.circle) build.circle(cursorX, cursorY);
-                if (build.mode == Mode.square) build.square(cursorX, cursorY, (x1, y1, x2, y2) -> {
-                    updateLine(x1, y1, x2, y2);
-                    build.plan.addAll(linePlans);
-                });
-
-                if (build.mode == Mode.brush) admins.brush(cursorX, cursorY, build.size);
-
-                lastX = cursorX;
-                lastY = cursorY;
-                lastSize = build.size;
-                linePlans.clear();
-            }
-
-            if (isRelease()) {
-                flushBuildingTools();
-
-                if (build.mode == Mode.pick) tile.select(cursorX, cursorY);
-                if (build.mode == Mode.edit) {
-                    NormalizeResult result = Placement.normalizeArea(buildX, buildY, cursorX, cursorY, 0, false, maxSchematicSize);
-                    admins.fill(result.x, result.y, result.x2, result.y2);
-                }
-            }
+            buildInputUsing(cursorX,cursorY,has);
         }
 
         if (isTap() && !scene.hasMouse()) {
