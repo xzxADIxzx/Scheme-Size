@@ -7,8 +7,8 @@ public class FlipButton extends ImageButton {
 
     public boolean fliped;
 
-    public FlipButton() {
-        super(Icon.downOpen, HudFragment.style);
+    public FlipButton(ImageButtonStyle style) {
+        super(Icon.downOpen, style);
         clicked(this::flip);
         resizeImage(Icon.downOpen.imageSize());
     }

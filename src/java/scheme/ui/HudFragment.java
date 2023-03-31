@@ -48,8 +48,8 @@ public class HudFragment {
         cursor = Tex.cursor;
     }};
 
-    public FlipButton mobiles = new FlipButton();
-    public FlipButton building = new FlipButton();
+    public FlipButton mobiles = new FlipButton(style);
+    public FlipButton building = new FlipButton(style);
 
     /** PlacementFragment and OverlayMarker. */
     public Element[] block = new Element[3];

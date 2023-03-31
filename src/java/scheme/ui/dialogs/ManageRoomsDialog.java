@@ -12,6 +12,7 @@ import mindustry.ui.dialogs.BaseDialog;
 import scheme.ClajIntegration;
 import scheme.Main;
 import scheme.ui.FlipButton;
+import scheme.ui.HudFragment;
 
 import static mindustry.Vars.*;
 import static scheme.SchemeVars.*;
@@ -43,7 +44,7 @@ public class ManageRoomsDialog extends BaseDialog {
 
         cont.table(url -> {
             url.field(clajURLs.first(), this::setURL).maxTextLength(100).valid(this::validURL).with(f -> field = f).growX();
-            url.add(flip = new FlipButton()).size(48f).padLeft(8f);
+            url.add(flip = new FlipButton(HudFragment.style)).size(48f).padLeft(8f);
         }).row();
 
         cont.collapser(list -> {
