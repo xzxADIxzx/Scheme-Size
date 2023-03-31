@@ -231,6 +231,8 @@ public class ModedGlyphLayout extends GlyphLayout {
         colorStack.clear();
 
         this.width = width;
-        this.height = fontData.capHeight - lines * fontData.down - blankLines * fontData.down * fontData.blankLineScale;
+        float capHeight = fontData.capHeight - lines * fontData.down;
+        float down = blankLines * fontData.down * fontData.blankLineScale;
+        this.height =  capHeight - down;
     }
 }
