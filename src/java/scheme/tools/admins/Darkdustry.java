@@ -90,14 +90,6 @@ public class Darkdustry implements AdminsTools {
         ui.showInfoFade("@admins.notsupported");
     }
 
-    public boolean unusable() {
-        boolean admin = !player.admin && !settings.getBool("adminsalways");
-        if (!settings.getBool("adminsenabled")) {
-            ui.showInfoFade(disabled);
-            return true;
-        } else if (admin) ui.showInfoFade("@admins.notanadmin");
-        return admin; // darkness was be here
-    }
 
     private static void send(String command, Object... args) {
         StringBuilder message = new StringBuilder(netServer.clientCommands.getPrefix()).append(command);

@@ -117,15 +117,6 @@ public class SlashJs implements AdminsTools {
         ui.showInfoFade("@admins.notsupported");
     }
 
-    public boolean unusable() {
-        boolean admin = !player.admin && !settings.getBool("adminsalways");
-        if (!settings.getBool("adminsenabled")) {
-            ui.showInfoFade(disabled);
-            return true;
-        } else if (admin) ui.showInfoFade("@admins.notanadmin");
-        return admin;
-    }
-
     private static void send(String command, Object... args) {
         MessageQueue.send("/js " + Strings.format(command, args));
     }

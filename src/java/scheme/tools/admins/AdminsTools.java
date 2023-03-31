@@ -2,12 +2,14 @@ package scheme.tools.admins;
 
 import arc.math.geom.Position;
 import arc.struct.Seq;
+import arc.util.Strings;
 import mindustry.entities.Units;
 import mindustry.entities.units.BuildPlan;
 import mindustry.game.Team;
 import mindustry.gen.Player;
 import mindustry.type.Item;
 import mindustry.type.UnitType;
+import scheme.tools.MessageQueue;
 import scheme.ui.dialogs.KeybindCombinationsDialog;
 
 import static arc.Core.*;
@@ -52,7 +54,18 @@ public interface AdminsTools {
 
     public void flush(Seq<BuildPlan> plans);
 
-    public boolean unusable();
+    public default boolean unusable() {
+        boolean admin = !player.admin && !settings.getBool("adminsalways");
+        if (!settings.getBool("adminsenabled")) {
+            ui.showInfoFade(disabled);
+            return true;
+        } else if (admin) ui.showInfoFade("@admins.notanadmin");
+        return admin;
+    }
+
+    private static void send(String command, Object... args) {
+        MessageQueue.send("/js " + Strings.format(command, args));
+    }
 
     public default int fixAmount(Item item, Float amount) {
         int items = player.core().items.get(item);
