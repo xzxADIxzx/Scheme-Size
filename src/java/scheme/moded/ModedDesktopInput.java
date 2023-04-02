@@ -127,9 +127,10 @@ public class ModedDesktopInput extends DesktopInput implements ModedInputHandler
             camera.position.set(lastCamera).add(movement);
 
             if (input.keyDown(Binding.pan)) {
-                float calculation = (input.mouseX() - graphics.getWidth() / 2f) * panScale;
-                camera.position.x += Mathf.clamp(calculation, -1, 1) * speed;
-                camera.position.y += Mathf.clamp(calculation, -1, 1) * speed;
+                float calculationX = (input.mouseX() - graphics.getWidth() / 2f) * panScale;
+                float calculationY = (input.mouseY() - graphics.getHeight() / 2f) * panScale;
+                camera.position.x += Mathf.clamp(calculationX, -1, 1) * speed;
+                camera.position.y += Mathf.clamp(calculationY, -1, 1) * speed;
             }
         }
 
