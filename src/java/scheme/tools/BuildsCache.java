@@ -113,7 +113,6 @@ public class BuildsCache {
         overdriveCache.cache(build);
     }
 
-
     public void uncache(Tile tile) {
         turrets.filter(turret -> turret.tile != tile);
         nuclears.filter(nuclear -> nuclear.tile != tile);

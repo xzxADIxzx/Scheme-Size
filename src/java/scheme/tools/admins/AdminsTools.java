@@ -63,10 +63,6 @@ public interface AdminsTools {
         return admin;
     }
 
-    private static void send(String command, Object... args) {
-        MessageQueue.send("/js " + Strings.format(command, args));
-    }
-
     public default int fixAmount(Item item, Float amount) {
         int items = player.core().items.get(item);
         return amount == 0f || items + amount < 0 ? -items : amount.intValue();
