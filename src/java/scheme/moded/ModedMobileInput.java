@@ -1,5 +1,6 @@
 package scheme.moded;
 
+import arc.scene.ui.layout.Table;
 import arc.struct.Seq;
 import mindustry.content.Blocks;
 import mindustry.entities.units.BuildPlan;
@@ -16,7 +17,7 @@ import static mindustry.Vars.*;
 import static mindustry.input.PlaceMode.*;
 import static scheme.SchemeVars.*;
 
-/** Last update - Jul 19, 2022 */
+/** Last update - Feb 10, 2023 */
 public class ModedMobileInput extends MobileInput implements ModedInputHandler {
 
     public boolean using, movementLocked, lastTouched, shootingLocked;
@@ -39,9 +40,16 @@ public class ModedMobileInput extends MobileInput implements ModedInputHandler {
     }
 
     @Override
-    protected void flushPlans(Seq<BuildPlan> plans) {
-        if (m_schematics.isCursed(plans)) admins.flush(plans);
-        else super.flushPlans(plans);
+    public void buildPlacementUI(Table table) {
+        super.buildPlacementUI(table);
+
+        var button = table.getChildren().get(table.getChildren().size - 1);
+        button.clicked(() -> {
+            if (m_schematics.isCursed(selectPlans)) admins.flush(selectPlans);
+        });
+
+        int size = button.getListeners().size;
+        button.getListeners().swap(size - 1, size - 2);
     }
 
     @Override

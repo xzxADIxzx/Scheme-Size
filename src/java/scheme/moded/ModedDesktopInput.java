@@ -25,7 +25,7 @@ import static mindustry.Vars.*;
 import static mindustry.input.PlaceMode.*;
 import static scheme.SchemeVars.*;
 
-/** Last update - Nov 8, 2022 */
+/** Last update - Apr 18, 2023 */
 public class ModedDesktopInput extends DesktopInput implements ModedInputHandler {
 
     public boolean using, movementLocked;
