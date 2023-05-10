@@ -27,6 +27,7 @@ import mindustry.world.Block;
 import mindustry.world.Tile;
 import mindustry.world.blocks.environment.Prop;
 import mindustry.world.blocks.legacy.LegacyBlock;
+import mindustry.core.Version;
 
 import static mindustry.Vars.*;
 
@@ -47,6 +48,9 @@ public class ModedSchematics extends Schematics {
 
     /** Do need to show the dialog. */
     public boolean requiresDialog;
+    
+    /** Don't bother rewriting large schematics if using foo's client */
+    private static boolean isFoos = Structs.contains(Version.class.getDeclaredFields(), var -> var.getName().equals("foos"));
 
     // region too large schematics fix
 
@@ -72,6 +76,7 @@ public class ModedSchematics extends Schematics {
     }
 
     private static boolean isTooLarge(Fi file) {
+        if (isFoos) return false;
         try (DataInputStream stream = new DataInputStream(file.read())) {
             for (byte b : header)
                 if (stream.read() != b) return false; // missing header
