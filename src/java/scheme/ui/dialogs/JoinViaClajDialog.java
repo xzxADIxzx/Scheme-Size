@@ -1,14 +1,10 @@
 package scheme.ui.dialogs;
 
-import arc.scene.ui.TextButton;
-import arc.scene.ui.layout.Scl;
-import arc.scene.ui.layout.Table;
+import arc.scene.ui.layout.*;
 import mindustry.gen.Icon;
 import mindustry.ui.dialogs.BaseDialog;
-import mindustry.ui.dialogs.JoinDialog;
 import scheme.ClajIntegration;
 
-import static arc.Core.*;
 import static mindustry.Vars.*;
 
 public class JoinViaClajDialog extends BaseDialog {
@@ -53,7 +49,7 @@ public class JoinViaClajDialog extends BaseDialog {
             }
         }).disabled(button -> lastLink.isEmpty() || net.active());
 
-        ui.join.shown(this::fixJoinDialog);
+        fixJoinDialog();
     }
 
     public boolean setLink(String link) {
@@ -74,23 +70,17 @@ public class JoinViaClajDialog extends BaseDialog {
     }
 
     private void fixJoinDialog() {
-        var root = (Table) ui.join.getChildren().get(1);
-        var add = (TextButton) root.getChildren().get(2);
+        var stack = (Stack) ui.join.getChildren().get(1);
+        var root = (Table) stack.getChildren().get(1);
 
-        add.remove();
-        root.getCells().remove(2);
+        // poor mobile players =<
+        boolean infoButton = !steam && !mobile;
 
-        root.row();
-        root.table(table -> {
-            table.defaults().height(80f).growX();
+        root.button("@join.name", Icon.play, this::show);
 
-            table.button("@server.add", Icon.add, () -> {}).padRight(8f).get().addListener(add.getListeners().peek()); // add click listener from orig button
-            table.button("@join.name", Icon.play, this::show);
-        }).width(targetWidth() + 38f).marginLeft(7f);
-    }
-
-    /** Copy-paste from {@link JoinDialog}. Who knows what it is for. */
-    private float targetWidth() {
-        return Math.min(graphics.getWidth() / Scl.scl() * .9f, 550f);
+        if (infoButton)
+            root.getCells().insert(4, root.getCells().remove(6));
+        else
+            root.getCells().insert(3, root.getCells().remove(4));
     }
 }
