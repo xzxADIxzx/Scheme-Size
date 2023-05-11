@@ -40,7 +40,7 @@ public class ModedSchematics extends Schematics {
     /** Too large schematic file extension. */
     public static final String largeSchematicExtension = "mtls";
 
-    /** Copu paste from {@link Schematics}. */
+    /** Copy paste from {@link Schematics}. */
     public static final byte[] header = { 'm', 's', 'c', 'h' };
 
     /** Current layer to get blocks from. */
@@ -49,8 +49,8 @@ public class ModedSchematics extends Schematics {
     /** Do need to show the dialog. */
     public boolean requiresDialog;
     
-    /** Don't bother rewriting large schematics if using foo's client */
-    private static boolean isFoos = Structs.contains(Version.class.getDeclaredFields(), var -> var.getName().equals("foos"));
+    /** Don't bother rewriting large schematics if using foo's client. */
+    private static boolean isFoos = Structs.contains(Version.class.getDeclaredFields(), field -> field.getName().equals("foos"));
 
     // region too large schematics fix
 
@@ -62,7 +62,7 @@ public class ModedSchematics extends Schematics {
         Events.run(WorldLoadEvent.class, () -> layer = Layer.building);
     }
 
-    private void fix(Fi file) { // dont check size for mtls files
+    private void fix(Fi file) { // don't check size for mtls files
         if (!file.extension().equals(largeSchematicExtension) && !isTooLarge(file)) return;
 
         try {
