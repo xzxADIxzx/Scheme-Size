@@ -23,7 +23,7 @@ public class ContentSelectDialog<T extends UnlockableContent> extends ListDialog
     public static final float size = mobile ? 54f : 64f;
     public static final Seq<UnlockableContent> specials = Seq.with(
             UnitTypes.latum, UnitTypes.renale, content.unit(53), content.unit(55), content.unit(64),
-            StatusEffects.muddy, StatusEffects.shielded, StatusEffects.corroded, StatusEffects.disarmed,StatusEffects.invincible);
+            StatusEffects.muddy, StatusEffects.shielded, StatusEffects.corroded, StatusEffects.disarmed, StatusEffects.invincible);
 
     public Cons4<Player, Team, T, Float> callback;
     public Func<Float, String> format;
@@ -42,13 +42,17 @@ public class ContentSelectDialog<T extends UnlockableContent> extends ListDialog
         slider.change(); // update label
 
         Table table = new Table();
-        content.each(this::visible, item -> {
-            table.button(new TextureRegionDrawable(item.uiIcon), () -> {
-                callback.get(players.get(), teams.get(), item, slider.getValue());
-                hide();
-            }).size(size);
+        table.pane(pane -> {
+            pane.margin(0f, 28f, 0f, 28f);
 
-            if (++items % row == 0) table.row();
+            content.each(this::visible, item -> {
+                pane.button(new TextureRegionDrawable(item.uiIcon), () -> {
+                    callback.get(players.get(), teams.get(), item, slider.getValue());
+                    hide();
+                }).size(size).tooltip(item.localizedName);
+
+                if (++items % row == 0) pane.row();
+            });
         });
 
         addPlayer();
