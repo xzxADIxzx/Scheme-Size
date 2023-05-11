@@ -59,6 +59,8 @@ public class ModedMobileInput extends MobileInput implements ModedInputHandler {
             drawSize(lineStartX, lineStartY, lastLineX, lastLineY, maxSchematicSize);
         } else if (mode == breaking && lineMode)
             drawSize(lineStartX, lineStartY, tileX(), tileY(), maxSchematicSize);
+        else if (mode == rebuildSelect)
+            drawRebuildSelection(lineStartX, lineStartY, lastLineX, lastLineY);
 
         if (using) {
             if (build.mode == Mode.edit)

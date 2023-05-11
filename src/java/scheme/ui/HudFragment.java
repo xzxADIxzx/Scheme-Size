@@ -194,7 +194,7 @@ public class HudFragment {
                 pad.color.a = Mathf.lerpDelta(pad.color.a, Mathf.num(
                         settings.getBool("approachenabled") && state.wavetime > 600f && state.wavetime < 1800f
                 ), .1f);
-                pad.touchable = pad.color.a > .001f ? Touchable.childrenOnly : Touchable.disabled; // geniusly
+                pad.touchable = pad.color.a > .001f ? Touchable.childrenOnly : Touchable.disabled; // ingeniously
             }).get().color.a(0f); // hide on startup
         });
 

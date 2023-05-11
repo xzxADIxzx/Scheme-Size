@@ -16,7 +16,7 @@ repositories {
 }
 
 ext {
-    mindustryVersion = 'v143'
+    mindustryVersion = 'v144'
     jabelVersion = '0.4.2'
     sdkRoot = System.getenv('ANDROID_HOME') ?: System.getenv('ANDROID_SDK_ROOT')
 }
