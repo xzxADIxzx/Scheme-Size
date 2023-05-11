@@ -52,7 +52,7 @@ public class HudFragment {
     public FlipButton building = new FlipButton();
 
     /** PlacementFragment and OverlayMarker. */
-    public Element[] block = new Element[3];
+    public Element[] block = new Element[2];
     public TextField size;
 
     public void build(Group parent) {
@@ -300,8 +300,8 @@ public class HudFragment {
 
     private void updateBlocks() {
         app.post(() -> { // waiting for blockfrag rebuild
-            block[0] = ((Table) ui.hudGroup.getChildren().get(10)).getChildren().get(0);
-            block[1] = ((Table) getWavesMain().getChildren().get(state.isEditor() ? 1 : 0)).getChildren().get(0);
+            block[0] = ui.hudGroup.find("inputTable").parent.parent.parent;
+            block[1] = ui.hudGroup.find("statustable");
         });
     }
 
