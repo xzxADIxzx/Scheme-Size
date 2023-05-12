@@ -197,8 +197,8 @@ public class CoreInfoFragment {
         }
 
         public String format(int amount) {
-            if (viewStats) // paint according to the qty?
-                return (amount > 0 ? "+" : "") + amount + "[gray]" + bundle.get("unit.persecond");
+            if (viewStats)
+                return (amount == 0 ? "" : amount > 0 ? "[lime]+" : "[scarlet]") + amount + "[gray]" + bundle.get("unit.persecond");
             else
                 return UI.formatAmount(amount);
         }
