@@ -5,6 +5,7 @@ import arc.func.Func;
 import arc.scene.style.TextureRegionDrawable;
 import arc.scene.ui.Label;
 import arc.scene.ui.Slider;
+import arc.scene.ui.layout.Scl;
 import arc.scene.ui.layout.Table;
 import arc.struct.Seq;
 import mindustry.content.StatusEffects;
@@ -15,11 +16,12 @@ import mindustry.gen.Icon;
 import mindustry.gen.Player;
 import mindustry.ui.Styles;
 
+import static arc.Core.*;
 import static mindustry.Vars.*;
 
 public class ContentSelectDialog<T extends UnlockableContent> extends ListDialog {
 
-    public static final int row = mobile ? 8 : 10;
+    public static final int row = mobile ? 6 : 10;
     public static final float size = mobile ? 54f : 64f;
     public static final Seq<UnlockableContent> specials = Seq.with(
             UnitTypes.latum, UnitTypes.renale, content.unit(53), content.unit(55), content.unit(64),
@@ -73,11 +75,14 @@ public class ContentSelectDialog<T extends UnlockableContent> extends ListDialog
     }
 
     public void select(boolean showSlider, boolean showPlayers, boolean showTeams, Cons4<Player, Team, T, Float> callback) {
+        // in portrait orientation, ui elements may not fit into the screen
+        boolean minimize = graphics.getWidth() * Scl.scl() < 1800f;
+
         players.pane.visible(showPlayers);
-        players.rebuild();
+        players.rebuild(minimize);
 
         teams.pane.visible(showTeams);
-        teams.rebuild();
+        teams.rebuild(minimize);
 
         this.showSlider = showSlider;
         this.callback = callback;

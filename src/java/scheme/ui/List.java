@@ -37,22 +37,26 @@ public class List<T> {
     }
 
     public void build(Table parent) {
-        pane = parent.pane(list).size(288f, mobile ? 540f : 630f).scrollX(false);
+        pane = parent.pane(list).height(mobile ? 540f : 630f).scrollX(false);
     }
 
     public void rebuild() {
+        rebuild(false);
+    }
+
+    public void rebuild(boolean minimize) {
         list.clear();
-        list.defaults().size(264f, 74f).padBottom(16f);
+        list.defaults().size(minimize ? 144f : 264f, 74f).padBottom(16f);
 
         iterator.get(item -> {
             Button check = new Button(Styles.cleart);
             check.changed(() -> set(item));
 
-            check.add(new IconTable(check::isChecked, texture.get(item))).size(74f);
+            if (!minimize) check.add(new IconTable(check::isChecked, texture.get(item))).size(74f);
             check.table(t -> {
                 t.labelWrap(title.get(item)).growX().row();
                 t.image().height(4f).color(color.get(item)).growX().bottom().padTop(4f);
-            }).size(170f, 74f).pad(10f);
+            }).size(minimize ? 120f : 170f, 74f).pad(10f);
 
             list.add(check).checked(button -> selected == item).row();
         });
