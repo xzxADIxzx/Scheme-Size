@@ -17,7 +17,7 @@ import mindustry.gen.Icon;
 import mindustry.gen.Tex;
 import mindustry.type.Item;
 import mindustry.ui.Styles;
-import mindustry.world.blocks.storage.CoreBlock.CoreBuild;
+import mindustry.world.modules.ItemModule;
 import scheme.ui.dialogs.ListDialog;
 
 import static arc.Core.*;
@@ -29,10 +29,10 @@ public class CoreInfoFragment {
     public CoreItemsDisplay items = new CoreItemsDisplay();
     public PowerBars power = new PowerBars();
 
-    /** Whether the player chooses a power node or a team. */
-    public boolean choosesTeam, choosesNode;
+    /** Whether the player chooses a power node, team or views resource statistics. */
+    public boolean choosesTeam, choosesNode, viewStats;
     /** Used when changing the schematic layer. */
-    public Interval timer = new Interval();
+    public Interval timer = new Interval(2);
     /** Icon of the selected team. */
     public Drawable chosenTeamRegion;
 
@@ -129,7 +129,7 @@ public class CoreInfoFragment {
     }
 
     public void nextLayer() {
-        if (!timer.get(240f)) m_schematics.nextLayer();
+        if (!timer.get(0, 240f)) m_schematics.nextLayer();
     }
 
     public static Drawable texture(Team team) {
@@ -141,12 +141,12 @@ public class CoreInfoFragment {
         }
     }
 
-    /** Same as vanilla, but supports display of any team. */
+    /** Same as vanilla, but supports display of any team & resource statistics. */
     public class CoreItemsDisplay extends Table {
 
         public final ObjectSet<Item> used = new ObjectSet<>();
 
-        public CoreBuild core;
+        public ItemModule display, core, last = new ItemModule();
         public Team team;
 
         public void resetUsed() {
@@ -158,19 +158,51 @@ public class CoreInfoFragment {
             this.team = team;
 
             clear();
-            update(() -> {
-                core = team.core();
-                if (core != null && content.items().contains(item -> core.items.get(item) > 0 && used.add(item))) rebuild(team);
-            });
-
             content.items().each(item -> {
                 if (!used.contains(item)) return;
 
-                image(item.uiIcon).size(iconSmall).padRight(3).tooltip(t -> t.background(Styles.black6).margin(4f).add(item.localizedName).style(Styles.outlineLabel));
-                label(() -> core == null ? "0" : UI.formatAmount(core.items.get(item))).padRight(3f).minWidth(52f).left();
+                image(item.uiIcon).size(iconSmall).padRight(3f);
+                label(() -> display == null ? "0" : format(display.get(item))).padRight(3f).minWidth(52f).left();
 
                 if (children.size % 8 == 0) row();
             });
+
+            hovered(() -> {
+                viewStats = true;
+                display = new ItemModule();
+            });
+
+            exited(() -> {
+                viewStats = false;
+                last.clear();
+            });
+
+            update(() -> {
+                core = team.data().hasCore() ? team.core().items : null;
+                if (!viewStats) display = core;
+
+                if (core == null) return;
+
+                if (content.items().contains(item -> core.get(item) > 0 && used.add(item))) rebuild(team);
+                if (viewStats && timer.get(1, 30f)) updateStats(); // update resource stats only once every half second
+            });
+
         }
+
+        // region stats
+
+        public void updateStats() {
+            if (last.any()) core.each((item, amount) -> display.set(item, amount - last.get(item)));
+            last.set(core);
+        }
+
+        public String format(int amount) {
+            if (viewStats) // paint according to the qty?
+                return (amount > 0 ? "+" : "") + amount + "[gray]" + bundle.get("unit.persecond");
+            else
+                return UI.formatAmount(amount);
+        }
+
+        // endregion
     }
 }
