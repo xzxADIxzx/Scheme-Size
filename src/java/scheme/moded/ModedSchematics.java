@@ -25,7 +25,6 @@ import mindustry.input.Placement.NormalizeResult;
 import mindustry.io.*;
 import mindustry.world.Block;
 import mindustry.world.Tile;
-import mindustry.world.blocks.environment.Prop;
 import mindustry.world.blocks.legacy.LegacyBlock;
 import mindustry.core.Version;
 
@@ -167,7 +166,7 @@ public class ModedSchematics extends Schematics {
 
     public boolean isCursed(Seq<BuildPlan> plans) {
         if (plans.isEmpty()) return false;
-        return plans.first().block.isFloor() || plans.first().block instanceof Prop;
+        return plans.contains(plan -> !plan.block.isVisible());
     }
 
     @Override
