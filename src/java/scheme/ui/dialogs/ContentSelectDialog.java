@@ -45,7 +45,7 @@ public class ContentSelectDialog<T extends UnlockableContent> extends ListDialog
 
         Table table = new Table();
         table.pane(pane -> {
-            pane.margin(0f, 28f, 0f, 28f);
+            pane.margin(0f, 24f, 0f, 24f);
 
             content.each(this::visible, item -> {
                 pane.button(new TextureRegionDrawable(item.uiIcon), () -> {
@@ -76,7 +76,7 @@ public class ContentSelectDialog<T extends UnlockableContent> extends ListDialog
 
     public void select(boolean showSlider, boolean showPlayers, boolean showTeams, Cons4<Player, Team, T, Float> callback) {
         // in portrait orientation, ui elements may not fit into the screen
-        boolean minimize = graphics.getWidth() * Scl.scl() < (mobile ? 1400f : 2000f);
+        boolean minimize = graphics.getWidth() < Scl.scl(mobile ? 900f : 1250f);
 
         players.pane.visible(showPlayers);
         players.rebuild(minimize);
