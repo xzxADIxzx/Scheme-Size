@@ -21,8 +21,8 @@ import static mindustry.Vars.*;
 
 public class ContentSelectDialog<T extends UnlockableContent> extends ListDialog {
 
-    public static final int row = mobile ? 6 : 10;
-    public static final float size = mobile ? 54f : 64f;
+    public static final int row = mobile ? 5 : 10;
+    public static final float size = mobile ? 52f : 64f;
     public static final Seq<UnlockableContent> specials = Seq.with(
             UnitTypes.latum, UnitTypes.renale, content.unit(53), content.unit(55), content.unit(64),
             StatusEffects.muddy, StatusEffects.shielded, StatusEffects.corroded, StatusEffects.disarmed, StatusEffects.invincible);
@@ -76,7 +76,7 @@ public class ContentSelectDialog<T extends UnlockableContent> extends ListDialog
 
     public void select(boolean showSlider, boolean showPlayers, boolean showTeams, Cons4<Player, Team, T, Float> callback) {
         // in portrait orientation, ui elements may not fit into the screen
-        boolean minimize = graphics.getWidth() * Scl.scl() < 1800f;
+        boolean minimize = graphics.getWidth() * Scl.scl() < (mobile ? 1400f : 2000f);
 
         players.pane.visible(showPlayers);
         players.rebuild(minimize);
