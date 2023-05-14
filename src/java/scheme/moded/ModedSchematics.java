@@ -166,7 +166,7 @@ public class ModedSchematics extends Schematics {
 
     public boolean isCursed(Seq<BuildPlan> plans) {
         if (plans.isEmpty()) return false;
-        return plans.contains(plan -> !plan.block.isVisible());
+        return !plans.contains(plan -> plan.block.isVisible());
     }
 
     @Override
