@@ -27,7 +27,7 @@ public class SchemeUpdater {
         mod = mods.getMod(Main.class);
         url = ghApi + "/repos/" + repo + "/releases/latest";
 
-        Jval meta = Jval.read(new ZipFi(mod.file).child("mod.hjson").readString());
+        Jval meta = Jval.read(mod.root.child("mod.hjson").readString());
         mod.meta.author = meta.getString("author"); // restore colors in mod's meta
         mod.meta.description = meta.getString("description");
     }
