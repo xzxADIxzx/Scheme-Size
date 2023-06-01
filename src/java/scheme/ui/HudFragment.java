@@ -52,7 +52,7 @@ public class HudFragment {
     public FlipButton building = new FlipButton();
 
     /** PlacementFragment and OverlayMarker. */
-    public Element[] block = new Element[2];
+    public Element[] block = new Element[3];
     public TextField size;
 
     public void build(Group parent) {
@@ -248,7 +248,7 @@ public class HudFragment {
                 }).row();
             }).margin(0f).update(pad -> {
                 if (block[1] == null) return; // waves main are not null but block is
-                pad.setTranslation(0f, Scl.scl((mobiles.fliped ? 0f : 127f) - (mobile ? 69f : 0f)) - block[1].getHeight());
+                pad.setTranslation(0f, Scl.scl((mobiles.fliped ? 0f : 127f) - (mobile ? 69f : 0f)) - block[state.rules.editor ? 2 : 1].getHeight());
                 pad.setHeight(Scl.scl(mobiles.fliped ? 190.8f : 63.8f));
             });
         });
@@ -302,6 +302,7 @@ public class HudFragment {
         app.post(() -> { // waiting for blockfrag rebuild
             block[0] = ui.hudGroup.find("inputTable").parent.parent.parent;
             block[1] = ui.hudGroup.find("statustable");
+            block[2] = ui.hudGroup.find("editor");
         });
     }
 

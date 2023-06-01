@@ -5,7 +5,6 @@ import arc.util.Http.HttpResponse;
 import arc.util.io.Streams;
 import arc.util.serialization.Jval;
 import arc.files.Fi;
-import arc.files.ZipFi;
 import mindustry.mod.Mods.LoadedMod;
 
 import static arc.Core.*;
