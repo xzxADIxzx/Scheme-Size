@@ -169,8 +169,8 @@ public class PlayerListFragment extends mindustry.ui.fragments.PlayerListFragmen
             } else if (!user.isLocal() && !user.admin && net.client() && Groups.player.size() >= 3 && player.team() == user.team()) {
                 button.add().growY();
                 button.button(Icon.hammer, ustyle,
-                        () -> ui.showConfirm("@confirm", bundle.format("confirmvotekick", user.name()),
-                        () -> Call.sendChatMessage("/votekick #" + user.id)))
+                        () -> ui.showTextInput("@votekick.reason", bundle.format("votekick.reason.message", user.name()), "",
+                        reason -> Call.sendChatMessage("/votekick #" + user.id + " " + reason)))
                 .size(h);
             }
 
