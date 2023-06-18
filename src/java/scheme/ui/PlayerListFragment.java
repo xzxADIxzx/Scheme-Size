@@ -6,16 +6,15 @@ import arc.graphics.g2d.Lines;
 import arc.scene.Element;
 import arc.scene.Group;
 import arc.scene.event.*;
-import arc.scene.ui.Image;
+import arc.scene.ui.*;
 import arc.scene.ui.ImageButton.ImageButtonStyle;
-import arc.scene.ui.TextField;
-import arc.scene.ui.Tooltip;
 import arc.scene.ui.layout.Scl;
 import arc.scene.ui.layout.Table;
 import arc.struct.Seq;
 import arc.util.Scaling;
 import arc.util.Strings;
 import arc.util.Structs;
+import mindustry.game.Team;
 import mindustry.gen.Call;
 import mindustry.gen.Groups;
 import mindustry.gen.Icon;
@@ -24,13 +23,14 @@ import mindustry.gen.Tex;
 import mindustry.graphics.Pal;
 import mindustry.net.Packets.AdminAction;
 import mindustry.ui.Styles;
+import mindustry.ui.dialogs.BaseDialog;
 import scheme.ServerIntegration;
 
 import static arc.Core.*;
 import static mindustry.Vars.*;
 import static scheme.SchemeVars.*;
 
-/** Last update - Sep 15, 2022 */
+/** Last update - Jun 12, 2023 */
 public class PlayerListFragment extends mindustry.ui.fragments.PlayerListFragment {
 
     public boolean show;
@@ -57,7 +57,7 @@ public class PlayerListFragment extends mindustry.ui.fragments.PlayerListFragmen
         if (TooltipLocker.locked || search == null) return; // tooltips may bug during rebuild
 
         content.clear();
-        float h = 50f, bs = h / 2f;
+        float h = 50f;
 
         Seq<Player> players = new Seq<>();
         Groups.player.copy(players);
@@ -105,14 +105,6 @@ public class PlayerListFragment extends mindustry.ui.fragments.PlayerListFragmen
             button.labelWrap(user.coloredName()).style(Styles.outlineLabel).width(170f).pad(10f);
             button.add().grow();
 
-            var style = new ImageButtonStyle() {{
-                down = up = Styles.none;
-                imageCheckedColor = Pal.accent;
-                imageDownColor = Pal.accent;
-                imageUpColor = Color.white;
-                imageOverColor = Color.lightGray;
-            }};
-
             var ustyle = new ImageButtonStyle() {{
                 down = up = Styles.none;
                 imageDownColor = Pal.accent;
@@ -134,38 +126,79 @@ public class PlayerListFragment extends mindustry.ui.fragments.PlayerListFragmen
                 }).padRight(12f).size(105f, h);
             }
 
-            if (user.admin && !(!user.isLocal() && net.server())) button.image(Icon.admin).size(h);
+            if (user.admin) button.image(Icon.admin).size(h);
 
-            if ((net.server() || player.admin) && !user.isLocal() && (!user.admin || net.server())) {
+            if (net.server() || (player.admin && (!user.admin || user == player))) {
                 button.add().growY();
-                button.table(t -> {
-                    t.defaults().size(bs);
+                button.button(Icon.menu, ustyle, () -> {
+                    var dialog = new BaseDialog(user.coloredName());
+                    dialog.setFillParent(false);
+                    dialog.title.getStyle().fontColor = Color.white;
 
-                    t.button(Icon.hammerSmall, ustyle,
-                    () -> ui.showConfirm("@confirm", bundle.format("confirmban",  user.name()), () -> Call.adminRequest(user, AdminAction.ban)));
-                    t.button(Icon.cancelSmall, ustyle,
-                    () -> ui.showConfirm("@confirm", bundle.format("confirmkick",  user.name()), () -> Call.adminRequest(user, AdminAction.kick)));
+                    var btns = dialog.buttons;
+                    btns.defaults().size(220f, 55f).pad(4f);
 
-                    t.row();
+                    if (user != player) {
+                        btns.button("@player.ban", Icon.hammer, Styles.defaultt, () -> {
+                            ui.showConfirm("@confirm", bundle.format("confirmban", user.name()), () -> Call.adminRequest(user, AdminAction.ban, null));
+                            dialog.hide();
+                        }).row();
 
-                    t.button(Icon.adminSmall, style, () -> {
-                        if (net.client()) return;
-                        if (user.admin) ui.showConfirm("@confirm", bundle.format("confirmunadmin", user.name()), () -> {
-                            netServer.admins.unAdminPlayer(user.uuid());
-                            user.admin = false;
-                        });
-                        else ui.showConfirm("@confirm", bundle.format("confirmadmin", user.name()), () -> {
-                            netServer.admins.adminPlayer(user.uuid(), user.usid());
-                            user.admin = true;
-                        });
-                    }).update(b -> b.setChecked(user.admin))
-                        .disabled(b -> net.client())
-                        .touchable(() -> net.client() ? Touchable.disabled : Touchable.enabled)
-                        .checked(user.admin);
+                        btns.button("@player.kick", Icon.cancel, Styles.defaultt, () -> {
+                            ui.showConfirm("@confirm", bundle.format("confirmkick", user.name()), () -> Call.adminRequest(user, AdminAction.kick, null));
+                            dialog.hide();
+                        }).row();
 
-                    t.button(Icon.zoomSmall, ustyle, () -> Call.adminRequest(user, AdminAction.trace));
+                        btns.button("@player.trace", Icon.zoom, Styles.defaultt, () -> {
+                            Call.adminRequest(user, AdminAction.trace, null);
+                            dialog.hide();
+                        }).row();
+                    }
 
-                }).padRight(12f).size(bs + 10f, bs);
+                    btns.button("@player.team", Icon.redo, Styles.defaultt, () -> {
+                        dialog.hide();
+
+                        var select = new BaseDialog("@player.team");
+                        select.setFillParent(false);
+
+                        int i = 0;
+                        for (Team team : Team.baseTeams) {
+                            select.cont.button(Tex.whiteui, Styles.clearNoneTogglei, () -> {
+                                Call.adminRequest(user, AdminAction.switchTeam, team);
+                                select.hide();
+                            }).with(b -> {
+                                b.getStyle().imageUpColor = team.color;
+                                b.getImageCell().size(44f);
+                            }).margin(4f).checked(ib -> user.team() == team);
+
+                            if (i++ % 3 == 2) select.cont.row();
+                        }
+
+                        select.addCloseButton();
+                        select.show();
+                    }).row();
+
+                    if (!net.client() && !user.isLocal()) {
+                        btns.button("@player.admin", Icon.admin, Styles.togglet, () -> {
+                            dialog.hide();
+
+                            if (user.admin) {
+                                ui.showConfirm("@confirm", bundle.format("confirmunadmin", user.name()), () -> {
+                                    netServer.admins.unAdminPlayer(user.uuid());
+                                    user.admin = false;
+                                });
+                            } else {
+                                ui.showConfirm("@confirm", bundle.format("confirmadmin", user.name()), () -> {
+                                    netServer.admins.adminPlayer(user.uuid(), user.usid());
+                                    user.admin = true;
+                                });
+                            }
+                        }).checked(b -> user.admin).row();
+                    }
+
+                    btns.button("@back", Icon.left, dialog::hide);
+                    dialog.show();
+                }).size(h);
             } else if (!user.isLocal() && !user.admin && net.client() && Groups.player.size() >= 3 && player.team() == user.team()) {
                 button.add().growY();
                 button.button(Icon.hammer, ustyle,
