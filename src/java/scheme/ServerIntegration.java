@@ -39,7 +39,9 @@ public class ServerIntegration {
         // region Server
 
         Events.on(PlayerJoin.class, event -> Call.clientPacketReliable(event.player.con, "SendMeSubtitle", player == null ? null : String.valueOf(player.id)));
-        Events.on(PlayerLeave.class, event -> SSUsers.remove(event.player.id));
+        Events.on(PlayerLeave.class, event -> {
+            if (event.player != null/* how? */) SSUsers.remove(event.player.id);
+        });
 
         netServer.addPacketHandler("MySubtitle", (target, args) -> {
             SSUsers.put(target.id, args);
