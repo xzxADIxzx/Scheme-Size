@@ -56,7 +56,8 @@ public class SchemeVars {
     public static CoreInfoFragment corefrag;
 
     public static Seq<String> clajURLs = Seq.with(
-            "darkdustry.net:3917",
+            "n3.xpdustry.com:7025",
+            // "darkdustry.net:3917",
             "130.61.76.9:3917",
             "claj.phoenix-network.dev:4000",
             "167.235.159.121:4000");
