@@ -56,15 +56,15 @@ public class SchemeVars {
     public static CoreInfoFragment corefrag;
 
     public static Seq<String> clajURLs = Seq.with(
-            "darkdustry.net:3917",
-            "130.61.76.9:3917",
             "claj.phoenix-network.dev:4000",
-            "167.235.159.121:4000");
+            "167.235.159.121:4000"
+    );
 
     /** List of ip servers that block the mod. */
     public static Seq<String> antiModIPs = Seq.with(
             "play.thedimas.pp.ua",
-            "91.209.226.11");
+            "91.209.226.11"
+    );
 
     public static void load() {
         var pixmap = atlas.getPixmap("scheme-size-status-invincible").pixmap.outline(Pal.gray, 3);
