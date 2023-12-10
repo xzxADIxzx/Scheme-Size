@@ -127,7 +127,7 @@ public class SlashJs implements AdminsTools {
     }
 
     private static void send(String command, Object... args) {
-        MessageQueue.send("/js " + Strings.format(command, args));
+        MessageQueue.send("js " + Strings.format(command, args));
     }
 
     private static void getPlayer(Player target) {
