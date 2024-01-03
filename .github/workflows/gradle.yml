@@ -11,10 +11,10 @@ jobs:
     - name: Set up PATH
       run: |
         echo "${ANDROID_HOME}/build-tools/30.0.1" >> $GITHUB_PATH
-    - name: Set up JDK 17
+    - name: Set up JDK 20
       uses: actions/setup-java@v1
       with:
-        java-version: 17
+        java-version: 20
     - name: Change permissions
       run: chmod +x ./gradlew
     - name: Build mod jar
