@@ -78,7 +78,7 @@ public class ManageRoomsDialog extends BaseDialog {
         root.button("@manage.name", Icon.planet, this::show).colspan(2).width(450f).disabled(button -> !net.server()).row();
 
         var buttons = root.getCells();
-        buttons.swap(buttons.size() - 1, buttons.size - 2); // Move the claj button above the quit button
+        buttons.swap(buttons.size - 1, buttons.size - 2); // move the claj button above the quit button
     }
 
     // region URL
