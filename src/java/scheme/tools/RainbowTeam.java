@@ -33,9 +33,9 @@ public class RainbowTeam {
         }, 0f, .3f);
 
         rainbow = Seq.with(Team.all);
-        rainbow.filter(team -> {
+        rainbow.removeAll(team -> {
             int[] hsv = Color.RGBtoHSV(team.color);
-            return hsv[1] > 64 && hsv[2] > 84;
+            return !(hsv[1] > 64 && hsv[2] > 84);
         }).sort(team -> {
             int[] hsv = Color.RGBtoHSV(team.color);
             return hsv[0] * 1000 + hsv[1];

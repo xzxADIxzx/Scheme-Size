@@ -36,7 +36,7 @@ public class ManageRoomsDialog extends BaseDialog {
 
         cont.table(list -> {
             list.defaults().growX().padBottom(8f);
-            list.update(() -> list.getCells().filter(cell -> cell.get() != null)); // remove closed rooms
+            list.update(() -> list.getCells().removeAll(cell -> cell.get() == null)); // remove closed rooms
 
             this.list = list;
         }).row();

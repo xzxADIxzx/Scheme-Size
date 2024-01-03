@@ -61,10 +61,10 @@ public class BuildsCache {
     }
 
     public void uncache(Tile tile) {
-        turrets.filter(turret -> turret.tile != tile);
-        nuclears.filter(nuclear -> nuclear.tile != tile);
-        impacts.filter(impact -> impact.tile != tile);
-        overdrives.filter(overdrive -> overdrive.tile != tile);
+        turrets.removeAll(turret -> turret.tile == tile);
+        nuclears.removeAll(nuclear -> nuclear.tile == tile);
+        impacts.removeAll(impact -> impact.tile == tile);
+        overdrives.removeAll(overdrive -> overdrive.tile == tile);
     }
 
     public void each(Rect bounds, Cons<Tile> cons) {

@@ -63,7 +63,7 @@ public class PlayerListFragment extends mindustry.ui.fragments.PlayerListFragmen
         Groups.player.copy(players);
 
         players.sort(Structs.comps(Structs.comparing(Player::team), Structs.comparingBool(p -> !p.admin)));
-        if (search.getText().length() > 0) players.filter(p -> Strings.stripColors(p.name().toLowerCase()).contains(search.getText().toLowerCase()));
+        if (search.getText().length() > 0) players.removeAll(p -> !Strings.stripColors(p.name().toLowerCase()).contains(search.getText().toLowerCase()));
 
         if (players.isEmpty()) content.add("@players.notfound").padBottom(6f).width(350f).maxHeight(h + 14);
         else for (Player user : players) {
