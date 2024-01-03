@@ -57,8 +57,7 @@ public class SchemeVars {
 
     public static Seq<String> clajURLs = Seq.with(
             "n3.xpdustry.com:7025",
-            // "darkdustry.net:3917",
-            "130.61.76.9:3917",
+            "37.187.73.180:3917",
             "claj.phoenix-network.dev:4000",
             "167.235.159.121:4000");
 
