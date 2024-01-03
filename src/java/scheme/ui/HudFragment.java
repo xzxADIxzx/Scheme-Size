@@ -300,9 +300,11 @@ public class HudFragment {
 
     private void updateBlocks() {
         app.post(() -> { // waiting for blockfrag rebuild
-            block[0] = ui.hudGroup.find("inputTable").parent.parent.parent;
+            block[0] = ui.hudGroup.find("inputTable");
             block[1] = ui.hudGroup.find("statustable");
             block[2] = ui.hudGroup.find("editor");
+
+            if (block[0] != null) block[0] = block[0].parent.parent.parent;
         });
     }
 
