@@ -59,7 +59,9 @@ public class SchemeVars {
             "n3.xpdustry.com:7025",
             "37.187.73.180:7025",
             "claj.phoenix-network.dev:4000",
-            "167.235.159.121:4000");
+            "167.235.159.121:4000",
+            "new.xem8k5.top:1050"
+    );
 
     /** List of ip servers that block the mod. */
     public static Seq<String> antiModIPs = Seq.with(
