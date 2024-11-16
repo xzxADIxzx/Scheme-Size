@@ -48,7 +48,7 @@ public enum ModedBinding implements KeyBind {
     }
 
     public static void load() {
-        KeyBind[] orign = (KeyBind[]) Binding.values();
+        KeyBind[] orign = (KeyBind[]) keybinds.getKeybinds();
         KeyBind[] moded = (KeyBind[]) values();
         KeyBind[] binds = new KeyBind[orign.length + moded.length];
 
