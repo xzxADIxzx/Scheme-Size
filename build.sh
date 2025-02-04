@@ -48,6 +48,8 @@ lib=$(find lib -type f -name *.jar       -print | sed -e "s/^/--classpath /" | p
 cls=$(find bin -type f -name *.class     -print |                              paste -s)
 jar=$(find $pf -type f -name android.jar -print | sort --reverse             | head --lines=1)
 
+echo "Found android.jar in $(dirname $jar)"
+
 d8 $lib --lib $jar --output bin $cls
 
 jar --update --file build/$project.jar -C bin classes.dex

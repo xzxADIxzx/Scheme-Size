@@ -16,7 +16,7 @@ jobs:
       uses: actions/setup-java@v4
       with:
         distribution: temurin
-        java-version: 23
+        java-version: 17
 
     - name: Change permissions
       run: chmod +x build.sh dependencies.sh
