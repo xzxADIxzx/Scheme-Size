@@ -23,7 +23,6 @@ import static arc.Core.*;
 import static mindustry.Vars.*;
 import static scheme.SchemeVars.*;
 
-import com.github.bsideup.jabel.Desugar;
 
 public class TileSelectDialog extends BaseDialog {
 
@@ -87,7 +86,6 @@ public class TileSelectDialog extends BaseDialog {
         list.rebuild();
     }
 
-    @Desugar
     public record Folder(String name, Prov<Block> block, Boolf<Block> pred, Cons<Block> callback) {
 
         public String name() {

@@ -18,8 +18,6 @@ import mindustry.world.blocks.logic.LogicBlock.LogicLink;
 
 import static mindustry.Vars.*;
 
-import com.github.bsideup.jabel.Desugar;
-
 public class ImageParser {
 
     public static final String processorSeparator = "#";
@@ -167,7 +165,6 @@ public class ImageParser {
 
     // endregion
 
-    @Desugar
     public record Display(Pixmap pixmap, int x, int y, int size) {
 
         public int get(int x, int y) {
@@ -175,7 +172,6 @@ public class ImageParser {
         }
     }
 
-    @Desugar
     public record Line(Color color, int x, int y, int length) { // height is always 1 pixel
 
         public String colorCode() {

@@ -20,8 +20,6 @@ import scheme.ui.List;
 import static arc.Core.*;
 import static mindustry.Vars.*;
 
-import com.github.bsideup.jabel.Desugar;
-
 public class AISelectDialog extends ListDialog {
 
     public AIController ai;
@@ -92,7 +90,6 @@ public class AISelectDialog extends ListDialog {
         ((GammaAI) ai).cache();
     }
 
-    @Desugar
     public record UnitAI(UnitType type, AIController ai) {
 
         public String name() {
