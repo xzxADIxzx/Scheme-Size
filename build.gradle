@@ -64,8 +64,9 @@ task jarAndroid {
         "d8 $dependencies --min-api 14 --output ${project.archivesBaseName}Android.jar ${project.archivesBaseName}Desktop.jar"
             .execute(null, new File("$buildDir/libs")).waitForProcessOutput(System.out, System.err)
         
-        "echo 'd8 $dependencies --min-api 14 --output ${project.archivesBaseName}Android.jar ${project.archivesBaseName}Desktop.jar'"
-            .execute(null, new File("$buildDir/libs")).waitForProcessOutput(System.out, System.err)
+        "echo $ANDROID_HOME".execute(null, new File("$buildDir/libs")).waitForProcessOutput(System.out, System.err)
+        "echo $(ls $ANDROID_HOME/platforms)".execute(null, new File("$buildDir/libs")).waitForProcessOutput(System.out, System.err)
+        "echo $(find $ANDROID_HOME/platforms -type f -name android.jar)".execute(null, new File("$buildDir/libs")).waitForProcessOutput(System.out, System.err)
     }
 }
 
