@@ -36,7 +36,7 @@ jar --update --file build/$project.jar mod.hjson
 
 
 
-[ "$1" != "mobile" ] && exit 1
+[ "$1" != "mobile" ] && exit 0
 
 echo -e "=>$b Building mobile jar...$n"
 
