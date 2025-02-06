@@ -1,29 +1,22 @@
-name: scheme-size,
-displayName: Scheme Size,
-subtitle: No longer just increases the schema size,
-description: "
-A mod that increases the schematic size limit to 512 blocks! Adds admins, renderer and building tools. Has an updater, keybinds and AI support.
-[red]Vanilla Only![orange]
+name: scheme-size
+displayName: Schema
+subtitle: No longer just increases the schema size
 
-   - Release!
-   - Settings
-   - Java 8
-   - Controls
-   - Updater
-   - Mobile Support
-   - Admins Tools
+author: "[#0096FF]xzxADIxzx"
+version: 3.0.0
 
-   - Building Tools
-   - AI Power
-   - Renderer Tools
-   - Deep Cleaning
-   - Schematic Shortcuts
-   - Cursed Schematics
-   - Advanced Dev Console
-   - Copy Link and Join
-",
-author: "[#0096FF]xzxADIxzx",
-minGameVersion: 146,
-version: 2.7.79,
-hidden: true,
+description:
+"A mod that started out as a desire to increase the schematic size limit, but has evolved into a whole set of quality of life features and tools.
+[red]
+It may not be compatible with other mods. Therefore, it's recommended to enable it only in vanilla game.
+[orange]
+    - Flexible control settings
+    - Building tools
+    - Shortcuts for schematics
+    - Display of additional info
+    - Advanced developer console
+    - Copy Link and Join"
+
+minGameVersion: 146
 main: scheme.Main
+hidden: true
