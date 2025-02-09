@@ -116,5 +116,23 @@ public enum Keybind {
         key = min = max = KeyCode.unset;
     }
 
+    /** Changes the mask of the bind. */
+    public void rebind(int mask) { this.mask = Keymask.all[mask]; }
+
+    /** Changes the primary key of the bind. */
+    public void rebind(KeyCode key) {
+        if (!single()) throw new UnsupportedOperationException("Keybind " + this + " is an axis bind and cannot be rebinded to a single key");
+
+        this.key = key;
+    }
+
+    /** Changes the axis keys of the bind. */
+    public void rebind(KeyCode min, KeyCode max) {
+        if (single()) throw new UnsupportedOperationException("Keybind " + this + " is a single key bind and cannot be rebinded to an axis");
+
+        this.min = min;
+        this.max = max;
+    }
+
     // endregion
 }
