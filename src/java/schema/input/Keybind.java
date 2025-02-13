@@ -9,10 +9,16 @@ public enum Keybind {
 
     // region binds
 
-    move_x(0, KeyCode.a, KeyCode.d, "Movement"),
+    move_x(0, KeyCode.a, KeyCode.d, "movement"),
     move_y(0, KeyCode.s, KeyCode.w),
     pan_mv(0, KeyCode.mouseForward),
-    mouse_mv(0, KeyCode.mouseBack);
+    mouse_mv(0, KeyCode.mouseBack),
+
+    select(0, KeyCode.mouseLeft, "building"),
+    replace(3, KeyCode.mouseLeft),
+    deselect(0, KeyCode.q),
+    pause_bd(0, KeyCode.e),
+    clear_bd(0, KeyCode.c);
 
     // endregion
 
