@@ -11,12 +11,12 @@ public class Style {
 
     // region styles
 
-    /** Common button, both default and empty variant. */
-    public static ButtonStyle cbd, cbe;
-    /** Image button, both default and empty variant. */
-    public static ImageButtonStyle ibd, ibe;
-    /** Text button, both default and empty variant. */
-    public static TextButtonStyle tbd, tbe;
+    /** Common button, both default, empty and toggle variant. */
+    public static ButtonStyle cbd, cbe, cbt;
+    /** Image button, both default, empty and toggle variant. */
+    public static ImageButtonStyle ibd, ibe, ibt;
+    /** Text button, both default, empty and toggle variant. */
+    public static TextButtonStyle tbd, tbe, tbt;
 
     // endregion
 
@@ -32,18 +32,21 @@ public class Style {
         ibe = new ImageButtonStyle() {{
             over = atlas.drawable("schema-button-over");
             down = atlas.drawable("schema-button-down");
-            disabled = checked = atlas.drawable("schema-button-disabled");
+            disabled = atlas.drawable("schema-button-disabled");
         }};
         ibd = new ImageButtonStyle(ibe) {{ up = atlas.drawable("schema-button"); }};
+        ibt = new ImageButtonStyle(ibe) {{ checked = atlas.drawable("schema-button-over"); }};
 
         tbe = new TextButtonStyle() {{
             over = atlas.drawable("schema-button-over");
             down = atlas.drawable("schema-button-down");
-            disabled = checked = atlas.drawable("schema-button-disabled");
+            disabled = atlas.drawable("schema-button-disabled");
         }};
         tbd = new TextButtonStyle(tbe) {{ up = atlas.drawable("schema-button"); }};
+        tbt = new TextButtonStyle(tbe) {{ checked = atlas.drawable("schema-button-over"); }};
 
         cbe = tbe;
         cbd = tbd;
+        cbt = tbt;
     }
 }
