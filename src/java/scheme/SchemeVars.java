@@ -69,7 +69,7 @@ public class SchemeVars {
             "91.209.226.11");
 
     public static void load() {
-        var pixmap = atlas.getPixmap("scheme-size-status-invincible").pixmap.outline(Pal.gray, 3);
+        var pixmap = atlas.getPixmap("schema-status-invincible").pixmap.outline(Pal.gray, 3);
         var texture = new Texture(pixmap);
         texture.setFilter(TextureFilter.linear);
 

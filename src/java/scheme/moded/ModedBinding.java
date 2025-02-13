@@ -4,7 +4,6 @@ import arc.KeyBinds.KeyBind;
 import arc.KeyBinds.KeybindValue;
 import arc.input.KeyCode;
 import arc.input.InputDevice.DeviceType;
-import mindustry.input.Binding;
 import mindustry.ui.dialogs.KeybindDialog;
 import scheme.Main;
 

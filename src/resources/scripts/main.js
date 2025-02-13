@@ -1,5 +1,5 @@
 // it is really useful for development
-var mod = Vars.mods.getMod("scheme-size")
+var mod = Vars.mods.getMod("schema")
 var get = (pkg) => mod.loader.loadClass(pkg).newInstance()
 
 // mod.loader is null on mobile devices
