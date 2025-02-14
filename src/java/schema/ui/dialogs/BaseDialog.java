@@ -14,7 +14,7 @@ public class BaseDialog extends Dialog {
         setFillParent(true);
 
         this.margin(0f).getCells().each(c -> c.pad(0f));
-        cont.margin(4f).defaults().pad(0f);
+        cont.margin(4f).defaults().pad(4f);
 
         title.setAlignment(Align.center);
         titleTable.getCell(title).pad(4f);
