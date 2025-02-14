@@ -1,5 +1,6 @@
 package schema.ui;
 
+import mindustry.ui.*;
 import arc.scene.ui.Button.*;
 import arc.scene.ui.ImageButton.*;
 import arc.scene.ui.TextButton.*;
@@ -41,6 +42,8 @@ public class Style {
             over = atlas.drawable("schema-button-over");
             down = atlas.drawable("schema-button-down");
             disabled = atlas.drawable("schema-button-disabled");
+
+            font = Fonts.def;
         }};
         tbd = new TextButtonStyle(tbe) {{ up = atlas.drawable("schema-button"); }};
         tbt = new TextButtonStyle(tbe) {{ checked = atlas.drawable("schema-button-over"); }};
