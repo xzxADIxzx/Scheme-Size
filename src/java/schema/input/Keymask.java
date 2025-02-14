@@ -18,6 +18,8 @@ public enum Keymask {
 
     /** List of all keymasks used for loading. */
     public static final Keymask[] all = values();
+    /** List of formatted names of the keymasks. */
+    public static final String[] names = { "[disabled]unset", "Shift", "Ctrl", "Alt" };
 
     /** Whether the mask is held down. */
     public Boolp down;

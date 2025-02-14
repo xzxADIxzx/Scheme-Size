@@ -58,6 +58,14 @@ public enum Keybind {
     @Override
     public String toString() { return name().replace('_', '-'); }
 
+    /** Returns the formatted values of the bind aka the primary and axis keys. */
+    public String formatKeys() { return single()
+        ? (key == KeyCode.unset ? "[disabled]unset" : key.toString())
+        : (min == KeyCode.unset ? "[disabled]unset" : min.toString() + "[red]/[]" + max.toString()); }
+
+    /** Returns the formatted mask name. */
+    public String formatMask() { return Keymask.names[mask.ordinal()]; }
+
     // region state
 
     /** Whether the bind is held down. */

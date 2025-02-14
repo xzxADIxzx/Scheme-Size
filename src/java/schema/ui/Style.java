@@ -1,6 +1,8 @@
 package schema.ui;
 
+import mindustry.graphics.*;
 import mindustry.ui.*;
+import arc.graphics.*;
 import arc.scene.ui.Button.*;
 import arc.scene.ui.ImageButton.*;
 import arc.scene.ui.TextButton.*;
@@ -51,5 +53,8 @@ public class Style {
         cbe = tbe;
         cbd = tbd;
         cbt = tbt;
+
+        // this is the color that I use for disabled elements
+        Colors.put("disabled", Pal.gray);
     }
 }
