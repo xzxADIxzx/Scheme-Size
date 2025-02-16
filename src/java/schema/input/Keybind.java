@@ -13,12 +13,17 @@ public enum Keybind {
     move_y(0, KeyCode.s, KeyCode.w),
     pan_mv(0, KeyCode.mouseForward),
     mouse_mv(0, KeyCode.mouseBack),
+    teleport(3, KeyCode.mouseBack),
 
-    select(0, KeyCode.mouseLeft, "building"),
+    build_bd(0, KeyCode.mouseLeft, "building"),
+    break_bd(0, KeyCode.mouseRight),
+    select(0, KeyCode.mouseLeft),
     replace(3, KeyCode.mouseLeft),
     deselect(0, KeyCode.q),
     pause_bd(0, KeyCode.e),
-    clear_bd(0, KeyCode.c);
+    clear_bd(0, KeyCode.c),
+    pick(0, KeyCode.r),
+    rotate(3, KeyCode.r);
 
     // endregion
 
