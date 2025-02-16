@@ -27,6 +27,9 @@ public enum Keybind {
 
     // endregion
 
+    /** List of all keybinds used for loading, conflict resolving and so on. */
+    public static final Keybind[] all = values();
+
     /** All of the following keybinds are assumed to belong to the same category unless they have their own. */
     public final String category;
     /** Default mask of the keybind that is assigned in the constructor. */
@@ -38,6 +41,8 @@ public enum Keybind {
     private Keymask mask;
     /** Primary key of the keybind and axis keys that are used in pair. */
     private KeyCode key, min, max;
+    /** If there is a keybind with the same primary key, but different mask, the last is marked in this list. */
+    private boolean[] conflicts = new boolean[3];
 
     private Keybind(int mask, KeyCode key, String category) {
         this.category = category;
@@ -73,11 +78,17 @@ public enum Keybind {
 
     // region state
 
+    /** Whether any of the conflicting masks are held down. */
+    public boolean conflicting() {
+        for (int i = 1; i < Keymask.all.length; i++) if (conflicts[i - 1] && Keymask.all[i].down.get()) return true;
+        return false;
+    }
+
     /** Whether the bind is held down. */
-    public boolean down() { return mask.down.get() && input.keyDown(key); }
+    public boolean down() { return mask.down.get() && input.keyDown(key) && !conflicting(); }
 
     /** Whether the bind was just pressed. */
-    public boolean tap() { return mask.down.get() && input.keyTap(key); }
+    public boolean tap() { return mask.down.get() && input.keyTap(key) && !conflicting(); }
 
     /** Whether the bind was just released. */
     public boolean release() { return input.keyRelease(key); }
@@ -151,6 +162,18 @@ public enum Keybind {
 
         this.min = min;
         this.max = max;
+    }
+
+    /** Updates the list of conflicting masks. Returns the amount of conflicts found. */
+    public int resolveConflicts() {
+        int amount = 0;
+        for (int i = 0; i < conflicts.length; i++) conflicts[i] = false;
+
+        for (var bind : all) if (bind.key == key && bind.mask != mask && bind.mask != Keymask.unset) {
+            amount++;
+            conflicts[bind.mask.ordinal() - 1] = true;
+        }
+        return amount;
     }
 
     // endregion
