@@ -1,14 +1,17 @@
-// it is really useful for development
+// this script is mainly used to help with development of the mod
+// as it loads the main classes into the dev console
+
 var mod = Vars.mods.getMod("schema")
 var get = (pkg) => mod.loader.loadClass(pkg).newInstance()
 
-// mod.loader is null on mobile devices
+// loader is null on mobile devices, because dex is used instead of java byte code
 if (Vars.mobile) get = (pkg) => null;
 
-const SchemeMain = mod.main
-const SchemeVars = get("scheme.SchemeVars")
-const SchemeUpdater = get("scheme.SchemeUpdater")
-const Backdoor = get("scheme.Backdoor")
+const Main = mod.main
+const Updater = get("scheme.SchemeUpdater")
 const ServerIntegration = get("scheme.ServerIntegration")
 const ClajIntegration = get("scheme.ClajIntegration")
-const ModedSchematics = get("scheme.moded.ModedSchematics")
+
+// for some unknown reason, this works only here, in the script
+// basically, a new atlas region is created to be overridden then by the sprite from the override directory
+Core.atlas.addRegion("status-invincible", Core.atlas.white());
