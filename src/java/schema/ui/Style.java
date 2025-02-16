@@ -8,6 +8,7 @@ import arc.scene.ui.ImageButton.*;
 import arc.scene.ui.TextButton.*;
 
 import static arc.Core.*;
+import static schema.Main.*;
 
 /** List of all styles of the mod, the purpose of which is to modernize the look of the game. */
 public class Style {
@@ -32,6 +33,8 @@ public class Style {
             "schema-button-disabled" })
             atlas.find(sprite).splits = new int[] { 16, 16, 16, 16 };
 
+        log("Loaded 4 sprites for UI");
+
         ibe = new ImageButtonStyle() {{
             over = atlas.drawable("schema-button-over");
             down = atlas.drawable("schema-button-down");
@@ -53,6 +56,8 @@ public class Style {
         cbe = tbe;
         cbd = tbd;
         cbt = tbt;
+
+        log("Created 9 styles for UI");
 
         // this is the color that I use for disabled elements
         Colors.put("disabled", Pal.gray);

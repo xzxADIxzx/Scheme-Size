@@ -18,5 +18,5 @@ It may not be compatible with other mods. Therefore, it's recommended to enable 
     - Copy Link and Join"
 
 minGameVersion: 146
-main: scheme.Main
+main: schema.Main
 hidden: true

@@ -17,7 +17,7 @@ import mindustry.ui.*;
 
 import static arc.Core.*;
 import static mindustry.Vars.*;
-import static scheme.SchemeVars.*;
+import static schema.Main.*;
 
 /** Fragment that is displayed during loading of any kind. */
 public class LoadingFragment extends Table {

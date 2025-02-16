@@ -6,9 +6,10 @@ import arc.scene.ui.*;
 import arc.util.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
-import scheme.*;
 import schema.input.*;
 import schema.ui.*;
+
+import static schema.Main.*;
 
 /** Dialog that displays the list of keybinds. */
 public class KeybindDialog extends BaseDialog {
@@ -72,20 +73,20 @@ public class KeybindDialog extends BaseDialog {
     /** Loads the values of the mod keybinds. */
     public void load() {
         for (var bind : Keybind.all) bind.load();
-        Main.log("Loaded " + Keybind.all.length + " keybinds");
+        log("Loaded " + Keybind.all.length + " keybinds");
     }
 
     /** Resets the values of the mod keybinds. */
     public void reset() {
         for (var bind : Keybind.all) bind.reset();
-        Main.log("Reset keybinds");
+        log("Reset keybinds");
     }
 
     /** Resolves conflicts of the mod keybinds. */
     public void resolve() {
         int amount = 0;
         for (var bind : Keybind.all) amount += bind.resolveConflicts();
-        Main.log("Resolved " + amount + " conflicts");
+        log("Resolved " + amount + " conflicts");
     }
 
     // endregion
