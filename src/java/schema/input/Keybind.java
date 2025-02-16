@@ -76,6 +76,9 @@ public enum Keybind {
     /** Returns the formatted mask name. */
     public String formatMask() { return Keymask.names[mask.ordinal()]; }
 
+    /** Returns the current mask. */
+    public int mask() { return mask.ordinal(); }
+
     // region state
 
     /** Whether any of the conflicting masks are held down. */
