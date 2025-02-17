@@ -1,7 +1,9 @@
 package schema.ui.dialogs;
 
 import arc.graphics.*;
+import arc.input.*;
 import arc.math.geom.*;
+import arc.scene.event.*;
 import arc.scene.ui.*;
 import arc.util.*;
 import mindustry.gen.*;
@@ -32,7 +34,7 @@ public class KeybindDialog extends BaseDialog {
             cont.add("@keybind." + bind).left();
 
             cont.button(b -> set(mask, bind, b).label(bind::formatMask).color(Pal.accent), Style.cbe, () -> rebindMask(bind)).size(256f, 48f).visible(bind::single);
-            cont.button(b -> set(keys, bind, b).label(bind::formatKeys).color(Pal.accent), Style.cbe, () -> {}).size(256f, 48f);
+            cont.button(b -> set(keys, bind, b).label(bind::formatKeys).color(Pal.accent), Style.cbe, () -> rebindKeys(bind)).size(256f, 48f);
 
             cont.button(Icon.rotate, Style.ibd, bind::reset).size(48f).tooltip("@keybind.reset");
             cont.button(Icon.cancel, Style.ibd, bind::clear).size(48f).tooltip("@keybind.clear").row();
@@ -64,6 +66,43 @@ public class KeybindDialog extends BaseDialog {
                     hide();
                 }).size(256f, 48f).pad(0f).checked(i == bind.mask());
             }
+        }}.show();
+    }
+
+    /** Shows the rebind dialog used to reassign the keys of the keybind. */
+    public void rebindKeys(Keybind bind) {
+        new BaseDialog("") {{
+            bottom().left().clearChildren();
+            closeOnBack();
+
+            add("@keybind.press").color(Pal.accent).size(256f, 48f).pad(0f).labelAlign(Align.center).get().translation = get(keys, bind);
+            addListener(new InputListener() {
+
+                /** Keycode to be assigned as the minimum value of an axis keybind. */
+                private KeyCode min = KeyCode.unset;
+
+                /** Main logic of rebinding. */
+                private void rebind(KeyCode key) {
+                    if (bind.single()) {
+                        bind.rebind(key);
+                        bind.save();
+                        hide();
+                    } else if (min == KeyCode.unset) {
+                        min = key;
+                        Sounds.back.play(16f);
+                    } else {
+                        bind.rebind(min, key);
+                        bind.save();
+                        hide();
+                    }
+                }
+
+                @Override
+                public boolean touchDown(InputEvent event, float x, float y, int pointer, KeyCode key) { rebind(key); return false; }
+
+                @Override
+                public boolean keyDown(InputEvent event, KeyCode key) { rebind(key); return false; }
+            });
         }}.show();
     }
 
