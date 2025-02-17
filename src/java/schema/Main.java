@@ -5,7 +5,6 @@ import mindustry.mod.*;
 import schema.ui.*;
 import schema.ui.dialogs.*;
 import schema.ui.fragments.*;
-import scheme.*; // TODO update updater (lol)
 
 import static arc.Core.*;
 import static mindustry.Vars.*;
@@ -45,11 +44,12 @@ public class Main extends Mod {
 
         log("=> [green]Running postinit hooks...");
 
-        SchemeUpdater.load();
+        Updater.load();
+        Updater.fetch();
 
         try { // run the main script without wrapper to make constants available in the dev console
             Scripts scripts = mods.getScripts();
-            scripts.context.evaluateReader(scripts.scope, SchemeUpdater.script().reader(), "main.js", 0);
+            scripts.context.evaluateReader(scripts.scope, Updater.script().reader(), "main.js", 0);
 
             log("Added constants to the dev console");
         } catch (Throwable e) { err(e); }
