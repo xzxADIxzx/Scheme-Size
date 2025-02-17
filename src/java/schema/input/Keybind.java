@@ -105,7 +105,7 @@ public enum Keybind {
     // endregion
     // region rebinding
 
-    /** Saves the bind in {@link arc.Core#settings}. */
+    /** Saves the bind in {@link arc.Core#settings settings}. */
     public void save() {
         if (single())
             settings.put("schema-keybind-" + this + "-key", key.ordinal());
@@ -116,7 +116,7 @@ public enum Keybind {
         settings.put("schema-keybind-" + this + "-mask", mask.ordinal());
     }
 
-    /** Loads the bind from {@link arc.Core#settings}. */
+    /** Loads the bind from {@link arc.Core#settings settings}. */
     public void load() {
         if (single())
             key = KeyCode.all[settings.getInt("schema-keybind-" + this + "-key", defaultKey.ordinal())];

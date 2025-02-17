@@ -55,7 +55,7 @@ public class Main extends Mod {
         } catch (Throwable e) { err(e); }
     }
 
-    /** Loads content such as dialogs, fragments and so on */
+    /** Loads content such as dialogs, fragments and so on. */
     public void load() {
         // these styles are used for building dialogs and fragments and thus are loaded here
         Style.load();
@@ -64,10 +64,13 @@ public class Main extends Mod {
         loadfrag = new LoadingFragment();
     }
 
+    /** Prints the given info in the dev console. */
     public static void log(String info) { app.post(() -> Log.infoTag("Schema", info)); }
 
+    /** Prints the given error in the dev console. */
     public static void err(Throwable e) { app.post(() -> Log.errTag("Schema", Strings.getStackTrace(e))); }
 
+    /** Copies the given text to the clipboard. */
     public static void copy(String text) {
         if (text == null) return;
 

@@ -12,6 +12,7 @@ public class BaseDialog extends Dialog {
     public BaseDialog(String name) {
         super(name);
         setFillParent(true);
+        hidden(Sounds.back::play);
 
         this.margin(0f).getCells().each(c -> c.pad(0f));
         cont.margin(4f).defaults().pad(4f);

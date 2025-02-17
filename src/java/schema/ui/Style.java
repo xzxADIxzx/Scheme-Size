@@ -59,7 +59,7 @@ public class Style {
 
         log("Created 9 styles for UI");
 
-        // this is the color that I use for disabled elements
+        // this is the color that is used for disabled elements
         Colors.put("disabled", Pal.gray);
     }
 }
