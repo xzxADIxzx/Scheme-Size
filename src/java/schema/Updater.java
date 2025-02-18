@@ -38,6 +38,13 @@ public class Updater {
                 log("The mod is outdated");
                 ui.showCustomConfirm("@updater.name", bundle.format("updater.info", mod.meta.version, latest), "@mods.browser.reinstall", "@ok", Updater::update, () -> {});
             }
+
+        }, Main::err);
+        Http.get("https://raw.githubusercontent.com/" + repo + "/main/servers-claj.hjson", res -> {
+
+            clajURLs = Jval.read(res.getResult()).asArray().map(Jval::asString);
+            log("Fetched " + clajURLs.size + " CLaJ URLs");
+
         }, Main::err);
     }
 

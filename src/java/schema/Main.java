@@ -1,5 +1,6 @@
 package schema;
 
+import arc.struct.*;
 import arc.util.*;
 import mindustry.mod.*;
 import schema.ui.*;
@@ -12,6 +13,12 @@ import static mindustry.Vars.*;
 /** Main class of the mod that loads, initializes and stores different components of it. */
 public class Main extends Mod {
 
+    // region components
+
+    /** List of servers' URLs that host Copy-Link-and-Join. */
+    public static Seq<String> clajURLs = Seq.with("Couldn't fetch CLaJ URLs :(");
+
+    // endregion
     // region dialogs
 
     public static KeybindDialog keybind;
