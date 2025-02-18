@@ -8,7 +8,7 @@ var get = (pkg) => mod.loader.loadClass(pkg).newInstance()
 if (Vars.mobile) get = (pkg) => null;
 
 const Main = mod.main
-const Updater = get("scheme.SchemeUpdater")
+const Updater = get("schema.Updater")
 const ServerIntegration = get("scheme.ServerIntegration")
 const ClajIntegration = get("scheme.ClajIntegration")
 
