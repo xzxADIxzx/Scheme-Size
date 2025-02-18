@@ -42,7 +42,21 @@ public enum Keybind {
     command(0, KeyCode.shiftLeft, "command"),
     control(0, KeyCode.controlLeft),
     select_all_units(0, KeyCode.g),
-    select_all_factories(0, KeyCode.h);
+    select_all_factories(0, KeyCode.h),
+
+    menu(0, KeyCode.escape, "view"),
+    pause(0, KeyCode.space),
+    sector_map(0, KeyCode.m),
+    planet_map(0, KeyCode.n),
+    research(0, KeyCode.j),
+    display_xray(3, KeyCode.x),
+    display_prod(3, KeyCode.c),
+    block_info(0, KeyCode.f1),
+    tgl_menus(0, KeyCode.backtick),
+    tgl_power_lines(0, KeyCode.f5),
+    tgl_block_status(0, KeyCode.f6),
+    tgl_block_health(0, KeyCode.f7),
+    tgl_fullscreen(0, KeyCode.f11);
 
     // endregion
 
