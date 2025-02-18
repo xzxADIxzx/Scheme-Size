@@ -1,0 +1,6 @@
+// List of CLaJ servers that is displayed in the corresponding dialog
+// Each server is listed in two forms: domain:port aka URL and ip:port
+[
+    "claj://n3.xpdustry.com:7025",
+    "claj://37.187.73.180:7025"
+]
