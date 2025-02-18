@@ -15,11 +15,11 @@ public enum Keybind {
     mouse_mv(0, KeyCode.mouseBack),
     teleport(3, KeyCode.mouseBack),
     boost(0, KeyCode.shiftLeft),
-    lookat(0, KeyCode.altLeft),
+    look_at(0, KeyCode.altLeft),
     respawn(0, KeyCode.v),
     despawn(3, KeyCode.v),
-    pickCargo(0, KeyCode.leftBracket),
-    dropCargo(0, KeyCode.rightBracket),
+    pick_cargo(0, KeyCode.leftBracket),
+    drop_cargo(0, KeyCode.rightBracket),
 
     build_bd(0, KeyCode.mouseLeft, "building"),
     break_bd(0, KeyCode.mouseRight),
@@ -30,13 +30,19 @@ public enum Keybind {
     hexblock(3, KeyCode.q),
     pause_bd(0, KeyCode.e),
     clear_bd(0, KeyCode.c),
+    drop(3, KeyCode.mouseMiddle),
     pick(0, KeyCode.r),
     rotate(3, KeyCode.r),
-    selschematic(0, KeyCode.t),
-    hexschematic(3, KeyCode.f),
-    newschematic(0, KeyCode.f),
+    sel_schematic(0, KeyCode.t),
+    hex_schematic(3, KeyCode.f),
+    new_schematic(0, KeyCode.f),
     flip_x(0, KeyCode.z),
-    flip_z(0, KeyCode.x);
+    flip_z(0, KeyCode.x),
+
+    command(0, KeyCode.shiftLeft, "command"),
+    control(0, KeyCode.controlLeft),
+    select_all_units(0, KeyCode.g),
+    select_all_factories(0, KeyCode.h);
 
     // endregion
 
