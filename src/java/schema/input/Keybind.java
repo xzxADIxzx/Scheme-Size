@@ -14,16 +14,29 @@ public enum Keybind {
     pan_mv(0, KeyCode.mouseForward),
     mouse_mv(0, KeyCode.mouseBack),
     teleport(3, KeyCode.mouseBack),
+    boost(0, KeyCode.shiftLeft),
+    lookat(0, KeyCode.altLeft),
+    respawn(0, KeyCode.v),
+    despawn(3, KeyCode.v),
+    pickCargo(0, KeyCode.leftBracket),
+    dropCargo(0, KeyCode.rightBracket),
 
     build_bd(0, KeyCode.mouseLeft, "building"),
     break_bd(0, KeyCode.mouseRight),
-    select(0, KeyCode.mouseLeft),
+    rebuild(0, KeyCode.b),
     replace(3, KeyCode.mouseLeft),
+    select(0, KeyCode.mouseLeft),
     deselect(0, KeyCode.q),
+    hexblock(3, KeyCode.q),
     pause_bd(0, KeyCode.e),
     clear_bd(0, KeyCode.c),
     pick(0, KeyCode.r),
-    rotate(3, KeyCode.r);
+    rotate(3, KeyCode.r),
+    selschematic(0, KeyCode.t),
+    hexschematic(3, KeyCode.f),
+    newschematic(0, KeyCode.f),
+    flip_x(0, KeyCode.z),
+    flip_z(0, KeyCode.x);
 
     // endregion
 
