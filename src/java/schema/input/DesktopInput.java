@@ -33,6 +33,24 @@ public class DesktopInput extends InputSystem {
 
             moveCam(mov.add(pan).limit2(1f).scl(settings.getInt("schema-pan-speed", 6) * (Keybind.boost.down() ? 2f : 1f) * Time.delta));
             unit.movePref(flw.scl(type.speed));
+
+            var rect = camera.bounds(Tmp.r1).grow(-64f);
+            if (rect.contains(unit.x, unit.y) || Keybind.mouse_mv.down())
+                unit.wobble();
+            else {
+                Tmp.v4.set(
+                    unit.x < rect.x ? rect.x : unit.x < rect.x + rect.width  ? unit.x : rect.x + rect.width,
+                    unit.y < rect.y ? rect.y : unit.y < rect.y + rect.height ? unit.y : rect.y + rect.height
+                ).sub(unit);
+
+                // length of the breaking distance
+                var len = unit.vel.len2() / 2f / type.accel;
+                // distance from the unit to the edge of the screen
+                var dst = Math.max(0f, Tmp.v4.len() - len);
+
+                // TODO implement path finder that is not gonna kill the unit while moving across enemy turrets
+                unit.movePref(Tmp.v4.limit(dst).limit(type.speed));
+            }
         } else {
             // this type of movement is activate only when the player controls a combat unit
             // inherently, this is the classical movement
