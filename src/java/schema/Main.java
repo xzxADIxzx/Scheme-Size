@@ -3,6 +3,7 @@ package schema;
 import arc.struct.*;
 import arc.util.*;
 import mindustry.mod.*;
+import schema.input.*;
 import schema.ui.*;
 import schema.ui.dialogs.*;
 import schema.ui.fragments.*;
@@ -14,6 +15,9 @@ import static mindustry.Vars.*;
 public class Main extends Mod {
 
     // region components
+
+    /** Advanced input system lying in the foundation of the mod. */
+    public static InputSystem insys;
 
     /** List of servers' URLs that host Copy-Link-and-Join. */
     public static Seq<String> clajURLs = Seq.with("Couldn't fetch CLaJ URLs :(");
@@ -47,6 +51,7 @@ public class Main extends Mod {
 
         loadfrag.build(scene.root);
 
+        control.setInput(insys.getAgent());
         ui.loadfrag = loadfrag.getAgent();
 
         log("=> [green]Running postinit hooks...");
