@@ -1,5 +1,6 @@
 package schema.input;
 
+import arc.math.*;
 import arc.math.geom.*;
 import arc.util.*;
 
@@ -58,6 +59,24 @@ public class DesktopInput extends InputSystem {
             lerpCam(pan.scl(64f * tilesize).add(player));
             unit.movePref(mov.add(flw).limit2(1f).scl(type.speed));
         }
+
+        float angle = Angles.mouseAngle(unit.x, unit.y);
+
+        if (Keybind.look_at.down())
+            unit.rotation = angle;
+        else {
+            if (player.shooting && type.omniMovement && type.faceTarget && type.hasWeapons())
+                unit.lookAt(angle);
+            else
+                unit.lookAt(unit.prefRotation());
+        }
+
+        unit.aim(input.mouseWorld());
+        unit.controlWeapons(true, player.shooting);
+
+        player.mouseX = unit.aimX();
+        player.mouseY = unit.aimY();
+        player.boosting = Keybind.boost.down();
     }
 
     @Override
