@@ -30,6 +30,12 @@ public abstract class InputSystem {
     /** Sets the position of the camera to the given one. */
     public void setCam(Vec2 pos) { camera.position.set(pos); }
 
+    /** Moves the camera by the given offset. */
+    public void moveCam(Vec2 offset) { camera.position.add(offset); }
+    
+    /** Lerps the camera to the given target. */
+    public void lerpCam(Vec2 target) { camera.position.lerpDelta(target, .08f); }
+
     // endregion
     // region agent
 

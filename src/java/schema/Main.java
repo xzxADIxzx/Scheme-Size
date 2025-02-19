@@ -72,6 +72,7 @@ public class Main extends Mod {
         // these styles are used for building dialogs and fragments and thus are loaded here
         Style.load();
 
+        insys = mobile ? null : new DesktopInput();
         keybind = new KeybindDialog();
         loadfrag = new LoadingFragment();
     }
