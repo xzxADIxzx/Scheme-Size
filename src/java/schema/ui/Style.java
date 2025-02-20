@@ -6,6 +6,7 @@ import arc.graphics.*;
 import arc.scene.ui.Button.*;
 import arc.scene.ui.ImageButton.*;
 import arc.scene.ui.TextButton.*;
+import arc.scene.ui.ScrollPane.*;
 
 import static arc.Core.*;
 import static schema.Main.*;
@@ -21,6 +22,8 @@ public class Style {
     public static ImageButtonStyle ibd, ibe, ibt;
     /** Text button, both default, empty and toggle variant. */
     public static TextButtonStyle tbd, tbe, tbt;
+    /** Scroll pane style, simple knob without anything else. */
+    public static ScrollPaneStyle scr;
 
     // endregion
 
@@ -33,7 +36,9 @@ public class Style {
             "schema-button-disabled" })
             atlas.find(sprite).splits = new int[] { 16, 16, 16, 16 };
 
-        log("Loaded 4 sprites for UI");
+        atlas.find("schema-scroll-knob").splits = new int[] { 0, 0, 24, 16 };
+
+        log("Loaded 5 sprites for UI");
 
         ibe = new ImageButtonStyle() {{
             over = atlas.drawable("schema-button-over");
@@ -57,7 +62,9 @@ public class Style {
         cbd = tbd;
         cbt = tbt;
 
-        log("Created 9 styles for UI");
+        scr = new ScrollPaneStyle() {{ vScrollKnob = atlas.drawable("schema-scroll-knob"); }};
+
+        log("Created 10 styles for UI");
 
         // this is the color that is used for disabled elements
         Colors.put("disabled", Pal.gray);
