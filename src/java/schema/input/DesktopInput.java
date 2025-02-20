@@ -3,6 +3,8 @@ package schema.input;
 import arc.math.*;
 import arc.math.geom.*;
 import arc.util.*;
+import mindustry.entities.*;
+import mindustry.gen.*;
 
 import static arc.Core.*;
 import static mindustry.Vars.*;
@@ -57,8 +59,10 @@ public class DesktopInput extends InputSystem {
             // inherently, this is the classical movement
 
             lerpCam(pan.scl(64f * tilesize).add(player));
-            unit.movePref(mov.add(flw).limit2(1f).scl(type.speed));
+            unit.movePref(mov.add(flw).limit2(1f).scl(unit.speed()));
         }
+
+        if (Keybind.teleport.tap()) unit.set(input.mouseWorld());
 
         float angle = Angles.mouseAngle(unit.x, unit.y);
 
@@ -71,11 +75,28 @@ public class DesktopInput extends InputSystem {
                 unit.lookAt(unit.prefRotation());
         }
 
+        if (Keybind.respawn.tap()) Call.unitClear(player);
+        if (Keybind.despawn.tap()); // TODO admins/hacky functions
+
+        if (unit instanceof Payloadc pay) {
+            if (Keybind.pick_cargo.tap()) {
+
+                var target = Units.closest(unit.team, unit.x, unit.y, u -> u.isGrounded() && u.within(unit, (u.hitSize + type.hitSize) * 2f) && pay.canPickup(u));
+                if (target != null) Call.requestUnitPayload(player, target);
+
+                else {
+                    var build = world.buildWorld(unit.x, unit.y);
+                    if (build != null && state.teams.canInteract(unit.team, build.team)) Call.requestBuildPayload(player, build);
+                }
+            }
+            if (Keybind.drop_cargo.tap()) Call.requestDropPayload(player, player.x, player.y);
+        }
+
         unit.aim(input.mouseWorld());
         unit.controlWeapons(true, player.shooting);
 
-        player.mouseX = unit.aimX();
-        player.mouseY = unit.aimY();
+        player.mouseX = unit.aimX;
+        player.mouseY = unit.aimY;
         player.boosting = Keybind.boost.down();
     }
 
