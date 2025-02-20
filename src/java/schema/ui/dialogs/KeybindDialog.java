@@ -24,29 +24,34 @@ public class KeybindDialog extends BaseDialog {
         addCloseButton();
         hidden(this::resolve);
 
+        cont.pane(Style.scr, pane -> {
+        pane.marginRight(4f);
+        pane.defaults().pad(4f);
+
         for (var bind : Keybind.all) {
 
-            if (bind.category != null) cont.table(t -> {
+            if (bind.category != null) pane.table(t -> {
                 t.add("@category." + bind.category, Color.gray).row();
                 t.image().growX().height(4f).padTop(4f).color(Color.gray);
             }).fillX().colspan(5).row();
 
-            cont.add("@keybind." + bind).left();
+            pane.add("@keybind." + bind).left();
 
-            cont.button(b -> set(mask, bind, b).label(bind::formatMask).color(Pal.accent), Style.cbe, () -> rebindMask(bind)).size(256f, 48f).visible(bind::single);
-            cont.button(b -> set(keys, bind, b).label(bind::formatKeys).color(Pal.accent), Style.cbe, () -> rebindKeys(bind)).size(256f, 48f);
+            pane.button(b -> set(mask, bind, b).label(bind::formatMask).color(Pal.accent), Style.cbe, () -> rebindMask(bind)).size(256f, 48f).visible(bind::single);
+            pane.button(b -> set(keys, bind, b).label(bind::formatKeys).color(Pal.accent), Style.cbe, () -> rebindKeys(bind)).size(256f, 48f);
 
-            cont.button(Icon.rotate, Style.ibd, bind::reset).size(48f).tooltip("@keybind.reset");
-            cont.button(Icon.cancel, Style.ibd, bind::clear).size(48f).tooltip("@keybind.clear").row();
+            pane.button(Icon.rotate, Style.ibd, bind::reset).size(48f).tooltip("@keybind.reset");
+            pane.button(Icon.cancel, Style.ibd, bind::clear).size(48f).tooltip("@keybind.clear").row();
         }
-        cont.button("@keybind.reset-all", Style.tbd, this::reset).fillX().height(48f).colspan(5);
+        pane.button("@keybind.reset-all", Style.tbd, this::reset).fillX().height(48f).padBottom(0f).colspan(5);
+        });
     }
 
     // region rebinding
 
-    private Button set(Button[] arr, Keybind bind, Button btn) { arr[bind.ordinal()] = btn; return btn; }
+    private Button set(Button[] arr, Keybind bind, Button btn) { return arr[bind.ordinal()] = btn; }
 
-    private Vec2 get(Button[] arr, Keybind bind) { var btn = arr[bind.ordinal()]; return new Vec2(cont.x + btn.x, cont.y + btn.y); }
+    private Vec2 get(Button[] arr, Keybind bind) { return arr[bind.ordinal()].localToStageCoordinates(new Vec2()); }
 
     /** Shows the rebind dialog used to reassign the mask of the keybind. */
     public void rebindMask(Keybind bind) {
