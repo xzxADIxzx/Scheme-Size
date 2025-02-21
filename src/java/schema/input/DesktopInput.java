@@ -16,6 +16,7 @@ public class DesktopInput extends InputSystem {
     protected void update()
     {
         if (!scene.hasField() && !state.isPaused() && !player.dead()) updateMovement();
+        if (!scene.hasField()) updateCommand();
     }
 
     protected void updateMovement() {
@@ -98,6 +99,37 @@ public class DesktopInput extends InputSystem {
         player.mouseX = unit.aimX;
         player.mouseY = unit.aimY;
         player.boosting = Keybind.boost.down();
+    }
+
+    protected void updateCommand() {
+        if (commandMode = Keybind.command.down()) {
+            commandUnits.retainAll(Unitc::isCommandable).retainAll(Healthc::isValid);
+
+            if (Keybind.select.tap()) commandRect = input.mouseWorld();
+            if (Keybind.select.release()) {
+
+                if (commandRect.within(input.mouseWorld(), 8f)) {
+                    var selected = selectedUnit();
+                    if (!commandUnits.remove(selected)) commandUnits.add(selected);
+                } else
+                    selectedRegion(commandUnits::add);
+
+                commandRect = null;
+            }
+
+            if (Keybind.select_all_units.tap()) {
+                commandUnits.clear();
+                commandBuildings.clear();
+
+                player.team().data().units.each(Unitc::isCommandable, commandUnits::add);
+            }
+            if (Keybind.select_all_factories.tap()) {
+                commandUnits.clear();
+                commandBuildings.clear();
+
+                player.team().data().buildings.each(b -> b.block.commandable, commandBuildings::add);
+            }
+        }
     }
 
     @Override

@@ -1,14 +1,28 @@
 package schema.input;
 
+import arc.func.*;
 import arc.math.geom.*;
+import arc.struct.*;
+import arc.util.*;
+import mindustry.entities.*;
 import mindustry.gen.*;
 import mindustry.input.*;
 
 import static arc.Core.*;
+import static mindustry.Vars.*;
 import static schema.Main.*;
 
 /** Input system that controls the building unit, construction plans and many components of the mod. */
 public abstract class InputSystem {
+
+    /** Whether the input system is in unit command mode. */
+    protected boolean commandMode;
+    /** Origin of the unit selection rectangle. */
+    protected Vec2 commandRect;
+    /** Units that are controlled by the player. */
+    protected Seq<Unit> commandUnits = new Seq<>();
+    /** Buildings that are controlled by the player. */
+    protected Seq<Building> commandBuildings = new Seq<>();
 
     // region general
 
@@ -32,9 +46,21 @@ public abstract class InputSystem {
 
     /** Moves the camera by the given offset. */
     public void moveCam(Vec2 offset) { camera.position.add(offset); }
-    
+
     /** Lerps the camera to the given target. */
     public void lerpCam(Vec2 target) { camera.position.lerpDelta(target, .064f); }
+
+    /** Returns the unit under the mouse. */
+    public Unit selectedUnit() {
+        var mouse = input.mouseWorld();
+        return Units.closest(player.team(), mouse.x, mouse.y, u -> u.type.playerControllable && u.isAI() && u.within(mouse, u.hitSize));
+    }
+
+    /** Iterates all units in the selection rectangle. */
+    public void selectedRegion(Cons<Unit> cons) {
+        Tmp.r1.set(commandRect.x, commandRect.y, input.mouseWorldX() - commandRect.x, input.mouseWorldY() - commandRect.y).normalize();
+        player.team().data().tree().intersect(Tmp.r1, cons);
+    }
 
     // endregion
     // region agent
@@ -76,10 +102,10 @@ public abstract class InputSystem {
         public boolean isRebuildSelecting() { return false; }
 
         @Override
-        public Unit selectedUnit() { return Keybind.command.down() ? super.selectedUnit() : null; }
+        public Unit selectedUnit() { return null; }
 
         @Override
-        public Building selectedControlBuild() { return Keybind.command.down() ? super.selectedControlBuild() : null; }
+        public Building selectedControlBuild() { return null; }
     }
 
     // endregion
