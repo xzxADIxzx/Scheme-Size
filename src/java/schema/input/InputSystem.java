@@ -56,6 +56,18 @@ public abstract class InputSystem {
         return Units.closest(player.team(), mouse.x, mouse.y, u -> u.type.playerControllable && u.isAI() && u.within(mouse, u.hitSize));
     }
 
+    /** Returns the enemy under the mouse. */
+    public Unit selectedEnemy() {
+        var mouse = input.mouseWorld(); var team = player.team();
+        return Groups.unit.intersect(mouse.x - 1f, mouse.y - 1f, 2f, 2f).min(u -> u.team != team && u.targetable(team) && !u.inFogTo(team), u -> u.dst(mouse));
+    }
+
+    /** Returns the building under the mouse. */
+    public Building selectedBuilding() {
+        var mouse = input.mouseWorld();
+        return world.buildWorld(mouse.x, mouse.y);
+    }
+
     /** Iterates all units in the selection rectangle. */
     public void selectedRegion(Cons<Unit> cons) {
         Tmp.r1.set(commandRect.x, commandRect.y, input.mouseWorldX() - commandRect.x, input.mouseWorldY() - commandRect.y).normalize();

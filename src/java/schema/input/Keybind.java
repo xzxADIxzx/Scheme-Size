@@ -43,6 +43,7 @@ public enum Keybind {
     control(0, KeyCode.controlLeft),
     select_all_units(0, KeyCode.g),
     select_all_factories(0, KeyCode.h),
+    attack(0, KeyCode.mouseRight),
 
     menu(0, KeyCode.escape, "view"),
     pause(0, KeyCode.space),

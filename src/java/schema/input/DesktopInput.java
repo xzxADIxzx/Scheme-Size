@@ -9,6 +9,8 @@ import mindustry.gen.*;
 import static arc.Core.*;
 import static mindustry.Vars.*;
 
+import java.util.*;
+
 /** Handles keyboard input via keybinds. */
 public class DesktopInput extends InputSystem {
 
@@ -105,14 +107,25 @@ public class DesktopInput extends InputSystem {
         if (commandMode = Keybind.command.down()) {
             commandUnits.retainAll(Unitc::isCommandable).retainAll(Healthc::isValid);
 
-            if (Keybind.select.tap()) commandRect = input.mouseWorld();
+            if (Keybind.select.tap()) commandRect = input.mouseWorld().cpy();
             if (Keybind.select.release()) {
 
                 if (commandRect.within(input.mouseWorld(), 8f)) {
-                    var selected = selectedUnit();
-                    if (!commandUnits.remove(selected)) commandUnits.add(selected);
-                } else
+                    var unit = selectedUnit();
+                    var build = selectedBuilding();
+
+                    if (unit != null) {
+                        commandBuildings.clear();
+                        if (!commandUnits.remove(unit)) commandUnits.add(unit);
+                    }
+                    else if (build != null && build.team == player.team()) {
+                        commandUnits.clear();
+                        if (!commandBuildings.remove(build)) commandBuildings.add(build);
+                    }
+                } else {
+                    commandBuildings.clear();
                     selectedRegion(commandUnits::add);
+                }
 
                 commandRect = null;
             }
@@ -128,6 +141,31 @@ public class DesktopInput extends InputSystem {
                 commandBuildings.clear();
 
                 player.team().data().buildings.each(b -> b.block.commandable, commandBuildings::add);
+            }
+            if (Keybind.deselect.tap()) {
+                commandUnits.clear();
+                commandBuildings.clear();
+            }
+
+            if (Keybind.attack.tap()) {
+                if (commandUnits.any()) {
+                    var unit = selectedEnemy();
+                    var build = selectedBuilding();
+
+                    if (build != null && build.team == player.team()) build = null;
+
+                    int[] ids = commandUnits.mapInt(Unit::id).toArray();
+                    int chunkSize = 128;
+
+                    if (ids.length <= chunkSize)
+                        Call.commandUnits(player, ids, build, unit, input.mouseWorld());
+
+                    else for (int i = 0; i < ids.length; i += chunkSize) {
+                        int[] chunk = Arrays.copyOfRange(ids, i, Math.min(i + chunkSize, ids.length));
+                        Call.commandUnits(player, chunk, build, unit, input.mouseWorld().cpy());
+                    }
+                }
+                if (commandBuildings.any()) Call.commandBuilding(player, commandBuildings.mapInt(Building::pos).toArray(), input.mouseWorld().cpy());
             }
         }
     }
