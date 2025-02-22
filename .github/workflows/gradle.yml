@@ -22,7 +22,7 @@ jobs:
       run: chmod +x build.sh dependencies.sh
 
     - name: Download dependencies
-      run: ./dependencies.sh
+      run: ./dependencies.sh dependencies-only
 
     - name: Build the project
       run: ./build.sh mobile
