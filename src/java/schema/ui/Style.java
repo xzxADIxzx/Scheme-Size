@@ -33,7 +33,8 @@ public class Style {
             "schema-button",
             "schema-button-over",
             "schema-button-down",
-            "schema-button-disabled" })
+            "schema-button-disabled",
+            "schema-panel-bottom" })
             atlas.find(sprite).splits = new int[] { 16, 16, 16, 16 };
 
         atlas.find("schema-scroll-knob").splits = new int[] { 0, 0, 24, 16 };
