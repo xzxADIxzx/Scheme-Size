@@ -226,7 +226,7 @@ public class HudFragment {
                 partitionmb(pad, mode -> {
                     mode.add(mobiles);
                     if (mobile) setAction(mode, "disarmed", m_input::lockShooting);
-                    else setAction(mode, Icon.book, keycomb::show);
+                    else setAction(mode, Icon.book, /* keycomb::show */ null);
                     setAction(mode, "blasted",   () -> admins.despawn());
                     setAction(mode, "overdrive", () -> admins.teleport());
                     setAction(mode, Icon.lock,   () -> m_input.lockMovement());

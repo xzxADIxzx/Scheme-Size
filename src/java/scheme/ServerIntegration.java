@@ -21,7 +21,7 @@ import static scheme.SchemeVars.*;
  * Then the server will send a Subtitles packet to all connections
  * containing a list of ids and subtitles of players who use this mod.
  * </p>
- * Reference implementation: server region in {@link ServerIntegration#load()}
+ * Reference implementation: server region in the {@link ServerIntegration#load() load method}
  */
 @SuppressWarnings("unchecked")
 public class ServerIntegration {

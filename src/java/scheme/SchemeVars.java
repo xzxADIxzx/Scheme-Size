@@ -1,11 +1,7 @@
 package scheme;
 
-import arc.graphics.Texture;
-import arc.graphics.Texture.TextureFilter;
 import arc.struct.Seq;
-import mindustry.content.StatusEffects;
 import mindustry.core.UI;
-import mindustry.graphics.Pal;
 import mindustry.type.Item;
 import mindustry.type.StatusEffect;
 import mindustry.type.UnitType;
@@ -42,7 +38,6 @@ public class SchemeVars {
     public static ContentSelectDialog<Item> item;
 
     public static SettingsMenuDialog m_settings;
-    public static KeybindCombinationsDialog keycomb;
     public static SchemasDialog schemas;
     public static ImageParserDialog parser;
     public static WaveApproachingDialog approaching;
@@ -60,7 +55,8 @@ public class SchemeVars {
             "37.187.73.180:7025",
             "claj.phoenix-network.dev:4000",
             "167.235.159.121:4000",
-            "new.xem8k5.top:1050"
+            "new.xem8k5.top:1050",
+            "123.149.153.233:1050"
     );
 
     /** List of ip servers that block the mod. */
@@ -69,13 +65,6 @@ public class SchemeVars {
             "91.209.226.11");
 
     public static void load() {
-        var pixmap = atlas.getPixmap("schema-status-invincible").pixmap.outline(Pal.gray, 3);
-        var texture = new Texture(pixmap);
-        texture.setFilter(TextureFilter.linear);
-
-        atlas.addRegion("status-invincible-ui", texture, 0, 0, 34, 34);
-        StatusEffects.invincible.loadIcon(); // slip a mod texture under the guise of vanilla
-
         // m_schematics is created in Main to prevent dual loading
         m_input = mobile ? new ModedMobileInput() : new ModedDesktopInput();
 
@@ -104,7 +93,6 @@ public class SchemeVars {
         });
 
         m_settings = new SettingsMenuDialog();
-        keycomb = new KeybindCombinationsDialog();
         schemas = new SchemasDialog();
         parser = new ImageParserDialog();
         approaching = new WaveApproachingDialog();
