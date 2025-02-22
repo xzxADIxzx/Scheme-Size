@@ -15,8 +15,8 @@ import static schema.Main.*;
 /** Input system that controls the building unit, construction plans and many components of the mod. */
 public abstract class InputSystem {
 
-    /** Whether the input system is in unit command mode. */
-    protected boolean commandMode;
+    /** Whether the input system is in unit command/control mode. */
+    protected boolean commandMode, controlMode;
     /** Origin of the unit selection rectangle. */
     protected Vec2 commandRect;
     /** Units that are controlled by the player. */

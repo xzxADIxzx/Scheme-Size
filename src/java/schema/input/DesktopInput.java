@@ -5,6 +5,7 @@ import arc.math.geom.*;
 import arc.util.*;
 import mindustry.entities.*;
 import mindustry.gen.*;
+import mindustry.world.blocks.*;
 
 import static arc.Core.*;
 import static mindustry.Vars.*;
@@ -167,6 +168,21 @@ public class DesktopInput extends InputSystem {
                 }
                 if (commandBuildings.any()) Call.commandBuilding(player, commandBuildings.mapInt(Building::pos).toArray(), input.mouseWorld().cpy());
             }
+        }
+        if (controlMode = Keybind.control.down() && state.rules.possessionAllowed) {
+            if (!Keybind.select.tap()) return;
+
+            var unit = selectedUnit();
+            var build = selectedBuilding();
+
+            if (build != null && build.team != player.team()) build = null;
+
+            if (unit != null)
+                Call.unitControl(player, unit);
+            else if (build != null && build instanceof ControlBlock c && c.canControl() && c.unit().isAI())
+                Call.unitControl(player, c.unit());
+            else if (build != null)
+                Call.buildingControlSelect(player, build);
         }
     }
 
