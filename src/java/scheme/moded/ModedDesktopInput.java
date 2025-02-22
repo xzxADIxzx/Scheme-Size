@@ -177,7 +177,7 @@ public class ModedDesktopInput extends DesktopInput implements ModedInputHandler
         if (alt) {
             admins.look();
 
-            if (input.keyTap(Binding.block_info)) keycomb.show();
+            if (input.keyTap(Binding.block_info)) /* keycomb.show() */;
 
             // alternative + respawn moved to update because it needs to be called before internal respawn
             if (input.keyTap(Binding.mouse_move)) admins.teleport(input.mouseWorld());

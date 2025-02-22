@@ -13,15 +13,13 @@ import mindustry.gen.Icon;
 import mindustry.gen.Player;
 import mindustry.world.Tile;
 import mindustry.world.blocks.ConstructBlock.ConstructBuild;
-import scheme.ui.dialogs.KeybindCombinationsDialog;
 
-import static arc.Core.*;
 import static mindustry.Vars.*;
 import static scheme.SchemeVars.*;
 
 public class GammaAI extends AIController {
 
-    public static final String tooltip = bundle.format("gamma.tooltip", KeybindCombinationsDialog.resetAI);
+    public static final String tooltip = null;
 
     public static Updater move = Updater.none;
     public static Updater build = Updater.none;

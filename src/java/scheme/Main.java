@@ -55,7 +55,6 @@ public class Main extends Mod {
 
         units.load();
         builds.load();
-        keycomb.load();
 
         m_settings.apply(); // sometimes settings are not self-applying
 
