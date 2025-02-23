@@ -66,7 +66,7 @@ public class Main extends Mod {
             log("Added constants to the dev console");
         } catch (Throwable e) { err(e); }
 
-        log("=> [greed]Unhooking events...");
+        log("=> [green]Unhooking events...");
         clear(mindustry.ui.fragments.PlacementFragment.class);
     }
 
