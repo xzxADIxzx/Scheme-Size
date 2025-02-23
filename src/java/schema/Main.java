@@ -65,6 +65,9 @@ public class Main extends Mod {
 
             log("Added constants to the dev console");
         } catch (Throwable e) { err(e); }
+
+        log("=> [greed]Unhooking events...");
+        clear(mindustry.ui.fragments.PlacementFragment.class);
     }
 
     /** Loads content such as dialogs, fragments and so on. */
@@ -89,5 +92,10 @@ public class Main extends Mod {
 
         app.setClipboardText(text);
         ui.showInfoFade("@copied");
+    }
+
+    /** Use this <b>extremely carefully</b> as it clears event listeners created by the given class. */
+    public static void clear(Class<?> target) {
+        Reflect.<ObjectMap<?, Seq<?>>>get(Events.class, "events").each((t, s) -> s.removeAll(l -> l.toString().startsWith(target.getName())));
     }
 }
