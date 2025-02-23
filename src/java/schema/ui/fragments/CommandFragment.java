@@ -75,13 +75,14 @@ public class CommandFragment extends Table {
 
                     cont.table(t -> {
                         t.add(new ItemImage(type.uiIcon, count)).size(32f, 32f).tooltip(type.localizedName);
+                        t.addListener(new HandCursorListener());
 
                         t.clicked(KeyCode.mouseLeft, () -> insys.freeUnits(u -> u.type != type));
                         t.clicked(KeyCode.mouseRight, () -> insys.freeUnits(u -> u.type == type));
 
                         t.hovered(() -> t.background(atlas.drawable("schema-button-over")));
                         t.exited(() -> t.background(null));
-                    }).size(48f, 48f);
+                    }).size(48f, 48f).touchable(Touchable.enabled);
 
                     commands.retainAll(c -> Structs.contains(type.commands, c));
                 }
@@ -89,7 +90,7 @@ public class CommandFragment extends Table {
                 cont.image().growY().width(4f).color(Pal.accent);
                 cont.add(bundle.format("cmnd.clear", Keybind.deselect.format()));
 
-                if (commands.any()) {
+                if (commands.size > 1) {
                     cont.image().growY().width(4f).color(Pal.accent);
                     commands.each(c -> {
                         cont.button(Icon.icons.get(c.icon), Style.ibt, () -> insys.commandUnits(c)).checked(i -> c == shared).size(48f).tooltip(c.localized());
