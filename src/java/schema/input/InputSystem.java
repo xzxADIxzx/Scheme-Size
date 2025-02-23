@@ -74,6 +74,19 @@ public abstract class InputSystem {
         player.team().data().tree().intersect(Tmp.r1, cons);
     }
 
+    /** Returns the amount of controlled units. */
+    public int controlledUnitsAmount() { return commandUnits.size; }
+
+    /** Returns the amount of controlled units of each type. */
+    public int[] controlledUnitsAmountByType() {
+        int[] counts = new int[content.units().size];
+        commandUnits.each(u -> counts[u.type.id]++);
+        return counts;
+    }
+
+    /** Iterates all units that are controlled by the player and frees the ones that match the predicate. */
+    public void freeUnits(Boolf<Unit> pred) { commandUnits.removeAll(pred); }
+
     // endregion
     // region agent
 
