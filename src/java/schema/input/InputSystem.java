@@ -74,6 +74,9 @@ public abstract class InputSystem {
         player.team().data().tree().intersect(Tmp.r1, cons);
     }
 
+    /** Returns true if the input system is in unit command mode. */
+    public boolean controlling() { return commandMode; }
+
     /** Returns the amount of controlled units. */
     public int controlledUnitsAmount() { return commandUnits.size; }
 

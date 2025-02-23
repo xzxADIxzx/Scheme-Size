@@ -108,8 +108,8 @@ public class DesktopInput extends InputSystem {
         if (commandMode = Keybind.command.down()) {
             commandUnits.retainAll(Unitc::isCommandable).retainAll(Healthc::isValid);
 
-            if (Keybind.select.tap()) commandRect = input.mouseWorld().cpy();
-            if (Keybind.select.release()) {
+            if (Keybind.select.tap() && !scene.hasMouse()) commandRect = input.mouseWorld().cpy();
+            if (Keybind.select.release() && commandRect != null) {
 
                 if (commandRect.within(input.mouseWorld(), 8f)) {
                     var unit = selectedUnit();
@@ -148,7 +148,7 @@ public class DesktopInput extends InputSystem {
                 commandBuildings.clear();
             }
 
-            if (Keybind.attack.tap()) {
+            if (Keybind.attack.tap() && !scene.hasMouse()) {
                 if (commandUnits.any()) {
                     var unit = selectedEnemy();
                     var build = selectedBuilding();
@@ -159,7 +159,7 @@ public class DesktopInput extends InputSystem {
                     int chunkSize = 128;
 
                     if (ids.length <= chunkSize)
-                        Call.commandUnits(player, ids, build, unit, input.mouseWorld());
+                        Call.commandUnits(player, ids, build, unit, input.mouseWorld().cpy());
 
                     else for (int i = 0; i < ids.length; i += chunkSize) {
                         int[] chunk = Arrays.copyOfRange(ids, i, Math.min(i + chunkSize, ids.length));
@@ -169,7 +169,7 @@ public class DesktopInput extends InputSystem {
                 if (commandBuildings.any()) Call.commandBuilding(player, commandBuildings.mapInt(Building::pos).toArray(), input.mouseWorld().cpy());
             }
         }
-        if (controlMode = Keybind.control.down() && state.rules.possessionAllowed) {
+        if (controlMode = Keybind.control.down() && !scene.hasMouse() && state.rules.possessionAllowed) {
             if (!Keybind.select.tap()) return;
 
             var unit = selectedUnit();
