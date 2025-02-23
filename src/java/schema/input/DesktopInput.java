@@ -125,7 +125,7 @@ public class DesktopInput extends InputSystem {
                     }
                 } else {
                     commandBuildings.clear();
-                    selectedRegion(commandUnits::add);
+                    selectedRegion(commandUnits::addUnique);
                 }
 
                 commandRect = null;

@@ -1,5 +1,6 @@
 package schema;
 
+import arc.*;
 import arc.struct.*;
 import arc.util.*;
 import mindustry.mod.*;
@@ -30,6 +31,7 @@ public class Main extends Mod {
     // endregion
     // region fragments
 
+    public static CommandFragment cmndfrag;
     public static LoadingFragment loadfrag;
 
     // endregion
@@ -49,6 +51,7 @@ public class Main extends Mod {
         keybind.load();
         keybind.resolve();
 
+        cmndfrag.build(ui.hudGroup);
         loadfrag.build(scene.root);
 
         control.setInput(insys.getAgent());
@@ -76,7 +79,10 @@ public class Main extends Mod {
         Style.load();
 
         insys = mobile ? null : new DesktopInput();
+
         keybind = new KeybindDialog();
+
+        cmndfrag = new CommandFragment();
         loadfrag = new LoadingFragment();
     }
 

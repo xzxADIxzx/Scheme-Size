@@ -111,6 +111,9 @@ public enum Keybind {
     /** Returns the formatted mask name. */
     public String formatMask() { return Keymask.names[mask.ordinal()]; }
 
+    /** Returns the formatted values of the bind. */
+    public String format() { return mask == Keymask.unset ? formatKeys() : formatMask() + " + " + formatKeys(); }
+
     /** Returns the current mask. */
     public int mask() { return mask.ordinal(); }
 
