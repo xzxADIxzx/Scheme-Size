@@ -4,6 +4,7 @@ import arc.func.*;
 import arc.math.geom.*;
 import arc.struct.*;
 import arc.util.*;
+import mindustry.ai.*;
 import mindustry.entities.*;
 import mindustry.gen.*;
 import mindustry.input.*;
@@ -89,6 +90,9 @@ public abstract class InputSystem {
 
     /** Iterates all units that are controlled by the player and frees the ones that match the predicate. */
     public void freeUnits(Boolf<Unit> pred) { commandUnits.removeAll(pred); }
+
+    /** Commands all units to perform the given task. */
+    public void commandUnits(UnitCommand command) { Call.setUnitCommand(player, commandUnits.mapInt(Unitc::id).toArray(), command); }
 
     // endregion
     // region agent
