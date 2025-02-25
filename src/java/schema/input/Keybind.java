@@ -133,12 +133,15 @@ public enum Keybind {
 
     /** Whether the bind was just released. */
     public boolean release() { return input.keyRelease(key); }
-    
+
     /** Whether the bind is a single key / <b>not</b> an axis. */
     public boolean single() { return defaultKey != KeyCode.unset; }
 
     /** Returns a value between -1 and 1. */
     public float axis() { return mask.down.get() ? (input.keyDown(max) ? 1f : 0f) - (input.keyDown(min) ? 1f : 0f) : 0f; }
+
+    /** Returns the value of the mouse scroll. */
+    public static float scroll() { return input.axis(KeyCode.scroll); }
 
     // endregion
     // region rebinding

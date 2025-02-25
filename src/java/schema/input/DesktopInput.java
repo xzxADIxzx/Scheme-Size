@@ -15,10 +15,19 @@ import java.util.*;
 /** Handles keyboard input via keybinds. */
 public class DesktopInput extends InputSystem {
 
+    /** Amount of scrolls in one direction and the direction itself. */
+    public int scrolls, dir;
+    /** Amount of scrolls after which the zoom speed increases by one tile per scroll. */
+    public int aspect = 2;
+
     @Override
     protected void update()
     {
-        if (!scene.hasField() && !state.isPaused() && !player.dead()) updateMovement();
+        if (!scene.hasField() && !state.isPaused() && !player.dead())
+        {
+            updateMovement();
+            updateZoom();
+        }
         if (!scene.hasField()) updateCommand();
     }
 
@@ -102,6 +111,20 @@ public class DesktopInput extends InputSystem {
         player.mouseX = unit.aimX;
         player.mouseY = unit.aimY;
         player.boosting = Keybind.boost.down();
+    }
+
+    protected void updateZoom() {
+        int scroll = (int) Keybind.scroll();
+        if (scroll == 0) return;
+
+        if (dir != scroll) {
+            dir = scroll;
+            scrolls = 0;
+        } else
+            scrolls++;
+
+        dest -= scroll * (4f + (scrolls / aspect));
+        dest = Mathf.clamp(dest, minZoom, maxZoom);
     }
 
     protected void updateCommand() {
