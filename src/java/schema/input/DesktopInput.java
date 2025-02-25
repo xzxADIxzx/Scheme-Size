@@ -3,9 +3,11 @@ package schema.input;
 import arc.math.*;
 import arc.math.geom.*;
 import arc.util.*;
+import mindustry.core.*;
 import mindustry.entities.*;
 import mindustry.gen.*;
 import mindustry.world.blocks.*;
+import mindustry.world.blocks.ConstructBlock.*;
 
 import static arc.Core.*;
 import static mindustry.Vars.*;
@@ -29,6 +31,7 @@ public class DesktopInput extends InputSystem {
         updateMovement();
         updateZoom();
         updateCommand();
+        updateView();
     }
 
     protected void updateAI() {
@@ -217,6 +220,46 @@ public class DesktopInput extends InputSystem {
             else if (build != null)
                 Call.buildingControlSelect(player, build);
         }
+    }
+
+    protected void updateView() {
+        if (Keybind.menu.tap()) {
+
+            if (ui.chatfrag.shown())
+                ui.chatfrag.hide();
+
+            else if (ui.minimapfrag.shown())
+                ui.minimapfrag.hide();
+
+            else {
+                ui.paused.show();
+                if (!net.active()) state.set(GameState.State.paused);
+            }
+        }
+
+        if (Keybind.sector_map.tap()) ui.minimapfrag.toggle();
+        if (Keybind.planet_map.tap() && state.isCampaign()) ui.planet.show();
+        if (Keybind.research.tap() && state.isCampaign()) ui.research.show();
+        if (Keybind.database.tap()) ui.database.show();
+
+        if (Keybind.block_info.tap()) {
+            var build = selectedBuilding();
+            var hover = /* insys.block != null ? insys.block : */ build == null ? null : build instanceof ConstructBuild c ? c.current : build.block;
+
+            if (hover != null && hover.unlockedNow()) ui.content.show(hover);
+        }
+
+        if (Keybind.tgl_menus.tap()); // TODO implement
+        if (Keybind.tgl_power_lasers.tap()) {
+            if (settings.getInt("lasersopacity") == 0)
+                settings.put("lasersopacity", settings.getInt("preferredlaseropacity", 100));
+            else {
+                settings.put("preferredlaseropacity", settings.getInt("lasersopacity"));
+                settings.put("lasersopacity", 0);
+            }
+        }
+        if (Keybind.tgl_block_status.tap()) settings.put("blockstatus", !settings.getBool("blockstatus"));
+        if (Keybind.tgl_block_health.tap()); // TODO implement
     }
 
     @Override
