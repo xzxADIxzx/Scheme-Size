@@ -1,11 +1,14 @@
 package schema.input;
 
+import arc.*;
 import arc.func.*;
+import arc.math.*;
 import arc.math.geom.*;
 import arc.struct.*;
 import arc.util.*;
 import mindustry.ai.*;
 import mindustry.entities.*;
+import mindustry.game.*;
 import mindustry.gen.*;
 import mindustry.input.*;
 
@@ -15,6 +18,11 @@ import static schema.Main.*;
 
 /** Input system that controls the building unit, construction plans and many components of the mod. */
 public abstract class InputSystem {
+
+    /** Current zoom of the camera that is applied during {@link EventType.Trigger#preDraw predraw} event call. */
+    protected float zoom = 32f, dest = 32f;
+    /** Extreme zoom values: the maximum value is zoom in and the minimum one is zoom out. */
+    protected float minZoom = 16f, maxZoom = 256f;
 
     /** Whether the input system is in unit command/control mode. */
     protected boolean commandMode, controlMode;
@@ -104,7 +112,13 @@ public abstract class InputSystem {
     public class Agent extends InputHandler {
 
         @Override
-        public void add() {}
+        public void add() { Events.run(EventType.Trigger.preDraw, () -> {
+            zoom = Mathf.lerpDelta(zoom, dest, .1f);
+            if (Mathf.equal(zoom, dest, .001f)) zoom = dest;
+
+            camera.height = zoom * tilesize;
+            camera.width = camera.height * graphics.getAspect();
+        }); }
 
         @Override
         public void remove() {}
