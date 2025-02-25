@@ -36,7 +36,7 @@ public class Updater {
                 log("The mod is up to date");
             else {
                 log("The mod is outdated");
-                ui.showCustomConfirm("@updater.name", bundle.format("updater.info", mod.meta.version, latest), "@mods.browser.reinstall", "@ok", Updater::update, () -> {});
+                ui.showCustomConfirm("@update.name", bundle.format("update.info", mod.meta.version, latest), "@mods.browser.reinstall", "@ok", Updater::update, () -> {});
             }
 
         }, Main::err);

@@ -28,6 +28,7 @@ public enum Keybind {
     select(0, KeyCode.mouseLeft),
     deselect(0, KeyCode.q),
     hexblock(3, KeyCode.q),
+    srcblock(3, KeyCode.e),
     pause_bd(0, KeyCode.e),
     clear_bd(0, KeyCode.c),
     drop(3, KeyCode.mouseMiddle),
