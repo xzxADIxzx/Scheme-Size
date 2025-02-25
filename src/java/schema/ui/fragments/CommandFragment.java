@@ -93,7 +93,7 @@ public class CommandFragment extends Table {
                 if (commands.size > 1) {
                     cont.image().growY().width(4f).color(Pal.accent);
                     commands.each(c -> {
-                        cont.button(Icon.icons.get(c.icon), Style.ibt, () -> insys.commandUnits(c)).checked(i -> c == shared).size(48f).tooltip(c.localized());
+                        cont.button(Icon.icons.get(c.icon), Style.ibc, () -> insys.commandUnits(c)).size(48f).checked(i -> c == shared).tooltip(c.localized());
                     });
                 }
             }

@@ -16,14 +16,16 @@ public class Style {
 
     // region styles
 
-    /** Common button, both default, empty and toggle variant. */
+    /** Common button: default, empty and toggle variant. */
     public static ButtonStyle cbd, cbe, cbt;
-    /** Image button, both default, empty and toggle variant. */
+    /** Image button: default, empty and toggle variant. */
     public static ImageButtonStyle ibd, ibe, ibt;
-    /** Text button, both default, empty and toggle variant. */
+    /** Text button: default, empty and toggle variant. */
     public static TextButtonStyle tbd, tbe, tbt;
     /** Scroll pane style, simple knob without anything else. */
     public static ScrollPaneStyle scr;
+    /** Special style for command fragment. */
+    public static ImageButtonStyle ibc;
 
     // endregion
 
@@ -39,7 +41,7 @@ public class Style {
 
         atlas.find("schema-scroll-knob").splits = new int[] { 0, 0, 24, 16 };
 
-        log("Loaded 5 sprites for UI");
+        log("Loaded 6 sprites for UI");
 
         ibe = new ImageButtonStyle() {{
             over = atlas.drawable("schema-button-over");
@@ -65,7 +67,14 @@ public class Style {
 
         scr = new ScrollPaneStyle() {{ vScrollKnob = atlas.drawable("schema-scroll-knob"); }};
 
-        log("Created 10 styles for UI");
+        ibc = new ImageButtonStyle(ibt) {{
+            imageUpColor = Pal.accentBack;
+            imageOverColor = Pal.accent;
+            imageDownColor = Pal.accentBack;
+            imageCheckedColor = Pal.accent;
+        }};
+
+        log("Created 11 styles for UI");
 
         // this is the color that is used for disabled elements
         Colors.put("disabled", Pal.gray);
