@@ -9,6 +9,7 @@ import arc.scene.ui.layout.*;
 import arc.util.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
+import mindustry.ui.fragments.*;
 import schema.ui.*;
 
 import static arc.Core.*;
@@ -120,4 +121,21 @@ public class MapFragment extends Table {
         Draw.reset();
         super.draw();
     }
+
+    // region agent
+
+    /** Returns the agent of this fragment. */
+    public Agent getAgent() { return new Agent(); }
+
+    /** Agent that redirects method calls from the original fragment to the new one. */
+    public class Agent extends MinimapFragment {
+
+        @Override
+        public boolean shown() { return true; } // there is a check in Control#update that should always fail
+
+        @Override
+        public void hide() { shown = false; } // planet dialog calls it
+    }
+
+    // endregion
 }

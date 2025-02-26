@@ -57,7 +57,7 @@ public class Main extends Mod {
         loadfrag.build(scene.root);
 
         control.setInput(insys.getAgent());
-        // ui.minimapfrag=mapfrag.getAgent();
+        ui.minimapfrag=mapfrag.getAgent();
         ui.loadfrag = loadfrag.getAgent();
 
         log("=> [green]Running postinit hooks...");
