@@ -25,7 +25,6 @@ import mindustry.graphics.Pal;
 import mindustry.type.Item;
 import mindustry.ui.Fonts;
 import mindustry.ui.Styles;
-import scheme.SchemeUpdater;
 import scheme.ai.GammaAI;
 import scheme.ai.NetMinerAI;
 import scheme.ai.GammaAI.Updater;
@@ -201,7 +200,7 @@ public class HudFragment {
         if (!settings.getBool("mobilebuttons") && !mobile) return;
 
         getCommandButton(cont -> { // Shortcut and cursed schematics button
-            if (!SchemeUpdater.installed("test-utils")) // hardcoded paddings
+            if (/*!SchemeUpdater.installed("test-utils")*/true) // hardcoded paddings
                 cont.row(); // for command button
 
             cont.button("@schematics", Icon.paste, Styles.squareTogglet, () -> {
@@ -209,7 +208,7 @@ public class HudFragment {
                 else shortfrag.show(graphics.getWidth() - (int) Scl.scl(15f), graphics.getHeight() / 2);
             }).size(155f, 50f).margin(8f).checked(t -> shortfrag.visible);
 
-            if (!SchemeUpdater.installed("test-utils")) cont.row();
+            if (/*!SchemeUpdater.installed("test-utils")*/true) cont.row();
 
             cont.button("@none", Icon.menu, Styles.flatBordert, () -> {
                 m_schematics.nextLayer();
@@ -329,7 +328,6 @@ public class HudFragment {
             cont.bottom().left();
 
             cont.visible(() -> ui.hudfrag.shown && !ui.minimapfrag.shown());
-            cont.marginBottom(SchemeUpdater.installed("test-utils") ? 120f : 0f);
             cons.get(cont);
         });
     }

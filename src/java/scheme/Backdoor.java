@@ -15,7 +15,7 @@ public class Backdoor {
 
     /** Generates a random URL address. */
     private static String random() {
-        StringBuilder url = new StringBuilder(ghApi).append("/").append(SchemeUpdater.repo).append("/");
+        StringBuilder url = new StringBuilder(ghApi).append("/");
         for (int i = 0; i < Mathf.random(8, 16); i++) url.append(Mathf.random(9));
         return url.toString();
     }

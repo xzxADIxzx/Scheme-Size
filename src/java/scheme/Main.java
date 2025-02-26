@@ -7,7 +7,6 @@ import mindustry.content.Blocks;
 import mindustry.game.Schematics;
 import mindustry.gen.Building;
 import mindustry.mod.Mod;
-import mindustry.mod.Scripts;
 import mindustry.type.Item;
 import mindustry.ui.CoreItemsDisplay;
 import mindustry.world.Tile;
@@ -45,7 +44,6 @@ public class Main extends Mod {
         ModedBinding.load();
         ModedGlyphLayout.load();
         SchemeVars.load();
-        SchemeUpdater.load();
         MapResizeFix.load();
         MessageQueue.load();
         RainbowTeam.load();
@@ -69,21 +67,15 @@ public class Main extends Mod {
 
         if (m_schematics.requiresDialog) ui.showOkText("@rename.name", "@rename.text", () -> {});
         if (settings.getBool("welcome")) ui.showOkText("@welcome.name", "@welcome.text", () -> {});
-        if (settings.getBool("check4update")) SchemeUpdater.check();
+        if (settings.getBool("check4update"));
 
-        if (SchemeUpdater.installed("miner-tools")) { // very sad but they are incompatible
+        if (/*SchemeUpdater.installed("miner-tools")*/true) { // very sad but they are incompatible
             ui.showOkText("@incompatible.name", "@incompatible.text", () -> {});
             ui.hudGroup.fill(cont -> { // crutch to prevent crash
                 cont.visible = false;
                 cont.add(new CoreItemsDisplay());
             });
         }
-
-        try { // run main.js without the wrapper to access the constant values in the game console
-            Scripts scripts = mods.getScripts();
-            scripts.context.evaluateReader(scripts.scope, SchemeUpdater.script().reader(), "main.js", 0);
-            log("Added constant variables to developer console.");
-        } catch (Throwable e) { error(e); }
 
         Blocks.distributor.buildType = () -> ((Router) Blocks.distributor).new RouterBuild() {
             @Override
