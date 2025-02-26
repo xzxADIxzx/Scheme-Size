@@ -128,7 +128,7 @@ public class DesktopInput extends InputSystem {
 
     protected void updateZoom() {
         int scroll = (int) Keybind.scroll();
-        if (scroll == 0) return;
+        if (scroll == 0 || ui.minimapfrag.shown()) return;
 
         if (dir != scroll) {
             dir = scroll;
@@ -259,7 +259,16 @@ public class DesktopInput extends InputSystem {
             }
         }
         if (Keybind.tgl_block_status.tap()) settings.put("blockstatus", !settings.getBool("blockstatus"));
-        if (Keybind.tgl_block_health.tap()); // TODO implement
+        if (Keybind.tgl_block_health.tap()) settings.put("blockhealth", !settings.getBool("blockhealth"));
+        if (Keybind.tgl_fullscreen.tap()) {
+            if (settings.getBool("fullscreen")) {
+                settings.put("fullscreen", false);
+                graphics.setWindowedMode(graphics.getWidth(), graphics.getHeight());
+            } else {
+                settings.put("fullscreen", true);
+                graphics.setFullscreen();
+            }
+        }
     }
 
     @Override

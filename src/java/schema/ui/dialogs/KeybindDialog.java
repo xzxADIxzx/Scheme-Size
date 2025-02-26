@@ -11,10 +11,14 @@ import mindustry.graphics.*;
 import schema.input.*;
 import schema.ui.*;
 
+import static arc.Core.*;
 import static schema.Main.*;
 
 /** Dialog that displays the list of keybinds. */
 public class KeybindDialog extends BaseDialog {
+
+    /** List of vanilla keybinds that conflict with the modded ones. */
+    private static final String[] override = { "keybind-default-keyboard-fullscreen-key", "keybind-default-keyboard-screenshot-key" };
 
     /** Stores buttons used for reassigning keybinds' masks and keys. */
     private Button[] mask = new Button[Keybind.all.length], keys = new Button[Keybind.all.length];
@@ -131,6 +135,10 @@ public class KeybindDialog extends BaseDialog {
         int amount = 0;
         for (var bind : Keybind.all) amount += bind.resolveConflicts();
         log("Resolved " + amount + " conflicts");
+
+        for (var key : override) settings.put(key, KeyCode.unknown.ordinal());
+        Reflect.invoke(keybinds, "load");
+        for (var key : override) settings.remove(key);
     }
 
     // endregion
