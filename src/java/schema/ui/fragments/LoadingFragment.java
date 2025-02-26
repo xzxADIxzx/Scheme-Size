@@ -58,11 +58,8 @@ public class LoadingFragment extends Table {
         parent.addChild(this);
         parent.removeChild(Reflect.get(ui.loadfrag, "table"));
 
-        name = "Loading Fragment";
-
         setFillParent(true);
         hideImmediately();
-
         label(() -> (int) (progress.get() * 100) + "%").style(Styles.techLabel).color(Pal.accent);
     }
 

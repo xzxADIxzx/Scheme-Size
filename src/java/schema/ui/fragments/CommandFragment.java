@@ -29,8 +29,6 @@ public class CommandFragment extends Table {
         parent.addChild(this);
         parent.removeChild(Reflect.get(ui.hudfrag.blockfrag, "toggler"));
 
-        name = "Command Fragment";
-
         setFillParent(true);
         rebuild();
         update(() -> {
