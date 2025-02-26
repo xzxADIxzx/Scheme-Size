@@ -11,6 +11,7 @@ import mindustry.world.blocks.ConstructBlock.*;
 
 import static arc.Core.*;
 import static mindustry.Vars.*;
+import static schema.Main.*;
 
 import java.util.*;
 
@@ -128,7 +129,7 @@ public class DesktopInput extends InputSystem {
 
     protected void updateZoom() {
         int scroll = (int) Keybind.scroll();
-        if (scroll == 0 || ui.minimapfrag.shown()) return;
+        if (scroll == 0 || mapfrag.shown) return;
 
         if (dir != scroll) {
             dir = scroll;
@@ -141,7 +142,7 @@ public class DesktopInput extends InputSystem {
     }
 
     protected void updateCommand() {
-        if (commandMode = Keybind.command.down()) {
+        if (commandMode = Keybind.command.down() && !mapfrag.shown) {
             commandUnits.retainAll(Unitc::isCommandable).retainAll(Healthc::isValid);
 
             if (Keybind.select.tap() && !scene.hasMouse()) commandRect = input.mouseWorld().cpy();
@@ -228,8 +229,8 @@ public class DesktopInput extends InputSystem {
             if (ui.chatfrag.shown())
                 ui.chatfrag.hide();
 
-            else if (ui.minimapfrag.shown())
-                ui.minimapfrag.hide();
+            else if (mapfrag.shown)
+                mapfrag.shown = false;
 
             else {
                 ui.paused.show();
@@ -237,7 +238,7 @@ public class DesktopInput extends InputSystem {
             }
         }
 
-        if (Keybind.sector_map.tap()) ui.minimapfrag.toggle();
+        if (Keybind.sector_map.tap()) mapfrag.toggle();
         if (Keybind.planet_map.tap() && state.isCampaign()) ui.planet.show();
         if (Keybind.research.tap() && state.isCampaign()) ui.research.show();
         if (Keybind.database.tap()) ui.database.show();

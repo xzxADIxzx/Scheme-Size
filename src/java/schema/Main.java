@@ -31,6 +31,7 @@ public class Main extends Mod {
     // endregion
     // region fragments
 
+    public static MapFragment mapfrag;
     public static CommandFragment cmndfrag;
     public static LoadingFragment loadfrag;
 
@@ -51,10 +52,12 @@ public class Main extends Mod {
         keybind.load();
         keybind.resolve();
 
+        mapfrag.build(ui.hudGroup);
         cmndfrag.build(ui.hudGroup);
         loadfrag.build(scene.root);
 
         control.setInput(insys.getAgent());
+        // ui.minimapfrag=mapfrag.getAgent();
         ui.loadfrag = loadfrag.getAgent();
 
         log("=> [green]Running postinit hooks...");
@@ -82,6 +85,7 @@ public class Main extends Mod {
 
         keybind = new KeybindDialog();
 
+        mapfrag = new MapFragment();
         cmndfrag = new CommandFragment();
         loadfrag = new LoadingFragment();
     }
