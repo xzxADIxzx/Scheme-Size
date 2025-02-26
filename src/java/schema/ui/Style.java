@@ -36,12 +36,12 @@ public class Style {
             "schema-button-over",
             "schema-button-down",
             "schema-button-disabled",
+            "schema-scroll-knob",
+            "schema-panel",
             "schema-panel-bottom" })
-            atlas.find(sprite).splits = new int[] { 16, 16, 16, 16 };
+            atlas.find(sprite).splits = sprite.endsWith("knob") ? new int[] { 0, 0, 24, 16 } : new int[] { 16, 16, 16, 16 };
 
-        atlas.find("schema-scroll-knob").splits = new int[] { 0, 0, 24, 16 };
-
-        log("Loaded 6 sprites for UI");
+        log("Loaded 7 sprites for UI");
 
         ibe = new ImageButtonStyle() {{
             over = atlas.drawable("schema-button-over");
