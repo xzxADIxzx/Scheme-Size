@@ -260,6 +260,10 @@ public class DesktopInput extends InputSystem {
         }
         if (Keybind.tgl_block_status.tap()) settings.put("blockstatus", !settings.getBool("blockstatus"));
         if (Keybind.tgl_block_health.tap()) settings.put("blockhealth", !settings.getBool("blockhealth"));
+    }
+
+    @Override
+    protected void updateState() {
         if (Keybind.tgl_fullscreen.tap()) {
             if (settings.getBool("fullscreen")) {
                 settings.put("fullscreen", false);
@@ -270,9 +274,6 @@ public class DesktopInput extends InputSystem {
             }
         }
     }
-
-    @Override
-    protected void updateState() {}
 
     @Override
     protected void drawPlans() {}
