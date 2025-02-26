@@ -3,7 +3,6 @@ package schema.ui.fragments;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.input.*;
-import arc.math.*;
 import arc.scene.*;
 import arc.scene.event.*;
 import arc.scene.ui.layout.*;
@@ -70,7 +69,15 @@ public class MapFragment extends Table {
 
             @Override
             public boolean scrolled(InputEvent event, float x, float y, float amountX, float amountY) {
-                zoom = Mathf.clamp(zoom - amountY / 10f, .5f, 4f);
+                // the math equation below behaves a little strange when the zoom delta is zero
+                // therefore, return is used instead of clamp
+                if (amountY > 0f ? zoom <= .5f : zoom >= 4f) return true;
+
+                zoom = zoom - amountY / 10f;
+
+                panx += panx / (1f + amountY / 10f / zoom) - panx;
+                pany += pany / (1f + amountY / 10f / zoom) - pany;
+
                 return true;
             }
         });
