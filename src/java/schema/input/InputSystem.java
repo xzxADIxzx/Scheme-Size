@@ -96,7 +96,7 @@ public abstract class InputSystem {
             if (unit != null)
                 Drawf.square(unit.x, unit.y, unit.hitSize / 1.4f + Mathf.absin(4f, 1f), commandUnits.contains(unit) ? Pal.remove : Pal.accent);
 
-            else if (build != null && build.team == player.team())
+            else if (build != null && build.team == player.team() && build.block.commandable)
                 Drawf.square(build.x, build.y, build.hitSize() / 2f + Mathf.absin(4f, 1f), commandBuildings.contains(build) ? Pal.remove : Pal.accent);
         }
     }

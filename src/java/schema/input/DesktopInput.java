@@ -156,7 +156,7 @@ public class DesktopInput extends InputSystem {
                         commandBuildings.clear();
                         if (!commandUnits.remove(unit)) commandUnits.add(unit);
                     }
-                    else if (build != null && build.team == player.team()) {
+                    else if (build != null && build.team == player.team() && build.block.commandable) {
                         commandUnits.clear();
                         if (!commandBuildings.remove(build)) commandBuildings.add(build);
                     }
