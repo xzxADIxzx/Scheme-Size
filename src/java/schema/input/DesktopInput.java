@@ -77,7 +77,7 @@ public class DesktopInput extends InputSystem {
             // this type of movement is active most of the time
             // the unit simply follows the camera and performs the commands of the player
 
-            moveCam(mov.add(pan).limit2(1f).scl(settings.getInt("schema-pan-speed", 6) * (Keybind.boost.down() ? 2f : 1f) * Time.delta));
+            moveCam(mov.add(pan).limit2(1f).scl(settings.getInt("schema-pan-speed", 6) * (Keybind.boost.down() ? 2.4f : 1f) * Time.delta));
             unit.movePref(flw.scl(type.speed));
 
             if (!Keybind.mouse_mv.down()) updateAI();
@@ -280,5 +280,7 @@ public class DesktopInput extends InputSystem {
     protected void drawPlans() {}
 
     @Override
-    protected void drawOverlay() {}
+    protected void drawOverlay() {
+        if (commandMode) drawCommand();
+    }
 }

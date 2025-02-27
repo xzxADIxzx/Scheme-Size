@@ -2,6 +2,8 @@ package schema.input;
 
 import arc.*;
 import arc.func.*;
+import arc.graphics.*;
+import arc.graphics.g2d.*;
 import arc.math.*;
 import arc.math.geom.*;
 import arc.struct.*;
@@ -10,6 +12,7 @@ import mindustry.ai.*;
 import mindustry.entities.*;
 import mindustry.game.*;
 import mindustry.gen.*;
+import mindustry.graphics.*;
 import mindustry.input.*;
 
 import static arc.Core.*;
@@ -46,6 +49,57 @@ public abstract class InputSystem {
 
     /** Draws the remaining elements of the interface. */
     protected abstract void drawOverlay();
+
+    // endregion
+    // region draw
+
+    /** Draws the command mode overlay */
+    protected void drawCommand() {
+        if (commandRect != null) {
+            renderer.effectBuffer.begin(Color.clear);
+
+            Draw.color(Pal.accent, .8f);
+            Fill.crect(commandRect.x, commandRect.y, input.mouseWorldX() - commandRect.x, input.mouseWorldY() - commandRect.y);
+
+            renderer.effectBuffer.end();
+            renderer.effectBuffer.blit(Shaders.buildBeam);
+
+            selectedRegion(u -> { if (!commandUnits.contains(u)) Drawf.square(u.x, u.y, u.hitSize / 1.4f + Mathf.absin(4f, 1f)); });
+        }
+        commandUnits.each(Unitc::isCommandable, u -> {
+            var ai = u.command();
+            var dest = ai.attackTarget != null ? ai.attackTarget : ai.targetPos;
+            if (dest != null && ai.currentCommand().drawTarget) {
+
+                Drawf.limitLine(u, dest, u.hitSize / 1.4f, 3f);
+
+                if (ai.attackTarget == null)
+                    Drawf.square(dest.getX(), dest.getY(), 3f);
+                else
+                    Drawf.target(dest.getX(), dest.getY(), 5f, Pal.remove);
+            }
+            Drawf.square(u.x, u.y, u.hitSize / 1.4f);
+        });
+        commandBuildings.each(b -> {
+            var dest = b.getCommandPosition();
+            if (dest != null) {
+
+                Drawf.limitLine(b, dest, b.hitSize() / 2f, 3f);
+                Drawf.square(dest.getX(), dest.getY(), 3f);
+            }
+            Drawf.square(b.x, b.y, b.hitSize() / 2f);
+        });
+        if (commandRect == null || commandRect.within(input.mouseWorld(), 8f)) {
+            var unit = selectedUnit();
+            var build = selectedBuilding();
+
+            if (unit != null)
+                Drawf.square(unit.x, unit.y, unit.hitSize / 1.4f + Mathf.absin(4f, 1f), commandUnits.contains(unit) ? Pal.remove : Pal.accent);
+
+            else if (build != null && build.team == player.team())
+                Drawf.square(build.x, build.y, build.hitSize() / 2f + Mathf.absin(4f, 1f), commandBuildings.contains(build) ? Pal.remove : Pal.accent);
+        }
+    }
 
     // endregion
     // region tools
