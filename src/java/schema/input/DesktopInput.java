@@ -282,5 +282,7 @@ public class DesktopInput extends InputSystem {
     @Override
     protected void drawOverlay() {
         if (commandMode) drawCommand();
+        if (controlMode) drawControl();
+        else controlFade = 0f;
     }
 }

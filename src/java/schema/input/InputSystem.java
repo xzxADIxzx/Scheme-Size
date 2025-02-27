@@ -14,6 +14,7 @@ import mindustry.game.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.input.*;
+import mindustry.world.blocks.*;
 
 import static arc.Core.*;
 import static mindustry.Vars.*;
@@ -35,6 +36,8 @@ public abstract class InputSystem {
     protected Seq<Unit> commandUnits = new Seq<>();
     /** Buildings that are controlled by the player. */
     protected Seq<Building> commandBuildings = new Seq<>();
+    /** Alpha value of the control mode overlay. */
+    protected float controlFade;
 
     // region general
 
@@ -98,6 +101,46 @@ public abstract class InputSystem {
 
             else if (build != null && build.team == player.team() && build.block.commandable)
                 Drawf.square(build.x, build.y, build.hitSize() / 2f + Mathf.absin(4f, 1f), commandBuildings.contains(build) ? Pal.remove : Pal.accent);
+        }
+    }
+
+    /** Draws the control mode overlay */
+    protected void drawControl() {
+        var unit = selectedUnit();
+        var build = selectedBuilding();
+
+        if (unit == null && build instanceof ControlBlock c && c.canControl() && c.unit().isAI()) unit = c.unit();
+
+        boolean has = unit != null || (build != null && build.team == player.team() && build.canControlSelect(player.unit()));
+        controlFade = Mathf.lerpDelta(controlFade, Mathf.num(has), .08f);
+
+        if (has) {
+            Draw.mixcol(Pal.accent, 1f);
+            Draw.alpha(controlFade);
+
+            if (renderer.bloom != null) {
+                renderer.bloom.setBloomIntensity(.8f);
+                renderer.bloom.capture();
+            }
+
+            if (unit != null)
+                Draw.rect(unit.icon(), unit, unit instanceof BlockUnitc ? 0f : unit.rotation - 90f);
+            else
+                Draw.rect(build.block.fullIcon, build, 0f);
+
+            Sized sized = unit != null ? unit : build;
+            float count = 1.4f + sized.hitSize() / 8f;
+            float space = 360f / Mathf.floor(count);
+
+            for (int i = 1; i < count; i++) {
+                float len = sized.hitSize() * 1.2f + 12f - controlFade * 4f;
+                float rot = i * space - Time.time % 360f;
+
+                Draw.rect("select-arrow", sized.getX() + Angles.trnsx(rot, len), sized.getY() + Angles.trnsy(rot, len), 12f, 12f, rot - 135f);
+            }
+
+            if (renderer.bloom != null) renderer.bloom.render();
+            Draw.reset();
         }
     }
 
