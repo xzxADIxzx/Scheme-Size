@@ -2,6 +2,7 @@ package schema.tools;
 
 import arc.graphics.g2d.*;
 import arc.math.*;
+import arc.util.*;
 import mindustry.graphics.*;
 
 import static arc.Core.*;
@@ -14,7 +15,10 @@ public class Overlay {
     /** Distance from which spawners are visible. */
     public static final float spawnerMargin = 16f * tilesize;
     /** Interpolation function applied to alpha. */
-    public static final Interp i = new Interp.PowIn(8f);
+    public static final Interp i = new Interp.PowIn(9f);
+
+    /** Alpha values of certain overlay elements. */
+    public float fade;
 
     /** Draws the elements of both vanilla and schema overlay */
     public void draw() {
@@ -47,7 +51,29 @@ public class Overlay {
                 if (build.block.drawDisabled && !build.enabled) build.drawDisabled();
             }
         }
+
+        fade = Mathf.lerpDelta(fade, insys.block != null ? 1f : 0f, .06f);
+        if (fade < .004f) return;
+
+        Lines.stroke(fade * 2f);
+        capture(4f);
+
+        if (state.rules.polygonCoreProtection) {
+            // TODO
+        } else {
+            state.teams.eachEnemyCore(player.team(), c -> {
+
+                if (!camera.bounds(Tmp.r1).overlaps(Tmp.r2.setCentered(c.x, c.y, state.rules.enemyCoreBuildRadius * 2f))) return;
+
+                Draw.color(Pal.accent, c.team.color, .5f + Mathf.absin(4f, .5f));
+                Lines.circle(c.x, c.y, state.rules.enemyCoreBuildRadius);
+            });
+        }
+
+        render();
     }
+
+    // region bloom
 
     /** Captures subsequent draw calls. */
     public void capture(float intensity) {
@@ -62,6 +88,7 @@ public class Overlay {
         if (renderer.bloom != null) renderer.bloom.render();
     }
 
+    // endregion
     // region agent
 
     /** Returns the agent of this component. */
