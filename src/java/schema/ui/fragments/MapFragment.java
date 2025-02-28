@@ -16,7 +16,7 @@ import static arc.Core.*;
 import static mindustry.Vars.*;
 import static schema.Main.*;
 
-/** Fragment that is displays the sector map. */
+/** Fragment that displays the sector map. */
 public class MapFragment extends Table {
 
     /** Zoom of the camera that is not related to the game camera. */

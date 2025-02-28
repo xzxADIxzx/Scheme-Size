@@ -129,7 +129,7 @@ public class DesktopInput extends InputSystem {
 
     protected void updateZoom() {
         int scroll = (int) Keybind.scroll();
-        if (scroll == 0 || mapfrag.shown) return;
+        if (scroll == 0 || scene.hasMouse()) return;
 
         if (dir != scroll) {
             dir = scroll;
