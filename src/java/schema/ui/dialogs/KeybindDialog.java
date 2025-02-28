@@ -132,9 +132,9 @@ public class KeybindDialog extends BaseDialog {
 
     /** Resolves conflicts of the mod keybinds. */
     public void resolve() {
-        int amount = 0;
-        for (var bind : Keybind.all) amount += bind.resolveConflicts();
-        log("Resolved " + amount + " conflicts");
+        int count = 0;
+        for (var bind : Keybind.all) count += bind.resolveConflicts();
+        log("Resolved " + count + " conflicts");
 
         for (var key : override) settings.put(key, KeyCode.unknown.ordinal());
         Reflect.invoke(keybinds, "load");

@@ -22,6 +22,8 @@ public class Main extends Mod {
 
     /** List of servers' URLs that host Copy-Link-and-Join. */
     public static Seq<String> clajURLs = Seq.with("Couldn't fetch CLaJ URLs :(");
+    /** List of {@link Events events} acquired via reflection. */
+    public static ObjectMap<?, Seq<?>> events;
 
     // endregion
     // region dialogs
@@ -73,6 +75,7 @@ public class Main extends Mod {
         } catch (Throwable e) { err(e); }
 
         log("=> [green]Unhooking events...");
+        clear(mindustry.input.InputHandler.class);
         clear(mindustry.ui.fragments.PlacementFragment.class);
     }
 
@@ -106,6 +109,10 @@ public class Main extends Mod {
 
     /** Use this <b>extremely carefully</b> as it clears event listeners created by the given class. */
     public static void clear(Class<?> target) {
-        Reflect.<ObjectMap<?, Seq<?>>>get(Events.class, "events").each((t, s) -> s.removeAll(l -> l.toString().startsWith(target.getName())));
+        if (events == null) events = Reflect.get(Events.class, "events");
+
+        int count = 0;
+        for (var pair : events) count += pair.value.size - pair.value.removeAll(l -> l.toString().startsWith(target.getName())).size;
+        log("Found [red]" + count + "[] events in " + target.getSimpleName());
     }
 }
