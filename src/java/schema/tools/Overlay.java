@@ -17,7 +17,7 @@ public class Overlay {
     /** Interpolation function applied to alpha. */
     public static final Interp i = new Interp.PowIn(9f);
 
-    /** Alpha values of certain overlay elements. */
+    /** Alpha value of certain overlay elements. */
     public float fade;
 
     /** Draws the elements of both vanilla and schema overlay */
@@ -26,8 +26,21 @@ public class Overlay {
             for (var marker : o.markers) marker.draw();
         });
 
-        if (config.shown()) config.selected().drawConfigure();
         insys.drawOverlay();
+
+        if (/* TODO units.isCoreUnit */ player.unit().type == mindustry.content.UnitTypes.gamma) {
+            var m = input.mouseWorld();
+            var x = Mathf.round(m.x + 4f, tilesize) - 4f;
+            var y = Mathf.round(m.y + 4f, tilesize) - 4f;
+
+            capture(.4f, 0f);
+            Lines.stroke(6f, Pal.accent);
+            drawRuler(x, y);
+
+            render();
+            Lines.stroke(1f, Pal.accent);
+            drawRuler(x, y);
+        }
 
         if (state.hasSpawns()) {
             Lines.stroke(2f);
@@ -41,6 +54,8 @@ public class Overlay {
             });
             render();
         }
+
+        if (config.shown()) config.selected().drawConfigure();
 
         if (insys.block == null && !scene.hasMouse()) {
             var build = insys.selectedBuilding();
@@ -73,19 +88,36 @@ public class Overlay {
         render();
     }
 
+    /** Draws cursor ruler at the given position */
+    private void drawRuler(float x, float y) {
+        var r = camera.bounds(Tmp.r1);
+
+        Lines.line(x, r.y, x, r.y + r.height);
+        Lines.line(r.x, y, r.x + r.width, y);
+        x += tilesize;
+        y += tilesize;
+        Lines.line(x, r.y, x, r.y + r.height);
+        Lines.line(r.x, y, r.x + r.width, y);
+    }
+
     // region bloom
 
     /** Captures subsequent draw calls. */
-    public void capture(float intensity) {
+    public void capture(float... intensity) {
         if (renderer.bloom != null) {
-            renderer.bloom.setBloomIntensity(intensity);
             renderer.bloom.capture();
+
+            if (intensity.length > 0) renderer.bloom.setBloomIntensity(intensity[0]);
+            if (intensity.length > 1) renderer.bloom.setOriginalIntensity(intensity[1]);
         }
     }
 
     /** Renders the {@link #capture(float) captured draw calls} with bloom effect. */
     public void render() {
-        if (renderer.bloom != null) renderer.bloom.render();
+        if (renderer.bloom != null) {
+            renderer.bloom.render();
+            renderer.bloom.setOriginalIntensity(1f);
+        }
     }
 
     // endregion
