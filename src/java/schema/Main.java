@@ -5,6 +5,7 @@ import arc.struct.*;
 import arc.util.*;
 import mindustry.mod.*;
 import schema.input.*;
+import schema.tools.*;
 import schema.ui.*;
 import schema.ui.dialogs.*;
 import schema.ui.fragments.*;
@@ -16,6 +17,9 @@ import static mindustry.Vars.*;
 public class Main extends Mod {
 
     // region components
+
+    /** Combines the vanilla and schema overlay. */
+    public static Overlay overlay;
 
     /** Advanced input system lying in the foundation of the mod. */
     public static InputSystem insys;
@@ -67,6 +71,7 @@ public class Main extends Mod {
         ui.minimapfrag=mapfrag.getAgent();
         ui.loadfrag = loadfrag.getAgent();
 
+        Reflect.set(renderer, "overlays", overlay.getAgent());
         // TODO override inventory too
         Reflect.set(mindustry.input.InputHandler.class, control.input, "config", config.getAgent());
 
@@ -83,6 +88,7 @@ public class Main extends Mod {
         } catch (Throwable e) { err(e); }
 
         log("=> [green]Unhooking events...");
+        clear(mindustry.graphics.OverlayRenderer.class);
         clear(mindustry.input.InputHandler.class);
         clear(mindustry.ui.fragments.PlacementFragment.class);
     }
@@ -91,6 +97,8 @@ public class Main extends Mod {
     public void load() {
         // these styles are used for building dialogs and fragments and thus are loaded here
         Style.load();
+
+        overlay = new Overlay();
 
         insys = mobile ? null : new DesktopInput();
 

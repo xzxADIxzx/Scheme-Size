@@ -14,6 +14,7 @@ import mindustry.game.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.input.*;
+import mindustry.world.*;
 import mindustry.world.blocks.*;
 
 import static arc.Core.*;
@@ -39,6 +40,9 @@ public abstract class InputSystem {
     /** Alpha value of the control mode overlay. */
     protected float controlFade;
 
+    /** Selected block, the one in your hand. I dunno how else to explain. */
+    public Block block;
+
     // region general
 
     /** Updates the main logic of the input system. */
@@ -48,10 +52,10 @@ public abstract class InputSystem {
     protected abstract void updateState();
 
     /** Draws the building plans of the player and its teammates. */
-    protected abstract void drawPlans();
+    public abstract void drawPlans();
 
     /** Draws the remaining elements of the interface. */
-    protected abstract void drawOverlay();
+    public abstract void drawOverlay();
 
     // endregion
     // region draw
@@ -225,15 +229,6 @@ public abstract class InputSystem {
 
         @Override
         public void updateState() { insys.updateState(); }
-
-        @Override
-        public void drawBottom() { insys.drawPlans(); }
-
-        @Override
-        public void drawTop() { insys.drawOverlay(); }
-
-        @Override
-        public void panCamera(Vec2 pos) { insys.setCam(pos); }
 
         @Override
         public boolean isPlacing() { return false; }
