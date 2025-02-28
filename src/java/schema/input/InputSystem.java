@@ -243,12 +243,6 @@ public abstract class InputSystem {
 
         @Override
         public boolean isRebuildSelecting() { return false; }
-
-        @Override
-        public Unit selectedUnit() { return null; }
-
-        @Override
-        public Building selectedControlBuild() { return null; }
     }
 
     // endregion

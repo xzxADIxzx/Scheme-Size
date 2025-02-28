@@ -33,6 +33,9 @@ public class Main extends Mod {
     // endregion
     // region fragments
 
+    // public static InventoryFragment inv;
+    public static ConfigFragment config;
+
     public static MapFragment mapfrag;
     public static CommandFragment cmndfrag;
     public static LoadingFragment loadfrag;
@@ -54,6 +57,8 @@ public class Main extends Mod {
         keybind.load();
         keybind.resolve();
 
+        config.build(ui.hudGroup);
+
         mapfrag.build(ui.hudGroup);
         cmndfrag.build(ui.hudGroup);
         loadfrag.build(scene.root);
@@ -61,6 +66,9 @@ public class Main extends Mod {
         control.setInput(insys.getAgent());
         ui.minimapfrag=mapfrag.getAgent();
         ui.loadfrag = loadfrag.getAgent();
+
+        // TODO override inventory too
+        Reflect.set(mindustry.input.InputHandler.class, control.input, "config", config.getAgent());
 
         log("=> [green]Running postinit hooks...");
 
@@ -87,6 +95,8 @@ public class Main extends Mod {
         insys = mobile ? null : new DesktopInput();
 
         keybind = new KeybindDialog();
+
+        config = new ConfigFragment();
 
         mapfrag = new MapFragment();
         cmndfrag = new CommandFragment();
