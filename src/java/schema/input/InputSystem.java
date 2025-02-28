@@ -121,11 +121,7 @@ public abstract class InputSystem {
         if (has) {
             Draw.mixcol(Pal.accent, 1f);
             Draw.alpha(controlFade);
-
-            if (renderer.bloom != null) {
-                renderer.bloom.setBloomIntensity(.8f);
-                renderer.bloom.capture();
-            }
+            overlay.capture(.8f);
 
             if (unit != null)
                 Draw.rect(unit.icon(), unit, unit instanceof BlockUnitc ? 0f : unit.rotation - 90f);
@@ -143,7 +139,7 @@ public abstract class InputSystem {
                 Draw.rect("select-arrow", sized.getX() + Angles.trnsx(rot, len), sized.getY() + Angles.trnsy(rot, len), 12f, 12f, rot - 135f);
             }
 
-            if (renderer.bloom != null) renderer.bloom.render();
+            overlay.render();
             Draw.reset();
         }
     }

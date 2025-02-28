@@ -1,6 +1,5 @@
 package schema.tools;
 
-import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
 import mindustry.graphics.*;
@@ -14,6 +13,8 @@ public class Overlay {
 
     /** Distance from which spawners are visible. */
     public static final float spawnerMargin = 16f * tilesize;
+    /** Interpolation function applied to alpha. */
+    public static final Interp i = new Interp.PowIn(8f);
 
     /** Draws the elements of both vanilla and schema overlay */
     public void draw() {
@@ -26,13 +27,15 @@ public class Overlay {
 
         if (state.hasSpawns()) {
             Lines.stroke(2f);
-            Draw.color(Color.gray, Color.lightGray, Mathf.absin(4f, 1f));
+            Draw.color(Pal.remove, Pal.lightishGray, Mathf.absin(4f, 1f));
 
+            capture(4f);
             spawner.getSpawns().each(s -> s.within(player, state.rules.dropZoneRadius + spawnerMargin), s -> {
 
-                Draw.alpha(1f - (player.dst(s) - state.rules.dropZoneRadius) / spawnerMargin);
+                Draw.alpha(1f - i.apply((player.dst(s) - state.rules.dropZoneRadius) / spawnerMargin));
                 Lines.dashCircle(s.worldx(), s.worldy(), state.rules.dropZoneRadius);
             });
+            render();
         }
 
         if (insys.block == null && !scene.hasMouse()) {
@@ -44,6 +47,19 @@ public class Overlay {
                 if (build.block.drawDisabled && !build.enabled) build.drawDisabled();
             }
         }
+    }
+
+    /** Captures subsequent draw calls. */
+    public void capture(float intensity) {
+        if (renderer.bloom != null) {
+            renderer.bloom.setBloomIntensity(intensity);
+            renderer.bloom.capture();
+        }
+    }
+
+    /** Renders the {@link #capture(float) captured draw calls} with bloom effect. */
+    public void render() {
+        if (renderer.bloom != null) renderer.bloom.render();
     }
 
     // region agent
