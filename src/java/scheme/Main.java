@@ -52,7 +52,6 @@ public class Main extends Mod {
         ui.listfrag = listfrag;
 
         units.load();
-        builds.load();
 
         m_settings.apply(); // sometimes settings are not self-applying
 

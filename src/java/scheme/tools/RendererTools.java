@@ -8,15 +8,11 @@ import arc.math.Mathf;
 import arc.math.geom.Rect;
 import arc.struct.Seq;
 import arc.util.Tmp;
-import mindustry.gen.Building;
 import mindustry.gen.Groups;
 import mindustry.gen.Unit;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
 import mindustry.graphics.Pal;
-import mindustry.world.blocks.defense.turrets.BaseTurret.BaseTurretBuild;
-import mindustry.world.blocks.power.ImpactReactor;
-import mindustry.world.blocks.power.NuclearReactor;
 
 import static arc.Core.*;
 import static mindustry.Vars.*;
@@ -31,7 +27,7 @@ public class RendererTools {
         camera.bounds(bounds); // do NOT use Tmp.r1 
         int xwidth = (int) (bounds.x + bounds.width), yheigth = (int) (bounds.y + bounds.height);
 
-        if (xray) builds.each(bounds, tile -> tile.floor().drawBase(tile));
+        // if (xray) builds.each(bounds, tile -> tile.floor().drawBase(tile));
 
         if (grid) Draw.draw(Layer.blockUnder, () -> {
             Lines.stroke(1f, Pal.darkMetal);
@@ -59,15 +55,6 @@ public class RendererTools {
             Lines.line(bounds.x, y, xwidth, y);
             Lines.line(bounds.x, y + tilesize, xwidth, y + tilesize);
         });
-
-        if (turretRadius) Draw.draw(Layer.overlayUI, () -> builds.turrets.each(BaseTurretBuild::drawSelect));
-
-        if (reactorRadius) Draw.draw(Layer.overlayUI, () -> {
-            builds.nuclears.each(nuclear -> drawRadius(nuclear, ((NuclearReactor) nuclear.block).explosionRadius, Pal.thoriumPink));
-            builds.impacts.each(impact -> drawRadius(impact, ((ImpactReactor) impact.block).explosionRadius, Pal.meltdownHit));
-        });
-
-        if (overdriveRadius) Draw.draw(Layer.overlayUI, () -> builds.overdrives.each(Building::drawSelect));
 
         Seq<Unit> units = unitInfo || unitRadius ? Groups.unit.intersect(bounds.x, bounds.y, bounds.width, bounds.height) : null;
 
@@ -109,10 +96,6 @@ public class RendererTools {
             plan.animScale = 1f;
             plan.block.drawPlan(plan, unit.plans, valid);
         }));
-    }
-
-    private void drawRadius(Building build, int radius, Color color) {
-        Drawf.dashCircle(build.x, build.y, radius * tilesize, color);
     }
 
     private void drawBar(Unit unit, float size, Color color, float fract) {

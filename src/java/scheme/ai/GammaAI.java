@@ -8,7 +8,6 @@ import arc.struct.Seq;
 import mindustry.entities.units.AIController;
 import mindustry.entities.units.BuildPlan;
 import mindustry.game.Teams.BlockPlan;
-import mindustry.gen.Building;
 import mindustry.gen.Icon;
 import mindustry.gen.Player;
 import mindustry.world.Tile;
@@ -46,7 +45,7 @@ public class GammaAI extends AIController {
     }
 
     public void block(Tile tile, boolean breaking) {
-        Building build = builds.get(tile);
+        var build = tile.build;
         unit.addBuild(breaking
                 ? new BuildPlan(tile.x, tile.y, build.rotation, build instanceof ConstructBuild c ? c.previous : build.block)
                 : new BuildPlan(tile.x, tile.y));

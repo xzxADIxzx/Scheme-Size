@@ -23,7 +23,6 @@ public class SchemeVars {
     public static RendererTools render;
     public static BuildingTools build;
     public static UnitsCache units;
-    public static BuildsCache builds;
 
     public static AdminsConfigDialog adminscfg;
     public static RendererConfigDialog rendercfg;
@@ -72,7 +71,6 @@ public class SchemeVars {
         render = new RendererTools();
         build = new BuildingTools();
         units = new UnitsCache();
-        builds = new BuildsCache();
 
         adminscfg = new AdminsConfigDialog();
         rendercfg = new RendererConfigDialog();
