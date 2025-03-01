@@ -61,8 +61,7 @@ public class Overlay {
             var build = insys.selectedBuilding();
             if (build != null && build.team == player.team()) {
 
-                build.drawSelect();
-
+                config.draw(build);
                 if (build.block.drawDisabled && !build.enabled) build.drawDisabled();
             }
         }

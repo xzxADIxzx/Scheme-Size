@@ -1,9 +1,11 @@
 package schema.ui.fragments;
 
+import arc.func.*;
 import arc.scene.*;
 import arc.scene.actions.*;
 import arc.scene.event.*;
 import arc.scene.ui.layout.*;
+import arc.struct.*;
 import mindustry.gen.*;
 import mindustry.ui.fragments.*;
 
@@ -12,6 +14,8 @@ public class ConfigFragment extends Table {
 
     /** Building that is being configured at the moment. */
     private Building selected;
+    /** Building that is being configured at the moment. */
+    private ObjectMap<Object, Cons<?>> overrides = new ObjectMap<>();
 
     public ConfigFragment() { touchable = Touchable.enabled; }
 
@@ -59,6 +63,20 @@ public class ConfigFragment extends Table {
 
     // endregion
     // region render
+
+    /** Overrides the {@link Building#drawSelect() draw method} of the given building. */
+    public <T extends Building> void override(Class<T> build, Cons<T> draw) { overrides.put(build, draw); }
+
+    /** Draws the selection overlay of the given building. */
+    public <T extends Building> void draw(T build) {
+        @SuppressWarnings("unchecked")
+        var draw = (Cons<T>) overrides.get(build.getClass());
+
+        if (draw != null)
+            draw.get(build);
+        else
+            build.drawSelect();
+    }
 
     // endregion
     // region agent
