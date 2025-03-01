@@ -2,8 +2,11 @@ package schema.tools;
 
 import arc.graphics.g2d.*;
 import arc.math.*;
+import arc.struct.*;
 import arc.util.*;
 import mindustry.graphics.*;
+import mindustry.world.*;
+import schema.input.*;
 
 import static arc.Core.*;
 import static mindustry.Vars.*;
@@ -17,10 +20,13 @@ public class Overlay {
     /** Interpolation function applied to alpha. */
     public static final Interp i = new Interp.PowIn(9f);
 
+    /** List of {@link BlockRenderer tiles} acquired via reflection. */
+    public Seq<Tile> tiles;
+
     /** Alpha value of certain overlay elements. */
     public float fade;
     /** Whether certain overlay elements should be drawn or not. */
-    public boolean ruler;
+    public boolean ruler, borderless;
 
     /** Draws the elements of both vanilla and schema overlay */
     public void draw() {
@@ -95,6 +101,20 @@ public class Overlay {
         Draw.reset();
     }
 
+    /** Draws floors above buildings to display ores under them. */
+    public void drawXray() {
+        if (!Keybind.display_xray.down()) return;
+        if (tiles == null) tiles = Reflect.get(renderer.blocks, "tileview");
+
+        tiles.each(t -> {
+            if (t.build == null) return; // boulders
+            t.getLinkedTiles(l -> {
+                Draw.alpha(.8f);
+                l.floor().drawBase(l);
+            });
+        });
+    }
+
     // region bloom
 
     /** Captures subsequent draw calls. */
@@ -125,7 +145,7 @@ public class Overlay {
     public class Agent extends OverlayRenderer {
 
         @Override
-        public void drawBottom() { insys.drawPlans(); }
+        public void drawBottom() { insys.drawPlans(); drawXray(); }
 
         @Override
         public void drawTop() { draw(); }
