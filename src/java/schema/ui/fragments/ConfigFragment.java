@@ -1,13 +1,20 @@
 package schema.ui.fragments;
 
 import arc.func.*;
+import arc.graphics.g2d.*;
+import arc.math.geom.*;
 import arc.scene.*;
 import arc.scene.actions.*;
 import arc.scene.event.*;
 import arc.scene.ui.layout.*;
 import arc.struct.*;
 import mindustry.gen.*;
+import mindustry.graphics.*;
 import mindustry.ui.fragments.*;
+import mindustry.world.blocks.storage.CoreBlock.*;
+import mindustry.world.blocks.storage.StorageBlock.*;
+
+import static schema.Main.*;
 
 /** Fragment that displays the block configuration overlay. */
 public class ConfigFragment extends Table {
@@ -27,6 +34,8 @@ public class ConfigFragment extends Table {
         update(() -> {
             if (selected != null) selected.updateTableAlign(this);
         });
+        override(CoreBuild.class, this::drawCoreEdges);
+        override(StorageBuild.class, this::drawCoreEdges);
     }
 
     // region config
@@ -57,8 +66,10 @@ public class ConfigFragment extends Table {
         visible = false;
     }
 
+    /** Whether the fragment is shown. */
     public boolean shown() { return visible && selected != null; }
 
+    /** Returns the building that is being configured. */
     public Building selected() { return selected; }
 
     // endregion
@@ -76,6 +87,32 @@ public class ConfigFragment extends Table {
             draw.get(build);
         else
             build.drawSelect();
+    }
+
+    /** Draws a line around the edges of the given core and connected storages. */
+    public void drawCoreEdges(Building build) {
+
+        // do not highlight storages that are not connected to anything
+        if (build instanceof StorageBuild && !build.proximity.contains(p -> p.items == build.items)) return;
+
+        Lines.stroke(2f, Pal.accent);
+        overlay.capture(2f, 1f);
+
+        builds.clearIterated();
+        builds.iterateCore(build, (t, d) -> {
+            if (t.build != null && t.build.items == build.items) return;
+
+            var dir = Geometry.d4[d];
+            var x = t.worldx() - dir.x * 4f;
+            var y = t.worldy() - dir.y * 4f;
+
+            if (dir.x == 0)
+                Lines.line(x - 4f, y, x + 4f, y);
+            else
+                Lines.line(x, y - 4f, x, y + 4f);
+        });
+
+        overlay.render();
     }
 
     // endregion
