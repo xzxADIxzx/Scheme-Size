@@ -6,6 +6,7 @@ import arc.struct.*;
 import arc.util.*;
 import mindustry.graphics.*;
 import mindustry.world.*;
+import mindustry.world.meta.*;
 import schema.input.*;
 
 import static arc.Core.*;
@@ -27,6 +28,12 @@ public class Overlay {
     public float fade;
     /** Whether certain overlay elements should be drawn or not. */
     public boolean ruler, borderless;
+
+    public Overlay() {
+        renderer.addEnvRenderer(Env.none, () -> Draw.draw(Layer.turret + 1f, () -> {
+            if (Keybind.display_xray.down()) drawXray();
+        }));
+    }
 
     /** Draws the elements of both vanilla and schema overlay */
     public void draw() {
@@ -103,7 +110,6 @@ public class Overlay {
 
     /** Draws floors above buildings to display ores under them. */
     public void drawXray() {
-        if (!Keybind.display_xray.down()) return;
         if (tiles == null) tiles = Reflect.get(renderer.blocks, "tileview");
 
         tiles.each(t -> {
@@ -145,7 +151,7 @@ public class Overlay {
     public class Agent extends OverlayRenderer {
 
         @Override
-        public void drawBottom() { insys.drawPlans(); drawXray(); }
+        public void drawBottom() { insys.drawPlans(); }
 
         @Override
         public void drawTop() { draw(); }
