@@ -71,7 +71,7 @@ public abstract class InputSystem {
             renderer.effectBuffer.end();
             renderer.effectBuffer.blit(Shaders.buildBeam);
 
-            selectedRegion(u -> { if (!commandUnits.contains(u)) Drawf.square(u.x, u.y, u.hitSize / 1.4f + Mathf.absin(4f, 1f)); });
+            selectedRegion(u -> { if (!commandUnits.contains(u)) Drawf.square(u.x, u.y, u.hitSize / 1.4f + Mathf.absin(Time.time - u.dst(Vec2.ZERO), 4f, 1f)); });
         }
         commandUnits.each(Unitc::isCommandable, u -> {
             var ai = u.command();

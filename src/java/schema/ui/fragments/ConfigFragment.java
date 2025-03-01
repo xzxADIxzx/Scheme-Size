@@ -17,9 +17,13 @@ import mindustry.ui.fragments.*;
 import mindustry.world.blocks.power.*;
 import mindustry.world.blocks.power.ImpactReactor.*;
 import mindustry.world.blocks.power.NuclearReactor.*;
+import mindustry.world.blocks.production.*;
+import mindustry.world.blocks.production.BurstDrill.*;
+import mindustry.world.blocks.production.Drill.*;
 import mindustry.world.blocks.storage.CoreBlock.*;
 import mindustry.world.blocks.storage.StorageBlock.*;
 
+import static arc.Core.*;
 import static mindustry.Vars.*;
 import static schema.Main.*;
 
@@ -45,6 +49,8 @@ public class ConfigFragment extends Table {
         override(StorageBuild.class, this::drawCoreEdges);
         override(NuclearReactorBuild.class, b -> drawExplosionRadius(b, Pal.thoriumPink));
         override(ImpactReactorBuild.class, b -> drawExplosionRadius(b, Pal.meltdownHit));
+        override(DrillBuild.class, this::drawOres);
+        override(BurstDrillBuild.class, this::drawOres);
     }
 
     // region config
@@ -130,6 +136,24 @@ public class ConfigFragment extends Table {
 
         indexer.eachBlock(build, radius, b -> true, b -> Drawf.selected(b, Tmp.c1.set(color).a(Mathf.absin(4f, 1f))));
         Drawf.dashCircle(build.x, build.y, radius, color);
+    }
+
+    /** Draws ores under the given building. */
+    public void drawOres(DrillBuild build) {
+        build.tile.getLinkedTiles(t -> {
+            if (t.drop() != null) Drawf.square(t.worldx(), t.worldy(), Mathf.absin(Time.time - t.dst(Vec2.ZERO), 4f, .5f) - .8f, t.drop().color);
+        });
+
+        Drill block = (Drill) build.block;
+        float speed = build.dominantItems * 60f / block.getDrillTime(build.dominantItem);
+        float width = block.drawPlaceText(bundle.formatFloat("bar.drillspeed", speed, 2), build.tileX(), build.tileY(), true);
+
+        float dx = build.x - width / 2f - 4f, dy = build.y + block.size * tilesize / 2f + 5f;
+
+        Draw.mixcol(Color.darkGray, 1f);
+        Draw.rect(build.dominantItem.fullIcon, dx, dy - 1f, 6f, 6f);
+        Draw.reset();
+        Draw.rect(build.dominantItem.fullIcon, dx, dy, 6f, 6f);
     }
 
     // endregion
