@@ -20,6 +20,8 @@ public class Main extends Mod {
 
     /** Combines the vanilla and schema overlay. */
     public static Overlay overlay;
+    /** Utility that helps with buildings. */
+    public static Builds builds;
 
     /** Advanced input system lying in the foundation of the mod. */
     public static InputSystem insys;
@@ -99,6 +101,7 @@ public class Main extends Mod {
         Style.load();
 
         overlay = new Overlay();
+        builds = new Builds();
 
         insys = mobile ? null : new DesktopInput();
 
