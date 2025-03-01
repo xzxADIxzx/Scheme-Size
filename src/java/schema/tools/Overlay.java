@@ -64,8 +64,9 @@ public class Overlay {
         if (config.shown()) config.selected().drawConfigure();
 
         if (insys.block == null && !scene.hasMouse()) {
+
             var build = insys.selectedBuilding();
-            if (build != null && build.team == player.team()) {
+            if (build != null) {
 
                 config.draw(build);
                 if (build.block.drawDisabled && !build.enabled) build.drawDisabled();

@@ -1,19 +1,26 @@
 package schema.ui.fragments;
 
 import arc.func.*;
+import arc.graphics.*;
 import arc.graphics.g2d.*;
+import arc.math.*;
 import arc.math.geom.*;
 import arc.scene.*;
 import arc.scene.actions.*;
 import arc.scene.event.*;
 import arc.scene.ui.layout.*;
 import arc.struct.*;
+import arc.util.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.ui.fragments.*;
+import mindustry.world.blocks.power.*;
+import mindustry.world.blocks.power.ImpactReactor.*;
+import mindustry.world.blocks.power.NuclearReactor.*;
 import mindustry.world.blocks.storage.CoreBlock.*;
 import mindustry.world.blocks.storage.StorageBlock.*;
 
+import static mindustry.Vars.*;
 import static schema.Main.*;
 
 /** Fragment that displays the block configuration overlay. */
@@ -36,6 +43,8 @@ public class ConfigFragment extends Table {
         });
         override(CoreBuild.class, this::drawCoreEdges);
         override(StorageBuild.class, this::drawCoreEdges);
+        override(NuclearReactorBuild.class, b -> drawExplosionRadius(b, Pal.thoriumPink));
+        override(ImpactReactorBuild.class, b -> drawExplosionRadius(b, Pal.meltdownHit));
     }
 
     // region config
@@ -95,7 +104,7 @@ public class ConfigFragment extends Table {
         // do not highlight storages that are not connected to anything
         if (build instanceof StorageBuild && !build.proximity.contains(p -> p.items == build.items)) return;
 
-        Lines.stroke(2f, Pal.accent);
+        Lines.stroke(2f, build.team.color);
         overlay.capture(2f, 1f);
 
         builds.clearIterated();
@@ -113,6 +122,14 @@ public class ConfigFragment extends Table {
         });
 
         overlay.render();
+    }
+
+    /** Draws the explosion radius of the given building. */
+    public void drawExplosionRadius(Building build, Color color) {
+        int radius = ((PowerGenerator) build.block).explosionRadius * tilesize;
+
+        indexer.eachBlock(build, radius, b -> true, b -> Drawf.selected(b, Tmp.c1.set(color).a(Mathf.absin(4f, 1f))));
+        Drawf.dashCircle(build.x, build.y, radius, color);
     }
 
     // endregion
