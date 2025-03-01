@@ -19,6 +19,8 @@ public class Overlay {
 
     /** Alpha value of certain overlay elements. */
     public float fade;
+    /** Whether certain overlay elements should be drawn or not. */
+    public boolean ruler;
 
     /** Draws the elements of both vanilla and schema overlay */
     public void draw() {
@@ -28,31 +30,35 @@ public class Overlay {
 
         insys.drawOverlay();
 
-        if (/* TODO units.isCoreUnit */ player.unit().type == mindustry.content.UnitTypes.gamma) {
+        if (ruler) {
+            var r = camera.bounds(Tmp.r1);
             var m = input.mouseWorld();
-            var x = Mathf.round(m.x + 4f, tilesize) - 4f;
-            var y = Mathf.round(m.y + 4f, tilesize) - 4f;
+            var x = Mathf.round(m.x + 4f, tilesize);
+            var y = Mathf.round(m.y + 4f, tilesize);
 
-            capture(.4f, 0f);
-            Lines.stroke(6f, Pal.accent);
-            drawRuler(x, y);
+            Lines.stroke(tilesize, Pal.accent);
+            capture(.8f, .2f);
+
+            Lines.line(r.x, y, r.x + r.width, y);
+            Lines.line(x, r.y, x, r.y + r.height);
 
             render();
-            Lines.stroke(1f, Pal.accent);
-            drawRuler(x, y);
+            Draw.reset();
         }
 
         if (state.hasSpawns()) {
             Lines.stroke(2f);
             Draw.color(Pal.remove, Pal.lightishGray, Mathf.absin(4f, 1f));
-
             capture(4f);
+
             spawner.getSpawns().each(s -> s.within(player, state.rules.dropZoneRadius + spawnerMargin), s -> {
 
                 Draw.alpha(1f - i.apply((player.dst(s) - state.rules.dropZoneRadius) / spawnerMargin));
                 Lines.dashCircle(s.worldx(), s.worldy(), state.rules.dropZoneRadius);
             });
+
             render();
+            Draw.reset();
         }
 
         if (config.shown()) config.selected().drawConfigure();
@@ -85,18 +91,7 @@ public class Overlay {
         }
 
         render();
-    }
-
-    /** Draws cursor ruler at the given position */
-    private void drawRuler(float x, float y) {
-        var r = camera.bounds(Tmp.r1);
-
-        Lines.line(x, r.y, x, r.y + r.height);
-        Lines.line(r.x, y, r.x + r.width, y);
-        x += tilesize;
-        y += tilesize;
-        Lines.line(x, r.y, x, r.y + r.height);
-        Lines.line(r.x, y, r.x + r.width, y);
+        Draw.reset();
     }
 
     // region bloom
