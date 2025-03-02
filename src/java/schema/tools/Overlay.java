@@ -133,6 +133,31 @@ public class Overlay {
                 Draw.color(Pal.darkerGray);
                 draw.get(x, y, width,  radius);
                 draw.get(x, y, width, -radius);
+
+                Draw.color(Pal.remove);
+                float progress = 2f * width * (1f - t.build.healthf());
+                float middle = 2f * (width - radius), l;
+
+                l = Math.max(0, progress / radius);
+                if (l < 1) Fill.quad(
+                    x + width - radius,              y + radius,
+                    x + width - radius * l,          y + radius * l,
+                    x + width - radius * l,          y - radius * l,
+                    x + width - radius,              y - radius);
+
+                l = Math.max(0, (progress - radius) / middle);
+                if (l < 1) Fill.quad(
+                    x - width + radius,              y + radius,
+                    x + width - radius - middle * l, y + radius,
+                    x + width - radius - middle * l, y - radius,
+                    x - width + radius,              y - radius);
+
+                l = Math.max(0, (progress - radius - middle) / radius);
+                if (l < 1) Fill.quad(
+                    x - width,                       y,
+                    x - width + radius * (1f - l),   y + radius * (1f - l),
+                    x - width + radius * (1f - l),   y - radius * (1f - l),
+                    x - width,                       y);
             });
         });
     }
