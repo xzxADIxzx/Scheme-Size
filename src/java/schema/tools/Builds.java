@@ -1,6 +1,7 @@
 package schema.tools;
 
 import arc.func.*;
+import arc.math.*;
 import arc.struct.*;
 import arc.util.*;
 import mindustry.gen.*;
@@ -44,5 +45,20 @@ public class Builds {
             cons.get(world.tile(bdx + max + 1, bdy + i), 0); // right
             cons.get(world.tile(bdx - min - 1, bdy + i), 2); // left
         }
+    }
+
+    /** Calculates some values needed to draw a health bar for the given building. */
+    public void healthBar(Building build, float radius, boolean inner, Cons4<Float, Float, Float, Float> context) {
+
+        // single block builds have smaller health and status bars
+        float multiplier = build.block.size > 1 ? 1f : .64f;
+
+        // the radius is taken from status indicator, but it is rotated by 45 degrees
+        radius *= multiplier * Mathf.sqrt2;
+
+        // padding from the edges of the building
+        float padding = 4f * multiplier - radius;
+
+        context.get(inner ? radius + multiplier * (Mathf.sqrt2 - 1) : radius, build.hitSize() / 2f - padding, build.x, build.y - build.hitSize() / 2f + padding + radius);
     }
 }

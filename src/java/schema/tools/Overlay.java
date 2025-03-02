@@ -1,5 +1,6 @@
 package schema.tools;
 
+import arc.func.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
 import arc.util.*;
@@ -27,6 +28,9 @@ public class Overlay {
     public Overlay() {
         renderer.addEnvRenderer(Env.none, () -> Draw.draw(Layer.turret + 1f, () -> {
             if (Keybind.display_xray.down()) drawXray();
+        }));
+        renderer.addEnvRenderer(Env.none, () -> Draw.draw(Layer.power + 1f, () -> {
+            if (settings.getBool("blockhealth", false)) drawBars();
         }));
     }
 
@@ -108,6 +112,28 @@ public class Overlay {
         builds.iterateBuilds(t -> {
             Draw.alpha(.8f);
             t.floor().drawBase(t);
+        });
+    }
+
+    /** Draws health bars for buildings. The style was taken from {@link mindustry.gen.Building#drawStatus() block status}. */
+    public void drawBars() {
+        Cons4<Float, Float, Float, Float> draw = (x, y, width, height) -> Fill.quad(
+            x - width,                    y,
+            x - width + Math.abs(height), y + height,
+            x + width - Math.abs(height), y + height,
+            x + width,                    y);
+
+        builds.iterateBuilds(t -> {
+            builds.healthBar(t.build, 2.5f, false, (radius, width, x, y) -> {
+                Draw.color(Pal.gray);
+                draw.get(x, y, width,  radius);
+                draw.get(x, y, width, -radius);
+            });
+            builds.healthBar(t.build, 1.5f, true, (radius, width, x, y) -> {
+                Draw.color(Pal.darkerGray);
+                draw.get(x, y, width,  radius);
+                draw.get(x, y, width, -radius);
+            });
         });
     }
 
