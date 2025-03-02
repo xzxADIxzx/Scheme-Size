@@ -2,10 +2,8 @@ package schema.tools;
 
 import arc.graphics.g2d.*;
 import arc.math.*;
-import arc.struct.*;
 import arc.util.*;
 import mindustry.graphics.*;
-import mindustry.world.*;
 import mindustry.world.meta.*;
 import schema.input.*;
 
@@ -20,9 +18,6 @@ public class Overlay {
     public static final float spawnerMargin = 16f * tilesize;
     /** Interpolation function applied to alpha. */
     public static final Interp i = new Interp.PowIn(9f);
-
-    /** List of {@link BlockRenderer tiles} acquired via reflection. */
-    public Seq<Tile> tiles;
 
     /** Alpha value of certain overlay elements. */
     public float fade;
@@ -110,14 +105,9 @@ public class Overlay {
 
     /** Draws floors above buildings to display ores under them. */
     public void drawXray() {
-        if (tiles == null) tiles = Reflect.get(renderer.blocks, "tileview");
-
-        tiles.each(t -> {
-            if (t.build == null) return; // boulders
-            t.getLinkedTiles(l -> {
-                Draw.alpha(.8f);
-                l.floor().drawBase(l);
-            });
+        builds.iterateBuilds(t -> {
+            Draw.alpha(.8f);
+            t.floor().drawBase(t);
         });
     }
 

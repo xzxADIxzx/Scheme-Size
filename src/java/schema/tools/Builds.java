@@ -2,6 +2,7 @@ package schema.tools;
 
 import arc.func.*;
 import arc.struct.*;
+import arc.util.*;
 import mindustry.gen.*;
 import mindustry.world.*;
 
@@ -12,9 +13,17 @@ public class Builds {
 
     /** List of buildings that was iterated. */
     private Seq<Building> iterated = new Seq<>();
+    /** List of visible tiles acquired via reflection. Contains only the tiles with buildings or boulders on them. */
+    private Seq<Tile> tiles;
 
     /** Clears the list of iterated buildings. Call it before iterating anything. */
     public void clearIterated() { iterated.clear(); }
+
+    /** Iterates visible tiles with buildings on them. */
+    public void iterateBuilds(Cons<Tile> cons) {
+        if (tiles == null) tiles = Reflect.get(renderer.blocks, "tileview");
+        tiles.each(t -> t.build != null, cons);
+    }
 
     /** Iterates tiles around the given core and connected storages. */
     public void iterateCore(Building build, Cons2<Tile, Integer> cons) {
