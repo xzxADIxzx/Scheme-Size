@@ -109,10 +109,10 @@ public class Overlay {
 
     /** Draws floors above buildings to display ores under them. */
     public void drawXray() {
-        builds.iterateBuilds(t -> {
+        builds.iterateBuilds(t -> t.getLinkedTiles(l -> {
             Draw.alpha(.8f);
-            t.floor().drawBase(t);
-        });
+            l.floor().drawBase(l);
+        }));
     }
 
     /** Draws health bars for buildings. The style was taken from {@link mindustry.gen.Building#drawStatus() block status}. */

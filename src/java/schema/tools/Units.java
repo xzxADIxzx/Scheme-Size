@@ -20,7 +20,7 @@ public class Units {
         Events.on(UnitChangeEvent.class, e -> {
             if (e.player != player) return;
 
-            coreUnit = !player.dead() && coreUnits.contains(player.unit().type);
+            coreUnit = player.unit() != null && coreUnits.contains(player.unit().type);
             // TODO cache more info
         });
 
