@@ -1,9 +1,13 @@
 package schema.tools;
 
 import arc.*;
+import arc.func.*;
 import arc.struct.*;
+import arc.util.*;
+import mindustry.entities.*;
 import mindustry.entities.abilities.*;
 import mindustry.game.EventType.*;
+import mindustry.gen.*;
 import mindustry.type.*;
 import mindustry.world.blocks.storage.*;
 
@@ -19,6 +23,8 @@ public class Units {
 
     /** Item capacity of the unit of the local player. */
     public int capacity;
+    /** Whether to draw units or not. */
+    public boolean draw;
 
     /** Maximum health of the force field. */
     private float maxShield;
@@ -28,6 +34,7 @@ public class Units {
     private ShieldArcAbility arcShield;
 
     public Units() {
+        Events.on(WorldLoadEvent.class, e -> draw = true);
         Events.on(UnitChangeEvent.class, e -> {
             if (e.player != player) return;
 
@@ -55,6 +62,18 @@ public class Units {
 
         // the units from this sequence have different movement type
         coreUnits = content.blocks().select(b -> b instanceof CoreBlock).<CoreBlock>as().map(b -> b.unitType);
+
+        // this is, probably, kinda dangerous
+        Groups.draw = new EntityGroup<Drawc>(Drawc.class, false, false, Reflect.get(Groups.draw, "indexer")) {
+
+            @Override
+            public void draw(Cons<Drawc> cons) {
+                if (draw)
+                    super.draw(cons);
+                else
+                    super.draw(d -> { if (!(d instanceof Unit u) || u.isPlayer()) cons.get(d); });
+            }
+        };
     }
 
     /** Returns the current health of the force field. */
