@@ -61,7 +61,7 @@ public class DesktopInput extends InputSystem {
         }
     }
 
-    protected void updateMovement() {
+    protected void updateMovement() { // TODO null unit is going to be removed
         var unit = player.unit();
         var type = unit.type;
 
@@ -73,7 +73,7 @@ public class DesktopInput extends InputSystem {
             ? Tmp.v3.set(input.mouseWorld()).sub(player).scl(.016f).limit2(1f)
             : Tmp.v3.setZero();
 
-        if (/* units.isCoreUnit */ type == mindustry.content.UnitTypes.gamma) {
+        if (units.coreUnit || player.dead()) {
             // this type of movement is active most of the time
             // the unit simply follows the camera and performs the commands of the player
 

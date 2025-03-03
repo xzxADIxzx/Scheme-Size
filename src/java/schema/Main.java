@@ -22,6 +22,8 @@ public class Main extends Mod {
     public static Overlay overlay;
     /** Utility that helps with buildings. */
     public static Builds builds;
+    /** Utility that helps with units. */
+    public static Units units;
 
     /** Advanced input system lying in the foundation of the mod. */
     public static InputSystem insys;
@@ -102,6 +104,7 @@ public class Main extends Mod {
 
         overlay = new Overlay();
         builds = new Builds();
+        units = new Units();
 
         insys = mobile ? null : new DesktopInput();
 
