@@ -6,6 +6,7 @@ import arc.struct.*;
 import arc.util.*;
 import mindustry.gen.*;
 import mindustry.world.*;
+import mindustry.world.blocks.distribution.ItemBridge.*;
 
 import static mindustry.Vars.*;
 
@@ -45,6 +46,18 @@ public class Builds {
             cons.get(world.tile(bdx + max + 1, bdy + i), 0); // right
             cons.get(world.tile(bdx - min - 1, bdy + i), 2); // left
         }
+    }
+
+    /** Iterates the given and consequentially connected bridges. */
+    public void iterateBridge(ItemBridgeBuild build, Cons<ItemBridgeBuild> cons) {
+
+        // limit the amount of bridges to iterate
+        if (iterated.add(build).size > 16) return;
+
+        var linked = world.build(build.link);
+        if (linked instanceof ItemBridgeBuild b && !iterated.contains(b)) iterateBridge(b, cons);
+
+        cons.get(build);
     }
 
     /** Calculates some values needed to draw a health bar for the given building. */

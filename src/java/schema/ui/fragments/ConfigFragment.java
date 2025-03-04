@@ -14,6 +14,9 @@ import arc.util.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.ui.fragments.*;
+import mindustry.world.blocks.distribution.BufferedItemBridge.*;
+import mindustry.world.blocks.distribution.ItemBridge.*;
+import mindustry.world.blocks.liquid.LiquidBridge.*;
 import mindustry.world.blocks.power.*;
 import mindustry.world.blocks.power.ImpactReactor.*;
 import mindustry.world.blocks.power.NuclearReactor.*;
@@ -51,6 +54,9 @@ public class ConfigFragment extends Table {
         override(ImpactReactorBuild.class, b -> drawExplosionRadius(b, Pal.meltdownHit));
         override(DrillBuild.class, this::drawOres);
         override(BurstDrillBuild.class, this::drawOres);
+        override(ItemBridgeBuild.class, this::drawBridgeSequence);
+        override(BufferedItemBridgeBuild.class, this::drawBridgeSequence);
+        override(LiquidBridgeBuild.class, this::drawBridgeSequence);
     }
 
     // region config
@@ -154,6 +160,12 @@ public class ConfigFragment extends Table {
         Draw.rect(build.dominantItem.fullIcon, dx, dy - 1f, 6f, 6f);
         Draw.reset();
         Draw.rect(build.dominantItem.fullIcon, dx, dy, 6f, 6f);
+    }
+
+    /** Draws overlay of the given and consequentially connected bridges. */
+    public void drawBridgeSequence(ItemBridgeBuild build) {
+        builds.clearIterated();
+        builds.iterateBridge(build, ItemBridgeBuild::drawSelect);
     }
 
     // endregion
