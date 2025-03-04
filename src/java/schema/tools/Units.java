@@ -4,6 +4,7 @@ import arc.*;
 import arc.func.*;
 import arc.struct.*;
 import arc.util.*;
+import mindustry.content.*;
 import mindustry.entities.*;
 import mindustry.entities.abilities.*;
 import mindustry.game.EventType.*;
@@ -32,6 +33,11 @@ public class Units {
     private ForceFieldAbility fldShield;
     /** Current shield or null if absent. */
     private ShieldArcAbility arcShield;
+
+    /** Summary health and shield of all units on the next wave. */
+    public float waveHealth, waveShield;
+    /** Total amount of units and bosses on the next wave. */
+    public ObjectIntMap<UnitType> waveUnits = new ObjectIntMap<>(), waveBosses = new ObjectIntMap<>();
 
     public Units() {
         Events.on(WorldLoadEvent.class, e -> draw = true);
@@ -81,4 +87,21 @@ public class Units {
 
     /** Returns the percentage health of the force field. */
     public float shieldf() { return shield() / maxShield; }
+
+    /** Refreshes the information about the next wave. */
+    public void refreshWaveInfo() {
+        waveHealth = waveShield = 0f;
+        waveUnits.clear();
+        waveBosses.clear();
+
+        state.rules.spawns.each(g -> g.type != null, g -> {
+            int amount = g.getSpawned(state.wave - 1);
+            if (amount == 0) return;
+
+            waveHealth += g.type.health * amount;
+            waveShield += g.getShield(state.wave - 1);
+
+            (g.effect == StatusEffects.boss ? waveBosses : waveUnits).put(g.type, amount);
+        });
+    }
 }
