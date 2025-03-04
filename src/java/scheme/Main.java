@@ -51,8 +51,6 @@ public class Main extends Mod {
         ui.schematics = schemas; // do it before build hudfrag
         ui.listfrag = listfrag;
 
-        units.load();
-
         m_settings.apply(); // sometimes settings are not self-applying
 
         hudfrag.build(ui.hudGroup);

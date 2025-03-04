@@ -16,7 +16,6 @@ import arc.scene.ui.TextField.TextFieldFilter;
 import arc.scene.ui.TextField.TextFieldStyle;
 import arc.scene.ui.layout.*;
 import arc.util.Align;
-import arc.util.Scaling;
 import arc.util.Time;
 import mindustry.game.EventType.*;
 import mindustry.gen.Icon;
@@ -74,10 +73,12 @@ public class HudFragment {
             cont.touchable = Touchable.disabled;
             cont.visible(() -> ui.hudfrag.shown && !ui.minimapfrag.shown() && !state.isEditor());
 
+            /*
             float dif = Scl.scl() % .5f == 0 ? 0f : 1f; // there are also a lot of magic numbers
             cont.add(new HexBar(() -> units.shield() / units.maxShield, icon -> {
                 icon.image(player::icon).scaling(Scaling.bounded).grow().maxWidth(54f);
             })).size(92.2f + dif / 2, 80f).padLeft(18.2f - dif).padTop(mobile ? 69f : 0f);
+            */
         });
 
         parent.fill(cont -> { // Gamma UI

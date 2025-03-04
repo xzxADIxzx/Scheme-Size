@@ -14,7 +14,6 @@ import scheme.Main;
 
 import static arc.Core.*;
 import static mindustry.Vars.*;
-import static scheme.SchemeVars.*;
 
 public class WaveApproachingDialog extends BaseDialog {
 
@@ -35,24 +34,24 @@ public class WaveApproachingDialog extends BaseDialog {
         cont.add("").with(l -> shield = l).left().row();
 
         cont.add("@approaching.enemies").left();
-        cont.button(Icon.copySmall, Styles.clearNonei, () -> copyUnits(units.waveUnits)).row();
+        cont.button(Icon.copySmall, Styles.clearNonei, () -> copyUnits(null /* units.waveUnits */)).row();
         cont.table(t -> enemies = t).padLeft(16f).left().row();
 
         cont.add("@approaching.bosses").left();
-        cont.button(Icon.copySmall, Styles.clearNonei, () -> copyUnits(units.waveBosses)).row();
+        cont.button(Icon.copySmall, Styles.clearNonei, () -> copyUnits(null /* units.waveBosses */)).row();
         cont.table(t -> bosses = t).padLeft(16f).left().row();
     }
 
     @Override
     public Dialog show() {
-        units.refreshWaveInfo();
+        // units.refreshWaveInfo();
         title.setText(bundle.format("approaching.name", String.valueOf(state.wave)));
 
-        health.setText(bundle.format("approaching.health", units.waveHealth));
-        shield.setText(bundle.format("approaching.shield", units.waveShield));
+        health.setText(bundle.format("approaching.health", 0f /* units.waveHealth */));
+        shield.setText(bundle.format("approaching.shield", 0f /* units.waveShield */));
 
-        addUnits(enemies, units.waveUnits);
-        addUnits(bosses, units.waveBosses);
+        addUnits(enemies, null /* units.waveUnits */);
+        addUnits(bosses, null /* units.waveBosses */);
 
         return super.show();
     }

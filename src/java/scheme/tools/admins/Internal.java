@@ -25,7 +25,6 @@ public class Internal implements AdminsTools {
             if (!canCreate(team, unit)) return;
             target.unit().spawnedByCore(true);
             target.unit(unit.spawn(team, target));
-            units.refresh();
         });
     }
 
@@ -39,7 +38,6 @@ public class Internal implements AdminsTools {
 
             if (!canCreate(team, unit)) return;
             for (int i = 0; i < amount; i++) unit.spawn(team, target);
-            units.refresh();
         });
     }
 

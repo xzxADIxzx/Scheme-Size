@@ -25,7 +25,6 @@ public class SlashJs implements AdminsTools {
             getPlayer(target);
             send("player.unit().spawnedByCore = true");
             send("player.unit(@.spawn(player.team(), player))", getUnit(unit));
-            units.refresh();
         });
     }
 
@@ -41,7 +40,6 @@ public class SlashJs implements AdminsTools {
             getPlayer(target);
             send("var unit = @", getUnit(unit));
             send("for (var i = 0; i < @; i++) unit.spawn(Team.@, player)", amount, team);
-            units.refresh();
         });
     }
 

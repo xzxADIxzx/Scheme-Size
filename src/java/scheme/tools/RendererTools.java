@@ -16,7 +16,6 @@ import mindustry.graphics.Pal;
 
 import static arc.Core.*;
 import static mindustry.Vars.*;
-import static scheme.SchemeVars.*;
 
 public class RendererTools {
 
@@ -82,10 +81,7 @@ public class RendererTools {
         Draw.draw(Layer.overlayUI, Draw::reset); 
     }
 
-    public void showUnits(boolean hide) {
-        if (hide) units.cache();
-        else units.uncache();
-    }
+    public void showUnits(boolean hide) {}
 
     public void toggleCoreItems() {
         settings.put("coreitems", !settings.getBool("coreitems"));

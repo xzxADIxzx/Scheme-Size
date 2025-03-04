@@ -20,7 +20,6 @@ public class Darkdustry implements AdminsTools {
         if (unusable()) return;
         unit.select(false, true, false, (target, team, unit, amount) -> {
             send("unit", unit.id, "#" + target.id);
-            units.refresh();
         });
     }
 
@@ -33,7 +32,6 @@ public class Darkdustry implements AdminsTools {
             }
 
             send("spawn", unit.id, amount.intValue(), team.id);
-            units.refresh();
         });
     }
 
