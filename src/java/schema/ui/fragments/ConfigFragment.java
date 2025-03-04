@@ -166,6 +166,26 @@ public class ConfigFragment extends Table {
     public void drawBridgeSequence(ItemBridgeBuild build) {
         builds.clearIterated();
         builds.iterateBridge(build, ItemBridgeBuild::drawSelect);
+
+        Lines.stroke(2.5f, Pal.gray);
+        Lines.square(build.x, build.y, 2f, 45f);
+        Lines.stroke(1f, Pal.place);
+        Lines.square(build.x, build.y, 2f, 45f);
+
+        if (build.items == null) return;
+        Draw.reset();
+
+        var count = build.items.sum((i, a) -> 1f) - 1f;
+        var start = build.x - count * 2f - 4f;
+        var x = new float[1];
+
+        Draw.mixcol(Pal.gray, 1f);
+        x[0] = start;
+        build.items.each((i, a) -> Draw.rect(i.fullIcon, x[0] += 4f, build.y + 8f, 6f, 6f));
+
+        Draw.reset();
+        x[0] = start;
+        build.items.each((i, a) -> Draw.rect(i.fullIcon, x[0] += 4f, build.y + 9f, 6f, 6f));
     }
 
     // endregion
