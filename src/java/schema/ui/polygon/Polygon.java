@@ -33,20 +33,23 @@ public class Polygon extends Stack {
     public void build(Group parent) {
         parent.addChild(this);
 
-        setFillParent(true);
+        setSize(0f);
         hideImmediately();
         update(() -> {
             selected = Mathf.within(x, y, input.mouseX(), input.mouseY(), 64f)
                 ? -1
-                : Mathf.round(Angles.angle(x, y, input.mouseX(), input.mouseY()) / step);
+                : Mathf.round(Angles.angle(x, y, input.mouseX(), input.mouseY()) / step) % vertices.size;
 
             for (int i = 0; i < vertices.size; i++)
-                vertices.get(i).label.translation.trns(i == selected ? size + 6f : size, i * step);
+                vertices.get(i).label.translation.trns(i * step, i == selected ? size + 6f : size);
         });
         keyDown(key -> {
             if (key == KeyCode.escape || key == KeyCode.back) app.post(this::hide);
         });
     }
+
+    /** Triggers the callback of the selected vertex. */
+    public void select() { vertices.get(selected).clicked.get(selected); }
 
     /** Shows the fragment with a simple animation. */
     public void show() {
@@ -88,20 +91,20 @@ public class Polygon extends Stack {
     @Override
     public void draw() {
         Draw.color(Color.black, color.a * .2f);
-        Fill.crect(0, 0, width, height);
+        Fill.crect(0f, 0f, graphics.getWidth(), graphics.getHeight());
 
-        poly: if (draw) {
+        if (draw) {
             overlay.capture(.8f);
 
             Draw.color(Pal.accentBack, color.a);
             Lines.stroke(16f);
             Lines.poly(x, y, vertices.size, size);
 
-            if (selected == -1) break poly;
-
-            Draw.color(Pal.accent, color.a);
-            Lines.stroke(12f);
-            Lines.arc(x + Tmp.v1.trns(selected * step, 10f).x, y + Tmp.v1.y, size - 2f, 2f / vertices.size, (selected - 1) * step, vertices.size);
+            if (selected != -1) {
+                Draw.color(Pal.accent, color.a);
+                Lines.stroke(12f);
+                Lines.arc(x + Tmp.v1.trns(selected * step, 10f).x, y + Tmp.v1.y, size - 2f, 2f / vertices.size, (selected - 1) * step, vertices.size);
+            }
 
             overlay.render();
         }

@@ -28,6 +28,8 @@ public class DesktopInput extends InputSystem {
     protected void update() {
         if (scene.hasField() || scene.hasDialog() || scene.getKeyboardFocus() instanceof Polygon) {
             updateAI();
+
+            if (Keybind.select.tap() && scene.getKeyboardFocus() instanceof Polygon p) p.select();
             return;
         }
         updateMovement();
