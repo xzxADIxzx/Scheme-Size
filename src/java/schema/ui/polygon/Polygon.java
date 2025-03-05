@@ -68,6 +68,23 @@ public class Polygon extends Stack {
     /** Immediately hides the fragment without any animation. */
     public void hideImmediately() { visible = false; draw = true; selected = -1; }
 
+    /** Adds a new vertex to the polygon. */
+    public void add(String text, Cons<Label> cons, Cons<Integer> clicked) {
+        var label = new Label(text);
+
+        label.setAlignment(Align.center);
+        if (cons != null) cons.get(label);
+
+        vertices.add(new Vertex(label, clicked));
+        add(label);
+    }
+
+    /** Adds an empty vertex to the polygon. */
+    public void add() { add("", null, i -> {}); }
+
+    /** Removes all vertices from the polygon. */
+    public void clear() { vertices.clear(); }
+
     @Override
     public void draw() {
         Draw.color(Color.black, color.a * .2f);
@@ -94,5 +111,5 @@ public class Polygon extends Stack {
     }
 
     /** Structure that represents a vertex of the polygon. */
-    public record Vertex(Cons<Integer> clicked, Label label) {}
+    public record Vertex(Label label, Cons<Integer> clicked) {}
 }
