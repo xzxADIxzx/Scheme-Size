@@ -12,6 +12,7 @@ import arc.scene.ui.layout.*;
 import arc.struct.*;
 import arc.util.*;
 import mindustry.graphics.*;
+import mindustry.ui.*;
 
 import static arc.Core.*;
 import static schema.Main.*;
@@ -49,7 +50,7 @@ public class Polygon extends Stack {
     }
 
     /** Triggers the callback of the selected vertex. */
-    public void select() { vertices.get(selected).clicked.get(selected); }
+    public void select() { vertices.get(selected).clicked.run(); }
 
     /** Shows the fragment with a simple animation. */
     public void show() {
@@ -72,18 +73,19 @@ public class Polygon extends Stack {
     public void hideImmediately() { visible = false; draw = true; selected = -1; }
 
     /** Adds a new vertex to the polygon. */
-    public void add(String text, Cons<Label> cons, Cons<Integer> clicked) {
-        var label = new Label(text);
+    public void add(String text, boolean highlight, Cons<Integer> clicked) {
+        int index = vertices.size;
+        var label = new Label(text, Styles.outlineLabel);
 
         label.setAlignment(Align.center);
-        if (cons != null) cons.get(label);
+        if (highlight) label.update(() -> label.setColor(index == selected ? Pal.accent : Pal.accentBack));
 
-        vertices.add(new Vertex(label, clicked));
+        vertices.add(new Vertex(label, () -> clicked.get(index)));
         add(label);
     }
 
     /** Adds an empty vertex to the polygon. */
-    public void add() { add("", null, i -> {}); }
+    public void add() { add("", false, i -> {}); }
 
     /** Removes all vertices from the polygon. */
     public void clear() { vertices.clear(); }
@@ -114,5 +116,5 @@ public class Polygon extends Stack {
     }
 
     /** Structure that represents a vertex of the polygon. */
-    public record Vertex(Label label, Cons<Integer> clicked) {}
+    public record Vertex(Label label, Runnable clicked) {}
 }
