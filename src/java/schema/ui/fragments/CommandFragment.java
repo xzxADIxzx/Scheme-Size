@@ -6,7 +6,6 @@ import arc.scene.event.*;
 import arc.scene.ui.layout.*;
 import arc.util.*;
 import mindustry.ai.*;
-import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.ui.*;
 import schema.input.*;
@@ -91,7 +90,7 @@ public class CommandFragment extends Table {
                 if (commands.size > 1) {
                     cont.image().growY().width(4f).color(Pal.accent);
                     commands.each(c -> {
-                        cont.button(Icon.icons.get(c.icon), Style.ibc, () -> insys.commandUnits(c)).size(48f).checked(i -> c == shared).tooltip(c.localized());
+                        cont.button(ui.getIcon(c.icon), Style.ibc, () -> insys.commandUnits(c)).size(48f).checked(i -> c == shared).tooltip(c.localized());
                     });
                 }
             }

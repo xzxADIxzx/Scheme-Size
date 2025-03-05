@@ -71,14 +71,14 @@ public class ConfigFragment extends Table {
             clear();
             build.buildConfiguration(this);
             pack();
-            actions(Actions.scaleTo(0f, 1f), Actions.scaleTo(1f, 1f, .06f));
+            actions(Actions.scaleTo(0f, 1f), Actions.scaleTo(1f, 1f, .08f));
         }
     }
 
     /** Hides the fragment with a simple animation. */
     public void hide() {
         if (selected != null) selected.onConfigureClosed();
-        actions(Actions.scaleTo(0f, 1f, .06f), Actions.run(this::hideImmediately));
+        actions(Actions.scaleTo(0f, 1f, .08f), Actions.run(this::hideImmediately));
     }
 
     /** Immediately hides the fragment without any animation. */
