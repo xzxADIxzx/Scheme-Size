@@ -9,6 +9,7 @@ import schema.tools.*;
 import schema.ui.*;
 import schema.ui.dialogs.*;
 import schema.ui.fragments.*;
+import schema.ui.polygon.*;
 
 import static arc.Core.*;
 import static mindustry.Vars.*;
@@ -48,6 +49,9 @@ public class Main extends Mod {
     public static CommandFragment cmndfrag;
     public static LoadingFragment loadfrag;
 
+    public static Polygon polyblock;
+    public static Polygon polyschema;
+
     // endregion
 
     public Main() {
@@ -70,6 +74,9 @@ public class Main extends Mod {
         mapfrag.build(ui.hudGroup);
         cmndfrag.build(ui.hudGroup);
         loadfrag.build(scene.root);
+
+        polyblock.build(ui.hudGroup);
+        polyschema.build(ui.hudGroup);
 
         control.setInput(insys.getAgent());
         ui.minimapfrag=mapfrag.getAgent();
@@ -115,6 +122,9 @@ public class Main extends Mod {
         mapfrag = new MapFragment();
         cmndfrag = new CommandFragment();
         loadfrag = new LoadingFragment();
+
+        polyblock = new Polygon();
+        polyschema = new Polygon();
     }
 
     /** Prints the given info in the dev console. */

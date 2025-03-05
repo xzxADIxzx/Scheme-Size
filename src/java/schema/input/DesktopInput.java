@@ -8,6 +8,7 @@ import mindustry.entities.*;
 import mindustry.gen.*;
 import mindustry.world.blocks.*;
 import mindustry.world.blocks.ConstructBlock.*;
+import schema.ui.polygon.Polygon;
 
 import static arc.Core.*;
 import static mindustry.Vars.*;
@@ -25,7 +26,7 @@ public class DesktopInput extends InputSystem {
 
     @Override
     protected void update() {
-        if (scene.hasField() || scene.hasDialog()) {
+        if (scene.hasField() || scene.hasDialog() || scene.getKeyboardFocus() instanceof Polygon) {
             updateAI();
             return;
         }
