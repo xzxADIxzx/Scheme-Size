@@ -26,16 +26,26 @@ public class DesktopInput extends InputSystem {
 
     @Override
     protected void update() {
-        if (scene.hasField() || scene.hasDialog() || scene.getKeyboardFocus() instanceof Polygon) {
+        if (scene.hasField() || scene.hasDialog()) {
             updateAI();
-
-            if (Keybind.select.tap() && scene.getKeyboardFocus() instanceof Polygon p) p.select();
             return;
         }
+
+        if (scene.getKeyboardFocus() instanceof Polygon p) {
+            if (Keybind.select.tap()) p.select();
+            if (Keybind.deselect.tap()) p.hide();
+
+            updateAI();
+            return;
+        }
+
         updateMovement();
         updateZoom();
         updateCommand();
         updateView();
+
+        // dead players do not build
+        if (!player.dead()) updateBuilding();
     }
 
     protected void updateAI() {
@@ -264,6 +274,14 @@ public class DesktopInput extends InputSystem {
         }
         if (Keybind.tgl_block_status.tap()) settings.put("blockstatus", !settings.getBool("blockstatus"));
         if (Keybind.tgl_block_health.tap()) settings.put("blockhealth", !settings.getBool("blockhealth"));
+    }
+
+    protected void updateBuilding() {
+        if (Keybind.hexblock.tap()) polyblock.show();
+        if (Keybind.srcblock.tap()); // TODO block search fragments
+
+        if (Keybind.sel_schematic.tap()) ui.schematics.show();
+        if (Keybind.hex_schematic.tap()) polyschema.show();
     }
 
     @Override
