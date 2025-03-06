@@ -24,6 +24,8 @@ public class Polygon extends Stack {
     private Seq<Vertex> vertices = new Seq<>();
     /** Radius the polygon and step between vertices in degrees. */
     private float size, step;
+    /** Array containing alpha values of the vertices. */
+    private float[] alpha = new float[16];
 
     /** Whether to draw the polygon or not. */
     public boolean draw;
@@ -42,7 +44,7 @@ public class Polygon extends Stack {
                 : Mathf.round(Angles.angle(x, y, input.mouseX(), input.mouseY()) / step) % vertices.size;
 
             for (int i = 0; i < vertices.size; i++)
-                vertices.get(i).label.translation.trns(i * step, i == selected ? size + 6f : size);
+                vertices.get(i).label.translation.trns(i * step, size + 6f * alpha[i]);
         });
         keyDown(key -> {
             if (key == KeyCode.escape || key == KeyCode.back) app.post(this::hide);
@@ -78,7 +80,7 @@ public class Polygon extends Stack {
         var label = new Label(text, Styles.outlineLabel);
 
         label.setAlignment(Align.center);
-        if (highlight) label.update(() -> label.setColor(index == selected ? Pal.accent : Pal.accentBack));
+        if (highlight) label.update(() -> label.color.set(Pal.accentBack).lerp(Pal.accent, alpha[index]));
 
         vertices.add(new Vertex(label, () -> clicked.get(index)));
         add(label);
@@ -102,10 +104,14 @@ public class Polygon extends Stack {
             Lines.stroke(16f);
             Lines.poly(x, y, vertices.size, size);
 
-            if (selected != -1) {
-                Draw.color(Pal.accent, color.a);
+            for (int i = 0; i < alpha.length; i++) {
+
+                var a = alpha[i] = Mathf.lerpDelta(alpha[i], i == selected ? 1f : 0f, .4f);
+                if (a < .01f) continue;
+
+                Draw.color(Pal.accent, color.a * a);
                 Lines.stroke(12f);
-                Lines.arc(x + Tmp.v1.trns(selected * step, 10f).x, y + Tmp.v1.y, size - 2f, 2f / vertices.size, (selected - 1) * step, vertices.size);
+                Lines.arc(x + Tmp.v1.trns(i * step, 10f * a).x, y + Tmp.v1.y, size - 2f, 2f / vertices.size, (i - 1) * step, vertices.size);
             }
 
             overlay.render();
