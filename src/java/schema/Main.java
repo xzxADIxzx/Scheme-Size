@@ -49,7 +49,7 @@ public class Main extends Mod {
     public static CommandFragment cmndfrag;
     public static LoadingFragment loadfrag;
 
-    public static Polygon polyblock;
+    public static BlockPolygon polyblock;
     public static Polygon polyschema;
 
     // endregion
@@ -123,7 +123,7 @@ public class Main extends Mod {
         cmndfrag = new CommandFragment();
         loadfrag = new LoadingFragment();
 
-        polyblock = new Polygon();
+        polyblock = new BlockPolygon();
         polyschema = new Polygon();
     }
 

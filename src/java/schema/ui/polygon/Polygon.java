@@ -80,6 +80,8 @@ public class Polygon extends Stack {
         var label = new Label(text, Styles.outlineLabel);
 
         label.setAlignment(Align.center);
+        label.visible(() -> draw);
+
         if (highlight) label.update(() -> label.color.set(Pal.accentBack).lerp(Pal.accent, alpha[index]));
 
         vertices.add(new Vertex(label, () -> clicked.get(index)));
