@@ -141,6 +141,9 @@ public class Main extends Mod {
         ui.showInfoFade("@copied");
     }
 
+    /** Returns the character of the icon with the given name.  */
+    public static char icon(String name) { return (char) mindustry.ui.Fonts.getUnicode(name); }
+
     /** Use this <b>extremely carefully</b> as it clears event listeners created by the given class. */
     public static void clear(Class<?> target) {
         if (events == null) events = Reflect.get(Events.class, "events");
