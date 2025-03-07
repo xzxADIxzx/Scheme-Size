@@ -37,6 +37,8 @@ public class BlockPolygon extends Polygon {
         for (int i = 0; i < all.length; i++) add(String.valueOf(icons[i]), true, j -> {
             draw = false;
 
+            var index = new int[] { 0 };
+
             add(new Table(atlas.drawable("schema-panel"), list -> {
                 list.margin(12f);
                 list.defaults().pad(4f);
@@ -50,6 +52,8 @@ public class BlockPolygon extends Polygon {
                     eachUnlocked(categories[j], b -> {
                         var core = player.core();
                         var available = player.isBuilder() && (state.rules.infiniteResources || (core != null && core.items.has(b.requirements)));
+
+                        if (index[0]++ % 4 == 0) pane.row();
 
                         var button = pane.button(new TextureRegionDrawable(b.uiIcon), Style.ibt, () -> {
 
@@ -65,7 +69,18 @@ public class BlockPolygon extends Polygon {
                         button.getImage().setColor(!b.isPlaceable() ? Color.darkGray : !available ? Color.gray : Color.white);
                     });
                 });
-            }));
+            }) {
+                @Override
+                public void layout() {
+                    super.layout();
+                    float
+                        width = 212f,
+                        height = getPrefHeight();
+
+                    setSize(width, height);
+                    translation.set(width, height).scl(-.5f);
+                }
+            });
         });
     }
 
