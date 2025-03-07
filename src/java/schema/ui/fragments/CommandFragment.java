@@ -55,7 +55,7 @@ public class CommandFragment extends Table {
     /** Rebuilds the fragment in order to update the list of units */
     public void rebuild() {
         bottom().clear();
-        table(atlas.drawable("schema-panel-bottom"), cont -> {
+        table(drawable("panel-bottom"), cont -> {
             cont.margin(12f, 12f, 4f, 12f);
             cont.defaults().pad(4f);
 
@@ -77,7 +77,7 @@ public class CommandFragment extends Table {
                         t.clicked(KeyCode.mouseLeft, () -> insys.freeUnits(u -> u.type != type));
                         t.clicked(KeyCode.mouseRight, () -> insys.freeUnits(u -> u.type == type));
 
-                        t.hovered(() -> t.background(atlas.drawable("schema-button-over")));
+                        t.hovered(() -> t.background(drawable("button-over")));
                         t.exited(() -> t.background(null));
                     }).size(48f, 48f).touchable(Touchable.enabled);
 

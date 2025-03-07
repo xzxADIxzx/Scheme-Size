@@ -39,7 +39,7 @@ public class BlockPolygon extends Polygon {
 
             var index = new int[] { 0 };
 
-            add(new Table(atlas.drawable("schema-panel"), list -> {
+            add(new Table(drawable("panel"), list -> {
                 list.margin(12f);
                 list.defaults().pad(4f);
 

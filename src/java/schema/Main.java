@@ -152,4 +152,7 @@ public class Main extends Mod {
         for (var pair : events) count += pair.value.size - pair.value.removeAll(l -> l.toString().startsWith(target.getName())).size;
         log("Found [red]" + count + "[] events in " + target.getSimpleName());
     }
+
+    /** Returns the drawable with the given name and schema prefix. */
+    public static arc.scene.style.Drawable drawable(String name) { return atlas.drawable("schema-" + name); }
 }

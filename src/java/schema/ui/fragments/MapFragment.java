@@ -42,7 +42,7 @@ public class MapFragment extends Table {
             if (!ui.chatfrag.shown()) requestScroll();
         }).visible(() -> shown);
 
-        bottom().table(atlas.drawable("schema-panel-bottom"), cont -> {
+        bottom().table(drawable("panel-bottom"), cont -> {
             cont.margin(12f, 12f, 4f, 12f);
             cont.defaults().pad(4f);
 

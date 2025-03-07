@@ -44,28 +44,28 @@ public class Style {
         log("Loaded 7 sprites for UI");
 
         ibe = new ImageButtonStyle() {{
-            over = atlas.drawable("schema-button-over");
-            down = atlas.drawable("schema-button-down");
-            disabled = atlas.drawable("schema-button-disabled");
+            over = drawable("button-over");
+            down = drawable("button-down");
+            disabled = drawable("button-disabled");
         }};
-        ibd = new ImageButtonStyle(ibe) {{ up = atlas.drawable("schema-button"); }};
-        ibt = new ImageButtonStyle(ibe) {{ checked = atlas.drawable("schema-button-over"); }};
+        ibd = new ImageButtonStyle(ibe) {{ up = drawable("button"); }};
+        ibt = new ImageButtonStyle(ibe) {{ checked = drawable("button-over"); }};
 
         tbe = new TextButtonStyle() {{
-            over = atlas.drawable("schema-button-over");
-            down = atlas.drawable("schema-button-down");
-            disabled = atlas.drawable("schema-button-disabled");
+            over = drawable("button-over");
+            down = drawable("button-down");
+            disabled = drawable("button-disabled");
 
             font = Fonts.def;
         }};
-        tbd = new TextButtonStyle(tbe) {{ up = atlas.drawable("schema-button"); }};
-        tbt = new TextButtonStyle(tbe) {{ checked = atlas.drawable("schema-button-over"); }};
+        tbd = new TextButtonStyle(tbe) {{ up = drawable("button"); }};
+        tbt = new TextButtonStyle(tbe) {{ checked = drawable("button-over"); }};
 
         cbe = tbe;
         cbd = tbd;
         cbt = tbt;
 
-        scr = new ScrollPaneStyle() {{ vScrollKnob = atlas.drawable("schema-scroll-knob"); }};
+        scr = new ScrollPaneStyle() {{ vScrollKnob = drawable("scroll-knob"); }};
 
         ibc = new ImageButtonStyle(ibt) {{
             imageUpColor = Pal.accentBack;
