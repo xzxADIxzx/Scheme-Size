@@ -52,7 +52,7 @@ public class Polygon extends Stack {
     }
 
     /** Triggers the callback of the selected vertex. */
-    public void select() { vertices.get(selected).clicked.run(); }
+    public void select() { if (draw && selected != -1) vertices.get(selected).clicked.run(); }
 
     /** Shows the fragment with a simple animation. */
     public void show() {

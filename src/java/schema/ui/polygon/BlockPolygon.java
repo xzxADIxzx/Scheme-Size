@@ -43,28 +43,26 @@ public class BlockPolygon extends Polygon {
 
                 // TODO top part of the list
 
-                list.pane(Style.scr, pane -> {
-                    pane.margin(0f, 4f, 4f, 8f);
-                    pane.defaults().pad(0f, -4f, -4f, 0f);
+                list.table(pane -> {
+                    pane.margin(0f, 0f, 4f, 4f);
+                    pane.defaults().pad(0f, 0f, -4f, -4f);
 
                     eachUnlocked(categories[j], b -> {
                         var core = player.core();
                         var available = player.isBuilder() && (state.rules.infiniteResources || (core != null && core.items.has(b.requirements)));
 
-                        var button = pane.button(new TextureRegionDrawable(b.uiIcon), Style.ibc, () -> {
+                        var button = pane.button(new TextureRegionDrawable(b.uiIcon), Style.ibt, () -> {
 
                             if (input.shift() || input.ctrl() || input.alt())
                                 copy(icon(b.name) + "");
                             else
                                 insys.block = b;
 
-                            list.remove();
                             hide();
-
-                        }).size(48f).checked(insys.block == b && available).disabled(available).get();
+                        }).size(48f).checked(insys.block == b).disabled(!b.isPlaceable() || !available).get();
 
                         button.resizeImage(32f);
-                        button.image().color(!b.isPlaceable() ? Color.darkGray : !available ? Color.gray : Color.white);
+                        button.getImage().setColor(!b.isPlaceable() ? Color.darkGray : !available ? Color.gray : Color.white);
                     });
                 });
             }));
@@ -72,7 +70,7 @@ public class BlockPolygon extends Polygon {
     }
 
     @Override
-    public void select() { if (draw) super.select(); }
+    public void hideImmediately() { super.hideImmediately(); removeChild(children.find(e -> e instanceof Table)); }
 
     /** Whether the given block is unlocked. */
     public boolean unlocked(Block block) { return block.placeablePlayer && block.unlockedNow() && block.environmentBuildable(); }
