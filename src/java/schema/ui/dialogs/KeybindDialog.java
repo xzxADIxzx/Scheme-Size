@@ -1,6 +1,5 @@
 package schema.ui.dialogs;
 
-import arc.graphics.*;
 import arc.input.*;
 import arc.math.geom.*;
 import arc.scene.event.*;
@@ -35,8 +34,8 @@ public class KeybindDialog extends BaseDialog {
         for (var bind : Keybind.all) {
 
             if (bind.category != null) pane.table(t -> {
-                t.add("@category." + bind.category, Color.gray).row();
-                t.image().growX().height(4f).padTop(4f).color(Color.gray);
+                t.add("@category." + bind.category, Pal.lightishGray).row();
+                t.image().growX().height(4f).padTop(4f).color(Pal.lightishGray);
             }).fillX().colspan(5).row();
 
             pane.add("@keybind." + bind).left();

@@ -7,6 +7,7 @@ import arc.scene.style.*;
 import arc.scene.ui.layout.*;
 import arc.util.*;
 import mindustry.gen.*;
+import mindustry.graphics.*;
 import mindustry.type.*;
 import mindustry.world.*;
 import schema.ui.Style;
@@ -81,7 +82,7 @@ public class BlockPolygon extends Polygon {
                         if (button.isDisabled()) button.toBack();
 
                         button.resizeImage(32f);
-                        button.getImage().setColor(!b.isPlaceable() ? Color.darkGray : !available ? Color.gray : Color.white);
+                        button.getImage().setColor(!b.isPlaceable() ? Pal.gray : !available ? Pal.lightishGray : Color.white);
 
                         button.hovered(() -> hover[0] = b);
                         button.exited(() -> { if (hover[0] == b) hover[0] = null; });
