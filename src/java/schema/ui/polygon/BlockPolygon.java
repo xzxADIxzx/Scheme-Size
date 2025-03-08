@@ -31,6 +31,9 @@ public class BlockPolygon extends Polygon {
             icons[i] = Reflect.get(Iconc.class, categories[i].name());
     }
 
+    /** Rebuilds the list of blocks. */
+    private Runnable rebuild;
+
     @Override
     public void build(Group parent) {
         super.build(parent);
@@ -38,7 +41,10 @@ public class BlockPolygon extends Polygon {
             draw = false;
 
             var index = new int[] { 0 };
+            rebuild = () -> {
+            index[0] = 0;
 
+            removeChild(children.find(e -> e instanceof Table));
             add(new Table(drawable("panel"), list -> {
                 list.margin(12f);
                 list.defaults().pad(4f);
@@ -81,6 +87,9 @@ public class BlockPolygon extends Polygon {
                     translation.set(width, height).scl(-.5f);
                 }
             });
+
+            };
+            rebuild.run();
         });
     }
 
