@@ -87,7 +87,7 @@ public class BlockPolygon extends Polygon {
                                 var color = amount < required / 2f ? "[scarlet]" : amount < required ? "[accent]" : "[white]";
 
                                 return color + UI.formatAmount(amount) + "[]/" + UI.formatAmount(required);
-                            }).with(l -> rlabel[0] = l);
+                            }).with(l -> rlabel[0] = l).fontScale(.9f);
                         }).row();
 
                         if (!player.isBuilder() || !hover[0].isPlaceable())
@@ -132,7 +132,7 @@ public class BlockPolygon extends Polygon {
                     super.layout();
                     float
                         width = 212f,
-                        height = getPrefHeight();
+                        height = Mathf.round(getPrefHeight());
 
                     setSize(width, height);
                     translation.set(width, Mathf.ceil(index[0] / 4f) * 44f + 36f).scl(-.5f);
