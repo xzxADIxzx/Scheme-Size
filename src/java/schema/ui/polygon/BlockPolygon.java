@@ -40,7 +40,9 @@ public class BlockPolygon extends Polygon {
         for (int i = 0; i < all.length; i++) add(String.valueOf(icons[i]), true, j -> {
             draw = false;
 
-            var index = new int[] { 0 };
+            var index = new int[1];
+            var hover = new Block[2];
+
             rebuild = () -> {
             index[0] = 0;
 
@@ -49,7 +51,12 @@ public class BlockPolygon extends Polygon {
                 list.margin(12f);
                 list.defaults().pad(4f);
 
-                // TODO top part of the list
+                list.update(() -> {
+                    if (hover[1] != hover[0]) {
+                        hover[1] = hover[0];
+                        rebuild.run();
+                    }
+                });
 
                 list.table(pane -> {
                     pane.margin(0f, 0f, 4f, 4f);
@@ -71,8 +78,13 @@ public class BlockPolygon extends Polygon {
                             hide();
                         }).size(48f).checked(insys.block == b).disabled(!b.isPlaceable() || !available).get();
 
+                        if (button.isDisabled()) button.toBack();
+
                         button.resizeImage(32f);
                         button.getImage().setColor(!b.isPlaceable() ? Color.darkGray : !available ? Color.gray : Color.white);
+
+                        button.hovered(() -> hover[0] = b);
+                        button.exited(() -> { if (hover[0] == b) hover[0] = null; });
                     });
                 });
             }) {
