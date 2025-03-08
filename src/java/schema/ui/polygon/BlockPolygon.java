@@ -2,10 +2,13 @@ package schema.ui.polygon;
 
 import arc.func.*;
 import arc.graphics.*;
+import arc.math.*;
 import arc.scene.*;
 import arc.scene.style.*;
+import arc.scene.ui.*;
 import arc.scene.ui.layout.*;
 import arc.util.*;
+import mindustry.core.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.type.*;
@@ -59,6 +62,41 @@ public class BlockPolygon extends Polygon {
                     }
                 });
 
+                if (hover[0] != null) {
+                    list.table(pane -> {
+
+                        pane.defaults().width(180f).left();
+                        pane.add(hover[0].localizedName).wrap().row();
+
+                        for (var stack : hover[0].requirements) pane.table(line -> {
+                            var rlabel = new Label[1];
+
+                            line.image(stack.item.uiIcon).size(16f);
+                            line.add(stack.item.localizedName).growX().pad(0f, 4f, 0f, 4f).color(Pal.lightishGray).left().ellipsis(true).update(l -> {
+                                // for some reason, ellipsis does not work
+                                l.setWidth(180f - 24f - rlabel[0].getPrefWidth());
+                            });
+
+                            line.label(() -> {
+                                var core = player.core();
+                                int required = Math.round(stack.amount * state.rules.buildCostMultiplier);
+
+                                if (core == null || state.rules.infiniteResources) return "*/" + UI.formatAmount(required);
+
+                                int amount = core.items.get(stack.item);
+                                var color = amount < required / 2f ? "[scarlet]" : amount < required ? "[accent]" : "[white]";
+
+                                return color + UI.formatAmount(amount) + "[]/" + UI.formatAmount(required);
+                            }).with(l -> rlabel[0] = l);
+                        }).row();
+
+                        if (!player.isBuilder() || !hover[0].isPlaceable())
+                            pane.add(!player.isBuilder() ? "@poly.no-build" : !hover[0].supportsEnv(state.rules.env) ? "@poly.bad-env" : "@poly.banned");
+
+                    }).row();
+                    list.image().growX().height(4f).color(Pal.accent).row();
+                }
+
                 list.table(pane -> {
                     pane.margin(0f, 0f, 4f, 4f);
                     pane.defaults().pad(0f, 0f, -4f, -4f);
@@ -97,7 +135,7 @@ public class BlockPolygon extends Polygon {
                         height = getPrefHeight();
 
                     setSize(width, height);
-                    translation.set(width, height).scl(-.5f);
+                    translation.set(width, Mathf.ceil(index[0] / 4f) * 44f + 36f).scl(-.5f);
                 }
             });
 
