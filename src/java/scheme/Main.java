@@ -37,7 +37,6 @@ public class Main extends Mod {
 
     @Override
     public void init() {
-        Backdoor.load();
         ServerIntegration.load();
         ClajIntegration.load();
         ModedGlyphLayout.load();
