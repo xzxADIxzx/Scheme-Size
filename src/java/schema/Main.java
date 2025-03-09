@@ -9,6 +9,7 @@ import schema.tools.*;
 import schema.ui.*;
 import schema.ui.dialogs.*;
 import schema.ui.fragments.*;
+import schema.ui.hud.*;
 import schema.ui.polygon.*;
 
 import static arc.Core.*;
@@ -45,6 +46,7 @@ public class Main extends Mod {
     // public static InventoryFragment inv;
     public static ConfigFragment config;
 
+    public static HudFragment hudfrag;
     public static MapFragment mapfrag;
     public static CommandFragment cmndfrag;
     public static LoadingFragment loadfrag;
@@ -71,6 +73,7 @@ public class Main extends Mod {
 
         config.build(ui.hudGroup);
 
+        hudfrag.build(ui.hudGroup);
         mapfrag.build(ui.hudGroup);
         cmndfrag.build(ui.hudGroup);
         loadfrag.build(scene.root);
@@ -79,6 +82,7 @@ public class Main extends Mod {
         polyschema.build(ui.hudGroup);
 
         control.setInput(insys.getAgent());
+        // TODO hudfrag agent
         ui.minimapfrag=mapfrag.getAgent();
         ui.loadfrag = loadfrag.getAgent();
 
@@ -101,6 +105,7 @@ public class Main extends Mod {
         log("=> [green]Unhooking events...");
         clear(mindustry.graphics.OverlayRenderer.class);
         clear(mindustry.input.InputHandler.class);
+        clear(mindustry.ui.fragments.HudFragment.class);
         clear(mindustry.ui.fragments.PlacementFragment.class);
     }
 
@@ -119,6 +124,7 @@ public class Main extends Mod {
 
         config = new ConfigFragment();
 
+        hudfrag = new HudFragment();
         mapfrag = new MapFragment();
         cmndfrag = new CommandFragment();
         loadfrag = new LoadingFragment();
