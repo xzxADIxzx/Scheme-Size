@@ -11,6 +11,7 @@ const Main = mod.main
 const Updater = get("schema.Updater")
 const ServerIntegration = get("scheme.ServerIntegration")
 const ClajIntegration = get("scheme.ClajIntegration")
+const Stl = get("schema.ui.Style")
 
 // for some unknown reason, this works only here, in the script
 // basically, a new atlas region is created to be overridden then by the sprite from the override directory
