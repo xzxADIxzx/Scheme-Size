@@ -10,8 +10,6 @@ import arc.util.Reflect;
 import arc.util.pooling.Pool;
 import arc.util.pooling.Pools;
 
-import static arc.Core.*;
-
 /** Last update - Feb 28, 2022 */
 public class ModedGlyphLayout extends GlyphLayout {
 
@@ -29,7 +27,7 @@ public class ModedGlyphLayout extends GlyphLayout {
     @Override
     public void setText(Font font, CharSequence str, int start, int end, Color color, float targetWidth, int halign, boolean wrap, String truncate) {
         FontData fontData = font.getData();
-        if (fontData.markupEnabled || input.keyDown(ModedBinding.alternative)) {
+        if (fontData.markupEnabled /* || input.keyDown(ModedBinding.alternative) */) {
             super.setText(font, str, start, end, color, targetWidth, halign, wrap, truncate);
             return; // use default renderer if alt key is pressed or markup is enabled
         }

@@ -12,7 +12,6 @@ import mindustry.ui.CoreItemsDisplay;
 import mindustry.world.Tile;
 import mindustry.world.blocks.distribution.Router;
 import mindustry.world.blocks.logic.LogicDisplay;
-import scheme.moded.ModedBinding;
 import scheme.moded.ModedGlyphLayout;
 import scheme.moded.ModedSchematics;
 import scheme.tools.MessageQueue;
@@ -41,7 +40,6 @@ public class Main extends Mod {
         Backdoor.load();
         ServerIntegration.load();
         ClajIntegration.load();
-        ModedBinding.load();
         ModedGlyphLayout.load();
         SchemeVars.load();
         MapResizeFix.load();

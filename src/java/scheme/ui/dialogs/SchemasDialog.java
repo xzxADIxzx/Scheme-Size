@@ -1,7 +1,6 @@
 package scheme.ui.dialogs;
 
 import arc.scene.style.Drawable;
-import arc.scene.ui.Dialog;
 import arc.scene.ui.TextButton;
 import arc.scene.ui.layout.Cell;
 import arc.scene.ui.layout.Table;
@@ -12,7 +11,6 @@ import mindustry.gen.Tex;
 import mindustry.ui.Styles;
 import mindustry.ui.dialogs.BaseDialog;
 import mindustry.ui.dialogs.SchematicsDialog;
-import scheme.moded.ModedBinding;
 import scheme.moded.ModedSchematics;
 
 import static arc.Core.*;
@@ -20,12 +18,6 @@ import static mindustry.Vars.*;
 import static scheme.SchemeVars.*;
 
 public class SchemasDialog extends SchematicsDialog {
-
-    @Override
-    public Dialog show() {
-        if (input.keyDown(ModedBinding.alternative)) return null;
-        else return super.show(); // do not show SchematicsDialog if the keybind combination is pressed
-    }
 
     @Override
     public void showImport() {

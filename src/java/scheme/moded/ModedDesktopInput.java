@@ -102,8 +102,10 @@ public class ModedDesktopInput extends DesktopInput implements ModedInputHandler
     public void update() {
         lastCamera.set(camera.position);
 
+        /*
         if (input.keyDown(ModedBinding.alternative) && input.keyTap(Binding.respawn)) admins.despawn();
         else super.update(); // prevent unit clear, is it a crutch?
+        */
 
         if (locked()) return;
 
@@ -152,6 +154,7 @@ public class ModedDesktopInput extends DesktopInput implements ModedInputHandler
 
     /** Punishment awaits me for this... */
     public void modedInput() {
+        /*
         boolean alt = input.keyDown(ModedBinding.alternative);
 
         if (input.keyTap(ModedBinding.adminscfg)) adminscfg.show();
@@ -177,7 +180,7 @@ public class ModedDesktopInput extends DesktopInput implements ModedInputHandler
         if (alt) {
             admins.look();
 
-            if (input.keyTap(Binding.block_info)) /* keycomb.show() */;
+            if (input.keyTap(Binding.block_info)) / keycomb.show() /;
 
             // alternative + respawn moved to update because it needs to be called before internal respawn
             if (input.keyTap(Binding.mouse_move)) admins.teleport(input.mouseWorld());
@@ -190,6 +193,7 @@ public class ModedDesktopInput extends DesktopInput implements ModedInputHandler
         }
 
         if (input.keyTap(Binding.select) && !scene.hasMouse()) corefrag.trySetNode(tileX(), tileY()); // power node selection
+        */
     }
 
     public void buildInput() {
