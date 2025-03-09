@@ -158,6 +158,9 @@ public class DesktopInput extends InputSystem {
         if (commandMode = Keybind.command.down() && !mapfrag.shown) {
             commandUnits.retainAll(Unitc::isCommandable).retainAll(Healthc::isValid);
 
+            // little fix for edge cases
+            if (Keybind.command.tap()) commandRect = null;
+
             if (Keybind.select.tap() && !scene.hasMouse()) commandRect = input.mouseWorld().cpy();
             if (Keybind.select.release() && commandRect != null) {
 
