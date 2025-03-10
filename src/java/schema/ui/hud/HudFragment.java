@@ -22,5 +22,8 @@ public class HudFragment extends Table {
 
         setFillParent(true);
         visible(() -> shown);
+        top().add(unit, core, wave);
+
+        core.build();
     }
 }
