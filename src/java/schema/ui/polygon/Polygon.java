@@ -12,7 +12,7 @@ import arc.scene.ui.layout.*;
 import arc.struct.*;
 import arc.util.*;
 import mindustry.graphics.*;
-import mindustry.ui.*;
+import schema.ui.*;
 
 import static arc.Core.*;
 import static schema.Main.*;
@@ -77,7 +77,7 @@ public class Polygon extends Stack {
     /** Adds a new vertex to the polygon. */
     public void add(String text, boolean highlight, Cons<Integer> clicked) {
         int index = vertices.size;
-        var label = new Label(text, Styles.outlineLabel);
+        var label = new Label(text, Style.outline);
 
         label.setAlignment(Align.center);
         label.visible(() -> draw);

@@ -5,6 +5,7 @@ import mindustry.ui.*;
 import arc.graphics.*;
 import arc.scene.ui.Button.*;
 import arc.scene.ui.ImageButton.*;
+import arc.scene.ui.Label.*;
 import arc.scene.ui.TextButton.*;
 import arc.scene.ui.ScrollPane.*;
 
@@ -26,6 +27,8 @@ public class Style {
     public static ScrollPaneStyle scr;
     /** Special style for command fragment. */
     public static ImageButtonStyle ibc;
+    /** Label style that uses the outline font. */
+    public static LabelStyle outline = Styles.outlineLabel;
 
     // endregion
 
