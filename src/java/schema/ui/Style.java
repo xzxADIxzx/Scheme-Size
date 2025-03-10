@@ -3,10 +3,12 @@ package schema.ui;
 import mindustry.graphics.*;
 import mindustry.ui.*;
 import arc.graphics.*;
+import arc.scene.ui.*;
 import arc.scene.ui.Button.*;
 import arc.scene.ui.ImageButton.*;
 import arc.scene.ui.Label.*;
 import arc.scene.ui.TextButton.*;
+import arc.scene.ui.Tooltip.*;
 import arc.scene.ui.ScrollPane.*;
 
 import static arc.Core.*;
@@ -34,17 +36,19 @@ public class Style {
 
     /** Updates the sprites' splits and loads the styles. */
     public static void load() {
-        for (var sprite : new String[] {
+        for (var name : new String[] {
             "schema-button",
             "schema-button-over",
             "schema-button-down",
             "schema-button-disabled",
             "schema-scroll-knob",
             "schema-panel",
-            "schema-panel-bottom" })
-            atlas.find(sprite).splits = sprite.endsWith("knob") ? new int[] { 0, 0, 24, 16 } : new int[] { 16, 16, 16, 16 };
+            "schema-panel-top",
+            "schema-panel-bottom",
+            "schema-panel-clear" })
+            atlas.find(name).splits = name.endsWith("knob") ? new int[] { 0, 0, 24, 16 } : new int[] { 16, 16, 16, 16 };
 
-        log("Loaded 7 sprites for UI");
+        log("Loaded 9 sprites for UI");
 
         ibe = new ImageButtonStyle() {{
             over = drawable("button-over");
@@ -77,10 +81,14 @@ public class Style {
             imageCheckedColor = Pal.accent;
         }};
 
-        log("Created 11 styles for UI");
+        log("Created 12 styles for UI");
 
         // these are the colors that are used for disabled and light elements
         Colors.put("disabled", Pal.gray);
         Colors.put("light", Pal.lightishGray);
+
+        // replace the background of tooltips to match the new style
+        var background = drawable("panel-clear");
+        Tooltips.getInstance().textProvider = cont -> new Tooltip(t -> t.background(background).margin(4f).add(cont).style(outline));
     }
 }
