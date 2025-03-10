@@ -181,7 +181,4 @@ public class Main extends Mod {
 
         return Strings.fixed(num, flow ? 1 : 0);
     }
-
-    /** Returns the drawable with the given name and schema prefix. */
-    public static arc.scene.style.Drawable drawable(String name) { return atlas.drawable("schema-" + name); }
 }

@@ -51,28 +51,28 @@ public class Style {
         log("Loaded 9 sprites for UI");
 
         ibe = new ImageButtonStyle() {{
-            over = drawable("button-over");
-            down = drawable("button-down");
-            disabled = drawable("button-disabled");
+            over = find("button-over");
+            down = find("button-down");
+            disabled = find("button-disabled");
         }};
-        ibd = new ImageButtonStyle(ibe) {{ up = drawable("button"); }};
-        ibt = new ImageButtonStyle(ibe) {{ checked = drawable("button-over"); }};
+        ibd = new ImageButtonStyle(ibe) {{ up = find("button"); }};
+        ibt = new ImageButtonStyle(ibe) {{ checked = find("button-over"); }};
 
         tbe = new TextButtonStyle() {{
-            over = drawable("button-over");
-            down = drawable("button-down");
-            disabled = drawable("button-disabled");
+            over = find("button-over");
+            down = find("button-down");
+            disabled = find("button-disabled");
 
             font = Fonts.def;
         }};
-        tbd = new TextButtonStyle(tbe) {{ up = drawable("button"); }};
-        tbt = new TextButtonStyle(tbe) {{ checked = drawable("button-over"); }};
+        tbd = new TextButtonStyle(tbe) {{ up = find("button"); }};
+        tbt = new TextButtonStyle(tbe) {{ checked = find("button-over"); }};
 
         cbe = tbe;
         cbd = tbd;
         cbt = tbt;
 
-        scr = new ScrollPaneStyle() {{ vScrollKnob = drawable("scroll-knob"); }};
+        scr = new ScrollPaneStyle() {{ vScrollKnob = find("scroll-knob"); }};
 
         ibc = new ImageButtonStyle(ibt) {{
             imageUpColor = Pal.accentBack;
@@ -88,7 +88,10 @@ public class Style {
         Colors.put("light", Pal.lightishGray);
 
         // replace the background of tooltips to match the new style
-        var background = drawable("panel-clear");
+        var background = find("panel-clear");
         Tooltips.getInstance().textProvider = cont -> new Tooltip(t -> t.background(background).margin(4f).add(cont).style(outline));
     }
+
+    /** Returns the drawable with the given name and schema prefix. */
+    public static arc.scene.style.Drawable find(String name) { return atlas.drawable("schema-" + name); }
 }

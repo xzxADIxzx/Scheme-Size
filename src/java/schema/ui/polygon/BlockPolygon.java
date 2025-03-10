@@ -50,7 +50,7 @@ public class BlockPolygon extends Polygon {
             index[0] = 0;
 
             removeChild(children.find(e -> e instanceof Table));
-            add(new Table(drawable("panel"), list -> {
+            add(new Table(Style.find("panel"), list -> {
                 list.margin(12f);
                 list.defaults().pad(4f);
 
