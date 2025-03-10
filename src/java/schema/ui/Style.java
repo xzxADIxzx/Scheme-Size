@@ -1,8 +1,11 @@
 package schema.ui;
 
+import mindustry.game.*;
+import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.ui.*;
 import arc.graphics.*;
+import arc.scene.style.*;
 import arc.scene.ui.*;
 import arc.scene.ui.Button.*;
 import arc.scene.ui.ImageButton.*;
@@ -93,5 +96,20 @@ public class Style {
     }
 
     /** Returns the drawable with the given name and schema prefix. */
-    public static arc.scene.style.Drawable find(String name) { return atlas.drawable("schema-" + name); }
+    public static Drawable find(String name) { return atlas.drawable("schema-" + name); }
+
+    /** Returns the drawable icon of the given team. */
+    public static Drawable icon(Team team) {
+        if (team.id < 6) return atlas.drawable(new String[] {
+            "team-derelict",
+            "team-sharded",
+            "team-crux",
+            "team-malis",
+            "status-electrified-ui",
+            "status-wet-ui"
+        }[team.id]);
+
+        var white = (TextureRegionDrawable) Tex.whiteui;
+        return white.tint(team.color);
+    }
 }
