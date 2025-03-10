@@ -266,7 +266,7 @@ public class DesktopInput extends InputSystem {
             if (hover != null && hover.unlockedNow()) ui.content.show(hover);
         }
 
-        if (Keybind.tgl_menus.tap()); // TODO implement
+        if (Keybind.tgl_menus.tap()) hudfrag.shown = !hudfrag.shown;
         if (Keybind.tgl_power_lasers.tap()) {
             if (settings.getInt("lasersopacity") == 0)
                 settings.put("lasersopacity", settings.getInt("preferredlaseropacity", 100));

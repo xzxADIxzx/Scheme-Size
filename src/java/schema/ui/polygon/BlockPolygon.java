@@ -8,7 +8,6 @@ import arc.scene.style.*;
 import arc.scene.ui.*;
 import arc.scene.ui.layout.*;
 import arc.util.*;
-import mindustry.core.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.type.*;
@@ -81,12 +80,12 @@ public class BlockPolygon extends Polygon {
                                 var core = player.core();
                                 int required = Math.round(stack.amount * state.rules.buildCostMultiplier);
 
-                                if (core == null || state.rules.infiniteResources) return "*/" + UI.formatAmount(required);
+                                if (core == null || state.rules.infiniteResources) return "*/" + format(required, false);
 
                                 int amount = core.items.get(stack.item);
                                 var color = amount < required / 2f ? "[scarlet]" : amount < required ? "[accent]" : "[white]";
 
-                                return color + UI.formatAmount(amount) + "[]/" + UI.formatAmount(required);
+                                return color + format(amount, false) + "[]/" + format(required, false);
                             }).with(l -> rlabel[0] = l).fontScale(.9f);
                         }).row();
 
