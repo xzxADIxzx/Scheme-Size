@@ -159,6 +159,26 @@ public class Main extends Mod {
         log("Found [red]" + count + "[] events in " + target.getSimpleName());
     }
 
+    /** Returns the given number with fixed amount of decimal places. */
+    public static String format(float num, boolean flow) {
+        if (num >= 100_000_000_000f)
+            return Strings.fixed(num / 1_000_000_000f, 0) + "[light]b";
+        if (num >= 1_000_000_000f)
+            return Strings.fixed(num / 1_000_000_000f, 1) + "[light]b";
+
+        if (num >= 100_000_000f)
+            return Strings.fixed(num / 1_000_000f, 0) + "[light]m";
+        if (num >= 1_000_000f)
+            return Strings.fixed(num / 1_000_000f, 1) + "[light]m";
+
+        if (num >= 100_000f)
+            return Strings.fixed(num / 1_000f, 0) + "[light]k";
+        if (num >= 1_000f)
+            return Strings.fixed(num / 1_000f, 1) + "[light]k";
+
+        return Strings.fixed(num, flow ? 1 : 0);
+    }
+
     /** Returns the drawable with the given name and schema prefix. */
     public static arc.scene.style.Drawable drawable(String name) { return atlas.drawable("schema-" + name); }
 }
