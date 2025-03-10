@@ -51,6 +51,7 @@ public class Main extends Mod {
     public static CommandFragment cmndfrag;
     public static LoadingFragment loadfrag;
 
+    public static Polygon polyplace;
     public static BlockPolygon polyblock;
     public static Polygon polyschema;
 
@@ -78,6 +79,7 @@ public class Main extends Mod {
         cmndfrag.build(ui.hudGroup);
         loadfrag.build(scene.root);
 
+        polyplace.build(ui.hudGroup);
         polyblock.build(ui.hudGroup);
         polyschema.build(ui.hudGroup);
 
@@ -129,6 +131,7 @@ public class Main extends Mod {
         cmndfrag = new CommandFragment();
         loadfrag = new LoadingFragment();
 
+        polyplace = new Polygon();
         polyblock = new BlockPolygon();
         polyschema = new Polygon();
     }
