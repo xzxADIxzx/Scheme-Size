@@ -6,11 +6,15 @@ import arc.struct.*;
 import mindustry.game.*;
 import mindustry.game.EventType.*;
 import mindustry.gen.*;
+import mindustry.graphics.*;
 import mindustry.type.*;
+import mindustry.ui.*;
+import mindustry.world.blocks.power.*;
 import mindustry.world.modules.*;
 import schema.input.*;
 import schema.ui.*;
 
+import static arc.Core.*;
 import static mindustry.Vars.*;
 import static schema.Main.*;
 
@@ -27,7 +31,8 @@ public class CoreInfo extends Table {
     /** Item module obtained from the core of the selected team. */
     private ItemModule core;
 
-    // TODO power grids
+    /** Power graph obtained from buildings' power modules. */
+    private PowerGraph graph;
 
     public CoreInfo() { super(Style.find("panel-top")); }
 
@@ -36,6 +41,8 @@ public class CoreInfo extends Table {
         Events.run(ResetEvent.class, used::clear);
         Events.run(WorldLoadEvent.class, () -> {
             team = player.team();
+            graph = new PowerGraph(true);
+
             rebuild();
         });
 
@@ -65,9 +72,12 @@ public class CoreInfo extends Table {
                         : format(core.get(i), false)
                 ).minWidth(80f).padLeft(4f).left();
 
-                if (t.getChildren().size % width == 0) t.row();
+                if (t.getChildren().size % 8 == 0) t.row();
 
             })).growY().width(4f * (24f + 4f + 80f)).padBottom(8f).row();
+
+            cont.add(balance()).growX().height(20f).padBottom(8f).row();
+            cont.add(stored()).growX().height(20f).row();
 
         }).growY();
         table(btns -> {
@@ -78,4 +88,20 @@ public class CoreInfo extends Table {
 
     /** Formats the given number as a flow. */
     public String formatFlow(float num) { return (num > 0 ? "[green]+" : num < 0 ? "[scarlet]" : "") + format(num, true) + "[light]/s"; }
+
+    /** Creates a power bar that displays the power balance. */
+    public Bar balance() {
+        return new Bar(
+            () -> bundle.format("bar.powerbalance", (graph.getPowerBalance() >= 0f ? "+" : "") + format(graph.getPowerBalance() * 60f, false)),
+            () -> Pal.powerBar,
+            () -> graph.getSatisfaction());
+    }
+
+    /** Creates a power bar that displays the power stored. */
+    public Bar stored() {
+        return new Bar(
+            () -> bundle.format("bar.powerstored", format(graph.getLastPowerStored(), false), format(graph.getLastCapacity(), false)),
+            () -> Pal.powerBar,
+            () -> graph.getLastPowerStored() / graph.getLastCapacity());
+    }
 }
