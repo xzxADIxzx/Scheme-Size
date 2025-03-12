@@ -33,7 +33,7 @@ public class Style {
     /** Special style for command fragment. */
     public static ImageButtonStyle ibc;
     /** Label style that uses the outline font. */
-    public static LabelStyle outline = Styles.outlineLabel;
+    public static LabelStyle outline;
 
     // endregion
 
@@ -83,6 +83,8 @@ public class Style {
             imageDownColor = Pal.accentBack;
             imageCheckedColor = Pal.accent;
         }};
+
+        outline = Styles.outlineLabel;
 
         log("Created 12 styles for UI");
 

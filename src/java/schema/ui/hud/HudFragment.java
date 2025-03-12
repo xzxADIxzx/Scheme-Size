@@ -11,7 +11,7 @@ public class HudFragment extends Table {
     public WaveInfo wave = new WaveInfo();
 
     /** Whether the fragment is visible. */
-    public boolean shown;
+    public boolean shown = true;
 
     /** Builds the fragment and override the original one. */
     public void build(Group parent) {
