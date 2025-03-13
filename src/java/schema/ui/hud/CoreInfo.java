@@ -128,8 +128,26 @@ public class CoreInfo extends Table {
 
             }, true, () -> chooseTeam).growX().row();
 
-            cont.add(balance()).growX().height(20f).pad(4f, 0f, 4f, 0f).row();
-            cont.add(stored()).growX().height(20f).pad(4f, 0f, 0f, 0f).row();
+            cont.add(balance(graph)).growX().height(20f).pad(4f, 0f, 4f, 0f).row();
+            cont.add(stored(graph)).growX().height(20f).pad(4f, 0f, 0f, 0f).row();
+
+            cont.collapser(t -> {
+
+                t.margin(12f, 0f, 0f, 0f).top();
+
+                if (graphs.isEmpty()) t.add("@hud.no-grids").padTop(-4f);
+                else graphs.each(graph -> {
+                    t.button(b -> {
+                        b.margin(8f);
+                        b.add(balance(graph)).grow().row();
+                        b.add(stored(graph)).grow().row();
+                    }, Style.cbt, () -> {
+                        this.graph = graph;
+                        rebuild();
+                    }).checked(b -> this.graph == graph).growX().height(48f).padTop(-4f).row();
+                });
+
+            }, true, () -> chooseGrid).growX().row();
 
         }).growY();
         table(btns -> {
@@ -145,7 +163,7 @@ public class CoreInfo extends Table {
     public boolean valid(PowerGraph graph) { return graph.all.size > 1 && graph.all.peek().team == team; }
 
     /** Creates a power bar that displays the power balance. */
-    public Bar balance() {
+    public Bar balance(PowerGraph graph) {
         return new Bar(
             () -> bundle.format("bar.powerbalance", (graph.getPowerBalance() >= 0f ? "+" : "") + format(graph.getPowerBalance() * 60f, false)),
             () -> Pal.powerBar,
@@ -153,7 +171,7 @@ public class CoreInfo extends Table {
     }
 
     /** Creates a power bar that displays the power stored. */
-    public Bar stored() {
+    public Bar stored(PowerGraph graph) {
         return new Bar(
             () -> bundle.format("bar.powerstored", format(graph.getLastPowerStored(), false), format(graph.getLastCapacity(), false)),
             () -> Pal.powerBar,
