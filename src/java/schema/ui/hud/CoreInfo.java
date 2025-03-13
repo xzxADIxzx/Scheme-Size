@@ -1,8 +1,10 @@
 package schema.ui.hud;
 
 import arc.*;
+import arc.math.*;
 import arc.scene.ui.layout.*;
 import arc.struct.*;
+import arc.util.*;
 import mindustry.game.*;
 import mindustry.game.EventType.*;
 import mindustry.gen.*;
@@ -31,6 +33,11 @@ public class CoreInfo extends Table {
     /** Item module obtained from the core of the selected team. */
     private ItemModule core;
 
+    /** Components used to calculate the mean of core items. */
+    private WindowedMean[] flow;
+    /** Last amount of items of each type. */
+    private int[] last;
+
     /** Power graph obtained from buildings' power modules. */
     private PowerGraph graph;
 
@@ -50,6 +57,19 @@ public class CoreInfo extends Table {
             core = team.data().hasCore() ? team.core().items : null;
             if (core != null && content.items().contains(i -> core.has(i) && used.add(i))) rebuild();
         });
+
+        flow = new WindowedMean[content.items().size];
+        last = new int[content.items().size];
+
+        for (int i = 0; i < flow.length; i++)
+            flow[i] = new WindowedMean(8);
+
+        Timer.schedule(() -> {
+            if (state.isPlaying() && core != null) content.items().each(used::contains, i -> {
+                flow[i.id].add(core.get(i) - last[i.id]);
+                last[i.id] = core.get(i);
+            });
+        }, 0f, .5f);
     }
 
     /** Rebuilds the subfragment to update the list of core items and power grids. */
@@ -68,7 +88,7 @@ public class CoreInfo extends Table {
                 t.label(() -> core == null
                     ? "[disabled]-"
                     : Keybind.display_prod.down()
-                        ? formatFlow(core.getFlowRate(i))
+                        ? formatFlow(flow[i.id].mean())
                         : format(core.get(i), false)
                 ).minWidth(80f).padLeft(4f).left();
 
