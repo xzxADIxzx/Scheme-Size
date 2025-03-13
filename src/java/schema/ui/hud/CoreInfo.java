@@ -1,6 +1,7 @@
 package schema.ui.hud;
 
 import arc.*;
+import arc.graphics.*;
 import arc.math.*;
 import arc.scene.ui.layout.*;
 import arc.struct.*;
@@ -94,15 +95,30 @@ public class CoreInfo extends Table {
 
                 if (t.getChildren().size % 8 == 0) t.row();
 
-            })).growY().width(4f * (24f + 4f + 80f)).padBottom(8f).row();
+            })).growY().width(4f * (24f + 4f + 80f)).pad(0f, 0f, 4f, 0f).row();
 
-            cont.add(balance()).growX().height(20f).padBottom(8f).row();
-            cont.add(stored()).growX().height(20f).row();
+            cont.collapser(t -> {
+
+                t.margin(4f, 4f, 4f, 0f).left();
+
+                for (var team : Team.all) {
+                    if (!team.active() && team.id >= 6) continue;
+
+                    t.button(Style.icon(team), Style.ibt, 32f, () -> {
+                        this.team = team;
+                        rebuild();
+                    }).checked(i -> this.team == team).size(40f).padLeft(-4f).get().getImage().setColor(team.active() ? Color.white : Pal.lightishGray);
+                }
+
+            }, true, () -> chooseTeam).growX().row();
+
+            cont.add(balance()).growX().height(20f).pad(4f, 0f, 4f, 0f).row();
+            cont.add(stored()).growX().height(20f).pad(4f, 0f, 0f, 0f).row();
 
         }).growY();
         table(btns -> {
-            btns.button(Style.icon(team), Style.ibt, 40f, () -> chooseTeam = !chooseTeam).size(48f).padBottom(8f).row();
-            btns.button(Icon.menu,        Style.ibc,      () -> chooseGrid = !chooseGrid).size(48f);
+            btns.button(Style.icon(team), Style.ibt, 40f, () -> chooseTeam = !chooseTeam).checked(i -> chooseTeam).size(48f).padBottom(8f).row();
+            btns.button(Icon.menu,        Style.ibc,      () -> chooseGrid = !chooseGrid).checked(i -> chooseGrid).size(48f);
         }).top();
     }
 
