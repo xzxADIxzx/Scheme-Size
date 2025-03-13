@@ -39,6 +39,8 @@ public class CoreInfo extends Table {
     /** Last amount of items of each type. */
     private int[] last;
 
+    /** Set of power graphs that were found on the map. */
+    private final ObjectSet<PowerGraph> graphs = new ObjectSet<>();
     /** Power graph obtained from buildings' power modules. */
     private PowerGraph graph;
 
@@ -47,16 +49,12 @@ public class CoreInfo extends Table {
     /** Builds the subfragment. */
     public void build() {
         Events.run(ResetEvent.class, used::clear);
+        Events.run(ResetEvent.class, graphs::clear);
         Events.run(WorldLoadEvent.class, () -> {
             team = player.team();
             graph = new PowerGraph(true);
 
             rebuild();
-        });
-
-        update(() -> {
-            core = team.data().hasCore() ? team.core().items : null;
-            if (core != null && content.items().contains(i -> core.has(i) && used.add(i))) rebuild();
         });
 
         flow = new WindowedMean[content.items().size];
@@ -66,10 +64,28 @@ public class CoreInfo extends Table {
             flow[i] = new WindowedMean(8);
 
         Timer.schedule(() -> {
-            if (state.isPlaying() && core != null) content.items().each(used::contains, i -> {
+            if (state.isMenu()) return;
+            var toRebuild = new boolean[] { false };
+
+            core = team.data().hasCore() ? team.core().items : null;
+            if (core != null) core.each((i, a) -> { if (used.add(i)) toRebuild[0] = true; });
+
+            if (core != null && state.isPlaying()) content.items().each(used::contains, i -> {
                 flow[i.id].add(core.get(i) - last[i.id]);
                 last[i.id] = core.get(i);
             });
+
+            graphs.each(g -> {
+                if (valid(g) && Groups.powerGraph.contains(e -> e.graph() == g)) return;
+
+                graphs.remove(g);
+                toRebuild[0] = true;
+
+                if (graph == g) graph = new PowerGraph(true);
+            });
+
+            if (Groups.powerGraph.contains(e -> valid(e.graph()) && graphs.add(e.graph()))) toRebuild[0] = true;
+            if (toRebuild[0]) rebuild();
         }, 0f, .5f);
     }
 
@@ -124,6 +140,9 @@ public class CoreInfo extends Table {
 
     /** Formats the given number as a flow. */
     public String formatFlow(float num) { return (num > 0 ? "[green]+" : num < 0 ? "[scarlet]" : "") + format(num, true) + "[light]/s"; }
+
+    /** Whether the given power graph is valid. */
+    public boolean valid(PowerGraph graph) { return graph.all.size > 1 && graph.all.peek().team == team; }
 
     /** Creates a power bar that displays the power balance. */
     public Bar balance() {
