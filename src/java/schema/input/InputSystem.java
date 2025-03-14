@@ -42,6 +42,8 @@ public abstract class InputSystem {
 
     /** Selected block, the one in your hand. I dunno how else to explain. */
     public Block block;
+    /** Whether the building is ongoing or paused. */
+    public boolean building;
 
     // region general
 

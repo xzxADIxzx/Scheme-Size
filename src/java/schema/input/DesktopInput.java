@@ -26,6 +26,9 @@ public class DesktopInput extends InputSystem {
 
     @Override
     protected void update() {
+        if (player.isBuilder())
+            player.unit().updateBuilding(building);
+
         if (scene.hasField() || scene.hasDialog()) {
             updateAI();
             return;
@@ -93,7 +96,10 @@ public class DesktopInput extends InputSystem {
             moveCam(mov.add(pan).limit2(1f).scl(settings.getInt("schema-pan-speed", 6) * (Keybind.boost.down() ? 2.4f : 1f) * Time.delta));
             unit.movePref(flw.scl(type.speed));
 
-            if (!Keybind.mouse_mv.down()) updateAI();
+            if (Keybind.mouse_mv.down())
+                unit.updateBuilding(false);
+            else
+                updateAI();
         } else {
             // this type of movement is activate only when the player controls a combat unit
             // inherently, this is the classical movement
@@ -289,6 +295,10 @@ public class DesktopInput extends InputSystem {
 
     @Override
     protected void updateState() {
+        if (state.isMenu()) {
+            block = null;
+            building = true;
+        }
         if (Keybind.tgl_fullscreen.tap()) {
             if (settings.getBool("fullscreen")) {
                 settings.put("fullscreen", false);
