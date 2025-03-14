@@ -147,12 +147,12 @@ public class BlockPolygon extends Polygon {
     public void hideImmediately() { super.hideImmediately(); removeChild(children.find(e -> e instanceof Table)); }
 
     /** Whether the given block is unlocked. */
-    public boolean unlocked(Block block) { return block.placeablePlayer && block.unlockedNow() && block.environmentBuildable(); }
+    public boolean unlocked(Block block) { return block.placeablePlayer && block.unlockedNow() && block.environmentBuildable() && block.isVisible(); }
 
     /** Iterates unlocked blocks in the given category. */
     public void eachUnlocked(Category cat, Cons<Block> cons) {
         content.blocks().select(b ->
-            b.category == cat && unlocked(b) && b.isVisible()
+            b.category == cat && unlocked(b)
         ).sort((b1, b2) ->
             Boolean.compare(!b1.isPlaceable(), !b2.isPlaceable())
         ).each(cons);

@@ -267,7 +267,7 @@ public class DesktopInput extends InputSystem {
 
         if (Keybind.block_info.tap()) {
             var build = selectedBuilding();
-            var hover = /* insys.block != null ? insys.block : */ build == null ? null : build instanceof ConstructBuild c ? c.current : build.block;
+            var hover = insys.block != null ? insys.block : build == null ? null : build instanceof ConstructBuild c ? c.current : build.block;
 
             if (hover != null && hover.unlockedNow()) ui.content.show(hover);
         }
@@ -286,8 +286,36 @@ public class DesktopInput extends InputSystem {
     }
 
     protected void updateBuilding() {
+        var plans = player.unit().plans;
+
         if (Keybind.hexblock.tap()) polyblock.show();
         if (Keybind.srcblock.tap()); // TODO block search fragments
+
+        if (Keybind.pause_bd.tap()) building = !building;
+        if (Keybind.clear_bd.tap()) plans.clear();
+
+        if (Keybind.drop.tap()); // TODO ai.drop = building
+        if (Keybind.drop.release()); // TODO ai.drop = null
+
+        if (Keybind.pick.tap()) {
+
+            var build = selectedBuilding();
+            if (build != null && build.inFogTo(player.team())) build = null; // questionable, but cheating is bad, right?
+
+            var recipe = build == null ? null : build instanceof ConstructBuild c ? c.current : build.block;
+            var config = build == null ? null : build.block.copyConfig ? build.config() : null;
+
+            var index = plans.indexOf(p -> !p.breaking && p.block.bounds(p.x, p.y, Tmp.r1).contains(input.mouseWorld()));
+            if (index != -1) {
+                recipe = plans.get(index).block;
+                config = plans.get(index).config;
+            }
+
+            if (recipe != null && polyblock.unlocked(recipe)) {
+                block = recipe;
+                recipe.lastConfig = config;
+            }
+        }
 
         if (Keybind.sel_schematic.tap()) ui.schematics.show();
         if (Keybind.hex_schematic.tap()) polyschema.show();
