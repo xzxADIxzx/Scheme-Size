@@ -1,11 +1,15 @@
 package schema.input;
 
+import arc.graphics.*;
+import arc.graphics.g2d.*;
 import arc.math.*;
 import arc.math.geom.*;
 import arc.util.*;
 import mindustry.core.*;
 import mindustry.entities.*;
+import mindustry.entities.units.*;
 import mindustry.gen.*;
+import mindustry.graphics.*;
 import mindustry.world.blocks.*;
 import mindustry.world.blocks.ConstructBlock.*;
 import schema.ui.polygon.Polygon;
@@ -20,9 +24,12 @@ import java.util.*;
 public class DesktopInput extends InputSystem {
 
     /** Amount of scrolls in one direction and the direction itself. */
-    public int scrolls, dir;
+    private int scrolls, dir;
     /** Amount of scrolls after which the zoom speed increases by one tile per scroll. */
-    public int aspect = 2;
+    private int aspect = 2;
+
+    /** Build plan used to draw the selected block. */
+    private BuildPlan temp = new BuildPlan() {{ animScale = 1f; }};
 
     @Override
     protected void update() {
@@ -339,7 +346,34 @@ public class DesktopInput extends InputSystem {
     }
 
     @Override
-    public void drawPlans() {}
+    public void drawPlans() {
+        var plans = player.unit().plans;
+
+        // TODO draw plans
+
+        if (block == null) return;
+
+        var tx = World.toTile(input.mouseWorldX() - block.offset);
+        var ty = World.toTile(input.mouseWorldY() - block.offset);
+
+        var rot = 0; // TODO rotation
+        var valid = control.input.validPlace(tx, ty, block, 0);
+
+        temp.set(tx, ty, rot, block);
+        temp.config = block.lastConfig;
+
+        block.drawPlan(temp, plans, valid);
+        block.drawPlace(tx, ty, rot, valid);
+
+        if (block.saveConfig) {
+            Draw.mixcol(valid ? Color.white : Pal.breakInvalid, (valid ? .2f : .4f) + Mathf.absin(Time.globalTime, 6f, .3f));
+            block.drawPlanConfig(temp, plans);
+            Draw.reset();
+        }
+
+        // honestly, I have no clue what it is
+        control.input.drawOverlapCheck(block, tx, ty, valid);
+    }
 
     @Override
     public void drawOverlay() {
