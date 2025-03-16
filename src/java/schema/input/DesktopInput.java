@@ -28,6 +28,11 @@ public class DesktopInput extends InputSystem {
     /** Amount of scrolls after which the zoom speed increases by one tile per scroll. */
     private int aspect = 2;
 
+    /** Block that is being rotated. */
+    private Rotatable toRotate;
+    /** Whether a block is being rotated. */
+    private boolean rotating;
+
     /** Build plan used to draw the selected block. */
     private BuildPlan temp = new BuildPlan() {{ animScale = 1f; }};
 
@@ -154,6 +159,9 @@ public class DesktopInput extends InputSystem {
     }
 
     protected void updateZoom() {
+        // both scroll and direction can be used to rotate
+        if (rotating) return;
+
         int scroll = (int) Keybind.scroll();
         if (scroll == 0 || scene.hasMouse()) return;
 
@@ -324,6 +332,20 @@ public class DesktopInput extends InputSystem {
             }
         }
 
+        if (Keybind.rotate.tap()) toRotate = new Rotatable(selectedBuilding(), block != null ? temp : null);
+        if (Keybind.rotate.release()) toRotate = null;
+
+        temp.block = block; // rotatable uses the plan
+        rotating = toRotate != null && toRotate.valid();
+
+        if (rotating) {
+            if (input.mouseWorld().within(toRotate, toRotate.radius())) {
+                int scroll = (int) Keybind.scroll();
+                if (scroll != 0) toRotate.rotateBy(scroll);
+            } else
+                toRotate.rotateTo(Mathf.round(Angles.angle(toRotate.getX(), toRotate.getY(), input.mouseWorldX(), input.mouseWorldY()) / 90f) % 4);
+        }
+
         if (Keybind.sel_schematic.tap()) ui.schematics.show();
         if (Keybind.hex_schematic.tap()) polyschema.show();
     }
@@ -333,6 +355,7 @@ public class DesktopInput extends InputSystem {
         if (state.isMenu()) {
             block = null;
             building = true;
+            toRotate = null;
         }
         if (Keybind.tgl_fullscreen.tap()) {
             if (settings.getBool("fullscreen")) {
@@ -353,10 +376,10 @@ public class DesktopInput extends InputSystem {
 
         if (block == null) return;
 
-        var tx = World.toTile(input.mouseWorldX() - block.offset);
-        var ty = World.toTile(input.mouseWorldY() - block.offset);
+        var tx = rotating ? toRotate.x : World.toTile(input.mouseWorldX() - block.offset);
+        var ty = rotating ? toRotate.y : World.toTile(input.mouseWorldY() - block.offset);
 
-        var rot = 0; // TODO rotation
+        var rot = temp.rotation;
         var valid = control.input.validPlace(tx, ty, block, 0);
 
         temp.set(tx, ty, rot, block);
