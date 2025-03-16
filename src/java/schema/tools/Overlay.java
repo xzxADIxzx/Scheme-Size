@@ -92,7 +92,7 @@ public class Overlay {
         capture(4f);
 
         if (state.rules.polygonCoreProtection) {
-            // TODO
+            // TODO implement
         } else {
             state.teams.eachEnemyCore(player.team(), c -> {
 
