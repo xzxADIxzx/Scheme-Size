@@ -22,8 +22,8 @@ public class Rotatable implements Position {
         else
             this.build = build;
 
-        x = plan != null ? plan.x : build.tileX();
-        y = plan != null ? plan.y : build.tileY();
+        x = plan != null ? plan.x : build != null ? build.tileX() : -1;
+        y = plan != null ? plan.y : build != null ? build.tileY() : -1;
     }
 
     /** Whether the block is valid to rotate or not. */
