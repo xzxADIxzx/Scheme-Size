@@ -403,5 +403,20 @@ public class DesktopInput extends InputSystem {
         if (commandMode) drawCommand();
         if (controlMode) drawControl();
         else controlFade = 0f;
+
+        if (rotating) {
+            Lines.stroke(1f, Pal.accent);
+            overlay.capture(4f);
+
+            for (int i = 0; i < 4; i++) {
+                Tmp.v1.trns(i * 90f, toRotate.radius() + 1f).add(toRotate);
+
+                Lines.arc(toRotate.getX(), toRotate.getY(), toRotate.radius(), .2f, i * 90f - 36f);
+                Fill.poly(Tmp.v1.x,        Tmp.v1.y,     3, 2f,                     i * 90f);
+            }
+
+            overlay.render();
+            Draw.reset();
+        }
     }
 }
