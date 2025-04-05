@@ -33,7 +33,7 @@ import static mindustry.Vars.*;
 import java.io.*;
 import java.util.zip.InflaterInputStream;
 
-/** Last update - Aug 26, 2022 */
+/** Last update - Apr 5, 2025 | 2025-4-5 */
 public class ModedSchematics extends Schematics {
 
     /** Too large schematic file extension. */
@@ -132,7 +132,7 @@ public class ModedSchematics extends Schematics {
             } catch (Exception ignored) {}
 
             IntMap<Block> blocks = new IntMap<>();
-            byte length = stream.readByte();
+            short length = stream.readUnsignedByte();
             for (int i = 0; i < length; i++) {
                 String name = stream.readUTF();
                 Block block = content.getByName(ContentType.block, SaveFileReader.fallback.get(name, name));
