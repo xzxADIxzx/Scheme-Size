@@ -2,5 +2,9 @@
 // Each server is listed in two forms: domain:port aka URL and ip:port
 [
     "claj://n3.xpdustry.com:7025",
-    "claj://37.187.73.180:7025"
+    "claj://37.187.73.180:7025",
+    "claj://uk1.eradication.fun:7025",
+    "claj://in3.eradication.fun:7025",
+    "claj://us1.eradication.fun:7025",
+    "claj://hk1.eradication.fun:7025"
 ]
