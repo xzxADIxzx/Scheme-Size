@@ -17,6 +17,6 @@ It may not be compatible with other mods. Therefore, it's recommended to enable 
     - Advanced developer console
     - Copy Link and Join"
 
-minGameVersion: 146
+minGameVersion: 149
 main: schema.Main
 hidden: true
