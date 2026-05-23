@@ -36,7 +36,7 @@ public final class Tools
         int count = 0;
         for (var pair : events) count += pair.value.size - pair.value.removeAll(l -> l.toString().startsWith(target.getName())).size;
 
-        log("Cleared [red]" + count + "[] events of " + target.getSimpleName());
+        log("[red] < Cleared [accent]" + count + "[] events of " + target.getSimpleName());
     }
 
     /// Returns the given number with a fixed number of decimal places.

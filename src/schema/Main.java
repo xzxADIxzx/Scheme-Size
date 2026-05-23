@@ -18,10 +18,16 @@ public class Main extends Mod
     /// Loads content such as tools, dialogs, fragments and so on.
     public void load() { }
 
+    /// Hooks content such as input, dialogs, fragments and so on.
+    public void hook() { }
+
     @Override
     public void init()
     {
         Tools.log("[green]=> Loading content...");
         load();
+
+        Tools.log("[green]=> Initializing content...");
+        hook();
     }
 }
