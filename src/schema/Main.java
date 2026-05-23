@@ -2,6 +2,10 @@ package schema;
 
 import arc.struct.*;
 import mindustry.mod.*;
+import schema.ui.fragments.*;
+
+import static arc.Core.*;
+import static mindustry.Vars.*;
 
 /// Main class of the mod that loads, initializes and stores different components of it.
 public class Main extends Mod
@@ -14,12 +18,25 @@ public class Main extends Mod
     public static ObjectMap<?, Seq<?>> events;
 
     // endregion
+    // region fragments
+
+    public static LoadingFragment loadfrag;
+
+    // endregion
 
     /// Loads content such as tools, dialogs, fragments and so on.
-    public void load() { }
+    public void load()
+    {
+        loadfrag = new LoadingFragment();
+    }
 
     /// Hooks content such as input, dialogs, fragments and so on.
-    public void hook() { }
+    public void hook()
+    {
+        loadfrag.build(scene.root);
+
+        ui.loadfrag = loadfrag.agent();
+    }
 
     @Override
     public void init()

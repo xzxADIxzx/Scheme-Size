@@ -19,40 +19,45 @@ import static arc.Core.*;
 import static mindustry.Vars.*;
 import static schema.Main.*;
 
-/** Fragment that is displayed during loading of any kind. */
-public class LoadingFragment extends Table {
-
-    /** Horizontal and vertical distance between hexes. */
+/// Fragment that is displayed during any sort of loading
+public class LoadingFragment extends Table
+{
+    /// Horizontal and vertical distance between hexes.
     public static final float spacing = 240f, height = Mathf.sqrt3 * spacing / 6f;
-    /** Distance between bars and their size. */
+    /// Distance between bars and their size.
     public static final float step = 80f, skew = 32f;
 
-    /** Provides the current loading progress. */
+    /// Current progress of the ongoing loading.
     private Floatp progress;
-    /** Interpolated value of the {@link #progress}. */
-    private float displayProgress;
+    /// Smoothed value of the {@link #progress}.
+    private float display;
 
-    /** Post-processing component. */
+    /// Post-processing component.
     private Bloom bloom = new Bloom(true);
-    /** Collection of hexes' positions. */
+    /// Collection of hexes' positions.
     private Seq<Vec2> hexes = new Seq<>();
 
     public LoadingFragment() { super(Styles.black8); }
 
-    /** Builds the fragment and override the original one. */
-    public void build(Group parent) {
-        Events.run(ResizeEvent.class, () -> {
-            int w = graphics.getWidth(),
+    /// Builds the fragment and overrides the original.
+    public void build(Group parent)
+    {
+        Events.run(ResizeEvent.class, () ->
+        {
+            int w = graphics.getWidth (),
                 h = graphics.getHeight();
 
             bloom.resize(w, h);
             bloom.blurPasses = 8;
-
             hexes.clear();
 
-            for (int x = 0; x <= w / spacing; x++)
-                for (int y = 0; y <= h / height + 1; y++)
-                    hexes.add(new Vec2((x + (y % 2) * .5f) * spacing, y * height - 14f));
+            for (int x = 0; x <= w / spacing;    x++)
+            for (int y = 0; y <= h / height + 1; y++)
+                hexes.add(new Vec2
+                (
+                    (x + (y % 2) * .5f) * spacing,
+                    y * height - 14f)
+                );
         });
 
         parent.addChild(this);
@@ -63,8 +68,11 @@ public class LoadingFragment extends Table {
         label(() -> (int) (progress.get() * 100) + "%").style(Styles.techLabel).color(Pal.accent);
     }
 
-    /** Shows the fragment with a simple animation. */
-    public void show() {
+    // region control
+
+    /// Shows the fragment with a simple animation.
+    public void show()
+    {
         hexes.shuffle();
         visible = true;
 
@@ -72,24 +80,30 @@ public class LoadingFragment extends Table {
         actions(Actions.alpha(.0f), Actions.alpha(1f, .4f));
     }
 
-    /** Hides the fragment with a simple animation. */
-    public void hide() {
+    /// Hides the fragment with a simple animation.
+    public void hide()
+    {
         progress = () -> 1f;
         actions(Actions.delay(.4f), Actions.alpha(0f, .4f), Actions.run(this::hideImmediately));
     }
 
-    /** Immediately hides the fragment without any animation. */
-    public void hideImmediately() {
+    /// Immediately hides the fragment.
+    public void hideImmediately()
+    {
         progress = () -> 0f;
-        displayProgress = 0f;
+        display = 0f;
         visible = false;
     }
 
+    // endregion
+    // region display
+
     @Override
-    public void draw() {
+    public void draw()
+    {
         super.draw();
 
-        float progress = displayProgress += Math.min(this.progress.get() - displayProgress, Time.delta / 20f);
+        float progress = display += Math.min(this.progress.get() - display, Time.delta / 12f);
 
         float w = graphics.getWidth(), h = graphics.getHeight();
         float x = w / 2f, y = h / 2f;
@@ -99,7 +113,8 @@ public class LoadingFragment extends Table {
 
         // region hexes
 
-        for (int i = 0; i < hexes.size; i++) {
+        for (int i = 0; i < hexes.size; i++)
+        {
             var alpha = Mathf.clamp(progress * hexes.size - i);
             if (alpha == 0f) break; // the rest of the hexes will have the same result
 
@@ -127,16 +142,18 @@ public class LoadingFragment extends Table {
 
         int bars = (int) (w / step / 2f) + 1;
 
-        for (int i = 2; i < bars; i++) {
+        for (int i = 2; i < bars; i++)
+        {
             float fract = 1f - (i - 2f) / (bars - 1f);
             float alpha = Mathf.clamp(1f - (fract - progress) * bars);
 
             Draw.color(Pal.accent, color.a * alpha);
 
-            for (int side : Mathf.signs) {
+            for (int side : Mathf.signs)
+            {
                 float bx = x + i * step * side - skew / 2f;
 
-                Fill.rects(bx, y, skew, skew, -skew * side);
+                Fill.rects(bx, y, skew,  skew, -skew * side);
                 Fill.rects(bx, y, skew, -skew, -skew * side);
             }
         }
@@ -146,14 +163,15 @@ public class LoadingFragment extends Table {
         bloom.render();
     }
 
+    // endregion
     // region agent
 
-    /** Returns the agent of this fragment. */
-    public Agent getAgent() { return new Agent(); }
+    /// Creates a new agent.
+    public Agent agent() { return new Agent(); }
 
-    /** Agent that redirects method calls from the original fragment to the new one. */
-    public class Agent extends mindustry.ui.fragments.LoadingFragment {
-
+    /// Agent redirecting method calls from the original component.
+    public class Agent extends mindustry.ui.fragments.LoadingFragment
+    {
         @Override
         public void setProgress(Floatp p) { progress = p; }
 
@@ -161,7 +179,7 @@ public class LoadingFragment extends Table {
         public void setProgress(float p) { progress = () -> p; }
 
         @Override
-        public void setButton(Runnable listener) {} // TODO implement
+        public void setButton(Runnable listener) { } // TODO implement styles, then the button
 
         @Override
         public void show() { loadfrag.show(); }
@@ -173,10 +191,10 @@ public class LoadingFragment extends Table {
         public void hide() { loadfrag.hide(); }
 
         @Override
-        public void toFront() {}
+        public void snapProgress() { }
 
         @Override
-        public void snapProgress() {}
+        public void toFront() { }
     }
 
     // endregion
