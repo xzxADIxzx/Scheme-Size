@@ -41,7 +41,7 @@ then
     mkdir bin
 
     lib=$(find lib -type f -name *.jar  -print | paste -sd:)
-    src=$(find src/java/schema -type f -name *.java -print | paste -s  )
+    src=$(find src -type f -name *.java -print | paste -s  )
 
     javac --release 16 --class-path $lib -d bin $src
 
