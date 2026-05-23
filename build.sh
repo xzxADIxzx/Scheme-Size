@@ -1,55 +1,76 @@
 #!/bin/bash
+# region constants
 
-b="\033[1;32m"
+r="\033[1;31m"
+g="\033[1;32m"
 n="\033[0;39m"
 
-project="Schema"
+function faulty
+{
+    echo -e "$r!> $1$n"
+}
 
+function region
+{
+    echo -e "$g=> $1$n"
+}
 
+# endregion
+# region help
 
-[ "$1" != "desktop" ] && [ "$1" != "mobile" ] && echo -e "Use either$b desktop$n or$b mobile$n as an argument" && exit 1
+if echo $1 | grep -q "h" || [ $# -lt 1 ]
+then
+    echo "Builds the project"
+    echo ""
+    echo "Usage: build <operations>"
+    echo "Operations:"
+    echo "    -h display this text"
+    echo "    -d compile for desktop devices"
+    echo "    -m compile for mobile devices"
+    exit 0
+fi
 
-echo -e "=>$b Building desktop jar...$n"
+# endregion
+# region desktop
 
+if echo $1 | grep -q "d"
+then
+    region "Compiling the source code..."
 
+    rm -r bin
+    mkdir bin
 
-echo "Compiling the source code"
+    lib=$(find lib -type f -name *.jar  -print | paste -sd:)
+    src=$(find src/java/schema -type f -name *.java -print | paste -s  )
 
-rm -r bin
-mkdir bin
+    javac --release 16 --class-path $lib -d bin $src
 
-lib=$(find lib -type f -name *.jar  -print | paste -sd:)
-src=$(find src -type f -name *.java -print | paste -s)
+    region "Archiving the class files and resources..."
 
-javac --release 16 --class-path $lib -d bin $src
+    rm -r build
+    mkdir build
 
+    jar --create --file build/Schema.jar -C bin . -C assets .
+fi
 
+# endregion
+# region mobile
 
-echo "Archiving the class files and resources"
+if echo $1 | grep -q "m"
+then
+    region "Searching for android.jar..."
 
-rm -r build
-mkdir build
+    pf=$ANDROID_HOME/platforms
 
-jar --create --file build/$project.jar -C bin .
-jar --update --file build/$project.jar -C src/resources .
-jar --update --file build/$project.jar mod.hjson
+    lib=$(find lib -type f -name *.jar       -print | sed -e "s/^/--classpath /" | paste -s )
+    cls=$(find bin -type f -name *.class     -print | sort --reverse             | paste -s )
+    jar=$(find $pf -type f -name android.jar -print | sort --reverse             | head -n 1)
 
+    region "Found android.jar in $(dirname $jar), compiling..."
 
+    d8 $lib --lib $jar --output bin $cls
 
-[ "$1" != "mobile" ] && exit 0
+    jar --update --file build/Schema.jar -C bin classes.dex
+fi
 
-echo -e "=>$b Building mobile jar...$n"
-
-
-
-pf=$ANDROID_HOME/platforms
-
-lib=$(find lib -type f -name *.jar       -print | sed -e "s/^/--classpath /" | paste -s)
-cls=$(find bin -type f -name *.class     -print |                              paste -s)
-jar=$(find $pf -type f -name android.jar -print | sort --reverse             | head --lines=1)
-
-echo "Found android.jar in $(dirname $jar)"
-
-d8 $lib --lib $jar --output bin $cls
-
-jar --update --file build/$project.jar -C bin classes.dex
+# endregion

@@ -7,28 +7,28 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Check out the repo
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
+
+    - name: Set up JDK
+      uses: actions/setup-java@v5
+      with:
+        distribution: temurin
+        java-version: 26
 
     - name: Set up PATH
       run: echo $ANDROID_HOME/build-tools/34.0.0 >> $GITHUB_PATH
 
-    - name: Set up JDK
-      uses: actions/setup-java@v4
-      with:
-        distribution: temurin
-        java-version: 17
-
-    - name: Change permissions
+    - name: Set up permissions
       run: chmod +x build.sh dependencies.sh
 
     - name: Download dependencies
-      run: ./dependencies.sh dependencies-only
+      run: ./dependencies.sh -cd
 
     - name: Build the project
-      run: ./build.sh mobile
+      run: ./build.sh -dm
 
-    - name: Upload built jar file
-      uses: actions/upload-artifact@v4
+    - name: Upload the build
+      uses: actions/upload-artifact@v7
       with:
         name: Schema
         path: build/Schema.jar

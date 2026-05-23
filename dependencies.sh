@@ -1,42 +1,92 @@
 #!/bin/bash
+# region constants
 
-b="\033[1;32m"
+r="\033[1;31m"
+g="\033[1;32m"
 n="\033[0;39m"
 
-jitpack="https://jitpack.io"
+function faulty
+{
+    echo -e "$r!> $1$n"
+}
 
+function region
+{
+    echo -e "$g=> $1$n"
+}
 
+# endregion
+# region help
 
-[ "$1" != "dependencies-only" ] && [ "$1" != "sources-too" ] && echo -e "Use either$b dependencies-only$n or$b sources-too$n as an argument" && exit 1
+if echo $1 | grep -q "h" || [ $# -lt 1 ]
+then
+    echo "Downloads dependencies of the project"
+    echo ""
+    echo "Usage: build <operations>"
+    echo "Operations:"
+    echo "    -h display this text"
+    echo "    -c clear the library"
+    echo "    -d download dependencies"
+    echo "    -s download sources"
+    exit 0
+fi
 
-echo -e "=>$b Downloading dependencies...$n"
-
-
-
-rm -r lib
-mkdir lib
+# endregion
+# region download
 
 function download
 {
-    echo "Downloading $1/$2"
-    wget --tries=3 --timeout=3 --quiet -P lib $jitpack/com/github/$1/$2/$3/$2-$3$end
+    if echo $5 | grep -q "sources"
+    then
+        file="-$4-sources.jar"
+    else
+        file="-$4.jar"
+    fi
+    if echo $3 | grep -q "null"
+    then
+        link="https://jitpack.io/com/github/$1/$2/$4/$2$file"
+    else
+        link="https://jitpack.io/com/github/$1/$2/$3/$4/$3$file"
+    fi
+
+    echo -e "$g < Downloading $1/$2:$3$n"
+    curl --fail --show-error --silent --output-dir lib --remote-name $link
 }
 
-end=".jar"
-download Anuken/Arc arc-core v146
-download Anuken/Arc arcnet v146
-download Anuken/Mindustry core v146
-download Anuken rhino 73a812444ac388ac2d94013b5cadc8f70b7ea027
+# endregion
+# region clear
 
+if echo $1 | grep -q "c"
+then
+    region "Clearing the library..."
 
+    rm -r lib
+    mkdir lib
+fi
 
-[ "$1" != "sources-too" ] && exit 0
+# endregion
+# region dependencies
 
-echo -e "=>$b Downloading sources...$n"
+if echo $1 | grep -q "d"
+then
+    region "Downloading dependencies..."
 
+    download Anuken Arc       arc-core v157.4     library
+    download Anuken Arc       arcnet   v157.4     library
+    download Anuken Mindustry core     v157.4     library
+    download Anuken rhino     null     54b75cbd12 library
+fi
 
+# endregion
+# region sources
 
-end="-sources.jar"
-download Anuken/Arc arc-core v146
-download Anuken/Arc arcnet v146
-download Anuken/Mindustry core v146
+if echo $1 | grep -q "s"
+then
+    region "Downloading sources..."
+
+    download Anuken Arc       arc-core v157.4     sources
+    download Anuken Arc       arcnet   v157.4     sources
+    download Anuken Mindustry core     v157.4     sources
+fi
+
+# endregion
