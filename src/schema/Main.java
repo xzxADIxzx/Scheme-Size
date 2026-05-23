@@ -46,5 +46,10 @@ public class Main extends Mod
 
         Tools.log("[green]=> Initializing content...");
         hook();
+
+        Tools.log("[green]=> Running postinit hooks...");
+
+        Updater.load();
+        Updater.fetch();
     }
 }
