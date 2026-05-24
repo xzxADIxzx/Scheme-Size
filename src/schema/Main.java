@@ -51,5 +51,14 @@ public class Main extends Mod
 
         Updater.load();
         Updater.fetch();
+
+        try // run the script outside of wrapper to make constants available in the dev console
+        {
+            Scripts scripts = mods.getScripts();
+            scripts.context.evaluateReader(scripts.scope, Updater.script().reader(), "main.js", 0);
+
+            Tools.log("[green] < Loaded constants into the dev console");
+        }
+        catch (Throwable e) { Tools.err(e); }
     }
 }
