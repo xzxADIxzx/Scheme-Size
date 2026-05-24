@@ -2,6 +2,7 @@ package schema;
 
 import arc.struct.*;
 import mindustry.mod.*;
+import schema.ui.*;
 import schema.ui.fragments.*;
 
 import static arc.Core.*;
@@ -27,6 +28,8 @@ public class Main extends Mod
     /// Loads content such as tools, dialogs, fragments and so on.
     public void load()
     {
+        Style.load();
+
         loadfrag = new LoadingFragment();
     }
 
