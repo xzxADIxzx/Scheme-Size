@@ -40,7 +40,7 @@ public enum Keybind
     hex_schematic(3, KeyCode.f),
     new_schematic(0, KeyCode.f),
     flip_x(0, KeyCode.z),
-    flip_z(0, KeyCode.x),
+    flip_y(0, KeyCode.x),
 
     command(0, KeyCode.shiftLeft, "command"),
     control(0, KeyCode.controlLeft),
