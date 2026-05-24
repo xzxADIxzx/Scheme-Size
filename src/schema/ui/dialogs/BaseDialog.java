@@ -2,6 +2,7 @@ package schema.ui.dialogs;
 
 import arc.scene.style.*;
 import arc.scene.ui.*;
+import arc.scene.ui.layout.*;
 import arc.util.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
@@ -9,6 +10,9 @@ import mindustry.graphics.*;
 /// Dialog with a title header and button footer.
 public class BaseDialog extends Dialog
 {
+    /// Footer containing buttons.
+    private Table footer;
+
     public BaseDialog(String name)
     {
         super(name);
@@ -26,12 +30,13 @@ public class BaseDialog extends Dialog
 
         buttons.image().growX().height(4f).pad(0f).color(Pal.accent);
         buttons.row();
+        buttons.table(t -> footer = t).pad(8f);
     }
 
     /// Adds a button to the dialog's footer.
     public void addButton(String text, Drawable icon, float width, Runnable clicked)
     {
-        buttons.button(text, icon, schema.ui.Style.tbd, clicked).size(width, 48f).pad(8f, 4f, 8f, 4f);
+        footer.button(text, icon, schema.ui.Style.tbd, clicked).size(width, 48f).pad(0f, 4f, 0f, 4f);
     }
 
     /// Adds a button that closes the dialog.
