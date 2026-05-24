@@ -71,9 +71,9 @@ if echo $1 | grep -q "d"
 then
     region "Downloading dependencies..."
 
-    download Anuken Arc       arc-core v157.4     library
-    download Anuken Arc       arcnet   v157.4     library
-    download Anuken Mindustry core     v157.4     library
+    download Anuken Arc       arc-core v158       library
+    download Anuken Arc       arcnet   v158       library
+    download Anuken Mindustry core     v158       library
     download Anuken rhino     null     54b75cbd12 library
 fi
 
@@ -84,9 +84,9 @@ if echo $1 | grep -q "s"
 then
     region "Downloading sources..."
 
-    download Anuken Arc       arc-core v157.4     sources
-    download Anuken Arc       arcnet   v157.4     sources
-    download Anuken Mindustry core     v157.4     sources
+    download Anuken Arc       arc-core v158       sources
+    download Anuken Arc       arcnet   v158       sources
+    download Anuken Mindustry core     v158       sources
 fi
 
 # endregion
