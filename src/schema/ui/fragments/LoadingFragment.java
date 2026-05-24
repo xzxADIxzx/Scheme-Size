@@ -51,13 +51,13 @@ public class LoadingFragment extends Table
             bloom.blurPasses = 8;
             hexes.clear();
 
-            for (int x = 0; x <= w / spacing;    x++)
-            for (int y = 0; y <= h / height + 1; y++)
+            for (int x = 0; x < w / spacing + 1; x++)
+            for (int y = 0; y < h / height  + 0; y++)
                 hexes.add(new Vec2
                 (
-                    (x + (y % 2) * .5f) * spacing,
-                    y * height - 14f)
-                );
+                    (w - Mathf.round(w, spacing)) / 2f + (x - (y % 2) * .5f) * spacing,
+                    (h - Mathf.round(h, height )) / 2f + y * height
+                ));
         });
 
         parent.addChild(this);
@@ -77,14 +77,14 @@ public class LoadingFragment extends Table
         visible = true;
 
         toFront();
-        actions(Actions.alpha(.0f), Actions.alpha(1f, .4f));
+        actions(Actions.alpha(.0f), Actions.alpha(1f, .2f));
     }
 
     /// Hides the fragment with a simple animation.
     public void hide()
     {
         progress = () -> 1f;
-        actions(Actions.delay(.4f), Actions.alpha(0f, .4f), Actions.run(this::hideImmediately));
+        actions(Actions.delay(.2f), Actions.alpha(0f, .2f), Actions.run(this::hideImmediately));
     }
 
     /// Immediately hides the fragment.
