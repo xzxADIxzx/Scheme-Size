@@ -3,6 +3,7 @@ package schema;
 import arc.struct.*;
 import mindustry.mod.*;
 import schema.ui.*;
+import schema.ui.dialogs.*;
 import schema.ui.fragments.*;
 
 import static arc.Core.*;
@@ -19,6 +20,11 @@ public class Main extends Mod
     public static ObjectMap<?, Seq<?>> events;
 
     // endregion
+    // region dialogs
+
+    public static KeybindDialog keybind;
+
+    // endregion
     // region fragments
 
     public static LoadingFragment loadfrag;
@@ -29,6 +35,8 @@ public class Main extends Mod
     public void load()
     {
         Style.load();
+
+        keybind = new KeybindDialog();
 
         loadfrag = new LoadingFragment();
     }
@@ -49,6 +57,9 @@ public class Main extends Mod
 
         Tools.log("[green]=> Initializing content...");
         hook();
+
+        keybind.load();
+        keybind.resolve();
 
         Tools.log("[green]=> Running postinit hooks...");
 
