@@ -14,34 +14,35 @@ import mindustry.world.blocks.storage.*;
 
 import static mindustry.Vars.*;
 
-/** Utility class that helps fetch info about units. */
-public class Units {
-
-    /** Units that are commonly spawn by core. */
+/// Utility focused on units.
+public class Units
+{
+    /// Unit types commonly spawned by cores.
     public Seq<UnitType> coreUnits;
-    /** Whether the unit of the local player was spawn by core. */
+    /// Whether the unit was spawned by core.
     public boolean coreUnit;
 
-    /** Item capacity of the unit of the local player. */
+    /// Item capacity of the unit.
     public int capacity;
-    /** Whether to draw units or not. */
+    /// Whether to draw units or not.
     public boolean draw;
 
-    /** Maximum health of the force field. */
+    /// Maximum health of the shield.
     private float maxShield;
-    /** Current shield or null if absent. */
+    /// Current shield or null if absent.
     private ForceFieldAbility fldShield;
-    /** Current shield or null if absent. */
+    /// Current shield or null if absent.
     private ShieldArcAbility arcShield;
 
-    /** Summary health and shield of all units on the next wave. */
+    /// Total health and shield of units on the next wave.
     public float waveHealth, waveShield;
-    /** Total amount of units and bosses on the next wave. */
+    /// Total amount of units and bosses on the next wave.
     public ObjectIntMap<UnitType> waveUnits = new ObjectIntMap<>(), waveBosses = new ObjectIntMap<>();
 
-    public Units() {
-        Events.on(WorldLoadEvent.class, e -> draw = true);
-        Events.on(UnitChangeEvent.class, e -> {
+    public Units()
+    {
+        Events.on(UnitChangeEvent.class, e ->
+        {
             if (e.player != player) return;
 
             coreUnit = player.unit() != null && coreUnits.contains(player.unit().type);
@@ -51,8 +52,8 @@ public class Units {
             fldShield = null;
             arcShield = null;
 
-            if (player.unit() != null) for (var ability : player.unit().abilities) {
-
+            if (player.unit() != null) for (var ability : player.unit().abilities)
+            {
                 if (ability instanceof ForceFieldAbility fld) {
                     maxShield = fld.max;
                     fldShield = fld;
@@ -66,14 +67,14 @@ public class Units {
             }
         });
 
-        // the units from this sequence have different movement type
         coreUnits = content.blocks().select(b -> b instanceof CoreBlock).<CoreBlock>as().map(b -> b.unitType);
 
-        // this is, probably, kinda dangerous
-        Groups.draw = new EntityGroup<Drawc>(Drawc.class, false, false, Reflect.get(Groups.draw, "indexer")) {
-
+        // extremely invasive, yet efficient
+        Groups.draw = new EntityGroup<Drawc>(Drawc.class, false, false, Reflect.get(Groups.draw, "indexer"))
+        {
             @Override
-            public void draw(Cons<Drawc> cons) {
+            public void draw(Cons<Drawc> cons)
+            {
                 if (draw)
                     super.draw(cons);
                 else
@@ -82,24 +83,26 @@ public class Units {
         };
     }
 
-    /** Returns the current health of the force field. */
-    public float shield() { return fldShield != null ? player.unit().shield : arcShield != null ? arcShield.data : 0f; }
+    /// Returns the absolute health of the shield.
+    public float shieldAbs() { return fldShield != null ? player.unit().shield : arcShield != null ? arcShield.data : 0f; }
 
-    /** Returns the percentage health of the force field. */
-    public float shieldf() { return shield() / maxShield; }
+    /// Returns the relative health of the shield.
+    public float shieldRel() { return shieldAbs() / maxShield; }
 
-    /** Refreshes the information about the next wave. */
-    public void refreshWaveInfo() {
+    /// Refreshes information about the next wave.
+    public void refreshWaveInfo()
+    {
         waveHealth = waveShield = 0f;
         waveUnits.clear();
         waveBosses.clear();
 
-        state.rules.spawns.each(g -> g.type != null, g -> {
+        state.rules.spawns.each(g -> g.type != null, g ->
+        {
             int amount = g.getSpawned(state.wave - 1);
             if (amount == 0) return;
 
             waveHealth += g.type.health * amount;
-            waveShield += g.getShield(state.wave - 1);
+            waveShield += g.getShield(state.wave - 1) * amount;
 
             (g.effect == StatusEffects.boss ? waveBosses : waveUnits).put(g.type, amount);
         });
