@@ -43,7 +43,7 @@ then
     lib=$(find lib -type f -name *.jar  -print | paste -sd:)
     src=$(find src -type f -name *.java -print | paste -s  )
 
-    javac --release 16 --class-path $lib -d bin $src
+    javac --release 25 --class-path $lib -d bin $src
 
     region "Archiving the class files and resources..."
 
