@@ -29,6 +29,9 @@ public abstract class InputSystem
     /// Extreme zoom values: the minimum value is zoom in; hence, the maximum one is zoom out.
     protected float minZoom = 16f, maxZoom = 256f;
 
+    /// Latest position of the mouse in the world.
+    protected Vec2 mouse;
+
     /// Whether the command/control mode is on.
     protected boolean commandMode, controlMode;
     /// Origin of the unit selection rectangle.
@@ -205,31 +208,26 @@ public abstract class InputSystem
     public void moveCam(Vec2 offset) { camera.position.add(offset); }
 
     /// Returns a unit under the mouse.
-    public Unit selectedUnit()
+    public Unit selectedUnit(boolean ally)
     {
-        var mouse = input.mouseWorld();
-        return Units.closest(player.team(), mouse.x, mouse.y, u -> u.type.playerControllable && u.isAI() && u.within(mouse, u.hitSize));
-    }
-
-    /// Returns an enemy under the mouse. TODO merge with selectedUnit
-    public Unit selectedEnemy()
-    {
-        var mouse = input.mouseWorld(); var team = player.team();
-        return Groups.unit.intersect(mouse.x - 1f, mouse.y - 1f, 2f, 2f).min(u -> u.team != team && u.targetable(team) && !u.inFogTo(team), u -> u.dst(mouse));
+        if (ally)
+            return Units.closest(player.team(), mouse.x, mouse.y, 8f, u -> u.isCommandable() && u.isAI() && u.within(mouse, u.hitSize));
+        else
+            return Units.closestEnemy(player.team(), mouse.x, mouse.y, 8f, _ -> true);
     }
 
     /// Returns a building under the mouse.
-    public Building selectedBuilding()
-    {
-        var mouse = input.mouseWorld();
-        return world.buildWorld(mouse.x, mouse.y);
-    }
+    public Building selectedBuilding() { return world.buildWorld(mouse.x, mouse.y); }
 
-    /// Iterates all units in the unit selection rectangle.
+    /// Iterates ally units in the unit selection rectangle.
     public void selectedRegion(Cons<Unit> cons)
     {
-        Tmp.r1.set(commandRect.x, commandRect.y, input.mouseWorldX() - commandRect.x, input.mouseWorldY() - commandRect.y).normalize();
-        player.team().data().tree().intersect(Tmp.r1, cons);
+        Tmp.r1.set(commandRect.x, commandRect.y, mouse.x - commandRect.x, mouse.y - commandRect.y).normalize();
+
+        player.team().data().tree().intersect(Tmp.r1, u ->
+        {
+            if (u.isCommandable() && u.isAI()) cons.get(u);
+        });
     }
 
     /// Whether the command mode is on.
@@ -250,7 +248,10 @@ public abstract class InputSystem
     public void releaseUnits(Boolf<Unit> pred) { commandUnits.removeAll(pred); }
 
     /// Commands all units to perform the given command.
-    public void commandUnits(UnitCommand command) { Call.setUnitCommand(player, commandUnits.mapInt(Unitc::id).toArray(), command); }
+    public void commandUnits(UnitCommand command) { Call.setUnitCommand(player, commandUnits.mapInt(Unitc::id, u -> u.type.allowCommand(u, command)).toArray(), command); }
+
+    /// Commands all units to perform the given stance.
+    public void commandUnits(UnitStance stance, boolean on) { Call.setUnitStance(player, commandUnits.mapInt(Unitc::id, u -> u.type.allowStance(u, stance)).toArray(), stance, on); }
 
     // endregion
     // region agent
