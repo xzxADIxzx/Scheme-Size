@@ -39,6 +39,8 @@ public abstract class InputSystem
     protected Seq<Building> commandBuildings = new Seq<>();
     /// Control mode overlay.
     protected float controlFade;
+    /// Last controlled unit.
+    protected Sized controlUnit;
 
     /// Selected block, the one in your hand.
     public Block block;
@@ -62,7 +64,7 @@ public abstract class InputSystem
     // endregion
     // region draw
 
-    /// Draws the command mode overlay
+    /// Draws the command mode overlay.
     protected void drawCommand()
     {
         if (commandRect != null)
@@ -109,7 +111,7 @@ public abstract class InputSystem
         });
         if (commandRect == null || commandRect.within(input.mouseWorld(), 8f))
         {
-            var unit = selectedUnit();
+            var unit  = selectedUnit(true);
             var build = selectedBuilding();
 
             if (unit != null)
@@ -120,35 +122,33 @@ public abstract class InputSystem
         }
     }
 
-    /// Draws the control mode overlay
+    /// Draws the control mode overlay.
     protected void drawControl()
     {
-        var unit = selectedUnit();
+        var unit  = selectedUnit(true);
         var build = selectedBuilding();
 
         if (unit == null && build instanceof ControlBlock c && c.canControl() && !c.isControlled()) unit = c.unit();
 
         boolean has = unit != null || (build != null && build.team == player.team() && build.canControlSelect(player.unit()));
-        controlFade = Mathf.lerpDelta(controlFade, Mathf.num(has), .08f);
+        controlFade = Mathf.lerpDelta(controlFade, Mathf.num(has), .1f);
 
         if (has)
         {
             Draw.mixcol(Pal.accent, 1f);
             Draw.alpha(controlFade);
-            overlay.capture(.8f);
+            overlay.capture(1f);
 
-            if (unit != null)
-                Draw.rect(unit.icon(), unit, unit instanceof BlockUnitc ? 0f : unit.rotation - 90f);
-            else
-                Draw.rect(build.block.fullIcon, build, 0f);
+            if (build != null) Draw.rect(build.block.fullIcon, build, 0f);
 
             Sized sized = unit != null ? unit : build;
             float count = 1.4f + sized.hitSize() / 8f;
             float space = 360f / Mathf.floor(count);
+            controlUnit = sized;
 
             for (int i = 1; i < count; i++)
             {
-                float len = sized.hitSize() * 1.2f + 12f - controlFade * 4f;
+                float len = sized.hitSize() + 16f - controlFade * 8f;
                 float rot = i * space - Time.time % 360f;
 
                 Draw.rect("select-arrow", sized.getX() + Angles.trnsx(rot, len), sized.getY() + Angles.trnsy(rot, len), 12f, 12f, rot - 135f);
@@ -158,6 +158,9 @@ public abstract class InputSystem
             Draw.reset();
         }
     }
+
+    /// Returns the control mode alpha.
+    public float fade(Unit unit) { return controlUnit == unit ? controlFade : 0f; }
 
     // endregion
     // region tools
