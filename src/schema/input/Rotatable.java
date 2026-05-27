@@ -7,16 +7,17 @@ import mindustry.gen.*;
 
 import static mindustry.Vars.*;
 
-/** Represents a block that can be rotated. It can be either a building or plan. */
-public class Rotatable implements Position {
-
+/// Represents either a building or plan that can be rotated.
+public class Rotatable implements Position
+{
     private Building build;
     private BuildPlan plan;
 
-    /** Position of the tile that contains the block or its center. */
+    /// Coordinates of the block's center.
     public int x, y;
 
-    public Rotatable(Building build, BuildPlan plan) {
+    public Rotatable(Building build, BuildPlan plan)
+    {
         if (plan != null)
             this.plan = plan;
         else
@@ -26,30 +27,34 @@ public class Rotatable implements Position {
         y = plan != null ? plan.y : build != null ? build.tileY() : -1;
     }
 
-    /** Whether the block is valid to rotate or not. */
+    /// Whether the block is rotatable.
     public boolean valid() { return (plan != null && plan.block.rotate) || (build != null && build.block.rotate && build.team == player.team()); }
 
-    /** Returns the radius of the block. */
-    public float radius() {
+    /// Returns the radius of the block.
+    public float radius()
+    {
         if (plan != null)
             return plan.block.size * Mathf.sqrt2 * 4f;
         else
             return build.hitSize() * Mathf.sqrt2 / 2f;
     }
 
-    /** Rotates the block by the given scroll. */
-    public void rotateBy(int scroll) {
+    /// Rotates the block by the scroll.
+    public void rotateBy(int scroll)
+    {
         if (plan != null)
             plan.rotation = Mathf.mod(plan.rotation + scroll, 4);
         else
             Call.rotateBlock(player, build, scroll > 0);
     }
 
-    /** Rotates the block to the given direction. */
-    public void rotateTo(int dir) {
+    /// Rotates the block to the direction.
+    public void rotateTo(int dir)
+    {
         if (plan != null)
             plan.rotation = dir;
-        else {
+        else
+        {
             boolean j = build.rotation < dir;
             for (int i = build.rotation; i != dir; i += Mathf.sign(j)) Call.rotateBlock(player, build, j);
         }
