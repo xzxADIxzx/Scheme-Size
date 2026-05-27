@@ -86,25 +86,55 @@ public abstract class InputSystem
         {
             var ai = u.command();
             var dest = ai.attackTarget != null ? ai.attackTarget : ai.targetPos;
-            if (dest != null && ai.currentCommand().drawTarget)
+            if (dest != null)
             {
-                Drawf.limitLine(u, dest, u.hitSize, 3f);
+                Drawf.limitLine(u, dest, u.hitSize + 2f, 4f, Tmp.c1.set(Pal.accent).a(.6f));
 
                 if (ai.attackTarget == null)
                     Drawf.square(dest.getX(), dest.getY(), 3f);
                 else
-                    Drawf.target(dest.getX(), dest.getY(), 5f, Pal.remove);
+                    Drawf.target(dest.getX(), dest.getY(), 4f, Pal.remove);
             }
             Drawf.poly(u.x, u.y, 6, u.hitSize, 0f, Pal.accent);
 
-            // TODO add support for queue and loops
+            Position[] last = { dest };
+            ai.commandQueue.each(c ->
+            {
+                Drawf.limitLine(last[0], c, 4f, 4f, Tmp.c1.set(Pal.accent).a(.6f));
+
+                if (c instanceof Vec2)
+                    Drawf.square(c.getX(), c.getY(), 3f);
+                else
+                    Drawf.target(c.getX(), c.getY(), 4f, Pal.remove);
+
+                last[0] = c;
+            });
+
+            if (dest != null && ai.currentCommand() == UnitCommand.loopPayloadCommand && u instanceof Payloadc p)
+            {
+                Draw.color(Pal.accent, .4f + Mathf.absin(4f, .4f));
+                Draw.rect
+                (
+                    p.hasPayload() ? Icon.download.getRegion() : Icon.upload.getRegion(),
+                    dest.getX(),
+                    dest.getY() + 12f,
+                    8f, 8.27f
+                );
+                if (ai.commandQueue.size >= 1) Draw.rect
+                (
+                    p.hasPayload() ? Icon.upload.getRegion() : Icon.download.getRegion(),
+                    ai.commandQueue.first().getX(),
+                    ai.commandQueue.first().getY() + 12f,
+                    8f, 8.27f
+                );
+            }
         }));
         commandBuildings.each(b ->
         {
             var dest = b.getCommandPosition();
             if (dest != null)
             {
-                Drawf.limitLine(b, dest, b.hitSize() / 2f, 3f);
+                Drawf.limitLine(b, dest, b.hitSize() / 2f + 2f, 4f, Tmp.c1.set(Pal.accent).a(.6f));
                 Drawf.square(dest.getX(), dest.getY(), 3f);
             }
             Drawf.square(b.x, b.y, b.hitSize() / 2f);
@@ -130,7 +160,7 @@ public abstract class InputSystem
 
         if (unit == null && build instanceof ControlBlock c && c.canControl() && !c.isControlled()) unit = c.unit();
 
-        boolean has = unit != null || (build != null && build.team == player.team() && build.canControlSelect(player.unit()));
+        boolean has = (unit != null && unit.team == player.team()) || (build != null && build.team == player.team() && build.canControlSelect(player.unit()));
         controlFade = Mathf.lerpDelta(controlFade, Mathf.num(has), .1f);
 
         if (has)
