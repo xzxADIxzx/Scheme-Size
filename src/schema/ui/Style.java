@@ -2,11 +2,13 @@ package schema.ui;
 
 import arc.graphics.*;
 import arc.scene.style.*;
+import arc.scene.ui.*;
 import arc.scene.ui.Button.*;
 import arc.scene.ui.ImageButton.*;
 import arc.scene.ui.Label.*;
 import arc.scene.ui.ScrollPane.*;
 import arc.scene.ui.TextButton.*;
+import arc.scene.ui.Tooltip.*;
 import mindustry.game.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
@@ -47,6 +49,10 @@ public class Style
             "schema-button-down",
             "schema-button-disabled",
             "schema-scroll-knob",
+            "schema-panel-n-shape",
+            "schema-panel-o-shape",
+            "schema-panel-u-shape",
+            "schema-panel-x-shape",
         };
         for (var name : names) atlas.find(name).splits = name.endsWith("knob") ? new int[] { 0, 0, 24, 16 } : new int[] { 16, 16, 16, 16 };
 
@@ -97,6 +103,9 @@ public class Style
 
         Colors.put("light", Pal.lightishGray);
         Colors.put("heavy", Pal.gray);
+
+        var bg = find("panel-x-shape");
+        Tooltips.getInstance().textProvider = cont -> new Tooltip(t -> t.background(bg).margin(12f).add(cont).style(outline));
     }
 
     /// Finds a drawable by name.
