@@ -5,4 +5,5 @@ var mod = Vars.mods.getMod("schema")
 var get = Vars.mobile ? (pkg) => null : (pkg) => mod.loader.loadClass(pkg).newInstance()
 
 const Main    = mod.main
+const Tools   = get("schema.Tools")
 const Updater = get("schema.Updater")
