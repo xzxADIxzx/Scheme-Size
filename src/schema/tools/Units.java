@@ -11,6 +11,7 @@ import mindustry.game.EventType.*;
 import mindustry.gen.*;
 import mindustry.type.*;
 import mindustry.world.blocks.storage.*;
+import schema.input.*;
 
 import static mindustry.Vars.*;
 
@@ -24,9 +25,6 @@ public class Units
 
     /// Item capacity of the unit.
     public int capacity;
-    /// Whether to draw units or not.
-    public boolean draw;
-
     /// Maximum health of the shield.
     private float maxShield;
     /// Current shield or null if absent.
@@ -75,10 +73,11 @@ public class Units
             @Override
             public void draw(Cons<Drawc> cons)
             {
-                if (draw)
-                    super.draw(cons);
-                else
-                    super.draw(d -> { if (!(d instanceof Unit u) || u.isPlayer()) cons.get(d); });
+                if (Keybind.display_unit.down()) super.draw(d ->
+                {
+                    if (!(d instanceof Unit u) || u.isPlayer()) cons.get(d);
+                });
+                else super.draw(cons);
             }
         };
     }

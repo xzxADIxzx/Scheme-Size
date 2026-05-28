@@ -4,9 +4,11 @@ import arc.input.*;
 import arc.math.geom.*;
 import arc.scene.event.*;
 import arc.scene.ui.*;
+import arc.struct.*;
 import arc.util.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
+import mindustry.input.*;
 import schema.*;
 import schema.input.*;
 import schema.ui.*;
@@ -152,6 +154,10 @@ public class KeybindDialog extends BaseDialog
         int count = 0;
         for (var bind : Keybind.all) count += bind.resolveConflicts();
         Tools.log("[green] < Resolved [accent]" + count + "[] conflicts");
+
+        Seq // extremely invasive, yet efficient
+            .with(Binding.menu, Binding.pause, Binding.fullscreen, Binding.screenshot)
+            .each(b -> b.value = new KeyBind.Axis(KeyCode.unset));
     }
 
     // endregion

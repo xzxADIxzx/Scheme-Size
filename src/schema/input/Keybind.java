@@ -67,6 +67,7 @@ public enum Keybind
     tgl_power_lasers(0, KeyCode.f5),
     tgl_block_status(0, KeyCode.f6),
     tgl_block_health(0, KeyCode.f7),
+    tgl_fullscreen(0, KeyCode.f11),
 
     player_list(0, KeyCode.tab, "multiplayer"),
     dev_console(0, KeyCode.f8),
