@@ -1,7 +1,10 @@
 package schema;
 
 import arc.struct.*;
+import arc.util.*;
 import mindustry.mod.*;
+import schema.input.*;
+import schema.tools.*;
 import schema.ui.*;
 import schema.ui.dialogs.*;
 import schema.ui.fragments.*;
@@ -13,6 +16,16 @@ import static mindustry.Vars.*;
 public class Main extends Mod
 {
     // region components
+
+    /// Advanced renderer combining both vanilla and schema overlays.
+    public static Overlay overlay;
+    /// Utility helping with buildings.
+    public static Builds builds;
+    /// Utility helping with units.
+    public static Units units;
+
+    /// Advanced input system lying in the foundation of the project.
+    public static InputSystem insys;
 
     /// List of fetched servers that host CLaJ.
     public static Seq<String> clajURLs;
@@ -37,6 +50,12 @@ public class Main extends Mod
     {
         Style.load();
 
+        overlay = new Overlay();
+        builds = new Builds();
+        units = new Units();
+
+        insys = mobile ? null : new DesktopInput();
+
         keybind = new KeybindDialog();
 
         cmndfrag = new CommandFragment();
@@ -49,7 +68,11 @@ public class Main extends Mod
         cmndfrag.build(ui.hudGroup);
         loadfrag.build(scene.root);
 
+        control.setInput(insys.agent());
+
         ui.loadfrag = loadfrag.agent();
+
+        Reflect.set(renderer, "overlays", overlay.agent());
     }
 
     @Override
@@ -77,5 +100,13 @@ public class Main extends Mod
             Tools.log("[green] < Loaded constants into the dev console");
         }
         catch (Throwable e) { Tools.err(e); }
+
+        Tools.log("[green]=> Unhooking events...");
+
+        Tools.clear(mindustry.graphics.OverlayRenderer.class);
+        Tools.clear(mindustry.input.InputHandler.class);
+        Tools.clear(mindustry.ui.fragments.BlockInventoryFragment.class);
+        Tools.clear(mindustry.ui.fragments.HudFragment.class);
+        Tools.clear(mindustry.ui.fragments.PlacementFragment.class);
     }
 }
