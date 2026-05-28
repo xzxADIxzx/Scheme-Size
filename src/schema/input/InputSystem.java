@@ -85,7 +85,7 @@ public abstract class InputSystem
                 if (!commandUnits.contains(u)) Drawf.poly(u.x, u.y, 6, u.hitSize + Mathf.absin(Time.time - u.dst(Vec2.ZERO), 4f, 1f), 0f, Pal.accent);
             });
         }
-        commandUnits.each(u -> Draw.draw(u.isFlying() ? Layer.flyingUnitLow - 1f : Layer.groundUnit - 1f, () ->
+        commandUnits.each(u ->
         {
             var ai = u.command();
             var dest = ai.attackTarget != null ? ai.attackTarget : ai.targetPos;
@@ -131,7 +131,7 @@ public abstract class InputSystem
                     8f, 8.27f
                 );
             }
-        }));
+        });
         commandBuildings.each(b ->
         {
             var dest = b.getCommandPosition();
@@ -150,7 +150,7 @@ public abstract class InputSystem
             if (unit != null)
                 Drawf.poly(unit.x, unit.y, 6, unit.hitSize + Mathf.absin(4f, 1f), 0f, commandUnits.contains(unit) ? Pal.remove : Pal.accent);
 
-            else if (build != null && build.team == player.team() && build.block.commandable)
+            else if (build != null && build.team == player.team() && build.isCommandable())
                 Drawf.square(build.x, build.y, build.hitSize() / 2f + Mathf.absin(4f, 1f), commandBuildings.contains(build) ? Pal.remove : Pal.accent);
         }
     }
@@ -211,7 +211,7 @@ public abstract class InputSystem
     public Unit selectedUnit(boolean ally)
     {
         if (ally)
-            return Units.closest(player.team(), mouse.x, mouse.y, 8f, u -> u.isCommandable() && u.isAI() && u.within(mouse, u.hitSize));
+            return Units.closest(player.team(), mouse.x, mouse.y, 8f, u -> u.isCommandable() && u.within(mouse, u.hitSize));
         else
             return Units.closestEnemy(player.team(), mouse.x, mouse.y, 8f, _ -> true);
     }
@@ -226,23 +226,12 @@ public abstract class InputSystem
 
         player.team().data().tree().intersect(Tmp.r1, u ->
         {
-            if (u.isCommandable() && u.isAI()) cons.get(u);
+            if (u.isCommandable()) cons.get(u);
         });
     }
 
     /// Whether the command mode is on.
-    public boolean controlling() { return commandMode; }
-
-    /// Returns the amount of controlled units.
-    public int controlledUnitsAmount() { return commandUnits.size; }
-
-    /// Returns the amount of controlled units of each type.
-    public int[] controlledUnitsAmountByType()
-    {
-        int[] counts = new int[content.units().size];
-        commandUnits.each(u -> counts[u.type.id]++);
-        return counts;
-    }
+    public boolean commanding() { return commandMode; }
 
     /// Releases all units that match the given predicate.
     public void releaseUnits(Boolf<Unit> pred) { commandUnits.removeAll(pred); }

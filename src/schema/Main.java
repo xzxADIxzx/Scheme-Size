@@ -27,6 +27,7 @@ public class Main extends Mod
     // endregion
     // region fragments
 
+    public static CommandFragment cmndfrag;
     public static LoadingFragment loadfrag;
 
     // endregion
@@ -38,12 +39,14 @@ public class Main extends Mod
 
         keybind = new KeybindDialog();
 
+        cmndfrag = new CommandFragment();
         loadfrag = new LoadingFragment();
     }
 
     /// Hooks content such as input, dialogs, fragments and so on.
     public void hook()
     {
+        cmndfrag.build(ui.hudGroup);
         loadfrag.build(scene.root);
 
         ui.loadfrag = loadfrag.agent();
