@@ -248,10 +248,10 @@ public abstract class InputSystem
     public void releaseUnits(Boolf<Unit> pred) { commandUnits.removeAll(pred); }
 
     /// Commands all units to perform the given command.
-    public void commandUnits(UnitCommand command) { Call.setUnitCommand(player, commandUnits.mapInt(Unitc::id, u -> u.type.allowCommand(u, command)).toArray(), command); }
+    public void commandUnits(UnitCommand command) { units.slice(commandUnits, u -> u.type.allowCommand(u, command), (b, _) -> Call.setUnitCommand(player, b, command)); }
 
     /// Commands all units to perform the given stance.
-    public void commandUnits(UnitStance stance, boolean on) { Call.setUnitStance(player, commandUnits.mapInt(Unitc::id, u -> u.type.allowStance(u, stance)).toArray(), stance, on); }
+    public void commandUnits(UnitStance stance, boolean on) { units.slice(commandUnits, u -> u.type.allowStance(u, stance), (b, _) -> Call.setUnitStance(player, b, stance, on)); }
 
     // endregion
     // region agent

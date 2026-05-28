@@ -107,4 +107,16 @@ public class Units
             (g.effect == StatusEffects.boss ? waveBosses : waveUnits).put(g.type, amount);
         });
     }
+
+    /// Slices the sequence of units into batches.
+    public void slice(Seq<Unit> units, Boolf<Unit> pred, Cons2<int[], Boolean> cons)
+    {
+        int max = 192;
+        var seq = units.mapInt(Unit::id, pred);
+
+        if (seq.size > max)
+            seq.chunked(max, c -> cons.get(c, c[c.length - 1] == seq.peek()));
+        else
+            cons.get(seq.toArray(), true);
+    }
 }
