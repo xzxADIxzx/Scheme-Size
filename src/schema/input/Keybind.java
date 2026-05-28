@@ -48,8 +48,9 @@ public enum Keybind
     select_all_units_on_screen(3, KeyCode.g),
     select_all_factories(0, KeyCode.h),
     select_all_factories_on_screen(3, KeyCode.h),
-    attack(0, KeyCode.mouseRight),
+    order(0, KeyCode.mouseRight),
     queue(0, KeyCode.mouseMiddle),
+    cancel(3, KeyCode.q),
 
     menu(0, KeyCode.escape, "view"),
     skip(0, KeyCode.backslash),
