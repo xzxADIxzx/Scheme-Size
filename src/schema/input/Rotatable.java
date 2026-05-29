@@ -28,7 +28,7 @@ public class Rotatable implements Position
     }
 
     /// Whether the block is rotatable.
-    public boolean valid() { return (plan != null && plan.block.rotate) || (build != null && build.block.rotate && build.team == player.team()); }
+    public boolean valid() { return (plan != null && plan.block.rotate) || (build != null && build.block.rotate && build.block.quickRotate && build.team == player.team()); }
 
     /// Returns the radius of the block.
     public float radius()
@@ -61,8 +61,8 @@ public class Rotatable implements Position
     }
 
     @Override
-    public float getX() { return x * tilesize; }
+    public float getX() { return plan != null ? plan.getX() : build.x; }
 
     @Override
-    public float getY() { return y * tilesize; }
+    public float getY() { return plan != null ? plan.getY() : build.y; }
 }
