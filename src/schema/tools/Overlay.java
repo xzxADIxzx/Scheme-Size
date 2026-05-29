@@ -27,6 +27,9 @@ public class Overlay
     /// Visibility of certain overlay elements.
     public boolean ruler, borderless;
 
+    /// Tasks to be executed during rendering.
+    private Seq<Runnable> tasks = new Seq<>();
+
     public Overlay()
     {
         renderer.addEnvRenderer(Env.none, () -> Draw.draw(Layer.turret + 1f, () ->
@@ -37,7 +40,17 @@ public class Overlay
         {
             if (settings.getBool("blockhealth", false)) drawBars();
         }));
+        renderer.addEnvRenderer(Env.none, () ->
+        {
+            while (tasks.any()) tasks.pop().run();
+        });
     }
+
+    /// Posts the task for execution during rendering.
+    public void post(Runnable task) { tasks.add(task); }
+
+    /// Posts the task for execution on the set layer.
+    public void post(float z, Runnable task) { tasks.add(() -> { Draw.z(z); task.run(); }); }
 
     // region draw
 

@@ -85,7 +85,7 @@ public abstract class InputSystem
                 if (!commandUnits.contains(u)) Drawf.poly(u.x, u.y, 6, u.hitSize + Mathf.absin(Time.time - u.dst(Vec2.ZERO), 4f, 1f), 0f, Pal.accent);
             });
         }
-        commandUnits.each(u ->
+        commandUnits.each(u -> overlay.post(u.isFlying() ? Layer.flyingUnitLow - 1f : Layer.groundUnit - 1f, () ->
         {
             var ai = u.command();
             var dest = ai.attackTarget != null ? ai.attackTarget : ai.targetPos;
@@ -131,7 +131,7 @@ public abstract class InputSystem
                     8f, 8.27f
                 );
             }
-        });
+        }));
         commandBuildings.each(b ->
         {
             var dest = b.getCommandPosition();
