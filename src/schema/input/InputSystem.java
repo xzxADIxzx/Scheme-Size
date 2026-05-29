@@ -75,7 +75,7 @@ public abstract class InputSystem
             renderer.effectBuffer.begin(Color.clear);
 
             Draw.color(Pal.accent, .8f);
-            Fill.crect(commandRect.x, commandRect.y, input.mouseWorldX() - commandRect.x, input.mouseWorldY() - commandRect.y);
+            Fill.crect(commandRect.x, commandRect.y, mouse.x - commandRect.x, mouse.y - commandRect.y);
 
             renderer.effectBuffer.end();
             renderer.effectBuffer.blit(Shaders.buildBeam);
@@ -142,7 +142,7 @@ public abstract class InputSystem
             }
             Drawf.square(b.x, b.y, b.hitSize() / 2f);
         });
-        if (commandRect == null || commandRect.within(input.mouseWorld(), 8f))
+        if (commandRect == null || commandRect.within(mouse, 8f))
         {
             var unit  = selectedUnit(true);
             var build = selectedBuilding();

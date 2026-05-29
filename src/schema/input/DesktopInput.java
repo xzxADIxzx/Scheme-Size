@@ -19,14 +19,14 @@ import static mindustry.Vars.*;
 import static schema.Main.*;
 
 /// Handles keyboard input
-public class DesktopInput extends InputSystem {
-
-    /// Amount of scrolls in one direction and the direction itself.
+public class DesktopInput extends InputSystem
+{
+    /// Amount of scrolls and their last direction.
     private int scrolls, dir;
-    /// Amount of scrolls after which the zoom speed increases by one tile per scroll.
+    /// Amount of scrolls that increase zoom speed.
     private int aspect = 2;
 
-    /// Block that is being rotated.
+    /// Building being rotated, nullable.
     private Rotatable toRotate;
     /// Whether a block is being rotated.
     private boolean rotating;
@@ -97,14 +97,14 @@ public class DesktopInput extends InputSystem {
     protected void updateMovement()
     {
         var unit = player.unit();
-        var type = unit == null ? null : unit.type;
+        var type = player.dead() ? null : unit.type;
 
         Vec2 mov = Tmp.v1.set(Keybind.move_x.axis(), Keybind.move_y.axis()).nor();
         Vec2 pan = Keybind.pan_mv.down()
             ? Tmp.v2.set(input.mouse()).sub(graphics.getWidth() / 2f, graphics.getHeight() / 2f).scl(.004f).limit(1f)
             : Tmp.v2.setZero();
         Vec2 flw = Keybind.mouse_mv.down()
-            ? Tmp.v3.set(mouse).sub(player).scl(.016f).limit2(1f)
+            ? Tmp.v3.set(mouse).sub(player).scl(.016f).limit(1f)
             : Tmp.v3.setZero();
 
         if (units.coreUnit || player.dead())
@@ -113,7 +113,8 @@ public class DesktopInput extends InputSystem {
             // the unit simply follows the camera and performs commands
 
             moveCam(mov.add(pan).limit(1f).scl(settings.getInt("schema-pan-speed", 6) * (Keybind.boost.down() ? 2.4f : 1f) * Time.delta));
-            unit.movePref(flw.scl(type.speed));
+
+            if (unit != null && type != null) unit.movePref(flw.scl(type.speed));
 
             updateAI(); // TODO move to Gamma.java or smth
         }
@@ -125,38 +126,34 @@ public class DesktopInput extends InputSystem {
             lerpCam(pan.scl(512f).add(player));
             unit.movePref(mov.add(flw).limit(1f).scl(unit.speed()));
         }
-        if (unit == null) return;
 
-        if (Keybind.teleport.tap()) unit.set(mouse);
+        if (Keybind.teleport.tap() && unit != null) unit.set(mouse);
 
-        if (state.isPlaying())
+        player.mouseX = mouse.x;
+        player.mouseY = mouse.y;
+
+        if (player.dead() || state.isPaused()) return;
+
+        player.shooting = Keybind.shoot.down() && block == null && !(commandMode || controlMode || scene.hasMouse());
+        player.boosting = Keybind.boost.down();
+
+        if (Keybind.look_at.down()) unit.rotation = Angles.mouseAngle(unit.x, unit.y);
+        else
         {
-            if (Keybind.look_at.down())
-                unit.rotation = Angles.mouseAngle(unit.x, unit.y);
+            if (player.shooting && type.omniMovement && type.faceTarget && type.hasWeapons())
+                unit.lookAt(mouse);
             else
-            {
-                if (player.shooting && type.omniMovement && type.faceTarget && type.hasWeapons())
-                    unit.lookAt(mouse);
-                else
-                    unit.lookAt(unit.prefRotation());
-            }
-
-            unit.aim(mouse);
-            unit.controlWeapons(true, player.shooting);
+                unit.lookAt(unit.prefRotation());
         }
+
+        unit.aim(mouse);
+        unit.controlWeapons(true, player.shooting);
 
         if (Keybind.respawn.tap()) Call.unitClear(player);
         if (Keybind.despawn.tap()) ; // TODO admins/hacky functions
 
-        if (state.isPlaying())
-        {
-            if (Keybind.pick_cargo.tap()) control.input.tryPickupPayload();
-            if (Keybind.drop_cargo.tap()) control.input.tryDropPayload();
-        }
-
-        player.mouseX = unit.aimX;
-        player.mouseY = unit.aimY;
-        player.boosting = Keybind.boost.down();
+        if (Keybind.pick_cargo.tap()) control.input.tryPickupPayload();
+        if (Keybind.drop_cargo.tap()) control.input.tryDropPayload();
     }
 
     protected void updateZoom()
@@ -248,8 +245,11 @@ public class DesktopInput extends InputSystem {
             }
             if (Keybind.cancel.tap()) commandUnits(UnitStance.stop, true);
         }
-        if (controlMode = Keybind.control.down() && !mapfrag.shown && !scene.hasMouse() && state.rules.possessionAllowed && Keybind.select.tap())
+        if (controlMode = Keybind.control.down() && !mapfrag.shown && !scene.hasMouse() && state.rules.possessionAllowed)
         {
+            // do not merge it with the condition above, silly
+            if (!Keybind.select.tap()) return;
+
             var unit  = selectedUnit(true);
             var build = selectedBuilding();
 
@@ -302,6 +302,7 @@ public class DesktopInput extends InputSystem {
         if (Keybind.research.tap() && state.isCampaign()) ui.research.show();
         if (Keybind.database.tap()) ui.database.show();
 
+        // TODO check plans as well
         if (Keybind.block_info.tap())
         {
             var build = selectedBuilding();
@@ -413,6 +414,8 @@ public class DesktopInput extends InputSystem {
     @Override
     public void drawPlans()
     {
+        if (player.dead()) return; // TODO save plans locally
+
         var plans = player.unit().plans;
 
         // TODO draw plans
