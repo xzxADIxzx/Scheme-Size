@@ -19,7 +19,7 @@ import static arc.Core.*;
 import static mindustry.Vars.*;
 import static schema.Main.*;
 
-/// Fragment that is displayed during any sort of loading
+/// Fragment that is displayed during any sort of loading.
 public class LoadingFragment extends Table
 {
     /// Horizontal and vertical distance between hexes.

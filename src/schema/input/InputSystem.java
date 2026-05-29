@@ -30,7 +30,7 @@ public abstract class InputSystem
     protected float minZoom = 16f, maxZoom = 256f;
 
     /// Latest position of the mouse in the world.
-    protected Vec2 mouse;
+    protected Vec2 mouse = new Vec2();
 
     /// Whether the command/control mode is on.
     protected boolean commandMode, controlMode;

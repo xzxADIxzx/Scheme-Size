@@ -18,7 +18,7 @@ import static arc.Core.*;
 import static mindustry.Vars.*;
 import static schema.Main.*;
 
-/// Handles keyboard input
+/// Handles keyboard input.
 public class DesktopInput extends InputSystem
 {
     /// Amount of scrolls and their last direction.
@@ -37,7 +37,7 @@ public class DesktopInput extends InputSystem
     @Override
     protected void update()
     {
-        mouse = input.mouseWorld();
+        mouse.set(input.mouseWorld());
 
         if (scene.hasKeyboard() || scene.hasDialog())
         {
