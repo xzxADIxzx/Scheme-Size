@@ -64,6 +64,7 @@ public enum Keybind
     display_prod(3, KeyCode.c),
     block_info(0, KeyCode.f1),
     tgl_menus(0, KeyCode.backtick),
+    tgl_ruler(0, KeyCode.f2),
     tgl_power_lasers(0, KeyCode.f5),
     tgl_block_status(0, KeyCode.f6),
     tgl_block_health(0, KeyCode.f7),

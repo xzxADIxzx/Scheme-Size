@@ -312,6 +312,7 @@ public class DesktopInput extends InputSystem
         }
 
         if (Keybind.tgl_menus.tap()) hudfrag.shown = !hudfrag.shown;
+        if (Keybind.tgl_ruler.tap()) overlay.ruler = !overlay.ruler;
         if (Keybind.tgl_power_lasers.tap())
         {
             if (settings.getInt("lasersopacity") == 0)
@@ -418,7 +419,7 @@ public class DesktopInput extends InputSystem
 
         var plans = player.unit().plans;
 
-        // TODO draw plans
+        // TODO draw local plans, other players' plans and their cursor positions (move the last into InputHandler)
 
         if (block == null) return;
 
