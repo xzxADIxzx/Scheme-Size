@@ -60,7 +60,7 @@ public class DesktopInput extends InputSystem
         updateCommand();
         updateView();
 
-        if (player.isBuilder() && !commandMode && !controlMode) updateBuilding();
+        if (player.isBuilder() && !commandMode && !controlMode && !mapfrag.shown) updateBuilding();
     }
 
     protected void updateAI()
