@@ -13,6 +13,7 @@ import mindustry.graphics.*;
 import mindustry.net.Packets.*;
 import mindustry.world.blocks.*;
 import mindustry.world.blocks.ConstructBlock.*;
+import schema.ui.hud.*;
 
 import static arc.Core.*;
 import static mindustry.Vars.*;
@@ -292,7 +293,7 @@ public class DesktopInput extends InputSystem
         if (Keybind.pause.tap() && !net.client())
         {
             if (state.rules.pauseDisabled)
-                ; // show a notification
+                hudfrag.show(Notification.Rules, 5f);
             else
                 state.set(state.isPaused() ? State.playing : State.paused);
         }
