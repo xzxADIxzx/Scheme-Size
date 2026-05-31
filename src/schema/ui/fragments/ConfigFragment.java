@@ -8,6 +8,7 @@ import arc.math.geom.*;
 import arc.scene.*;
 import arc.scene.actions.*;
 import arc.scene.event.*;
+import arc.scene.ui.*;
 import arc.scene.ui.layout.*;
 import arc.struct.*;
 import arc.util.*;
@@ -23,6 +24,7 @@ import mindustry.world.blocks.production.BurstDrill.*;
 import mindustry.world.blocks.production.Drill.*;
 import mindustry.world.blocks.storage.CoreBlock.*;
 import mindustry.world.blocks.storage.StorageBlock.*;
+import schema.ui.*;
 
 import static mindustry.Vars.*;
 import static schema.Main.*;
@@ -50,15 +52,15 @@ public class ConfigFragment extends Table
         }
         ).visible(() -> selected != null && selected.isValid());
 
-        override(CoreBuild.class, this::drawCoreEdges);
-        override(StorageBuild.class, this::drawCoreEdges);
-        override(NuclearReactorBuild.class, b -> drawExplosionRadius(b, Pal.thoriumPink));
-        override(ImpactReactorBuild.class, b -> drawExplosionRadius(b, Pal.meltdownHit));
-        override(DrillBuild.class, this::drawOres);
-        override(BurstDrillBuild.class, this::drawOres);
-        override(ItemBridgeBuild.class, this::drawBridgeSequence);
+        override(CoreBuild              .class, this::drawCoreEdges);
+        override(StorageBuild           .class, this::drawCoreEdges);
+        override(NuclearReactorBuild    .class, bd -> drawExplosionRadius(bd, Pal.thoriumPink));
+        override(ImpactReactorBuild     .class, bd -> drawExplosionRadius(bd, Pal.meltdownHit));
+        override(DrillBuild             .class, this::drawOres);
+        override(BurstDrillBuild        .class, this::drawOres);
+        override(ItemBridgeBuild        .class, this::drawBridgeSequence);
         override(BufferedItemBridgeBuild.class, this::drawBridgeSequence);
-        override(LiquidBridgeBuild.class, this::drawBridgeSequence);
+        override(LiquidBridgeBuild      .class, this::drawBridgeSequence);
     }
 
     // region control
@@ -73,6 +75,13 @@ public class ConfigFragment extends Table
             clear();
             build.buildConfiguration(this);
             pack();
+
+            getChildren().each(c ->
+            {
+                if (c instanceof Table t) t.background(Style.find("panel-x-shape"));
+                if (c instanceof Button b) b.getStyle().up = Style.find("panel-x-shape");
+            });
+
             actions(Actions.scaleTo(0f, 1f), Actions.scaleTo(1f, 1f, .1f, Interp.pow4Out));
         }
     }
