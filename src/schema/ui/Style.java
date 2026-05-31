@@ -49,12 +49,12 @@ public class Style
             "schema-button-down",
             "schema-button-disabled",
             "schema-scroll-knob",
+            "schema-panel-h-shape",
             "schema-panel-n-shape",
             "schema-panel-o-shape",
             "schema-panel-u-shape",
-            "schema-panel-x-shape",
         };
-        for (var name : names) atlas.find(name).splits = name.endsWith("knob") ? new int[] { 0, 0, 24, 16 } : new int[] { 16, 16, 16, 16 };
+        for (var name : names) atlas.find(name).splits = name.endsWith("knob") ? new int[] { 0, 0, 24, 16 } : name.contains("h-shape") ? new int[] { 16, 16, 0, 0 } : new int[] { 16, 16, 16, 16 };
 
         Tools.log("[green] < Loaded [accent]" + names.length + "[] sprites");
 
