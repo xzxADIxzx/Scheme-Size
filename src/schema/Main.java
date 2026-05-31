@@ -40,6 +40,10 @@ public class Main extends Mod
     // endregion
     // region fragments
 
+    // public static InventoryFragment inv;
+    public static ConfigFragment config;
+    public static HudFragment hudfrag;
+    public static MapFragment mapfrag;
     public static CommandFragment cmndfrag;
     public static LoadingFragment loadfrag;
 
@@ -58,6 +62,9 @@ public class Main extends Mod
 
         keybind = new KeybindDialog();
 
+        config = new ConfigFragment();
+        hudfrag = new HudFragment();
+        mapfrag = new MapFragment();
         cmndfrag = new CommandFragment();
         loadfrag = new LoadingFragment();
     }
@@ -65,14 +72,24 @@ public class Main extends Mod
     /// Hooks content such as input, dialogs, fragments and so on.
     public void hook()
     {
+        ui.hudGroup.clear();
+
+        // TODO inventory
+        config.build(ui.hudGroup);
+        hudfrag.build(ui.hudGroup);
+        mapfrag.build(ui.hudGroup);
         cmndfrag.build(ui.hudGroup);
         loadfrag.build(scene.root);
 
         control.setInput(insys.agent());
 
+        // TODO hudfrag
+        ui.minimapfrag = mapfrag.agent();
         ui.loadfrag = loadfrag.agent();
 
         Reflect.set(renderer, "overlays", overlay.agent());
+        // TODO inventory
+        Reflect.set(mindustry.input.InputHandler.class, control.input, "config", config.agent());
     }
 
     @Override

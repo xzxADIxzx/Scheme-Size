@@ -5,7 +5,6 @@ import arc.scene.*;
 import arc.scene.event.*;
 import arc.scene.ui.layout.*;
 import arc.struct.*;
-import arc.util.*;
 import mindustry.ai.*;
 import mindustry.graphics.*;
 import mindustry.world.meta.*;
@@ -33,7 +32,6 @@ public class CommandFragment extends Table
     public void build(Group parent)
     {
         parent.addChild(this);
-        parent.removeChild(Reflect.get(ui.hudfrag.blockfrag, "toggler"));
 
         var out = new Seq<UnitStance>();
 

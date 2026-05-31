@@ -36,8 +36,6 @@ public class MapFragment extends Table
     public void build(Group parent)
     {
         parent.addChild(this);
-        parent.getChildren().remove(parent.getChildren().indexOf(ui.minimapfrag.elem) + 1);
-        parent.getChildren().remove(parent.getChildren().indexOf(ui.minimapfrag.elem) + 0);
 
         setFillParent(true);
         update(() ->
