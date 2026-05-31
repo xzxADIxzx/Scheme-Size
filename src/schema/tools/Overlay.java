@@ -74,7 +74,7 @@ public class Overlay
             Draw.reset();
         }
 
-        if (config.shown()) config.selected().drawConfigure();
+        config.drawConfigure();
 
         if (insys.block == null && !scene.hasMouse())
         {
