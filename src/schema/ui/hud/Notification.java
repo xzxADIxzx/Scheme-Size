@@ -7,15 +7,16 @@ public enum Notification
 {
     // region types
 
-    Waiting("hud.empty"),
-    Rules("hud.rules"),
-    Pause("hud.pause"),
-    Build("hud.build"),
-    Guardian("hud.sector-guardian"),
-    Captured("hud.sector-captured"),
-    Attacked("hud.sector-attacked"),
-    Lost("hud.sector-lost"),
-    Other(null);
+    waits   ("hud.waits"),
+    rules   ("hud.rules"),
+    pause   ("hud.pause"),
+    build   ("hud.build"),
+    cores   ("hud.cores"),
+    guardian("hud.sector-guardian"),
+    captured("hud.sector-captured"),
+    attacked("hud.sector-attacked"),
+    lost    ("hud.sector-lost"),
+    other   (null);
 
     // endregion
 

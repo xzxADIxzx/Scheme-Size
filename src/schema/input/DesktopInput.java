@@ -293,7 +293,7 @@ public class DesktopInput extends InputSystem
         if (Keybind.pause.tap() && !net.client())
         {
             if (state.rules.pauseDisabled)
-                hudfrag.show(Notification.Rules, 5f);
+                hudfrag.show(Notification.rules, 3f);
             else
                 state.set(state.isPaused() ? State.playing : State.paused);
         }
