@@ -15,7 +15,6 @@ public enum Notification
     guardian("hud.sector-guardian"),
     captured("hud.sector-captured"),
     attacked("hud.sector-attacked"),
-    lost    ("hud.sector-lost"),
     other   (null);
 
     // endregion
