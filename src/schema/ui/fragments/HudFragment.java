@@ -45,6 +45,9 @@ public class HudFragment extends Table
         {
             nextGuardian(w -> show(Notification.guardian, String.valueOf(w), 5f));
         });
+        Events.on(SectorCaptureEvent .class, e -> show(Notification.captured, e.sector.name(), 5f));
+        Events.on(SectorInvasionEvent.class, e -> show(Notification.attacked, e.sector.name(), 5f));
+        Events.on(SectorLoseEvent    .class, e -> show(Notification.lost,     e.sector.name(), 5f));
 
         parent.addChild(this);
 
