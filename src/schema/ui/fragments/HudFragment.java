@@ -1,6 +1,7 @@
 package schema.ui.fragments;
 
 import arc.*;
+import arc.func.*;
 import arc.graphics.*;
 import arc.math.*;
 import arc.scene.*;
@@ -9,8 +10,9 @@ import arc.scene.style.*;
 import arc.scene.ui.*;
 import arc.scene.ui.layout.*;
 import arc.util.*;
+import mindustry.content.*;
 import mindustry.ctype.*;
-import mindustry.game.*;
+import mindustry.game.EventType.*;
 import mindustry.gen.*;
 import schema.ui.Style;
 import schema.ui.hud.*;
@@ -38,7 +40,11 @@ public class HudFragment extends Table
     /// Builds the fragment and overrides the original.
     public void build(Group parent)
     {
-        Events.run(EventType.Trigger.teamCoreDamage, () -> show(Notification.cores, 3f));
+        Events.run(Trigger.teamCoreDamage, () -> show(Notification.cores, 3f));
+        Events.on(WaveEvent.class, e ->
+        {
+            nextGuardian(w -> show(Notification.guardian, String.valueOf(w), 5f));
+        });
 
         parent.addChild(this);
 
@@ -64,14 +70,20 @@ public class HudFragment extends Table
                     notificationIcon = c.image().scaling(Scaling.fit).get();
                 nots[type.ordinal()] = c.add("").style(Style.outline).get();
 
-                if (type != Notification.cores) return;
-
-                c.parent.tapped(() -> insys.poseCam(Tmp.v1.set(control.lastDamagedCore)));
-                c.parent.addListener(new HandCursorListener());
-                c.parent.update(() ->
+                if (type == Notification.cores)
                 {
-                    nots[type.ordinal()].color.set(Color.orange).lerp(Color.scarlet, Mathf.absin(2f, 1f));
-                });
+                    c.parent.tapped(() -> insys.poseCam(Tmp.v1.set(control.lastDamagedCore)));
+                    c.parent.update(() ->
+                    {
+                        nots[type.ordinal()].color.set(Color.orange).lerp(Color.scarlet, Mathf.absin(2f, 1f));
+                    });
+                    c.parent.addListener(new HandCursorListener());
+                }
+                if (type == Notification.guardian)
+                {
+                    c.parent.tapped(() -> { /* TODO wave dialog, show the guardian wave */ });
+                    c.parent.addListener(new HandCursorListener());
+                }
             },
             true, () -> Time.time <= time[type.ordinal()]).row();
         }
@@ -85,6 +97,8 @@ public class HudFragment extends Table
         // wave.build();
     }
 
+    // region control
+
     /// Shows a notification for the given duration.
     public void show(Notification not, String sectors, float duration)
     {
@@ -97,6 +111,26 @@ public class HudFragment extends Table
     /// Shows a notification for the given duration.
     public void show(Notification not, float duration) { show(not, null, duration); }
 
+    /// Iterates a few waves until a guard is found.
+    public void nextGuardian(Intc wave)
+    {
+        for (int i = state.wave; i <= Math.min(state.wave + 9, state.rules.winWave > 0 ? state.rules.winWave : Integer.MAX_VALUE); i++)
+        {
+            int j = i - 1;
+            int d = i - state.wave + 1;
+            if
+            (
+                d == 1 | d == 2 | d == 5 | d == 10 &&
+                state.rules.spawns.contains(s -> s.effect == StatusEffects.boss && s.getSpawned(j) > 0)
+            )
+            {
+                wave.get(d);
+                break;
+            }
+        }
+    }
+
+    // endregion
     // region agent
 
     /// Creates a new agent.

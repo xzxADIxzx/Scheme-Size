@@ -12,6 +12,7 @@ import mindustry.ai.*;
 import mindustry.entities.*;
 import mindustry.entities.units.*;
 import mindustry.game.*;
+import mindustry.game.EventType.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.world.*;
@@ -254,7 +255,7 @@ public abstract class InputSystem
         @Override
         public void add()
         {
-            Events.run(EventType.Trigger.preDraw, () ->
+            Events.run(Trigger.preDraw, () ->
             {
                 zoom = Mathf.lerpDelta(zoom, dest, .1f);
                 if (Mathf.equal(zoom, dest, .001f)) zoom = dest;
