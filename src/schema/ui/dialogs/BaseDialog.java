@@ -6,6 +6,7 @@ import arc.scene.ui.layout.*;
 import arc.util.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
+import schema.ui.Style;
 
 /// Dialog with a title header and button footer.
 public class BaseDialog extends Dialog
@@ -36,7 +37,7 @@ public class BaseDialog extends Dialog
     /// Adds a button to the dialog's footer.
     public void addButton(String text, Drawable icon, float width, Runnable clicked)
     {
-        footer.button(text, icon, schema.ui.Style.tbd, clicked).size(width, 48f).pad(0f, 4f, 0f, 4f);
+        footer.button(text, icon, Style.tbd, clicked).size(width, 48f).pad(0f, 4f, 0f, 4f);
     }
 
     /// Adds a button that closes the dialog.

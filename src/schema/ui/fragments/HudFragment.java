@@ -5,12 +5,14 @@ import arc.graphics.*;
 import arc.math.*;
 import arc.scene.*;
 import arc.scene.event.*;
+import arc.scene.style.*;
 import arc.scene.ui.*;
 import arc.scene.ui.layout.*;
 import arc.util.*;
+import mindustry.ctype.*;
 import mindustry.game.*;
 import mindustry.gen.*;
-import schema.ui.*;
+import schema.ui.Style;
 import schema.ui.hud.*;
 
 import static mindustry.Vars.*;
@@ -27,6 +29,8 @@ public class HudFragment extends Table
     private Label[] nots = new Label[Notification.all.length];
     /// Notification points in time.
     private float[] time = new float[Notification.all.length];
+    /// Icon of the other notifications.
+    private Image notificationIcon;
 
     /// Whether the fragment is visible.
     public boolean shown = true;
@@ -54,7 +58,11 @@ public class HudFragment extends Table
 
             for (var type : Notification.all) cont.collapser(c ->
             {
-                nots[type.ordinal()] = c.background(Style.find("panel-h-shape")).add("").style(Style.outline).get();
+                c.background(Style.find("panel-h-shape"));
+
+                if (type == Notification.other)
+                    notificationIcon = c.image().scaling(Scaling.fit).get();
+                nots[type.ordinal()] = c.add("").style(Style.outline).get();
 
                 if (type != Notification.cores) return;
 
@@ -75,8 +83,6 @@ public class HudFragment extends Table
         // unit.build();
         core.build();
         // wave.build();
-
-        // TODO agent: setHudText, toggleHudText, showToast, hasToast, showUnlock
     }
 
     /// Shows a notification for the given duration.
@@ -90,4 +96,56 @@ public class HudFragment extends Table
 
     /// Shows a notification for the given duration.
     public void show(Notification not, float duration) { show(not, null, duration); }
+
+    // region agent
+
+    /// Creates a new agent.
+    public Agent agent() { return new Agent(); }
+
+    /// Agent redirecting method calls from the original component.
+    public class Agent extends mindustry.ui.fragments.HudFragment
+    {
+        /// Last time a notification was shown.
+        private long last;
+
+        /// Schedules a notification in a line.
+        private void schedule(Runnable show)
+        {
+            if (Time.timeSinceMillis(last) > 3500)
+            {
+                last = Time.millis();
+                show.run();
+            }
+            else
+            {
+                last += 3500;
+                Time.run((last - Time.millis()) / 1000f * 60f, show);
+            }
+        }
+
+        @Override
+        public void showToast(Drawable icon, float size, String text)
+        {
+            schedule(() ->
+            {
+                notificationIcon.setDrawable(icon);
+                show(Notification.other, text, 3f);
+            });
+        }
+
+        @Override
+        public void showUnlock(UnlockableContent content)
+        {
+            schedule(() ->
+            {
+                notificationIcon.setDrawable(content.uiIcon);
+                show(Notification.other, "@unlocked", 3f);
+            });
+        }
+
+        @Override
+        public boolean hasToast() { return Time.timeSinceMillis(last) < 3500; }
+    }
+
+    // endregion
 }

@@ -83,7 +83,7 @@ public class Main extends Mod
 
         control.setInput(insys.agent());
 
-        // TODO hudfrag
+        ui.hudfrag = hudfrag.agent();
         ui.minimapfrag = mapfrag.agent();
         ui.loadfrag = loadfrag.agent();
 
