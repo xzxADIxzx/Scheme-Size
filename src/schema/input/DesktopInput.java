@@ -307,7 +307,7 @@ public class DesktopInput extends InputSystem
             var build = selectedBuilding();
             var hover = insys.block != null ? insys.block : build == null ? null : build instanceof ConstructBuild c ? c.current : build.block;
 
-            if (hover != null && hover.unlockedNow()) ui.content.show(hover);
+            if (hover != null && polyblock.unlocked(hover)) ui.content.show(hover);
         }
 
         if (Keybind.tgl_menus.tap()) hudfrag.shown = !hudfrag.shown;
@@ -364,7 +364,7 @@ public class DesktopInput extends InputSystem
                 config = plans.get(index).config;
             }
 
-            if (recipe != null) // TODO && polyblock.unlocked(recipe)
+            if (recipe != null && polyblock.unlocked(recipe))
             {
                 block = recipe;
                 block.lastConfig = config;
