@@ -32,6 +32,8 @@ public abstract class InputSystem
 
     /// Latest position of the mouse in the world.
     protected Vec2 mouse = new Vec2();
+    /// Latest position of the mouse on the screen.
+    protected Vec2 panel = new Vec2();
 
     /// Whether the command/control mode is on.
     protected boolean commandMode, controlMode;

@@ -14,6 +14,7 @@ import mindustry.net.Packets.*;
 import mindustry.world.blocks.*;
 import mindustry.world.blocks.ConstructBlock.*;
 import schema.ui.hud.*;
+import schema.ui.polygons.Polygon;
 
 import static arc.Core.*;
 import static mindustry.Vars.*;
@@ -39,22 +40,19 @@ public class DesktopInput extends InputSystem
     protected void update()
     {
         mouse.set(input.mouseWorld());
+        panel.set(input.mouse());
+
+        if (scene.getKeyboardFocus() instanceof Polygon p)
+        {
+            if (Keybind.select.tap()) p.select();
+            if (Keybind.deselect.tap()) p.hide();
+        }
 
         if (scene.hasKeyboard() || scene.hasDialog())
         {
             updateAI();
             return;
         }
-
-        /*
-        if (scene.getKeyboardFocus() instanceof Polygon p) {
-            if (Keybind.select.tap()) p.select();
-            if (Keybind.deselect.tap()) p.hide();
-
-            updateAI();
-            return;
-        }
-        */
 
         updateMovement();
         updateZoom();
@@ -102,7 +100,7 @@ public class DesktopInput extends InputSystem
 
         Vec2 mov = Tmp.v1.set(Keybind.move_x.axis(), Keybind.move_y.axis()).nor();
         Vec2 pan = Keybind.pan_mv.down()
-            ? Tmp.v2.set(input.mouse()).sub(graphics.getWidth() / 2f, graphics.getHeight() / 2f).scl(.004f).limit(1f)
+            ? Tmp.v2.set(panel).sub(graphics.getWidth() / 2f, graphics.getHeight() / 2f).scl(.004f).limit(1f)
             : Tmp.v2.setZero();
         Vec2 flw = Keybind.mouse_mv.down()
             ? Tmp.v3.set(mouse).sub(player).scl(.016f).limit(1f)
@@ -332,13 +330,11 @@ public class DesktopInput extends InputSystem
     {
         var plans = player.unit().plans;
 
-        /*
-        if (Keybind.hexblock.tap()) polyblock.show();
-        if (Keybind.srcblock.tap()); // TODO block search fragments
+        if (Keybind.hexblock.tap()) polyblock.show(panel);
+        if (Keybind.srcblock.tap()) ; // TODO block search fragments & calculator
 
         if (Keybind.pause_bd.tap()) building = !building;
         if (Keybind.clear_bd.tap()) plans.clear();
-        */
 
         player.unit().updateBuilding(building && !Keybind.mouse_mv.down());
 
@@ -391,10 +387,8 @@ public class DesktopInput extends InputSystem
             else toRotate.rotateTo(Mathf.round(Angles.angle(toRotate.getX(), toRotate.getY(), mouse.x, mouse.y) / 90f) % 4);
         }
 
-        /*
         if (Keybind.sel_schematic.tap()) ui.schematics.show();
-        if (Keybind.hex_schematic.tap()) polyschema.show();
-        */
+        if (Keybind.hex_schematic.tap()) polyschem.show(panel);
     }
 
     @Override

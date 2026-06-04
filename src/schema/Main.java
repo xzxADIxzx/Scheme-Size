@@ -8,6 +8,7 @@ import schema.tools.*;
 import schema.ui.*;
 import schema.ui.dialogs.*;
 import schema.ui.fragments.*;
+import schema.ui.polygons.*;
 
 import static arc.Core.*;
 import static mindustry.Vars.*;
@@ -48,6 +49,13 @@ public class Main extends Mod
     public static LoadingFragment loadfrag;
 
     // endregion
+    // region polygons
+
+    public static BlockPolygon polyblock;
+    public static Polygon polyplace;
+    public static Polygon polyschem;
+
+    // endregion
 
     /// Loads content such as tools, dialogs, fragments and so on.
     public void load()
@@ -67,6 +75,10 @@ public class Main extends Mod
         mapfrag = new MapFragment();
         cmndfrag = new CommandFragment();
         loadfrag = new LoadingFragment();
+
+        polyblock = new BlockPolygon();
+        polyplace = new Polygon();
+        polyschem = new Polygon();
     }
 
     /// Hooks content such as input, dialogs, fragments and so on.
@@ -80,6 +92,10 @@ public class Main extends Mod
         mapfrag.build(ui.hudGroup);
         cmndfrag.build(ui.hudGroup);
         loadfrag.build(scene.root);
+
+        polyblock.build(ui.hudGroup);
+        polyplace.build(ui.hudGroup);
+        polyschem.build(ui.hudGroup);
 
         control.setInput(insys.agent());
 
