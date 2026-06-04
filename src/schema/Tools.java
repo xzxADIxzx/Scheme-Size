@@ -59,4 +59,7 @@ public final class Tools
 
         return Strings.fixed(num, flow ? 1 : 0);
     }
+
+    /// Returns the given number with a fixed number of decimal places.
+    public static String flow(float num) { return (num >= .1f ? "[green]+" : num <= -.1f ? "[scarlet]" : "[light]") + format(num, true) + "[light]/s"; }
 }

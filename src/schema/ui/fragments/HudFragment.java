@@ -20,7 +20,7 @@ import schema.ui.hud.*;
 import static mindustry.Vars.*;
 import static schema.Main.*;
 
-/// Fragment that displays the core and power grid info, controlled unit and its configuration, minimap and wave info.
+/// Fragment that displays the controlled unit and its configuration, core items and power grids, the sector minimap and wave information.
 public class HudFragment extends Table
 {
     public UnitInfo unit = new UnitInfo();
@@ -94,9 +94,9 @@ public class HudFragment extends Table
         // remove gaps between subfragments
         getCell(core).pad(0f, -4f, -4f, -4f);
 
-        // unit.build();
+        unit.build();
         core.build();
-        // wave.build();
+        wave.build();
     }
 
     // region control
