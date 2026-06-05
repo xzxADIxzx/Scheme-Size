@@ -68,9 +68,13 @@ public class ConfigFragment extends Table
     /// Shows the fragment with a simple animation.
     public void show(Building build)
     {
-        if (build.configTapped())
+        if (visible && !(selected.onConfigureBuildTapped(build) && build.block.configurable))
+            return;
+
+        if (build.block.configurable && build.shouldShowConfigure(player) && build.configTapped())
         {
             selected = build;
+            selected.block.configureSound.at(build);
 
             clear();
             build.buildConfiguration(this);

@@ -133,7 +133,7 @@ public class DesktopInput extends InputSystem
 
         if (player.dead() || state.isPaused()) return;
 
-        player.shooting = Keybind.shoot.down() && block == null && !(commandMode || controlMode || scene.hasMouse());
+        player.shooting = Keybind.shoot.down() && block == null && !(commandMode || controlMode || scene.hasMouse() || config.visible);
         player.boosting = Keybind.boost.down();
 
         if (Keybind.look_at.down()) unit.rotation = Angles.mouseAngle(unit.x, unit.y);
@@ -328,7 +328,18 @@ public class DesktopInput extends InputSystem
 
     protected void updateBuilding()
     {
-        var plans = player.unit().plans;
+        if (Keybind.select.tap())
+        {
+            var build = selectedBuilding();
+            if (block == null && build != null && build.team == player.team()) config.show(build);
+        }
+        if (Keybind.deselect.tap())
+        {
+            block = null;
+            config.hide();
+        }
+        // TODO inventory
+        if (block != null && config.visible) config.hide();
 
         if (Keybind.hexblock.tap()) polyblock.show(panel);
         if (Keybind.srcblock.tap()) ; // TODO block search fragments & calculator
