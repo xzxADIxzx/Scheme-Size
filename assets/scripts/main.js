@@ -7,3 +7,8 @@ var get = Vars.mobile ? (pkg) => null : (pkg) => mod.loader.loadClass(pkg).newIn
 const Main    = mod.main
 const Tools   = get("schema.Tools")
 const Updater = get("schema.Updater")
+
+// temporarily load a dummy sprite to be overridden later
+// this only works within the scope of the script
+Core.atlas.addRegion("status-invincible", Core.atlas.white())
+StatusEffects.shielded.uiIcon=StatusEffects.shielded.fullIcon
