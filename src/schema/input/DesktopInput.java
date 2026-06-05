@@ -421,13 +421,9 @@ public class DesktopInput extends InputSystem
     @Override
     public void drawPlans()
     {
-        if (player.dead()) return; // TODO save plans locally
+        drawPlayers();
 
-        var plans = player.unit().plans;
-
-        // TODO draw local plans, other players' plans and their cursor positions (move the last into InputHandler)
-
-        if (block == null) return;
+        if (block == null || commandMode || controlMode) return;
 
         var tx = rotating ? toRotate.x : World.toTile(mouse.x - block.offset);
         var ty = rotating ? toRotate.y : World.toTile(mouse.y - block.offset);

@@ -9,6 +9,7 @@ import arc.math.geom.*;
 import arc.struct.*;
 import arc.util.*;
 import mindustry.ai.*;
+import mindustry.core.*;
 import mindustry.entities.*;
 import mindustry.entities.units.*;
 import mindustry.game.*;
@@ -48,6 +49,11 @@ public abstract class InputSystem
     /// Last controlled unit.
     protected Sized controlUnit;
 
+    /// Plans to be builded.
+    protected Seq<BuildPlan> plans = new Seq<>();
+    /// Plans to be flushed.
+    protected Seq<BuildPlan> rough = new Seq<>();
+
     /// Selected block, the one in your hand.
     public Block block;
     /// Whether the building is ongoing or paused.
@@ -69,6 +75,26 @@ public abstract class InputSystem
 
     // endregion
     // region draw
+
+    /// Draws all plans of all players.
+    protected void drawPlayers()
+    {
+        plans.each(p -> p.animScale = Mathf.lerpDelta(p.animScale, 1f, .2f));
+        rough.each(p -> p.animScale = Mathf.lerpDelta(p.animScale, 1f, .2f));
+
+        plans.each(p -> p.block.drawPlan(p, plans, p.cachedValid = control.input.validPlace(p.x, p.y, p.block, p.rotation)));
+        rough.each(p -> p.block.drawPlan(p, rough, p.cachedValid = control.input.validPlace(p.x, p.y, p.block, p.rotation)));
+
+        plans.each(p -> p.block.drawPlanConfigTop(p, plans));
+        rough.each(p -> p.block.drawPlanConfigTop(p, rough));
+
+        control.input.drawOtherBuildPlans();
+
+        Groups.player.each(p -> p != player, p ->
+        {
+            Drawf.limitLine(p, Tmp.v3.set(p.mouseX, p.mouseY), p.unit().hitSize + 2f, 0f, Tmp.c1.set(p.team().color).a(.6f));
+        });
+    }
 
     /// Draws the command mode overlay.
     protected void drawCommand()
@@ -283,10 +309,16 @@ public abstract class InputSystem
         public boolean isPlacing() { return insys.block != null || Keybind.rebuild.down() & !scene.hasKeyboard(); }
 
         @Override
-        public void useSchematic(Schematic sch, boolean checkHidden) { } // TODO implement
+        public void useSchematic(Schematic sch, boolean checkHidden)
+        {
+            rough.set(schematics.toPlans(sch, World.toTile(mouse.x), World.toTile(mouse.y), checkHidden));
+            insys.block = null;
+            inv.hide();
+            config.hideConfig();
+        }
 
         @Override
-        public void getSyncedPlans(Seq<BuildPlan> out) { } // TODO implement
+        public void getSyncedPlans(Seq<BuildPlan> out) { plans.each(p -> !p.breaking, out::add); }
     }
 
     // endregion
