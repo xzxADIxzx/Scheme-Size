@@ -12,7 +12,6 @@ import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.net.Packets.*;
 import mindustry.world.blocks.*;
-import mindustry.world.blocks.ConstructBlock.*;
 import schema.ui.hud.*;
 import schema.ui.polygons.Polygon;
 
@@ -301,14 +300,7 @@ public class DesktopInput extends InputSystem
         if (Keybind.research.tap() && state.isCampaign()) ui.research.show();
         if (Keybind.database.tap()) ui.database.show();
 
-        // TODO check plans as well
-        if (Keybind.block_info.tap())
-        {
-            var build = selectedBuilding();
-            var hover = insys.block != null ? insys.block : build == null ? null : build instanceof ConstructBuild c ? c.current : build.block;
-
-            if (hover != null && polyblock.unlocked(hover)) ui.content.show(hover);
-        }
+        if (Keybind.inspect.tap()) inspect(false);
 
         if (Keybind.tgl_menus.tap()) hudfrag.shown = !hudfrag.shown;
         if (Keybind.tgl_ruler.tap()) overlay.ruler = !overlay.ruler;
@@ -360,27 +352,7 @@ public class DesktopInput extends InputSystem
         if (Keybind.drop.tap    ()) ;
         if (Keybind.drop.release()) ;
 
-        if (Keybind.pick.tap())
-        {
-            var build = selectedBuilding();
-            if (build != null && build.inFogTo(player.team())) build = null;
-
-            var recipe = build == null ? null : build instanceof ConstructBuild c ? c.current : build.block;
-            var config = build == null ? null : build.block.copyConfig ? build.config() : null;
-
-            var index = plans.indexOf(p -> !p.breaking && p.block.bounds(p.x, p.y, Tmp.r1).contains(mouse));
-            if (index != -1)
-            {
-                recipe = plans.get(index).block;
-                config = plans.get(index).config;
-            }
-
-            if (recipe != null && polyblock.unlocked(recipe))
-            {
-                block = recipe;
-                block.lastConfig = config;
-            }
-        }
+        if (Keybind.pick.tap()) inspect(true);
 
         if (Keybind.rotate.tap    ()) toRotate = new Rotatable(selectedBuilding(), block != null ? temp : null);
         if (Keybind.rotate.release()) toRotate = null;

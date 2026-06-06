@@ -62,7 +62,7 @@ public enum Keybind
     display_unit(3, KeyCode.z),
     display_xray(3, KeyCode.x),
     display_prod(3, KeyCode.c),
-    block_info(0, KeyCode.f1),
+    inspect(0, KeyCode.f1),
     tgl_menus(0, KeyCode.backtick),
     tgl_ruler(0, KeyCode.f2),
     tgl_power_lasers(0, KeyCode.f5),

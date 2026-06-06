@@ -57,7 +57,7 @@ public class BlockPolygon extends Polygon
         super.build(parent);
         keyDown(_ ->
         {
-            if (Keybind.block_info.tap() && hovered != null) ui.content.show(hovered);
+            if (Keybind.inspect.tap() && hovered != null) ui.content.show(hovered);
         });
 
         for (int i = 0; i < categories.length; i++) add(String.valueOf(icons[i]), true, j ->

@@ -10,6 +10,7 @@ import arc.struct.*;
 import arc.util.*;
 import mindustry.ai.*;
 import mindustry.core.*;
+import mindustry.ctype.*;
 import mindustry.entities.*;
 import mindustry.entities.units.*;
 import mindustry.game.*;
@@ -18,6 +19,7 @@ import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.world.*;
 import mindustry.world.blocks.*;
+import mindustry.world.blocks.ConstructBlock.*;
 
 import static arc.Core.*;
 import static mindustry.Vars.*;
@@ -235,6 +237,70 @@ public abstract class InputSystem
 
     /// Moves the camera by the given offset.
     public void moveCam(Vec2 offset) { camera.position.add(offset); }
+
+    /// Inspects the content under the mouse.
+    public void inspect(boolean use)
+    {
+        Cons2<UnlockableContent, Object> ret = (content, config) ->
+        {
+            if (content instanceof Block b)
+            {
+                if (use && polyblock.unlocked(b))
+                {
+                    block = b;
+                    block.lastConfig = config;
+                }
+                else if (polyblock.unlocked(b)) ui.content.show(content);
+            }
+            else if (content.unlockedNowHost()) ui.content.show(content);
+        };
+        if (!use)
+        {
+            if (block != null)
+            {
+                ret.get(block, null);
+                return;
+            }
+
+            var unit = selectedUnit(true);
+            if (unit == null)
+                unit = selectedUnit(false);
+            if (unit != null)
+            {
+                ret.get(unit.type, null);
+                return;
+            }
+        }
+        {
+            var plan = selectedPlan(true);
+            if (plan == null)
+                plan = selectedPlan(false);
+            if (plan != null)
+            {
+                ret.get(plan.block, plan.config);
+                return;
+            }
+
+            var build = selectedBuilding();
+            if (build != null && !build.inFogTo(player.team())) ret.get(build instanceof ConstructBuild c ? c.current : build.block, build.config());
+        }
+    }
+
+    /// Returns a plan under the mouse.
+    public BuildPlan selectedPlan(boolean owns)
+    {
+        if (owns)
+            return plans.find(p -> p.block.bounds(p.x, p.y, Tmp.r1).contains(mouse));
+        else
+        {
+            for (var other : Groups.player) if (other != player)
+            {
+                var plan = other.getPreviewPlans().find(p -> p.block.bounds(p.x, p.y, Tmp.r1).contains(mouse));
+                if (plan != null) return plan;
+            }
+            return null;
+        }
+    }
 
     /// Returns a unit under the mouse.
     public Unit selectedUnit(boolean ally)
