@@ -43,7 +43,7 @@ public class Main extends Mod
     // endregion
     // region fragments
 
-    // public static InventoryFragment inv;
+    public static InventoryFragment inv;
     public static ConfigFragment config;
     public static HudFragment hudfrag;
     public static MapFragment mapfrag;
@@ -73,6 +73,7 @@ public class Main extends Mod
         keybind = new KeybindDialog();
         wavy = new WaveDialog();
 
+        inv = new InventoryFragment();
         config = new ConfigFragment();
         hudfrag = new HudFragment();
         mapfrag = new MapFragment();
@@ -90,7 +91,7 @@ public class Main extends Mod
         ui.hudGroup.clear();
         ui.hudGroup.addChild(new Table() {{ name = "coreinfo"; visible = false; }});
 
-        // TODO inventory
+        inv.build(ui.hudGroup);
         config.build(ui.hudGroup);
         hudfrag.build(ui.hudGroup);
         mapfrag.build(ui.hudGroup);
@@ -108,7 +109,7 @@ public class Main extends Mod
         ui.loadfrag = loadfrag.agent();
 
         Reflect.set(renderer, "overlays", overlay.agent());
-        // TODO inventory
+        Reflect.set(mindustry.input.InputHandler.class, control.input, "inv", inv.agent());
         Reflect.set(mindustry.input.InputHandler.class, control.input, "config", config.agent());
     }
 

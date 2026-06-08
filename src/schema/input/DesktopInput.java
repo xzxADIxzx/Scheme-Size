@@ -323,14 +323,19 @@ public class DesktopInput extends InputSystem
         if (Keybind.select.tap())
         {
             var build = selectedBuilding();
-            if (block == null && build != null && build.team == player.team()) config.show(build);
+            if (block == null && build != null && build.team == player.team())
+            {
+                inv.show(build);
+                config.show(build);
+            }
         }
         if (Keybind.deselect.tap())
         {
             block = null;
+            inv.hide();
             config.hide();
         }
-        // TODO inventory
+        if (block != null && inv.visible) inv.hide();
         if (block != null && config.visible) config.hide();
 
         if (Keybind.hexblock.tap()) polyblock.show(panel);

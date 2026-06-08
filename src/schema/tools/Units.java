@@ -44,7 +44,7 @@ public class Units
             if (e.player != player) return;
 
             coreUnit = player.unit() != null && coreUnits.contains(player.unit().type);
-            capacity = player.unit() != null ? player.unit().type.itemCapacity : -1;
+            capacity = player.unit() != null ? player.unit().itemCapacity() : -1;
 
             maxShield = -1f;
             fldShield = null;
