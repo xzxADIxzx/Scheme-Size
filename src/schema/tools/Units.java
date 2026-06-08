@@ -35,7 +35,7 @@ public class Units
     /// Total health and shield of units on the next wave.
     public float waveHealth, waveShield;
     /// Total amount of units and bosses on the next wave.
-    public ObjectIntMap<UnitType> waveUnits = new ObjectIntMap<>(), waveBosses = new ObjectIntMap<>();
+    public ObjectIntMap<UnitType> waveCommon = new ObjectIntMap<>(), waveGuards = new ObjectIntMap<>();
 
     public Units()
     {
@@ -89,21 +89,21 @@ public class Units
     public float shieldRel() { return shieldAbs() / maxShield; }
 
     /// Refreshes information about the next wave.
-    public void refreshWaveInfo()
+    public void refreshWaveInfo(int wave)
     {
         waveHealth = waveShield = 0f;
-        waveUnits.clear();
-        waveBosses.clear();
+        waveCommon.clear();
+        waveGuards.clear();
 
         state.rules.spawns.each(g -> g.type != null, g ->
         {
-            int amount = g.getSpawned(state.wave - 1);
+            int amount = g.getSpawned(wave - 1);
             if (amount == 0) return;
 
             waveHealth += g.type.health * amount;
-            waveShield += g.getShield(state.wave - 1) * amount;
+            waveShield += g.getShield(wave - 1) * amount;
 
-            (g.effect == StatusEffects.boss ? waveBosses : waveUnits).put(g.type, amount);
+            (g.effect == StatusEffects.boss ? waveGuards : waveCommon).put(g.type, amount);
         });
     }
 

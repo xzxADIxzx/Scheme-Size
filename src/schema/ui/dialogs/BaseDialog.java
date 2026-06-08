@@ -1,5 +1,6 @@
 package schema.ui.dialogs;
 
+import arc.func.*;
 import arc.scene.style.*;
 import arc.scene.ui.*;
 import arc.scene.ui.layout.*;
@@ -38,6 +39,12 @@ public class BaseDialog extends Dialog
     public void addButton(String text, Drawable icon, float width, Runnable clicked)
     {
         footer.button(text, icon, Style.tbd, clicked).size(width, 48f).pad(0f, 4f, 0f, 4f);
+    }
+
+    /// Adds a button to the dialog's footer.
+    public void addButton(String text, Drawable icon, float width, Runnable clicked, Boolp disabled)
+    {
+        footer.button(text, icon, Style.tbd, clicked).size(width, 48f).pad(0f, 4f, 0f, 4f).disabled(_ -> disabled.get());
     }
 
     /// Adds a button that closes the dialog.

@@ -1,5 +1,6 @@
 package schema;
 
+import arc.scene.ui.layout.*;
 import arc.struct.*;
 import arc.util.*;
 import mindustry.mod.*;
@@ -85,6 +86,7 @@ public class Main extends Mod
     public void hook()
     {
         ui.hudGroup.clear();
+        ui.hudGroup.addChild(new Table() {{ name = "coreinfo"; visible = false; }});
 
         // TODO inventory
         config.build(ui.hudGroup);
