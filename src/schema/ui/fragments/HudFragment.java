@@ -83,7 +83,7 @@ public class HudFragment extends Table
                 }
                 if (type == Notification.guardian)
                 {
-                    c.parent.tapped(() -> { /* TODO wave dialog, show the guardian wave */ });
+                    c.parent.tapped(() -> nextGuardian(wavy::show));
                     c.parent.addListener(new HandCursorListener());
                 }
             },

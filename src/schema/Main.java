@@ -38,6 +38,7 @@ public class Main extends Mod
     // region dialogs
 
     public static KeybindDialog keybind;
+    public static WaveDialog wavy;
 
     // endregion
     // region fragments
@@ -70,6 +71,7 @@ public class Main extends Mod
         insys = mobile ? null : new DesktopInput();
 
         keybind = new KeybindDialog();
+        wavy = new WaveDialog();
 
         config = new ConfigFragment();
         hudfrag = new HudFragment();
