@@ -339,7 +339,7 @@ public class DesktopInput extends InputSystem
         if (block != null && config.visible) config.hide();
 
         if (Keybind.hexblock.tap()) polyblock.show(panel);
-        if (Keybind.srcblock.tap()) ; // TODO block search fragments & calculator
+        if (Keybind.srcblock.tap()) search.show();
 
         if (Keybind.pause_bd.tap()) building = !building;
         if (Keybind.clear_bd.tap()) plans.clear();

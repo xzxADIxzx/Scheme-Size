@@ -8,6 +8,7 @@ import arc.scene.ui.ImageButton.*;
 import arc.scene.ui.Label.*;
 import arc.scene.ui.ScrollPane.*;
 import arc.scene.ui.TextButton.*;
+import arc.scene.ui.TextField.*;
 import arc.scene.ui.Tooltip.*;
 import mindustry.game.*;
 import mindustry.gen.*;
@@ -30,6 +31,8 @@ public class Style
     public static TextButtonStyle tbd, tbe, tbt;
     /// Scroll style, simple knob without anything else.
     public static ScrollPaneStyle scr;
+    /// Special style for the search fragment.
+    public static TextFieldStyle tfs;
     /// Special style for the command fragment.
     public static ImageButtonStyle ibc;
     /// Label style that uses the outline font.
@@ -87,6 +90,18 @@ public class Style
 
         scr = new ScrollPaneStyle() {{ vScrollKnob = find("scroll-knob"); }};
 
+        tfs = new TextFieldStyle()
+        {{
+            background       = find("panel-x-shape");
+            cursor           = ((TextureRegionDrawable) Tex.whiteui).tint(Pal.accent);
+            selection        = ((TextureRegionDrawable) Tex.whiteui).tint(Pal.accent);
+
+            font             = Fonts.outline;
+            fontColor        = Color.white;
+            messageFont      = Fonts.outline;
+            messageFontColor = Pal.lightishGray;
+        }};
+
         ibc = new ImageButtonStyle(ibt)
         {{
             imageUpColor      = Pal.accentBack;
@@ -97,7 +112,7 @@ public class Style
 
         outline = Styles.outlineLabel;
 
-        Tools.log("[green] < Created [accent]12[] styles");
+        Tools.log("[green] < Created [accent]13[] styles");
 
         // endregion
 

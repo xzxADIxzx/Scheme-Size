@@ -45,6 +45,7 @@ public class Main extends Mod
 
     public static InventoryFragment inv;
     public static ConfigFragment config;
+    public static SearchFragment search;
     public static HudFragment hudfrag;
     public static MapFragment mapfrag;
     public static CommandFragment cmndfrag;
@@ -75,6 +76,7 @@ public class Main extends Mod
 
         inv = new InventoryFragment();
         config = new ConfigFragment();
+        search = new SearchFragment();
         hudfrag = new HudFragment();
         mapfrag = new MapFragment();
         cmndfrag = new CommandFragment();
@@ -93,6 +95,7 @@ public class Main extends Mod
 
         inv.build(ui.hudGroup);
         config.build(ui.hudGroup);
+        search.build(ui.hudGroup);
         hudfrag.build(ui.hudGroup);
         mapfrag.build(ui.hudGroup);
         cmndfrag.build(ui.hudGroup);
