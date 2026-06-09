@@ -82,6 +82,12 @@ public class SearchFragment extends Table
             results.add("@search.placeholder").style(Style.outline);
             return;
         }
+
+        if(value.matches("[0-9 () \\.\\+\\-\\*\\/]*"))
+        {
+            var num = evaluate(value, 0);
+            results.add(Float.isNaN(num) ? "@search.syntax-flaw" : "[light]= " + num).style(Style.outline);
+        }
     }
 
     /// Handles text input.
@@ -94,6 +100,86 @@ public class SearchFragment extends Table
         });
         hide();
     }
+
+    // endregion
+    // region engine
+
+    int i;
+
+    /// Expression evaluation level.
+    private interface Level
+    {
+        float evaluate(String expression);
+    }
+    /// Expression evaluation levels.
+    private final Level[] levels =
+    {
+        expression -> evaluate(expression.replaceAll("\\s", "") + " ", (i = 0) + 1),
+        expression ->
+        {
+            var value = evaluate(expression, 2);
+
+            while (i <= expression.length())
+            {
+                switch (expression.charAt(i++))
+                {
+                    case '+': value += evaluate(expression, 2); break;
+                    case '-': value -= evaluate(expression, 2); break;
+                    default:
+                        i--; // failed to process
+                        return value;
+                }
+            }
+            return value;
+        },
+        expression ->
+        {
+            var value = evaluate(expression, 3);
+
+            while (i <= expression.length())
+            {
+                switch (expression.charAt(i++))
+                {
+                    case '*': value *= evaluate(expression, 3); break;
+                    case '/': value /= evaluate(expression, 3); break;
+                    default:
+                        i--; // failed to process
+                        return value;
+                }
+            }
+            return value;
+        },
+        expression ->
+        {
+            var c = expression.charAt(i);
+            if (c == '+' || c == '-' || c == '.' || Character.isDigit(c))
+            {
+                int s = i;
+                while ((c = expression.charAt(++i)) == '.' || Character.isDigit(c)) ;
+
+                return Strings.parseFloat(expression.substring(s, i), Float.NaN);
+            }
+            if (c == '(')
+            {
+                int s = i + 1,
+                    n = 1;
+                while (n > 0) switch (c = expression.charAt(++i))
+                {
+                    case '(': n++; break;
+                    case ')': n--; break;
+                    case ' ': return Float.NaN;
+                }
+                i = s;
+                var ret = evaluate(expression, 1);
+                i++;
+                return ret;
+            }
+            return Float.NaN;
+        },
+    };
+
+    /// Parses the expression and then evaluates it.
+    public float evaluate(String expression, int level) { return levels[level].evaluate(expression); }
 
     // endregion
 }
