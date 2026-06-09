@@ -14,7 +14,6 @@ import schema.*;
 import schema.input.*;
 import schema.ui.Style;
 
-import static arc.Core.*;
 import static mindustry.Vars.*;
 import static schema.Main.*;
 
@@ -142,7 +141,7 @@ public class BlockPolygon extends Polygon
 
                     pane.button(new TextureRegionDrawable(b.uiIcon), Style.ibt, () ->
                     {
-                        if (input.shift() || input.ctrl() || input.alt())
+                        if (Keymask.any())
                             Tools.copy(Tools.icon(b.name) + "");
                         else
                             insys.block = b;

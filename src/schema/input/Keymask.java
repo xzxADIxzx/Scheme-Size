@@ -24,5 +24,8 @@ public enum Keymask
     /// Whether the mask is held down.
     public Boolp down;
 
+    /// Whether any mask is held down.
+    public static boolean any() { return input.shift() || input.ctrl() || input.alt(); }
+
     private Keymask(Boolp down) { this.down = down; }
 }

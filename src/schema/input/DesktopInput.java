@@ -348,7 +348,7 @@ public class DesktopInput extends InputSystem
 
         if (Keybind.ping.tap())
         {
-            if (input.shift() || input.ctrl() || input.alt())
+            if (Keymask.any())
                 ui.showTextInput("", "", maxPingTextLength, "", r -> Call.pingLocation(player, mouse.x, mouse.y, r));
             else
                 Call.pingLocation(player, mouse.x, mouse.y, null);
