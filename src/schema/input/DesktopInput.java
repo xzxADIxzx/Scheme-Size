@@ -405,7 +405,7 @@ public class DesktopInput extends InputSystem
         var tx = rotating ? toRotate.x : World.toTile(mouse.x - block.offset);
         var ty = rotating ? toRotate.y : World.toTile(mouse.y - block.offset);
         var rt = temp.rotation;
-        var valid = control.input.validPlace(tx, ty, block, rt);
+        var valid = placeable(temp, false);
 
         temp.set(tx, ty, rt, block);
         temp.config = block.lastConfig;

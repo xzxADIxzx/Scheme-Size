@@ -9,7 +9,6 @@ import arc.math.geom.*;
 import arc.struct.*;
 import arc.util.*;
 import mindustry.ai.*;
-import mindustry.core.*;
 import mindustry.ctype.*;
 import mindustry.entities.*;
 import mindustry.entities.units.*;
@@ -38,6 +37,11 @@ public abstract class InputSystem
     protected Vec2 mouse = new Vec2();
     /// Latest position of the mouse on the screen.
     protected Vec2 panel = new Vec2();
+
+    /// Last known coordinates of the mouse.
+    protected int lastX, lastY;
+    /// Last known coordinates of the lines.
+    protected int lineX, lineY;
 
     /// Whether the command/control mode is on.
     protected boolean commandMode, controlMode;
@@ -88,8 +92,8 @@ public abstract class InputSystem
         plans.each(p -> p.animScale = Mathf.lerpDelta(p.animScale, 1f, .2f));
         rough.each(p -> p.animScale = Mathf.lerpDelta(p.animScale, 1f, .2f));
 
-        plans.each(p -> p.block.drawPlan(p, query, p.cachedValid = control.input.validPlace(p.x, p.y, p.block, p.rotation)));
-        rough.each(p -> p.block.drawPlan(p, query, p.cachedValid = control.input.validPlace(p.x, p.y, p.block, p.rotation)));
+        plans.each(p -> p.block.drawPlan(p, query, p.cachedValid = placeable(p, false)));
+        rough.each(p -> p.block.drawPlan(p, query, p.cachedValid = placeable(p, false)));
 
         plans.each(p -> p.block.drawPlanConfigTop(p, query));
         rough.each(p -> p.block.drawPlanConfigTop(p, query));
@@ -233,6 +237,12 @@ public abstract class InputSystem
     // endregion
     // region tools
 
+    /// Position of the tile under the mouse.
+    public int tileX() { return Math.round(mouse.x / tilesize); }
+
+    /// Position of the tile under the mouse.
+    public int tileY() { return Math.round(mouse.y / tilesize); }
+
     /// Lerps the camera to the given target.
     public void lerpCam(Vec2 target) { camera.position.lerpDelta(target, .064f); }
 
@@ -288,6 +298,20 @@ public abstract class InputSystem
             var build = selectedBuilding();
             if (build != null && !build.inFogTo(player.team())) ret.get(build instanceof ConstructBuild c ? c.current : build.block, build.config());
         }
+    }
+
+    /// Checks the plan's placeability.
+    public boolean placeable(BuildPlan plan, boolean ignoreUnits)
+    {
+        plan.block.bounds(plan.x, plan.y, Tmp.r2);
+        return
+        (
+            !plans.contains(p -> p != plan && p.block.bounds(p.x, p.y, Tmp.r1).overlaps(Tmp.r2))
+            &&
+            Build.validPlaceIgnoreUnits(plan.block, player.team(), plan.x, plan.y, plan.rotation, true, true)
+            &&
+            Build.checkNoUnitOverlap   (plan.block,                plan.x, plan.y) | ignoreUnits
+        );
     }
 
     /// Returns a plan under the mouse.
@@ -381,7 +405,7 @@ public abstract class InputSystem
         @Override
         public void useSchematic(Schematic sch, boolean checkHidden)
         {
-            rough.set(schematics.toPlans(sch, World.toTile(mouse.x), World.toTile(mouse.y), checkHidden));
+            rough.set(schematics.toPlans(sch, tileX(), tileY(), checkHidden));
             insys.block = null;
             inv.hide();
             config.hideConfig();
