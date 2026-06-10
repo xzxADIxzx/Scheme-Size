@@ -9,6 +9,7 @@ import arc.scene.ui.layout.*;
 import arc.struct.*;
 import arc.util.*;
 import mindustry.world.*;
+import schema.*;
 import schema.input.*;
 import schema.ui.*;
 
@@ -41,21 +42,18 @@ public class SearchFragment extends Table
 
         keyDown(key ->
         {
-            if (key == KeyCode.escape || key == KeyCode.back)
-            {
-                hide();
-                return;
-            }
-            if (key == KeyCode.enter)
-            {
-                handle();
-                return;
-            }
+            if (key == KeyCode.escape || key == KeyCode.back) hide();
+            if (key == KeyCode.enter) handle();
+
             if (key == KeyCode.backspace && Keymask.any()) field.setText("");
+
+            if (Keybind.chat_prev.tap()) selected = Math.max(0, selected - 1);
+            if (Keybind.chat_next.tap()) selected = Math.min(5, selected + 1);
         });
 
         field = field("", Style.tfs, this::handle).growX().height(40f).update(Element::requestKeyboard).visible(() -> visible).get();
         field.setAlignment(Align.center);
+        field.setMaxLength(96);
         results = row().table(Style.find("panel-x-shape")).get();
     }
 
@@ -101,6 +99,14 @@ public class SearchFragment extends Table
         else
         {
             rank(value);
+            selected = 0;
+
+            for (int i = 0; i < Math.min(6, ranked.size); i++)
+            {
+                int j = i;
+                results.image(ranked.get(i).uiIcon       ).update(e -> e.color.a = j == selected ? 1f : .6f).size(32f);
+                results.add  (ranked.get(i).localizedName).update(e -> e.color.a = j == selected ? 1f : .6f).style(Style.outline).row();
+            }
         }
     }
 
@@ -113,6 +119,23 @@ public class SearchFragment extends Table
             handle("");
         });
         hide();
+
+        if (field.getText().isBlank()) return;
+        if (field.getText().matches("[0-9 () \\.\\+\\-\\*\\/]*"))
+        {
+            Tools.copy(Strings.autoFixed(evaluate(field.getText(), 0), 4));
+        }
+        else insys.block = ranked.get(selected);
+    }
+
+    // endregion
+    // region display
+
+    @Override
+    public void invalidate()
+    {
+        super.invalidate();
+        if (results != null) translation.set(0f, -results.getPrefHeight() / 2f);
     }
 
     // endregion
@@ -233,7 +256,7 @@ public class SearchFragment extends Table
         {
             if ((i == 0 || b.charAt(i - 1) == ' ') && b.regionMatches(i, a, 0, lnA)) return m[lnA][lnB] / 4f;
         }
-        return m[lnA][lnB] / (a.contains(b) || b.contains(a) ? 2f : 1f) * (lnA < 4 ? 1.2f : 1f) * (lnB < 4 ? 1.2f : 1f);
+        return m[lnA][lnB] / (a.contains(b) || b.contains(a) ? 2f : 1f) * (lnA < 5 ? 1.2f : 1f) * (lnB < 5 ? 1.2f : 1f);
     }
 
     /// Parses the expression and then evaluates it.
