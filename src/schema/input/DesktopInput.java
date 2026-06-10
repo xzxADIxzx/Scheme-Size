@@ -259,7 +259,7 @@ public class DesktopInput extends InputSystem
             else if (build != null && build instanceof ControlBlock c && c.canControl() && !c.isControlled())
                 Call.unitControl(player, c.unit());
 
-            else if (build != null && build.canControlSelect(player.unit()))
+            else if (build != null && builds.controllable(build))
                 Call.buildingControlSelect(player, build);
         }
     }

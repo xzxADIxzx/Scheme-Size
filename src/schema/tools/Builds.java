@@ -74,4 +74,7 @@ public class Builds
 
         context.get(outer ? radius : radius + multiplier * (Mathf.sqrt2 - 1), build.hitSize() / 2f - padding, build.x, build.y - build.hitSize() / 2f + padding + radius);
     }
+
+    /// Whether the building can be controlled by the local player.
+    public boolean controllable(Building build) { return player.unit() != null && build.canControlSelect(player.unit()); }
 }
