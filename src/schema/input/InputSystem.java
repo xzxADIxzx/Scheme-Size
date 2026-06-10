@@ -17,6 +17,7 @@ import mindustry.game.*;
 import mindustry.game.EventType.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
+import mindustry.input.InputHandler.*;
 import mindustry.world.*;
 import mindustry.world.blocks.*;
 import mindustry.world.blocks.ConstructBlock.*;
@@ -78,17 +79,20 @@ public abstract class InputSystem
     // endregion
     // region draw
 
+    @SuppressWarnings("unchecked")
+    QueryEachable query = new QueryEachable(null, plans, rough);
+
     /// Draws all plans of all players.
     protected void drawPlayers()
     {
         plans.each(p -> p.animScale = Mathf.lerpDelta(p.animScale, 1f, .2f));
         rough.each(p -> p.animScale = Mathf.lerpDelta(p.animScale, 1f, .2f));
 
-        plans.each(p -> p.block.drawPlan(p, plans, p.cachedValid = control.input.validPlace(p.x, p.y, p.block, p.rotation)));
-        rough.each(p -> p.block.drawPlan(p, rough, p.cachedValid = control.input.validPlace(p.x, p.y, p.block, p.rotation)));
+        plans.each(p -> p.block.drawPlan(p, query, p.cachedValid = control.input.validPlace(p.x, p.y, p.block, p.rotation)));
+        rough.each(p -> p.block.drawPlan(p, query, p.cachedValid = control.input.validPlace(p.x, p.y, p.block, p.rotation)));
 
-        plans.each(p -> p.block.drawPlanConfigTop(p, plans));
-        rough.each(p -> p.block.drawPlanConfigTop(p, rough));
+        plans.each(p -> p.block.drawPlanConfigTop(p, query));
+        rough.each(p -> p.block.drawPlanConfigTop(p, query));
 
         control.input.drawOtherBuildPlans();
 
