@@ -198,8 +198,8 @@ public class SearchFragment extends Table
     /// Returns the case-independent biased Levenshtein distance with position-independent bias and minimal allocations.
     public static float distance(String inA, String inB)
     {
-        if (inA == null || inA.isBlank() || inA.length() > 127 ||
-            inB == null || inB.isBlank() || inB.length() > 127) return Float.POSITIVE_INFINITY;
+        if (inA == null || inA.isBlank() || inA.length() >= 127 ||
+            inB == null || inB.isBlank() || inB.length() >= 127) return Float.POSITIVE_INFINITY;
 
         var a = inA.toLowerCase(java.util.Locale.ROOT);
         var b = inB.toLowerCase(java.util.Locale.ROOT);
