@@ -23,6 +23,8 @@ public class Main extends Mod
     public static Overlay overlay;
     /// Utility helping with buildings.
     public static Builds builds;
+    /// Utility helping with grids.
+    public static Grids grids;
     /// Utility helping with units.
     public static Units units;
 
@@ -67,6 +69,7 @@ public class Main extends Mod
 
         overlay = new Overlay();
         builds = new Builds();
+        grids = new Grids();
         units = new Units();
 
         insys = mobile ? null : new DesktopInput();
