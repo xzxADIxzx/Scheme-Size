@@ -33,11 +33,11 @@ public class Grids
     /// Normalizes the space.
     public Draw normalize(Area area)
     {
-        draw.x1 = area.x1 - tilesize / 2f;
-        draw.x2 = area.x2 + tilesize / 2f;
+        draw.x1 = area.x1 * tilesize - tilesize / 2f;
+        draw.x2 = area.x2 * tilesize + tilesize / 2f;
 
-        draw.y1 = area.y1 - tilesize / 2f;
-        draw.y2 = area.y2 + tilesize / 2f;
+        draw.y1 = area.y1 * tilesize - tilesize / 2f;
+        draw.y2 = area.y2 * tilesize + tilesize / 2f;
 
         return draw;
     }

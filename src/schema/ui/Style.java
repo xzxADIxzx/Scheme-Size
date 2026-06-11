@@ -39,6 +39,18 @@ public class Style
     public static LabelStyle outline;
 
     // endregion
+    // region colors
+
+    /// Palette of region colors.
+    public static Color
+
+    selF = Pal.accent,            selB = Pal.accentBack,
+    remF = Pal.remove,            remB = Pal.removeBack,
+    clrF = Pal.graphiteAmmoFront, crlB = Pal.graphiteAmmoBack,
+    rebF = Pal.sapBullet,         rebB = Pal.sapBulletBack,
+    extF = Pal.unitFront,         extB = Pal.unitBack;
+
+    // endregion
 
     /// Loads the sprites & styles.
     public static void load()

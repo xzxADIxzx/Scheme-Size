@@ -81,6 +81,34 @@ public abstract class InputSystem
     public abstract void drawOverlay();
 
     // endregion
+    // region regions
+
+    /// Draws a region with the specified coordinates and colors.
+    public void region(int x1, int y1, int x2, int y2, Color c1, Color c2, boolean drawText)
+    {
+        var area = grids.normalize(x1, y1, x2, y2, 96);
+        var draw = grids.normalize(area);
+
+        Lines.stroke(2f, c2);
+        Lines.rect(draw.x1, draw.y1 - 1f, draw.x2 - draw.x1, draw.y2 - draw.y1);
+        Lines.stroke(2f, c1);
+        Lines.rect(draw.x1, draw.y1 - 0f, draw.x2 - draw.x1, draw.y2 - draw.y1);
+
+        int width  = area.x2 - area.x1 + 1,
+            height = area.y2 - area.y1 + 1;
+
+        if (drawText) Drawf.text
+        (
+            width + "x" + height + " (" + width * height + ")",
+            mouse.x + zoom / 6f,
+            mouse.y + zoom * 0f,
+            c1,
+            zoom / 40f,
+            Align.left
+        );
+    }
+
+    // endregion
     // region draw
 
     @SuppressWarnings("unchecked")
