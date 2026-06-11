@@ -1,7 +1,10 @@
 package schema.tools;
 
 import arc.func.*;
+import arc.math.*;
+import arc.math.geom.*;
 import arc.struct.*;
+import arc.util.pooling.*;
 import mindustry.entities.units.*;
 import mindustry.world.*;
 
@@ -45,6 +48,68 @@ public class Grids
         for (int x = area.x1; x <= area.x2; x++)
         for (int y = area.y1; y <= area.y2; y++)
             cons.get(x, y);
+    }
+
+    /// Draws a line or rect.
+    public void update(Seq<BuildPlan> plans, Block block, int rotation, boolean diagonal, int x1, int y1, int x2, int y2)
+    {
+        if (block == null) return;
+
+        line(block, x1, y1, x2, y2); // TODO implement other types
+
+        block.changePlacementPath(temp, rotation, diagonal);
+
+        Point2 prev = null, plan = null, next = temp.any() ? temp.first() : null;
+
+        for (int i = 0; i < temp.size; i++)
+        {
+            prev = plan;
+            plan = next;
+            next = i + 1 < temp.size ? temp.get(i + 1) : null;
+
+            int rt = prev == null && next == null ? rotation : next == null
+                ? Tile.relativeTo(prev.x, prev.y, plan.x, plan.y)
+                : Tile.relativeTo(plan.x, plan.y, next.x, next.y);
+
+            plans.add(new BuildPlan(plan.x, plan.y, rt != -1 ? rt : rotation, block, block.nextConfig()) {{ animScale = 1f; }});
+        }
+
+        block.handlePlacementLine(plans);
+
+        Pools.freeAll(temp, true);
+        temp.clear();
+    }
+
+    /// Brief transfer point.
+    private final Seq<Point2> temp = new Seq<>();
+
+    /// Adds a straight line.
+    private void line(Block block, int x1, int y1, int x2, int y2)
+    {
+        var bd = block.swapDiagonalPlacement
+            ? Geometry.d8[Mathf.round(Angles.angle(x1, y1, x2, y2) / 45f) % 8]
+            : Geometry.d4[Mathf.round(Angles.angle(x1, y1, x2, y2) / 90f) % 4];
+
+        Point2 dir = Pools.obtain(Point2.class, Point2::new).set(bd.x * block.size, bd.y * block.size);
+        Point2 pos = Pools.obtain(Point2.class, Point2::new).set(x1, y1);
+
+        float dst = pos.dst(x2, y2);
+        int limit = 512;
+        do
+        {
+            temp.add(Pools.obtain(Point2.class, Point2::new).set(pos));
+
+            pos.add(dir);
+
+            if (dst < pos.dst(x2, y2))
+                break;
+            else
+                dst = pos.dst(x2, y2);
+        }
+        while (--limit > 0);
+
+        Pools.free(dir);
+        Pools.free(pos);
     }
 
     /// Structure representing a tile area.
