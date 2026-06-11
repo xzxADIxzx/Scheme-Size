@@ -76,7 +76,7 @@ public class Overlay
 
         config.drawConfigure();
 
-        if (insys.block == null && !scene.hasMouse())
+        if (!insys.any() && !scene.hasMouse())
         {
             var build = insys.selectedBuilding();
             if (build != null)
@@ -86,7 +86,7 @@ public class Overlay
             }
         }
 
-        fade = Mathf.lerpDelta(fade, insys.block != null ? 1f : 0f, .06f);
+        fade = Mathf.lerpDelta(fade, insys.any() ? 1f : 0f, .06f);
         if (fade > .004f)
         {
             Lines.stroke(fade * 2f);

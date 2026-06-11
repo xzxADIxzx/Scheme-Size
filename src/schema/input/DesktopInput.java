@@ -132,7 +132,7 @@ public class DesktopInput extends InputSystem
 
         if (player.dead() || state.isPaused()) return;
 
-        player.shooting = Keybind.shoot.down() && block == null && !(commandMode || controlMode || scene.hasMouse() || config.visible);
+        player.shooting = Keybind.shoot.down() && !(any() || commandMode || controlMode || scene.hasMouse() || config.visible);
         player.boosting = Keybind.boost.down();
 
         if (Keybind.look_at.down()) unit.rotation = Angles.mouseAngle(unit.x, unit.y);
@@ -174,7 +174,7 @@ public class DesktopInput extends InputSystem
 
     protected void updateCommand()
     {
-        if (commandMode = Keybind.command.down() && !mapfrag.shown)
+        if (commandMode = Keybind.command.down() && rough.isEmpty() && !mapfrag.shown)
         {
             if (Keybind.command.tap()) commandRect = null;
 
@@ -243,7 +243,7 @@ public class DesktopInput extends InputSystem
             }
             if (Keybind.cancel.tap()) commandUnits(UnitStance.stop, true);
         }
-        if (controlMode = Keybind.control.down() && !mapfrag.shown && !scene.hasMouse() && state.rules.possessionAllowed)
+        if (controlMode = Keybind.control.down() && rough.isEmpty() && !mapfrag.shown && !scene.hasMouse() && state.rules.possessionAllowed)
         {
             // do not merge it with the condition above, silly
             if (!Keybind.select.tap()) return;
@@ -320,6 +320,39 @@ public class DesktopInput extends InputSystem
 
     protected void updateBuilding()
     {
+        if (Keybind.build_b.tap() && rough.isEmpty())
+        {
+            lineX = tileX();
+            lineY = tileY();
+        }
+        if (Keybind.build_b.down() && lineX != -1 && lineY != -1 && lastX != tileX() | lastY != tileY()) grids.update
+        (
+            rough.clear(),
+            block,
+            temp.rotation,
+            Keymask.any(),
+            lineX,
+            lineY,
+            lastX = tileX(),
+            lastY = tileY()
+        );
+        if (Keybind.build_b.release() && lastX != -1 && lastY != -1)
+        {
+            rough.each(p -> placeable(p, true), plans::add);
+            rough.clear();
+            deline();
+        }
+        if (rough.any() && lineX == -1 && lineY == -1)
+        {
+            if (lastX != -1 && lastY != -1) rough.each(p ->
+            {
+                p.x += tileX() - lastX;
+                p.y += tileY() - lastY;
+            });
+            lastX = tileX();
+            lastY = tileY();
+        }
+
         if (Keybind.select.tap())
         {
             var build = selectedBuilding();
@@ -331,12 +364,18 @@ public class DesktopInput extends InputSystem
         }
         if (Keybind.deselect.tap())
         {
-            block = null;
+            if (rough.any())
+            {
+                rough.clear();
+                deline();
+            }
+            else block = null;
+
             inv.hide();
             config.hide();
         }
-        if (block != null && inv.visible) inv.hide();
-        if (block != null && config.visible) config.hide();
+        if (any() && inv.visible) inv.hide();
+        if (any() && config.visible) config.hide();
 
         if (Keybind.hexblock.tap()) polyblock.show(panel);
         if (Keybind.srcblock.tap()) search.show();
@@ -377,6 +416,9 @@ public class DesktopInput extends InputSystem
 
         if (Keybind.sel_schematic.tap()) ui.schematics.show();
         if (Keybind.hex_schematic.tap()) polyschem.show(panel);
+
+        if (Keybind.flip_x.tap()) control.input.flipPlans(rough, true);
+        if (Keybind.flip_y.tap()) control.input.flipPlans(rough, false);
     }
 
     @Override
@@ -387,6 +429,9 @@ public class DesktopInput extends InputSystem
             block = null;
             building = true;
             toRotate = null;
+            deline();
+            plans.clear();
+            rough.clear();
         }
         if (Keybind.tgl_fullscreen.tap())
         {
@@ -400,15 +445,17 @@ public class DesktopInput extends InputSystem
     {
         drawPlayers();
 
-        if (block == null || commandMode || controlMode) return;
+        if (block == null || rough.any() || commandMode || controlMode) return;
 
         var tx = rotating ? toRotate.x : World.toTile(mouse.x - block.offset);
         var ty = rotating ? toRotate.y : World.toTile(mouse.y - block.offset);
         var rt = temp.rotation;
-        var valid = placeable(temp, false);
 
         temp.set(tx, ty, rt, block);
         temp.config = block.lastConfig;
+
+        // check the placeability of the plan **after** updating it
+        var valid = placeable(temp, false);
 
         block.drawPlan(temp, plans, valid);
         block.drawPlace(tx, ty, rt, valid);

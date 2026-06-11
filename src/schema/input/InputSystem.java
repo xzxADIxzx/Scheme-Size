@@ -243,6 +243,12 @@ public abstract class InputSystem
     /// Position of the tile under the mouse.
     public int tileY() { return Math.round(mouse.y / tilesize); }
 
+    /// Returns whether hands have any block.
+    public boolean any() { return block != null || rough.any(); }
+
+    /// Returns the line position to default.
+    public void deline() { lastX = lastY = lineX = lineY = -01; }
+
     /// Lerps the camera to the given target.
     public void lerpCam(Vec2 target) { camera.position.lerpDelta(target, .064f); }
 
@@ -400,16 +406,10 @@ public abstract class InputSystem
         public void updateSelectQuadtree() { }
 
         @Override
-        public boolean isPlacing() { return insys.block != null || Keybind.rebuild.down() & !scene.hasKeyboard(); }
+        public boolean isPlacing() { return any() || Keybind.rebuild.down() & !scene.hasKeyboard(); }
 
         @Override
-        public void useSchematic(Schematic sch, boolean checkHidden)
-        {
-            rough.set(schematics.toPlans(sch, tileX(), tileY(), checkHidden));
-            insys.block = null;
-            inv.hide();
-            config.hideConfig();
-        }
+        public void useSchematic(Schematic schem, boolean checkHidden) { rough.set(schematics.toPlans(schem, tileX(), tileY(), checkHidden)); }
 
         @Override
         public void getSyncedPlans(Seq<BuildPlan> out) { plans.each(p -> !p.breaking, out::add); }
