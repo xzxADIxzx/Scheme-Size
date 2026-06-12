@@ -136,6 +136,9 @@ public class Main extends Mod
         Updater.load();
         Updater.fetch();
 
+        maxSchematicSize = 96;
+        Tools.log("[green] < Updated the maximum schematic size");
+
         try // run the script outside of wrapper to make constants available in the dev console
         {
             Scripts scripts = mods.getScripts();

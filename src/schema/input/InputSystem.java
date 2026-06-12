@@ -83,10 +83,10 @@ public abstract class InputSystem
     // endregion
     // region regions
 
-    /// Draws a region with the specified coordinates and colors.
-    public void region(int x1, int y1, int x2, int y2, Color c1, Color c2, boolean breaks, boolean repair, boolean plan, boolean team, boolean text)
+    /// Draws a region using the specified colors and flags.
+    public void region(Color c1, Color c2, boolean breaks, boolean repair, boolean plan, boolean team, boolean text)
     {
-        var area = grids.normalize(x1, y1, x2, y2, 96);
+        var area = grids.normalize(lineX, lineY, lastX, lastY, maxSchematicSize);
         var draw = grids.normalize(area);
 
         Lines.stroke(2f, c2);

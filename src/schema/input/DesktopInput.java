@@ -11,6 +11,7 @@ import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.net.Packets.*;
 import mindustry.world.blocks.*;
+import schema.ui.*;
 import schema.ui.hud.*;
 import schema.ui.polygons.Polygon;
 
@@ -30,6 +31,11 @@ public class DesktopInput extends InputSystem
     private Rotatable toRotate;
     /// Whether a block is being rotated.
     private boolean rotating;
+
+    /// Available types of regions.
+    private Keybind[] regions = { Keybind.new_schematic, Keybind.break_b, Keybind.clear_b, Keybind.rebuild, Keybind.extract };
+    /// Region type being selected.
+    private Keybind region;
 
     /// Build plan used to draw the selected block.
     private BuildPlan temp = new BuildPlan() {{ animScale = 1f; }};
@@ -319,12 +325,18 @@ public class DesktopInput extends InputSystem
 
     protected void updateBuilding()
     {
-        if (Keybind.build_b.tap() && rough.isEmpty())
+        // region hell
+
+        final boolean
+            hasLast = lastX != -1 && lastY != -1,
+            hasLine = lineX != -1 && lineY != -1;
+
+        if (Keybind.build_b.tap() && !hasLast)
         {
             lineX = handX();
             lineY = handY();
         }
-        if (Keybind.build_b.down() && lineX != -1 && lineY != -1 && lastX != handX() | lastY != handY()) grids.update
+        if (Keybind.build_b.down() && hasLine && lastX != handX() | lastY != handY()) grids.update
         (
             rough.clear(),
             block,
@@ -335,13 +347,14 @@ public class DesktopInput extends InputSystem
             lastX = handX(),
             lastY = handY()
         );
-        if (Keybind.build_b.release() && lastX != -1 && lastY != -1)
+        if (Keybind.build_b.release() && hasLast)
         {
             rough.each(p -> placeable(p, true), plans::add);
             rough.clear();
             deline();
         }
-        if (rough.any() && lineX == -1 && lineY == -1)
+
+        if (!hasLine && rough.any())
         {
             if (lastX != -1 && lastY != -1) rough.each(p ->
             {
@@ -351,6 +364,36 @@ public class DesktopInput extends InputSystem
             lastX = tileX();
             lastY = tileY();
         }
+
+        if (!hasLast) for (var r : regions) if (r.tap())
+        {
+            region = r;
+            lineX = tileX();
+            lineY = tileY();
+        }
+        if (region != null && region.down())
+        {
+            lastX = tileX();
+            lastY = tileY();
+        }
+        if (region != null && region.release())
+        {
+            switch (region)
+            {
+                default:              break;
+                case Keybind.break_b: break;
+                case Keybind.clear_b: break;
+                case Keybind.rebuild: break;
+                case Keybind.extract: break;
+            }
+            region = null;
+            deline();
+        }
+
+        // endregion
+        // region good
+
+        if (Keybind.replace.tap()) ; // TODO polyplace
 
         if (Keybind.select.tap())
         {
@@ -368,7 +411,11 @@ public class DesktopInput extends InputSystem
                 rough.clear();
                 deline();
             }
-            else block = null;
+            else
+            {
+                block = null;
+                region = null;
+            }
 
             inv.hide();
             config.hide();
@@ -418,6 +465,8 @@ public class DesktopInput extends InputSystem
 
         if (Keybind.flip_x.tap()) control.input.flipPlans(rough, true);
         if (Keybind.flip_y.tap()) control.input.flipPlans(rough, false);
+
+        // endregion
     }
 
     @Override
@@ -485,6 +534,15 @@ public class DesktopInput extends InputSystem
 
             overlay.render();
             Draw.reset();
+        }
+
+        if (region != null) switch (region)
+        {
+            default:              region(Style.selF, Style.selB, false, false, false, false, true ); break;
+            case Keybind.break_b: region(Style.remF, Style.remB, true,  false, true,  true,  false); break;
+            case Keybind.clear_b: region(Style.clrF, Style.crlB, false, false, true,  true,  false); break;
+            case Keybind.rebuild: region(Style.rebF, Style.rebB, false, true,  false, true,  false); break;
+            case Keybind.extract: region(Style.extF, Style.extB, true,  false, false, false, false); break;
         }
     }
 }
