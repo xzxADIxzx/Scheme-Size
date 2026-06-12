@@ -118,6 +118,9 @@ public class Grids
         /// Normalized corners of the area.
         public int x1, y1, x2, y2;
 
+        public int width () { return x2 - x1 + 1; }
+        public int height() { return y2 - y1 + 1; }
+
         @Override
         public String toString() { return "(" + x1 + ", " + y1 + ", " + x2 + ", " + y2 + ")"; }
     }
@@ -127,6 +130,9 @@ public class Grids
     {
         /// Normalized corners of the area.
         public float x1, y1, x2, y2;
+
+        public float width () { return x2 - x1; }
+        public float height() { return y2 - y1; }
 
         @Override
         public String toString() { return "(" + x1 + ", " + y1 + ", " + x2 + ", " + y2 + ")"; }

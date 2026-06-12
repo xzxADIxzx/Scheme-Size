@@ -24,7 +24,9 @@ public enum Keybind
 
     build_b(0, KeyCode.mouseLeft, "building"),
     break_b(0, KeyCode.mouseRight),
+    clear_b(3, KeyCode.mouseRight),
     rebuild(0, KeyCode.b),
+    extract(3, KeyCode.b),
     replace(3, KeyCode.mouseLeft),
     select(0, KeyCode.mouseLeft),
     deselect(0, KeyCode.q),

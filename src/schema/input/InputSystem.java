@@ -84,22 +84,45 @@ public abstract class InputSystem
     // region regions
 
     /// Draws a region with the specified coordinates and colors.
-    public void region(int x1, int y1, int x2, int y2, Color c1, Color c2, boolean drawText)
+    public void region(int x1, int y1, int x2, int y2, Color c1, Color c2, boolean breaks, boolean repair, boolean plan, boolean team, boolean text)
     {
         var area = grids.normalize(x1, y1, x2, y2, 96);
         var draw = grids.normalize(area);
 
         Lines.stroke(2f, c2);
-        Lines.rect(draw.x1, draw.y1 - 1f, draw.x2 - draw.x1, draw.y2 - draw.y1);
+        Lines.rect(draw.x1, draw.y1 - 1f, draw.width(), draw.height());
         Lines.stroke(2f, c1);
-        Lines.rect(draw.x1, draw.y1 - 0f, draw.x2 - draw.x1, draw.y2 - draw.y1);
+        Lines.rect(draw.x1, draw.y1 - 0f, draw.width(), draw.height());
 
-        int width  = area.x2 - area.x1 + 1,
-            height = area.y2 - area.y1 + 1;
+        Tmp.r2.set(draw.x1, draw.y1, draw.width(), draw.height());
 
-        if (drawText) Drawf.text
+        if (breaks) grids.iterate(area, (x, y) ->
+        {
+            var build = world.build(x, y);
+            if (build != null && Build.validBreak(player.team(), x, y)) Drawf.selected(build, c1);
+        });
+
+        if (repair) grids.iterate(area, (x, y) ->
+        {
+            var build = world.build(x, y);
+            if (build != null && repairable(build)) Drawf.selected(build, c1);
+        });
+
+        if (plan) plans.each(p ->
+        {
+            if (p.block.bounds(p.x, p.y, Tmp.r1).overlaps(Tmp.r2))
+                Drawf.selected(p.x, p.y, p.block, c1);
+        });
+
+        if (team) player.team().data().plans.each(p ->
+        {
+            if (p.block.bounds(p.x, p.y, Tmp.r1).overlaps(Tmp.r2))
+                Drawf.selected(p.x, p.y, p.block, c1);
+        });
+
+        if (text) Drawf.text
         (
-            width + "x" + height + " (" + width * height + ")",
+            area.width() + "x" + area.height() + " (" + area.width() * area.height() + ")",
             mouse.x + zoom / 6f,
             mouse.y + zoom * 0f,
             c1,
@@ -265,6 +288,12 @@ public abstract class InputSystem
     // endregion
     // region tools
 
+    /// Position of the hand under the mouse.
+    public int handX() { return block == null ? tileX() : Math.round((mouse.x - block.offset) / tilesize); }
+
+    /// Position of the hand under the mouse.
+    public int handY() { return block == null ? tileY() : Math.round((mouse.y - block.offset) / tilesize); }
+
     /// Position of the tile under the mouse.
     public int tileX() { return Math.round(mouse.x / tilesize); }
 
@@ -346,6 +375,17 @@ public abstract class InputSystem
             &&
             Build.checkNoUnitOverlap   (plan.block,                plan.x, plan.y) | ignoreUnits
         );
+    }
+
+    /// Checks the bld's repairability.
+    public boolean repairable(Building build)
+    {
+        return !state.rules.editor
+            && !player.dead()
+            && player.team() != Team.derelict
+            && build.team == Team.derelict
+            && polyblock.unlocked(build.block)
+            && Build.validPlace(build.block, player.team(), build.tileX(), build.tileY(), build.rotation);
     }
 
     /// Returns a plan under the mouse.

@@ -5,7 +5,6 @@ import arc.math.*;
 import arc.math.geom.*;
 import arc.util.*;
 import mindustry.ai.*;
-import mindustry.core.*;
 import mindustry.core.GameState.*;
 import mindustry.entities.units.*;
 import mindustry.gen.*;
@@ -322,10 +321,10 @@ public class DesktopInput extends InputSystem
     {
         if (Keybind.build_b.tap() && rough.isEmpty())
         {
-            lineX = tileX();
-            lineY = tileY();
+            lineX = handX();
+            lineY = handY();
         }
-        if (Keybind.build_b.down() && lineX != -1 && lineY != -1 && lastX != tileX() | lastY != tileY()) grids.update
+        if (Keybind.build_b.down() && lineX != -1 && lineY != -1 && lastX != handX() | lastY != handY()) grids.update
         (
             rough.clear(),
             block,
@@ -333,8 +332,8 @@ public class DesktopInput extends InputSystem
             Keymask.any(),
             lineX,
             lineY,
-            lastX = tileX(),
-            lastY = tileY()
+            lastX = handX(),
+            lastY = handY()
         );
         if (Keybind.build_b.release() && lastX != -1 && lastY != -1)
         {
@@ -447,8 +446,8 @@ public class DesktopInput extends InputSystem
 
         if (block == null || rough.any() || commandMode || controlMode) return;
 
-        var tx = rotating ? toRotate.x : World.toTile(mouse.x - block.offset);
-        var ty = rotating ? toRotate.y : World.toTile(mouse.y - block.offset);
+        var tx = rotating ? toRotate.x : handX();
+        var ty = rotating ? toRotate.y : handY();
         var rt = temp.rotation;
 
         temp.set(tx, ty, rt, block);
