@@ -209,6 +209,12 @@ public abstract class InputSystem
         plans.each(p -> !p.breaking, p -> p.block.drawPlanConfigTop(p, query));
         rough.each(p -> !p.breaking, p -> p.block.drawPlanConfigTop(p, query));
 
+        plans.each
+        (
+            p -> p.breaking,
+            p -> Drawf.selected(p.x, p.y, p.block, Pal.remove)
+        );
+
         control.input.drawOtherBuildPlans();
 
         Groups.player.each(p -> p != player, p ->
@@ -534,7 +540,7 @@ public abstract class InputSystem
         public void updateSelectQuadtree() { }
 
         @Override
-        public boolean isPlacing() { return any() || Keybind.rebuild.down() & !scene.hasKeyboard(); }
+        public boolean isPlacing() { return any() || (Keybind.break_b.down() || Keybind.clear_b.down() || Keybind.rebuild.down()) & !scene.hasKeyboard(); }
 
         @Override
         public void useSchematic(Schematic schem, boolean checkHidden) { rough.set(schematics.toPlans(schem, tileX(), tileY(), checkHidden)); }
