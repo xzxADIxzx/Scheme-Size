@@ -380,11 +380,11 @@ public class DesktopInput extends InputSystem
         {
             switch (region)
             {
-                default:              break;
-                case Keybind.break_b: break;
-                case Keybind.clear_b: break;
-                case Keybind.rebuild: break;
-                case Keybind.extract: break;
+                default:              copyRegion   (); break;
+                case Keybind.break_b: breakRegion  (); break;
+                case Keybind.clear_b: clearRegion  (); break;
+                case Keybind.rebuild: rebuildRegion(); break;
+                case Keybind.extract:                  break;
             }
             region = null;
             deline();

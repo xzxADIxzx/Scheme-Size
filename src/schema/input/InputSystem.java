@@ -8,12 +8,14 @@ import arc.math.*;
 import arc.math.geom.*;
 import arc.struct.*;
 import arc.util.*;
+import arc.util.pooling.*;
 import mindustry.ai.*;
 import mindustry.ctype.*;
 import mindustry.entities.*;
 import mindustry.entities.units.*;
 import mindustry.game.*;
 import mindustry.game.EventType.*;
+import mindustry.game.Teams.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.input.InputHandler.*;
@@ -130,6 +132,62 @@ public abstract class InputSystem
             Align.left
         );
     }
+
+    /// Frees a region from any sort of buildings or plans.
+    public void free(Cons<BlockPlan> each, boolean breaks, boolean repair)
+    {
+        var area = grids.normalize(lineX, lineY, lastX, lastY, maxSchematicSize);
+        var draw = grids.normalize(area);
+
+        Tmp.r2.set(draw.x1, draw.y1, draw.width(), draw.height());
+
+        if (each == null) plans.removeAll(p -> p.block.bounds(p.x, p.y, Tmp.r1).overlaps(Tmp.r2));
+
+        if (breaks) grids.iterate(area, (x, y) ->
+        {
+            var build = world.build(x, y);
+            if (build != null && Build.validBreak(player.team(), x, y)) plans.add(new BuildPlan(build.tileX(), build.tileY()));
+        });
+
+        if (repair) grids.iterate(area, (x, y) ->
+        {
+            var build = world.build(x, y);
+            if (build != null && repairable(build)) plans.add(new BuildPlan(build.tileX(), build.tileY(), build.rotation, build.block, build.config()));
+        });
+
+        var itr = player.team().data().plans.iterator();
+        var seq = Pools.obtain(IntSeq.class, IntSeq::new);
+
+        while (itr.hasNext())
+        {
+            var p = itr.next();
+            if (p.block.bounds(p.x, p.y, Tmp.r1).overlaps(Tmp.r2))
+            {
+                if (each == null)
+                {
+                    itr.remove();
+                    seq.add(Point2.pack(p.x, p.y));
+                }
+                else each.get(p);
+            }
+        }
+        if (each == null && seq.size > 0 && net.active()) Call.deletePlans(player, seq.toArray());
+
+        seq.clear();
+        Pools.free(seq);
+    }
+
+    /// Copies a region.
+    public void copyRegion() { control.input.useSchematic(schematics.create(lineX, lineY, lastX, lastY)); }
+
+    /// Breaks a region.
+    public void breakRegion() { free(null, true, false); }
+
+    /// Clears a region.
+    public void clearRegion() { free(null, false, false); }
+
+    /// Rebuilds a region.
+    public void rebuildRegion() { free(p -> plans.add(new BuildPlan(p.x, p.y, p.rotation, p.block, p.config)), false, true); }
 
     // endregion
     // region draw
