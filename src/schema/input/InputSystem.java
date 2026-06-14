@@ -155,6 +155,8 @@ public abstract class InputSystem
             if (build != null && repairable(build)) plans.add(new BuildPlan(build.tileX(), build.tileY(), build.rotation, build.block, build.config()));
         });
 
+        if (each == null) plans.removeAll(p -> plans.contains(o -> o != p && o.samePos(p)));
+
         var itr = player.team().data().plans.iterator();
         var seq = Pools.obtain(IntSeq.class, IntSeq::new);
 
@@ -171,7 +173,7 @@ public abstract class InputSystem
                 else each.get(p);
             }
         }
-        if (each == null && seq.size > 0 && net.active()) Call.deletePlans(player, seq.toArray());
+        if (seq.size > 0 && net.active()) Call.deletePlans(player, seq.toArray());
 
         seq.clear();
         Pools.free(seq);
@@ -198,14 +200,14 @@ public abstract class InputSystem
     /// Draws all plans of all players.
     protected void drawPlayers()
     {
-        plans.each(p -> p.animScale = Mathf.lerpDelta(p.animScale, 1f, .2f));
-        rough.each(p -> p.animScale = Mathf.lerpDelta(p.animScale, 1f, .2f));
+        plans.each(p -> !p.breaking, p -> p.animScale = Mathf.lerpDelta(p.animScale, 1f, .2f));
+        rough.each(p -> !p.breaking, p -> p.animScale = Mathf.lerpDelta(p.animScale, 1f, .2f));
 
-        plans.each(p -> p.block.drawPlan(p, query, p.cachedValid = placeable(p, false)));
-        rough.each(p -> p.block.drawPlan(p, query, p.cachedValid = placeable(p, false)));
+        plans.each(p -> !p.breaking, p -> p.block.drawPlan(p, query, placeable(p, true, false)));
+        rough.each(p -> !p.breaking, p -> p.block.drawPlan(p, query, placeable(p, true, false)));
 
-        plans.each(p -> p.block.drawPlanConfigTop(p, query));
-        rough.each(p -> p.block.drawPlanConfigTop(p, query));
+        plans.each(p -> !p.breaking, p -> p.block.drawPlanConfigTop(p, query));
+        rough.each(p -> !p.breaking, p -> p.block.drawPlanConfigTop(p, query));
 
         control.input.drawOtherBuildPlans();
 
@@ -422,12 +424,12 @@ public abstract class InputSystem
     }
 
     /// Checks the plan's placeability.
-    public boolean placeable(BuildPlan plan, boolean ignoreUnits)
+    public boolean placeable(BuildPlan plan, boolean ignorePlans, boolean ignoreUnits)
     {
         plan.block.bounds(plan.x, plan.y, Tmp.r2);
         return
         (
-            !plans.contains(p -> p != plan && p.block.bounds(p.x, p.y, Tmp.r1).overlaps(Tmp.r2))
+            (ignorePlans || !plans.contains(p -> p != plan && p.block.bounds(p.x, p.y, Tmp.r1).overlaps(Tmp.r2) && !plan.block.canReplace(p.block)))
             &&
             Build.validPlaceIgnoreUnits(plan.block, player.team(), plan.x, plan.y, plan.rotation, true, true)
             &&

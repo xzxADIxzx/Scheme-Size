@@ -349,8 +349,9 @@ public class DesktopInput extends InputSystem
         );
         if (Keybind.build_b.release() && hasLast)
         {
-            rough.each(p -> placeable(p, true), plans::add);
+            rough.each(p -> placeable(p, false, true), plans::add);
             rough.clear();
+            plans.removeAll(p -> plans.contains(o -> o != p && o.samePos(p)));
             deline();
         }
 
@@ -503,7 +504,7 @@ public class DesktopInput extends InputSystem
         temp.config = block.lastConfig;
 
         // check the placeability of the plan **after** updating it
-        var valid = placeable(temp, false);
+        var valid = placeable(temp, false, false);
 
         block.drawPlan(temp, plans, valid);
         block.drawPlace(tx, ty, rt, valid);
