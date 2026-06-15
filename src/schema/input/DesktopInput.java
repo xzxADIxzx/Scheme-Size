@@ -54,7 +54,7 @@ public class DesktopInput extends InputSystem
 
         if (scene.hasKeyboard() || scene.hasDialog())
         {
-            updateAI();
+            alpha.update(Vec2.ZERO, plans);
             return;
         }
 
@@ -64,37 +64,6 @@ public class DesktopInput extends InputSystem
         updateView();
 
         if (player.isBuilder() && !commandMode && !controlMode && !mapfrag.shown) updateBuilding();
-    }
-
-    protected void updateAI()
-    {
-        if (player.dead() || state.isPaused()) return;
-
-        var unit = player.unit();
-        var type = unit.type;
-
-        // TODO implement miner and builder AI
-
-        var rect = camera.bounds(Tmp.r1).grow(-64f);
-        if (rect.contains(unit.x, unit.y))
-            unit.wobble();
-        else
-        {
-            Tmp.v4.set
-            (
-                unit.x < rect.x ? rect.x : unit.x < rect.x + rect.width  ? unit.x : rect.x + rect.width,
-                unit.y < rect.y ? rect.y : unit.y < rect.y + rect.height ? unit.y : rect.y + rect.height
-            )
-            .sub(unit);
-
-            // length of the breaking distance
-            var len = unit.vel.len2() / 2f / type.accel;
-            // distance from the unit to the edge of the screen
-            var dst = Math.max(0f, Tmp.v4.len() - len);
-
-            // TODO implement path finder that is not gonna kill the unit while moving across enemy turrets
-            unit.movePref(Tmp.v4.limit(dst).limit(type.speed));
-        }
     }
 
     protected void updateMovement()
@@ -116,10 +85,7 @@ public class DesktopInput extends InputSystem
             // the unit simply follows the camera and performs commands
 
             moveCam(mov.add(pan).limit(1f).scl(settings.getInt("schema-pan-speed", 6) * (Keybind.boost.down() ? 2.4f : 1f) * Time.delta));
-
-            if (unit != null && type != null) unit.movePref(flw.scl(type.speed));
-
-            updateAI(); // TODO move to Gamma.java or smth
+            alpha.update(flw, plans);
         }
         else
         {

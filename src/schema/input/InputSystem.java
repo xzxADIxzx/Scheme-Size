@@ -200,6 +200,8 @@ public abstract class InputSystem
     /// Draws all plans of all players.
     protected void drawPlayers()
     {
+        final Boolf<BuildPlan> drawable = p -> !p.breaking && !p.initialized;
+
         plans.each(drawable, p -> p.animScale = Mathf.lerpDelta(p.animScale, 1f, .2f));
         rough.each(drawable, p -> p.animScale = Mathf.lerpDelta(p.animScale, 1f, .2f));
 
@@ -211,7 +213,7 @@ public abstract class InputSystem
 
         plans.each
         (
-            p -> p.breaking,
+            p -> p.breaking && !p.initialized,
             p -> Drawf.selected(p.x, p.y, p.block, Pal.remove)
         );
 

@@ -28,6 +28,8 @@ public class Main extends Mod
     /// Utility helping with units.
     public static Units units;
 
+    /// Advanced player controller.
+    public static Alpha alpha;
     /// Advanced input system lying in the foundation of the project.
     public static InputSystem insys;
 
@@ -72,6 +74,7 @@ public class Main extends Mod
         grids = new Grids();
         units = new Units();
 
+        alpha = new Alpha();
         insys = mobile ? null : new DesktopInput();
 
         keybind = new KeybindDialog();
