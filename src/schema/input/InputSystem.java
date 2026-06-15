@@ -200,14 +200,14 @@ public abstract class InputSystem
     /// Draws all plans of all players.
     protected void drawPlayers()
     {
-        plans.each(p -> !p.breaking, p -> p.animScale = Mathf.lerpDelta(p.animScale, 1f, .2f));
-        rough.each(p -> !p.breaking, p -> p.animScale = Mathf.lerpDelta(p.animScale, 1f, .2f));
+        plans.each(drawable, p -> p.animScale = Mathf.lerpDelta(p.animScale, 1f, .2f));
+        rough.each(drawable, p -> p.animScale = Mathf.lerpDelta(p.animScale, 1f, .2f));
 
-        plans.each(p -> !p.breaking, p -> p.block.drawPlan(p, query, placeable(p, true, false)));
-        rough.each(p -> !p.breaking, p -> p.block.drawPlan(p, query, placeable(p, true, false)));
+        plans.each(drawable, p -> p.block.drawPlan(p, query, placeable(p, true, false)));
+        rough.each(drawable, p -> p.block.drawPlan(p, query, placeable(p, true, false)));
 
-        plans.each(p -> !p.breaking, p -> p.block.drawPlanConfigTop(p, query));
-        rough.each(p -> !p.breaking, p -> p.block.drawPlanConfigTop(p, query));
+        plans.each(drawable, p -> p.block.drawPlanConfigTop(p, query));
+        rough.each(drawable, p -> p.block.drawPlanConfigTop(p, query));
 
         plans.each
         (

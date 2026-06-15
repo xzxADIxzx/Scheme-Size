@@ -43,7 +43,7 @@ public class Grids
     }
 
     /// Iterates the surface.
-    public void iterate(Area area, Cons2<Integer, Integer> cons)
+    public void iterate(Area area, Intc2 cons)
     {
         for (int x = area.x1; x <= area.x2; x++)
         for (int y = area.y1; y <= area.y2; y++)
