@@ -54,9 +54,7 @@ public class Alpha
             unit.plans.clear();
             unit.plans.add(plan);
 
-            if (plan.initialized && (state.rules.infiniteResources || plan.progress == (plan.breaking ? 0f : 1f)))
-                plans.remove(plan);
-
+            if (done(plan)) plans.remove(plan);
             break;
         }
     }
@@ -93,6 +91,19 @@ public class Alpha
             ((skip & 2) == 2 || !unit.shouldSkip(plan, unit.core()))
             &&
             ((skip & 4) == 4 || plan.breaking || insys.placeable(plan, true, false))
+        );
+    }
+
+    /// Returns the finality of the given plan.
+    private boolean done(BuildPlan plan)
+    {
+        return
+        (
+            plan.initialized
+            &&
+            (state.rules.infiniteResources || plan.progress == (plan.breaking ? 0f : 1f))
+            ||
+            plan.isDone()
         );
     }
 
