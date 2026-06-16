@@ -79,6 +79,9 @@ public class DesktopInput extends InputSystem
             ? Tmp.v3.set(mouse).sub(player).scl(.016f).limit(1f)
             : Tmp.v3.setZero();
 
+        if (Keybind.lock_2  .tap()) alpha.lock = mouse.cpy();
+        if (Keybind.mouse_mv.tap()) alpha.lock = null;
+
         if (units.coreUnit || player.dead())
         {
             // this type of movement is active most of the time
@@ -406,8 +409,8 @@ public class DesktopInput extends InputSystem
                 Call.pingLocation(player, mouse.x, mouse.y, null);
         }
 
-        if (Keybind.drop.tap    ()) ;
-        if (Keybind.drop.release()) ;
+        if (Keybind.drop.tap    ()) alpha.drop = selectedBuilding();
+        if (Keybind.drop.release()) alpha.drop = null;
 
         if (Keybind.pick.tap()) inspect(true);
 

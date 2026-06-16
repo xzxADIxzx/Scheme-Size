@@ -21,13 +21,20 @@ public class Alpha
     /// Type of the unit.
     private UnitType type;
 
+    /// Target position to move towards.
+    public Position lock;
+    /// Source building to drop items from.
+    public Building drop;
+    /// Target item type to mine.
+    public Item mine;
+
     /// Updates the system's logic.
     public void update(Vec2 flw, Seq<BuildPlan> plans)
     {
         unit = player.unit();
         type = player.dead() ? null : unit.type;
 
-        if (player.dead()) return;
+        if (player.dead() || state.isPaused()) return;
 
         updateMovement(flw);
         updateBuilding(plans);
@@ -36,17 +43,67 @@ public class Alpha
     /// Updates the movement logic.
     private void updateMovement(Vec2 flw)
     {
+        if (!Vec2.ZERO.epsilonEquals(flw))
+        {
+            unit.movePref(flw.scl(type.speed));
+            return;
+        }
+
+        Position target = null;
+        float range = 0f;
+
+        if (target == null && lock != null)
+        {
+            target = lock;
+            range = tilesize;
+        }
+
+        if (target == null && drop != null)
+        {
+            target = drop;
+            range = itemTransferRange;
+        }
+
+        if (target == null && unit.buildPlan() != null)
+        {
+            target = unit.buildPlan();
+            range = buildingRange;
+        }
+
+        // TODO mine
+
+        if (target == null)
+        {
+            var rect = camera.bounds(Tmp.r1).grow(-64f);
+            if (rect.contains(unit.x, unit.y))
+            {
+                // TODO when idle for a while, follow the cursor and rotate around it
+            }
+            else target = Tmp.v1.set
+            (
+                unit.x < rect.x ? rect.x : unit.x < rect.x + rect.width  ? unit.x : rect.x + rect.width,
+                unit.y < rect.y ? rect.y : unit.y < rect.y + rect.height ? unit.y : rect.y + rect.height
+            );
+        }
+
+        if (target != null)
+        {
+            path(target, range).sub(unit);
+
+            // braking distance
+            var len = unit.vel.len2() / 2f / type.accel;
+            // target distance
+            var dst = Math.max(0f, Tmp.v6.len() - len);
+
+            unit.movePref(Tmp.v6.limit(dst).limit(type.speed));
+        }
+        else unit.wobble();
     }
 
     /// Updates the building logic.
     private void updateBuilding(Seq<BuildPlan> plans)
     {
-        if (plans.isEmpty())
-        {
-            unit.plans.clear();
-            return;
-        }
-        if (unit.canBuild() && unit.updateBuilding) for (var p : priorities)
+        if (unit.canBuild() && unit.updateBuilding && plans.any()) for (var p : priorities)
         {
             var plan = plans.find(p::pred);
             if (plan == null) continue;
@@ -57,9 +114,21 @@ public class Alpha
             if (done(plan)) plans.remove(plan);
             break;
         }
+        else unit.plans.clear();
     }
 
-    // region tools
+    /// Draws pathfinder obstacles.
+    public void drawObstacles()
+    {
+        for (int i = 0; i < clusters.size; i++)
+        {
+        }
+    }
+
+    // region movement tools
+
+    // endregion
+    // region building tools
 
     /// Building priority.
     private interface Priority

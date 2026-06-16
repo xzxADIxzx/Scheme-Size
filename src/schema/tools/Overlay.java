@@ -36,6 +36,10 @@ public class Overlay
         {
             if (Keybind.display_xray.down()) drawXray();
         }));
+        renderer.addEnvRenderer(Env.none, () -> Draw.draw(Layer.flyingUnitLow - 1f, () ->
+        {
+            if (Keybind.display_obst.down()) alpha.drawObstacles();
+        }));
         renderer.addEnvRenderer(Env.none, () -> Draw.draw(Layer.power + 1f, () ->
         {
             if (settings.getBool("blockhealth", false)) drawBars();
