@@ -118,12 +118,7 @@ public class Alpha
     }
 
     /// Draws pathfinder obstacles.
-    public void drawObstacles()
-    {
-        for (int i = 0; i < clusters.size; i++)
-        {
-        }
-    }
+    public void drawObstacles() { clusters.each(Cluster::draw); }
 
     // region movement tools
 
