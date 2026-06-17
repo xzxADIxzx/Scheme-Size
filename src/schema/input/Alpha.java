@@ -3,11 +3,17 @@ package schema.input;
 import arc.math.geom.*;
 import arc.struct.*;
 import arc.util.*;
+import arc.util.pooling.*;
 import mindustry.entities.units.*;
 import mindustry.gen.*;
+import mindustry.logic.*;
 import mindustry.type.*;
 import mindustry.world.blocks.defense.*;
+import mindustry.world.blocks.defense.turrets.*;
+import mindustry.world.blocks.defense.turrets.TractorBeamTurret.*;
+import mindustry.world.blocks.defense.turrets.Turret.*;
 import mindustry.world.blocks.power.*;
+import mindustry.world.meta.*;
 
 import static arc.Core.*;
 import static mindustry.Vars.*;
@@ -122,6 +128,50 @@ public class Alpha
 
     // region movement tools
 
+    /// Clusters present in the world.
+    private Seq<Cluster> clusters = new Seq<>();
+    /// Obstacles present in the world.
+    private Seq<Ranged> obstacles = new Seq<>();
+
+    /// Updates pathfinder's obstacles.
+    private void updatePathfinder()
+    {
+        Pools.freeAll(clusters, true);
+
+        obstacles.clear();
+        indexer.getEnemy(player.team(), BlockFlag.turret).each(b ->
+        {
+            if (b instanceof TractorBeamBuild bb && bb.block instanceof TractorBeamTurret bt && bt.targetAir) obstacles.add(bb);
+            if (b instanceof      TurretBuild tb && tb.block instanceof            Turret tt && tt.targetAir) obstacles.add(tb);
+        });
+
+        clusters.clear();
+        obstacles.each(b ->
+        {
+            var itr = clusters.iterator();
+            Cluster cls = null;
+
+            while (itr.hasNext())
+            {
+                var c = itr.next();
+                if (c.outside(b)) continue;
+
+                if (cls != null)
+                {
+                    itr.remove();
+                    cls.merge(c);
+                }
+                else
+                {
+                    cls = c;
+                    cls.merge(b);
+                }
+            }
+            if (cls == null) clusters.add(Pools.obtain(Cluster.class, Cluster::new).merge(b));
+        });
+
+        clusters.each(Cluster::tighten);
+    }
     // endregion
     // region building tools
 
