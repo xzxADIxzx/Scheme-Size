@@ -1,10 +1,14 @@
 package schema.input;
 
+import arc.*;
+import arc.func.*;
 import arc.math.geom.*;
 import arc.struct.*;
 import arc.util.*;
+import arc.util.Timer.*;
 import arc.util.pooling.*;
 import mindustry.entities.units.*;
+import mindustry.game.EventType.*;
 import mindustry.gen.*;
 import mindustry.logic.*;
 import mindustry.type.*;
@@ -22,6 +26,13 @@ import static schema.Main.*;
 /// Logic system controlling the player's unit.
 public class Alpha
 {
+    /// Task that updates pathfinder obstacles.
+    private Task update = new Task()
+    {
+        @Override
+        public void run() { updatePathfinder(); };
+    };
+
     /// Unit of the player.
     private Unit unit;
     /// Type of the unit.
@@ -33,6 +44,24 @@ public class Alpha
     public Building drop;
     /// Target item type to mine.
     public Item mine;
+
+    public Alpha()
+    {
+        Floatc restart = delay ->
+        {
+            update.cancel();
+            Timer.schedule(update, delay);
+        };
+        Events.on(TilePreChangeEvent.class, e ->
+        {
+            if (e.tile.block() instanceof BaseTurret) restart.get(8f);
+        });
+        Events.on(TileChangeEvent.class, e ->
+        {
+            if (e.tile.block() instanceof BaseTurret) restart.get(8f);
+        });
+        Events.run(WorldLoadEvent.class, () -> restart.get(1f));
+    }
 
     /// Updates the system's logic.
     public void update(Vec2 flw, Seq<BuildPlan> plans)
