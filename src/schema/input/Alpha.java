@@ -97,7 +97,7 @@ public class Alpha
             path(target, range).sub(unit);
 
             // braking distance
-            var len = unit.vel.len2() / 2f / type.accel;
+            var len = unit.vel.len2() / type.drag;
             // target distance
             var dst = Math.max(0f, Tmp.v6.len() - len);
 
@@ -172,6 +172,35 @@ public class Alpha
 
         clusters.each(Cluster::tighten);
     }
+
+    /// Encountered cluster.
+    private Cluster last;
+
+    /// Returns the path to the target.
+    private Vec2 path(Position target, float range)
+    {
+        Tmp.v5.set(target).sub(unit).limit(range);
+        Tmp.v6.set(target).sub(Tmp.v5);
+
+        if (unit.hittable())
+        {
+            Tmp.v5.setLength(64f).add(unit);
+
+            var cls = clusters.find(c -> c.inside(Tmp.v5));
+            if (cls == null) cls = last;
+            else             last = cls;
+            if (cls == null) return Tmp.v6;
+
+            cls.find(unit, Tmp.v6, Tmp.v5);
+
+            if (Vec2.ZERO.epsilonEquals(Tmp.v5))
+                last = null;
+            else
+                Tmp.v6.set(Tmp.v5);
+        }
+        return Tmp.v6;
+    }
+
     // endregion
     // region building tools
 
