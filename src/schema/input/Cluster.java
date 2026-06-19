@@ -71,7 +71,7 @@ public class Cluster implements Poolable
         }
         for (int i = 0; i < 12; i++) smooth();
 
-        collision.setCenter(Tmp.v1).setSize(0f);
+        collision.setPosition(Tmp.v1).setSize(0f);
         collision.merge(vertices);
     }
 
