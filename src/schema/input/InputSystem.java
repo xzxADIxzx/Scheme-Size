@@ -219,7 +219,7 @@ public abstract class InputSystem
 
         control.input.drawOtherBuildPlans();
 
-        Groups.player.each(p -> p != player, p ->
+        Groups.player.each(p -> p != player && !p.dead(), p ->
         {
             Drawf.limitLine(p, Tmp.v3.set(p.mouseX, p.mouseY), p.unit().hitSize + 2f, 0f, Tmp.c1.set(p.team().color).a(.6f));
         });

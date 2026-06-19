@@ -61,7 +61,7 @@ public class Builds
     }
 
     /// Calculates a bunch of values required to draw a health bar.
-    public void healthBar(Building build, float radius, boolean outer, Cons4<Float, Float, Float, Float> context)
+    public void healthBar(Building build, float radius, boolean outer, Floatc4 context)
     {
         // single block builds have smaller health and status bars
         float multiplier = build.block.size > 1 ? 1f : .64f;

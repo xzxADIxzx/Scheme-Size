@@ -93,7 +93,7 @@ public class Grids
         Point2 dir = Pools.obtain(Point2.class, Point2::new).set(bd.x * block.size, bd.y * block.size);
         Point2 pos = Pools.obtain(Point2.class, Point2::new).set(x1, y1);
 
-        float dst = pos.dst(x2, y2);
+        float dst = pos.dst2(x2, y2);
         int limit = 512;
         do
         {
@@ -101,10 +101,10 @@ public class Grids
 
             pos.add(dir);
 
-            if (dst < pos.dst(x2, y2))
+            if (dst < pos.dst2(x2, y2))
                 break;
             else
-                dst = pos.dst(x2, y2);
+                dst = pos.dst2(x2, y2);
         }
         while (--limit > 0);
 

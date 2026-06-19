@@ -32,18 +32,17 @@ public class Overlay
 
     public Overlay()
     {
-        renderer.addEnvRenderer(Env.none, () -> Draw.draw(Layer.turret + 1f, () ->
+        renderer.addEnvRenderer(Env.none, () ->
         {
+            Draw.z(Layer.turret + 1f);
             if (Keybind.display_xray.down()) drawXray();
-        }));
-        renderer.addEnvRenderer(Env.none, () -> Draw.draw(Layer.flyingUnitLow - 1f, () ->
-        {
+
+            Draw.z(Layer.flyingUnitLow - 1f);
             if (Keybind.display_obst.down()) alpha.drawObstacles();
-        }));
-        renderer.addEnvRenderer(Env.none, () -> Draw.draw(Layer.power + 1f, () ->
-        {
+
+            Draw.z(Layer.power + 1f);
             if (settings.getBool("blockhealth", false)) drawBars();
-        }));
+        });
         renderer.addEnvRenderer(Env.none, () ->
         {
             while (tasks.any()) tasks.pop().run();
@@ -138,14 +137,20 @@ public class Overlay
         builds.iterateBuilds(t -> t.getLinkedTiles(l ->
         {
             Draw.alpha(.8f);
-            l.floor().drawBase(l);
+
+            var f = l.floor();
+            var o = f.drawEdgeIn;
+
+            f.drawEdgeIn = false;
+            f.drawBase(l);
+            f.drawEdgeIn = o;
         }));
     }
 
     /// Draws health bars using the style of [status][Building#drawStatus].
     public void drawBars()
     {
-        Cons4<Float, Float, Float, Float> draw = (x, y, width, height) -> Fill.quad
+        Floatc4 draw = (x, y, width, height) -> Fill.quad
         (
             x - width,                    y,
             x - width + Math.abs(height), y + height,
