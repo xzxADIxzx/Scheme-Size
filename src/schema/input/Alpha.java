@@ -32,6 +32,8 @@ public class Alpha
         @Override
         public void run() { updatePathfinder(); };
     };
+    /// Building plan sorting interval in ticks.
+    private Interval sort = new Interval();
 
     /// Unit of the player.
     private Unit unit;
@@ -150,6 +152,8 @@ public class Alpha
             break;
         }
         else unit.plans.clear();
+
+        if (sort.get(60f)) plans.sort(p -> p.dst(unit));
     }
 
     /// Draws pathfinder obstacles.
