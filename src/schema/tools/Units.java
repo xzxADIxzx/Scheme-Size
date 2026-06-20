@@ -2,6 +2,7 @@ package schema.tools;
 
 import arc.*;
 import arc.func.*;
+import arc.math.*;
 import arc.struct.*;
 import arc.util.*;
 import mindustry.content.*;
@@ -99,6 +100,13 @@ public class Units
         {
             int amount = g.getSpawned(wave - 1);
             if (amount == 0) return;
+
+            if (state.isCampaign())
+            {
+                var sm = amount * state.getPlanet().campaignRules.difficulty.enemySpawnMultiplier;
+                amount = Math.max(1, g.effect == StatusEffects.boss ? (int) sm : Mathf.round(sm));
+            }
+            amount *= g.type.flying ? spawner.countFlyerSpawns() : spawner.countGroundSpawns();
 
             waveHealth += g.type.health * amount;
             waveShield += g.getShield(wave - 1) * amount;

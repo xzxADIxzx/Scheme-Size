@@ -83,7 +83,7 @@ public class HudFragment extends Table
                 }
                 if (type == Notification.guardian)
                 {
-                    c.parent.tapped(() -> nextGuardian(wavy::show));
+                    c.parent.tapped(() -> nextGuardian(w -> wavy.show(state.wave + w - 1)));
                     c.parent.addListener(new HandCursorListener());
                 }
             },
@@ -116,7 +116,7 @@ public class HudFragment extends Table
     /// Iterates a few waves until a guard is found.
     public void nextGuardian(Intc wave)
     {
-        for (int i = state.wave; i <= Math.min(state.wave + 9, state.rules.winWave > 0 ? state.rules.winWave : Integer.MAX_VALUE); i++)
+        for (int i = state.wave; i <= Math.min(state.wave + 9, state.rules.winWave > 0 ? state.rules.winWave - 1 : Integer.MAX_VALUE); i++)
         {
             int j = i - 1;
             int d = i - state.wave + 1;

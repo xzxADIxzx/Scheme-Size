@@ -30,7 +30,7 @@ public class WaveDialog extends BaseDialog
 
         addCloseButton();
         addButton("@wave.prev", Icon.left,  256f, () -> rebuild(--wave), () -> wave <= 1);
-        addButton("@wave.next", Icon.right, 256f, () -> rebuild(++wave), () -> wave >= state.rules.winWave && state.rules.winWave > 0);
+        addButton("@wave.next", Icon.right, 256f, () -> rebuild(++wave), () -> wave >= state.rules.winWave - 1 && state.rules.winWave > 0);
 
         cont.defaults().width(512f).left();
         cont.add("").with(l -> health = l).row();
