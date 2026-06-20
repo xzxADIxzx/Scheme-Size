@@ -62,6 +62,7 @@ public enum Keybind
     planet_map(0, KeyCode.n),
     research(0, KeyCode.k),
     database(0, KeyCode.j),
+    waveinfo(0, KeyCode.l),
     display_unit(3, KeyCode.z),
     display_xray(3, KeyCode.x),
     display_prod(3, KeyCode.c),

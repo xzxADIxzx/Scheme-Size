@@ -273,6 +273,7 @@ public class DesktopInput extends InputSystem
         if (Keybind.planet_map.tap() && state.isCampaign()) ui.planet.show();
         if (Keybind.research.tap() && state.isCampaign()) ui.research.show();
         if (Keybind.database.tap()) ui.database.show();
+        if (Keybind.waveinfo.tap()) wavy.show(state.wave);
 
         if (Keybind.inspect.tap()) inspect(false);
 
@@ -365,7 +366,7 @@ public class DesktopInput extends InputSystem
 
         if (Keybind.replace.tap()) ; // TODO polyplace
 
-        if (Keybind.select.tap())
+        if (Keybind.select.tap() && !scene.hasMouse())
         {
             var build = selectedBuilding();
             if (block == null && build != null && build.team == player.team())
