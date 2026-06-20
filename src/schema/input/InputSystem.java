@@ -245,6 +245,9 @@ public abstract class InputSystem
         }
         commandUnits.each(u -> overlay.post(u.isFlying() ? Layer.flyingUnitLow - 1f : Layer.groundUnit - 1f, () ->
         {
+            // a unit may become uncommandable between this#update and renderer#draw calls
+            if (!u.isCommandable()) return;
+
             var ai = u.command();
             var dest = ai.attackTarget != null ? ai.attackTarget : ai.targetPos;
             if (dest != null)

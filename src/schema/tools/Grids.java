@@ -6,9 +6,11 @@ import arc.math.geom.*;
 import arc.struct.*;
 import arc.util.pooling.*;
 import mindustry.entities.units.*;
+import mindustry.input.*;
 import mindustry.world.*;
 
 import static mindustry.Vars.*;
+import static schema.Main.*;
 
 /// Utility focused on grids.
 public class Grids
@@ -55,7 +57,21 @@ public class Grids
     {
         if (block == null) return;
 
-        line(block, x1, y1, x2, y2); // TODO implement other types
+        if (diagonal && block.allowDiagonal)
+        {
+            Seq<Point2> points = Placement.pathfindLine(block.conveyorPlacement, x1, y1, x2, y2);
+            temp.addAll(points);
+
+            // otherwise, placement would free them again, leading to their duplication in the pool
+            points.clear();
+        }
+        else
+        {
+            if (block.allowRectanglePlacement)
+                rect(block, x1, y1, x2, y2);
+            else
+                line(block, x1, y1, x2, y2);
+        }
 
         block.changePlacementPath(temp, rotation, diagonal);
 
@@ -72,6 +88,12 @@ public class Grids
                 : Tile.relativeTo(plan.x, plan.y, next.x, next.y);
 
             plans.add(new BuildPlan(plan.x, plan.y, rt != -1 ? rt : rotation, block, block.nextConfig()) {{ animScale = 1f; }});
+        }
+        for (var p : plans)
+        {
+            var replacement = p.block.getReplacement(p, plans);
+
+            if (polyblock.unlocked(replacement)) p.block = replacement;
         }
 
         block.handlePlacementLine(plans);
@@ -110,6 +132,16 @@ public class Grids
 
         Pools.free(dir);
         Pools.free(pos);
+    }
+
+    /// Adds a straight rect.
+    private void rect(Block block, int x1, int y1, int x2, int y2)
+    {
+        iterate
+        (
+            normalize(x1, y1, x2, y2, Integer.MAX_VALUE),
+            (x, y) -> temp.add(Pools.obtain(Point2.class, Point2::new).set(x, y))
+        );
     }
 
     /// Structure representing a tile area.
