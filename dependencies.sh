@@ -15,6 +15,8 @@ function region
     echo -e "$g=> $1$n"
 }
 
+version=v158.1
+
 # endregion
 # region help
 
@@ -71,9 +73,9 @@ if echo $1 | grep -q "d"
 then
     region "Downloading dependencies..."
 
-    download Anuken Arc       arc-core v158       library
-    download Anuken Arc       arcnet   v158       library
-    download Anuken Mindustry core     v158       library
+    download Anuken Arc       arc-core $version   library
+    download Anuken Arc       arcnet   $version   library
+    download Anuken Mindustry core     $version   library
     download Anuken rhino     null     54b75cbd12 library
 fi
 
@@ -84,9 +86,9 @@ if echo $1 | grep -q "s"
 then
     region "Downloading sources..."
 
-    download Anuken Arc       arc-core v158       sources
-    download Anuken Arc       arcnet   v158       sources
-    download Anuken Mindustry core     v158       sources
+    download Anuken Arc       arc-core $version   sources
+    download Anuken Arc       arcnet   $version   sources
+    download Anuken Mindustry core     $version   sources
 fi
 
 # endregion

@@ -11,6 +11,7 @@ description:
 It may not be compatible with other mods; therefore, it is highly advisable to run it only in vanilla game.
 [orange]
     - Flexible control settings
+    - Overhauled interface
     - Building tools
     - Shortcuts for schematics
     - Search & calculator bar
@@ -18,7 +19,7 @@ It may not be compatible with other mods; therefore, it is highly advisable to r
     - Advanced developer console
     - Copy Link and Join"
 
-minGameVersion: 158
+minGameVersion: 158.1
 main: schema.Main
 java: true
 hidden: true
