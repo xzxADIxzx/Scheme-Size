@@ -79,8 +79,10 @@ public class DesktopInput extends InputSystem
             ? Tmp.v3.set(mouse).sub(player).scl(.016f).limit(1f)
             : Tmp.v3.setZero();
 
-        if (Keybind.lock_2  .tap()) alpha.lock = mouse.cpy();
-        if (Keybind.mouse_mv.tap()) alpha.lock = null;
+        if (Keybind.lock_2.tap()) alpha.lock = mouse.cpy();
+
+        if (Keybind.mouse_mv.tap    ()) alpha.reset();
+        if (Keybind.mouse_mv.release()) alpha.reset();
 
         if (units.coreUnit || player.dead())
         {

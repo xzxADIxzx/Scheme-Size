@@ -2,6 +2,7 @@ package schema.input;
 
 import arc.*;
 import arc.func.*;
+import arc.math.*;
 import arc.math.geom.*;
 import arc.struct.*;
 import arc.util.*;
@@ -46,6 +47,10 @@ public class Alpha
     public Building drop;
     /// Target item type to mine.
     public Item mine;
+    /// Target position to spin around.
+    public Position spin;
+    /// Time of the last performed action.
+    public float time;
 
     public Alpha()
     {
@@ -63,6 +68,16 @@ public class Alpha
             if (e.tile.block() instanceof BaseTurret) restart.get(8f);
         });
         Events.run(WorldLoadEvent.class, () -> restart.get(1f));
+    }
+
+    /// Resets the system's logic.
+    public void reset()
+    {
+        lock = null;
+        drop = null;
+        mine = null;
+        spin = null;
+        time = Time.time;
     }
 
     /// Updates the system's logic.
@@ -114,13 +129,24 @@ public class Alpha
             var rect = camera.bounds(Tmp.r1).grow(-64f);
             if (rect.contains(unit.x, unit.y))
             {
-                // TODO when idle for a while, follow the cursor and rotate around it
+                if (spin == null && Time.time - time > 1200f) spin = new Vec2().rnd(1f).add(unit);
             }
             else target = Tmp.v1.set
             (
                 unit.x < rect.x ? rect.x : unit.x < rect.x + rect.width  ? unit.x : rect.x + rect.width,
                 unit.y < rect.y ? rect.y : unit.y < rect.y + rect.height ? unit.y : rect.y + rect.height
             );
+        }
+
+        if (target != null)
+        {
+            spin = null;
+            time = Time.time;
+        }
+        if (target == null && spin != null)
+        {
+            target = Tmp.v1.set(unit).sub(spin).setLength(32f + Mathf.absin(32f, 32f)).rotate(30f).add(spin).sub(unit).setLength(999f).add(unit);
+            range = tilesize;
         }
 
         if (target != null)
