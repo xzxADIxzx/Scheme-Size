@@ -65,6 +65,8 @@ public class Style
             "schema-button-disabled",
             "schema-scroll-knob",
             "schema-panel-h-shape",
+            "schema-panel-j-shape",
+            "schema-panel-l-shape",
             "schema-panel-n-shape",
             "schema-panel-o-shape",
             "schema-panel-u-shape",
@@ -124,7 +126,7 @@ public class Style
 
         outline = Styles.outlineLabel;
 
-        Tools.log("[green] < Created [accent]13[] styles");
+        Tools.log("[green] < Created [accent]12[] styles");
 
         // endregion
 
