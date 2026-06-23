@@ -39,6 +39,8 @@ public class DesktopInput extends InputSystem
 
     /// Build plan used to draw the selected block.
     private BuildPlan temp = new BuildPlan() {{ animScale = 1f; }};
+    /// Whether the modern movement type is active.
+    private boolean modern = true;
 
     @Override
     protected void update()
@@ -79,12 +81,15 @@ public class DesktopInput extends InputSystem
             ? Tmp.v3.set(mouse).sub(player).scl(.016f).limit(1f)
             : Tmp.v3.setZero();
 
+        if (Keybind.tgl_mv.tap()) modern = !modern;
+        if (Keybind.hexact.tap()) polyalpha.show(panel);
+
         if (Keybind.lock_2.tap()) alpha.lock = mouse.cpy();
 
         if (Keybind.mouse_mv.tap    ()) alpha.reset();
         if (Keybind.mouse_mv.release()) alpha.reset();
 
-        if (units.coreUnit || player.dead())
+        if (units.coreUnit && modern || player.dead())
         {
             // this type of movement is active most of the time
             // the unit simply follows the camera and performs commands

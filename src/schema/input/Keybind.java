@@ -15,6 +15,8 @@ public enum Keybind
     lock_2(3, KeyCode.mouseForward),
     mouse_mv(0, KeyCode.mouseBack),
     teleport(3, KeyCode.mouseBack),
+    tgl_mv(0, KeyCode.y),
+    hexact(3, KeyCode.y),
     shoot(0, KeyCode.mouseLeft),
     boost(0, KeyCode.shiftLeft),
     look_at(0, KeyCode.altLeft),

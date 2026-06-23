@@ -70,7 +70,7 @@ public class Alpha
         Events.run(WorldLoadEvent.class, () -> restart.get(1f));
     }
 
-    /// Resets the system's logic.
+    /// Resets the system's values.
     public void reset()
     {
         lock = null;
