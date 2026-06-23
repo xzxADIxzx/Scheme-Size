@@ -89,7 +89,7 @@ public class Polygon extends Stack
     }
 
     /// Adds a string vertex to the polygon.
-    public void add(String text, boolean highlight, Cons<Integer> clicked)
+    public void add(String text, boolean highlight, Intc clicked)
     {
         int index = vertices.size;
         var label = new Label(text, Style.outline);
@@ -103,8 +103,14 @@ public class Polygon extends Stack
         add(label);
     }
 
+    /// Adds an emoji vertex to the polygon.
+    public void add(char emoji, boolean highlight, Intc clicked) { add(String.valueOf(emoji), highlight, clicked); }
+
     /// Adds an empty vertex to the polygon.
-    public void add() { add("", false, i -> {}); }
+    public void add() { add("", false, i -> { }); }
+
+    /// Returns the number of polygon vertices.
+    public int size() { return vertices.size; }
 
     /// Removes all vertices from the polygon.
     public void clear()

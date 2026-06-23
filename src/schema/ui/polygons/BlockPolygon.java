@@ -59,7 +59,7 @@ public class BlockPolygon extends Polygon
             if (Keybind.inspect.tap() && hovered != null) ui.content.show(hovered);
         });
 
-        for (int i = 0; i < categories.length; i++) add(String.valueOf(icons[i]), true, j ->
+        for (int i = 0; i < categories.length; i++) add(icons[i], true, j ->
         {
             draw = false;
             rebuild = () ->
