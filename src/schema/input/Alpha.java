@@ -41,6 +41,8 @@ public class Alpha
     /// Type of the unit.
     private UnitType type;
 
+    /// Target player to follow and assist.
+    public Player assist;
     /// Target position to move towards.
     public Position lock;
     /// Source building to drop items from.
@@ -185,6 +187,30 @@ public class Alpha
     /// Draws pathfinder obstacles.
     public void drawObstacles() { clusters.each(Cluster::draw); }
 
+    // region common
+
+    /// Whether the ore is mineable.
+    public boolean mineable(Item ore)
+    {
+        return
+        (
+            unit != null
+            &&
+            unit.canMine(ore)
+            &&
+            (type.mineFloor && indexer.hasOre(ore))
+            |
+            (type.mineWalls && indexer.hasWallOre(ore))
+        );
+    }
+
+    /// Whether the player is assistable.
+    public boolean assistable(Player other)
+    {
+        return other != player && other.team() == player.team();
+    }
+
+    // endregion
     // region movement tools
 
     /// Clusters present in the world.

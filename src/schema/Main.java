@@ -58,6 +58,7 @@ public class Main extends Mod
     // endregion
     // region polygons
 
+    public static AlphaPolygon polyalpha;
     public static BlockPolygon polyblock;
     public static Polygon polyplace;
     public static Polygon polyschem;
@@ -88,6 +89,7 @@ public class Main extends Mod
         cmndfrag = new CommandFragment();
         loadfrag = new LoadingFragment();
 
+        polyalpha = new AlphaPolygon();
         polyblock = new BlockPolygon();
         polyplace = new Polygon();
         polyschem = new Polygon();
@@ -107,6 +109,7 @@ public class Main extends Mod
         cmndfrag.build(ui.hudGroup);
         loadfrag.build(scene.root);
 
+        polyalpha.build(ui.hudGroup);
         polyblock.build(ui.hudGroup);
         polyplace.build(ui.hudGroup);
         polyschem.build(ui.hudGroup);
