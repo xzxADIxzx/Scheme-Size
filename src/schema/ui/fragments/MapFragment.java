@@ -145,7 +145,6 @@ public class MapFragment extends Table
             Draw.color();
             Draw.rect(Draw.wrap(tex), w / 2f + panX, h / 2f + panY, mw, mh);
 
-            state.rules.showSpawns = true; // why not?
             renderer.minimap.drawEntities((w - mw) / 2f + panX, (h - mh) / 2f + panY, mw, mh, true);
         }
 
