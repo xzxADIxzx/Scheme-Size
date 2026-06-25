@@ -3,10 +3,12 @@ package schema.ui.hud;
 import arc.scene.*;
 import arc.scene.ui.layout.*;
 import arc.util.*;
+import mindustry.gen.*;
 import mindustry.graphics.*;
 import schema.ui.*;
 import schema.ui.elements.*;
 
+import static arc.Core.*;
 import static mindustry.Vars.*;
 import static schema.Main.*;
 
@@ -41,5 +43,65 @@ public class UnitInfo extends Table
             new Table(t -> t.right().add(new Polybar(units::roundsRel, Pal.ammo,   () -> units.roundsAbs() > 0f                          )).growY().width( 4f))
         )
         .size(12f, 64f);
+
+        table(cont ->
+        {
+            cont.table(pane ->
+            {
+                final var out = new Object[7];
+                final CharSequence[] display = { bundle.get("hud.noact"), bundle.get("hud.noman") };
+
+                pane.label(() ->
+                {
+                    if (out[0] != alpha.assist ||
+                        out[1] != alpha.lock ||
+                        out[2] != alpha.drop ||
+                        out[3] != alpha.plan ||
+                        out[4] != alpha.mine ||
+                        out[5] != alpha.spin)
+                    {
+                        out[0] = alpha.assist;
+                        out[1] = alpha.lock;
+                        out[2] = alpha.drop;
+                        out[3] = alpha.plan;
+                        out[4] = alpha.mine;
+                        out[5] = alpha.spin;
+
+                        if (out[0] != null) return display[0] = bundle.format("hud.act-0", alpha.assist.coloredName());
+                        if (out[1] != null) return display[0] = bundle.format("hud.act-1");
+                        if (out[2] != null) return display[0] = bundle.format("hud.act-2");
+                        if (out[3] != null) return display[0] = bundle.format("hud.act-3");
+                        if (out[4] != null) return display[0] = bundle.format("hud.act-4", alpha.mine.emoji());
+                        if (out[5] != null) return display[0] = bundle.format("hud.act-5");
+
+                        display[0] = bundle.get("hud.noact");
+                    }
+                    return units.coreUnit ? display[0] : display[1];
+                }
+                ).growX().left().ellipsis(true);
+            }
+            ).growX().row();
+            cont.table(pane ->
+            {
+                final var out = new StringBuilder();
+                final boolean[] display = { false };
+
+                pane.label(() ->
+                {
+                    int x = display[0] ? insys.tileX() : player.tileX(),
+                        y = display[0] ? insys.tileY() : player.tileY();
+
+                    out.setLength(0);
+                    out.append("[").append(x).append(", ").append(y).append("]");
+                    return out;
+                }
+                ).growX().color(Pal.accentBack);
+
+                pane.button(Icon.playersSmall, Style.ibc, () -> display[0] = true ).checked(_ -> display[0] == true ).size(24f);
+                pane.button(Icon.unitsSmall,   Style.ibc, () -> display[0] = false).checked(_ -> display[0] == false).size(24f);
+            }
+            ).growX().row();
+        }
+        ).growX();
     }
 }
