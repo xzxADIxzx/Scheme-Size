@@ -47,6 +47,8 @@ public class Alpha
     public Position lock;
     /// Source building to drop items from.
     public Building drop;
+    /// Target building to construct.
+    public BuildPlan plan;
     /// Target item type to mine.
     public Item mine;
     /// Target position to spin around.
@@ -106,6 +108,12 @@ public class Alpha
         Position target = null;
         float range = 0f;
 
+        if (target == null && assist != null)
+        {
+            target = assist;
+            range = assist.dead() ? 0f : assist.unit().hitSize;
+        }
+
         if (target == null && lock != null)
         {
             target = lock;
@@ -118,9 +126,9 @@ public class Alpha
             range = itemTransferRange;
         }
 
-        if (target == null && unit.buildPlan() != null)
+        if (target == null && plan != null)
         {
-            target = unit.buildPlan();
+            target = plan;
             range = buildingRange;
         }
 
@@ -180,6 +188,8 @@ public class Alpha
             break;
         }
         else unit.plans.clear();
+
+        plan = unit.buildPlan();
 
         if (sort.get(60f)) plans.sort(p -> p.dst(unit));
     }
