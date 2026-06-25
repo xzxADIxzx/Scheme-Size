@@ -26,6 +26,8 @@ public class Units
 
     /// Item capacity of the unit.
     public int capacity;
+    /// Payload capacity of the unit.
+    public float payload;
     /// Maximum health of the shield.
     private float maxShield;
     /// Current shield or null if absent.
@@ -44,21 +46,26 @@ public class Units
         {
             if (e.player != player) return;
 
-            coreUnit = player.unit() != null && coreUnits.contains(player.unit().type);
-            capacity = player.unit() != null ? player.unit().itemCapacity() : -1;
+            var unit = player.unit();
+
+            coreUnit = player.dead() || coreUnits.contains(unit.type);
+            capacity = player.dead() ? -1 : unit.type.itemCapacity;
+            payload  = player.dead() ? -1 : unit.type.payloadCapacity;
 
             maxShield = -1f;
             fldShield = null;
             arcShield = null;
 
-            if (player.unit() != null) for (var ability : player.unit().abilities)
+            if (unit != null) for (var ability : unit.abilities)
             {
-                if (ability instanceof ForceFieldAbility fld) {
+                if (ability instanceof ForceFieldAbility fld)
+                {
                     maxShield = fld.max;
                     fldShield = fld;
                     break;
                 }
-                if (ability instanceof ShieldArcAbility arc) {
+                if (ability instanceof ShieldArcAbility arc)
+                {
                     maxShield = arc.max;
                     arcShield = arc;
                     break;
@@ -83,11 +90,33 @@ public class Units
         };
     }
 
+    // region player
+
+    /// Returns the absolute health of the player.
+    public float healthAbs() { return player.dead() ? 0f : player.unit().health(); }
+
+    /// Returns the relative health of the player.
+    public float healthRel() { return player.dead() ? 0f : player.unit().healthf(); }
+
     /// Returns the absolute health of the shield.
-    public float shieldAbs() { return fldShield != null ? player.unit().shield : arcShield != null ? arcShield.data : 0f; }
+    public float shieldAbs() { return player.dead() ? 0f : fldShield != null ? player.unit().shield : arcShield != null ? arcShield.data : 0f; }
 
     /// Returns the relative health of the shield.
     public float shieldRel() { return shieldAbs() / maxShield; }
+
+    /// Returns the absolute payload of the unit.
+    public float paylodAbs() { return player.dead() ? 0f : player.unit() instanceof Payloadc p && p.payloads().any() ? p.payloadUsed() : 0f; }
+
+    /// Returns the relative payload of the unit.
+    public float paylodRel() { return paylodAbs() / payload; }
+
+    /// Returns the absolute turret rounds count.
+    public float roundsAbs() { return player.dead() ? 0f : player.unit() instanceof BlockUnitc b ? b.ammo() : 0f; }
+
+    /// Returns the relative turret rounds count.
+    public float roundsRel() { return player.dead() ? 0f : player.unit().ammof(); }
+
+    // endregion
 
     /// Refreshes information about the next wave.
     public void refreshWaveInfo(int wave)

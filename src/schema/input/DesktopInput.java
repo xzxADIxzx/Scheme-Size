@@ -56,7 +56,7 @@ public class DesktopInput extends InputSystem
 
         if (scene.hasKeyboard() || scene.hasDialog())
         {
-            alpha.update(Vec2.ZERO, plans);
+            if (units.coreUnit) alpha.update(Vec2.ZERO, plans);
             return;
         }
 
