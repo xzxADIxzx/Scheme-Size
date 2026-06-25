@@ -58,7 +58,11 @@ public class HudFragment extends Table
         }
         ).visible(() -> shown);
 
-        top().add(unit, core, wave);
+        top();
+        add(unit).top().width(320f);
+        add(core).pad(0f, -4f, -4f, -4f);
+        add(wave).top().width(320f);
+
         row();
         table(cont ->
         {
@@ -90,9 +94,6 @@ public class HudFragment extends Table
             true, () -> Time.time <= time[type.ordinal()]).row();
         }
         ).colspan(3);
-
-        // remove gaps between subfragments
-        getCell(core).pad(0f, -4f, -4f, -4f);
 
         unit.build();
         core.build();
