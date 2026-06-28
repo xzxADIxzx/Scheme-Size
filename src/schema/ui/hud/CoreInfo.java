@@ -11,14 +11,13 @@ import mindustry.game.EventType.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.type.*;
-import mindustry.ui.*;
 import mindustry.world.blocks.power.*;
 import mindustry.world.modules.*;
 import schema.*;
 import schema.input.*;
 import schema.ui.*;
+import schema.ui.elements.*;
 
-import static arc.Core.*;
 import static mindustry.Vars.*;
 
 /// Subfragment that displays the core items and power grids.
@@ -136,8 +135,8 @@ public class CoreInfo extends Table
                 }
             }, true, () -> choosesTeam).growX().row();
 
-            cont.add(balance(graph)).growX().height(20f).pad(4f, 0f, 4f, 0f).row();
-            cont.add(stored (graph)).growX().height(20f).pad(4f, 0f, 0f, 0f).row();
+            cont.add(new Powerbar(graph, true )).growX().height(20f).pad(4f, 0f, 4f, 0f).row();
+            cont.add(new Powerbar(graph, false)).growX().height(20f).pad(4f, 0f, 0f, 0f).row();
 
             cont.collapser(t ->
             {
@@ -149,8 +148,8 @@ public class CoreInfo extends Table
                     t.button(b ->
                     {
                         b.margin(8f);
-                        b.add(balance(graph)).grow().row();
-                        b.add(stored (graph)).grow().row();
+                        b.add(new Powerbar(graph, true )).grow().row();
+                        b.add(new Powerbar(graph, false)).grow().row();
                     },
                     Style.cbt, () ->
                     {
@@ -173,27 +172,5 @@ public class CoreInfo extends Table
     private boolean valid(PowerGraph graph)
     {
         return graph.all.size > 1 && graph.all.peek().team == team && Groups.powerGraph.contains(g -> g.graph() == graph);
-    }
-
-    /// Creates a power bar that displays the power balance.
-    private Bar balance(PowerGraph graph)
-    {
-        return new Bar
-        (
-            () -> bundle.format("hud.power", graph.getPowerBalance() >= 0f ? "+" : "", Tools.format(graph.getPowerBalance() * 60f)),
-            () -> Pal.powerBar,
-            () -> graph.getSatisfaction()
-        );
-    }
-
-    /// Creates a power bar that displays the power stored.
-    private Bar stored(PowerGraph graph)
-    {
-        return new Bar
-        (
-            () -> bundle.format("hud.store", Tools.format(graph.getLastPowerStored()), Tools.format(graph.getLastCapacity())),
-            () -> Pal.powerBar,
-            () -> graph.getLastPowerStored() / graph.getLastCapacity()
-        );
     }
 }
