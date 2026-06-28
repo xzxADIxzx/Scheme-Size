@@ -40,7 +40,7 @@ public final class Tools
     }
 
     /// Returns the given number with a fixed amount of decimal places.
-    public static CharSequence format(float num, boolean flow)
+    public static StringBuilder format(float num, boolean flow)
     {
         if (num >= 100_000_000_000f)
             return Strings.fixedBuilder(num / 1_000_000_000f, 0).append("[light]b");
@@ -64,5 +64,5 @@ public final class Tools
     public static CharSequence format(float num) { return format(num, false); }
 
     /// Returns the given number with a fixed amount of decimal places.
-    public static CharSequence flow(float num) { return (num >= .1f ? "[green]+" : num <= -.1f ? "[scarlet]" : "[light]") + format(num, true) + "[light]/s"; }
+    public static CharSequence flow(float num) { return format(num, true).insert(0, num >= .1f ? "[green]+" : num <= -.1f ? "[scarlet]" : "[light]").append("[light]/s"); }
 }
