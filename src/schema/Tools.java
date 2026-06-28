@@ -39,27 +39,30 @@ public final class Tools
         log("[red] < Cleared [accent]" + count + "[] events of " + target.getSimpleName());
     }
 
-    /// Returns the given number with a fixed number of decimal places.
-    public static String format(float num, boolean flow)
+    /// Returns the given number with a fixed amount of decimal places.
+    public static CharSequence format(float num, boolean flow)
     {
         if (num >= 100_000_000_000f)
-            return Strings.fixed(num / 1_000_000_000f, 0) + "[light]b";
+            return Strings.fixedBuilder(num / 1_000_000_000f, 0).append("[light]b");
         if (num >= 1_000_000_000f)
-            return Strings.fixed(num / 1_000_000_000f, 1) + "[light]b";
+            return Strings.fixedBuilder(num / 1_000_000_000f, 1).append("[light]b");
 
         if (num >= 100_000_000f)
-            return Strings.fixed(num / 1_000_000f, 0) + "[light]m";
+            return Strings.fixedBuilder(num / 1_000_000f, 0).append("[light]m");
         if (num >= 1_000_000f)
-            return Strings.fixed(num / 1_000_000f, 1) + "[light]m";
+            return Strings.fixedBuilder(num / 1_000_000f, 1).append("[light]m");
 
         if (num >= 100_000f)
-            return Strings.fixed(num / 1_000f, 0) + "[light]k";
+            return Strings.fixedBuilder(num / 1_000f, 0).append("[light]k");
         if (num >= 1_000f)
-            return Strings.fixed(num / 1_000f, 1) + "[light]k";
+            return Strings.fixedBuilder(num / 1_000f, 1).append("[light]k");
 
-        return Strings.fixed(num, flow ? 1 : 0);
+        return Strings.fixedBuilder(num, flow ? 1 : 0);
     }
 
-    /// Returns the given number with a fixed number of decimal places.
-    public static String flow(float num) { return (num >= .1f ? "[green]+" : num <= -.1f ? "[scarlet]" : "[light]") + format(num, true) + "[light]/s"; }
+    /// Returns the given number with a fixed amount of decimal places.
+    public static CharSequence format(float num) { return format(num, false); }
+
+    /// Returns the given number with a fixed amount of decimal places.
+    public static CharSequence flow(float num) { return (num >= .1f ? "[green]+" : num <= -.1f ? "[scarlet]" : "[light]") + format(num, true) + "[light]/s"; }
 }

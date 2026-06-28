@@ -112,12 +112,12 @@ public class BlockPolygon extends Polygon
                                 var core = player.core();
                                 int required = Math.round(stack.amount * state.rules.buildCostMultiplier);
 
-                                if (core == null || state.rules.infiniteResources) return "[light]*/[]" + Tools.format(required, false);
+                                if (core == null || state.rules.infiniteResources) return "[light]*/[]" + Tools.format(required);
 
                                 int amount = core.items.get(stack.item);
                                 var color = amount < required / 2f ? "[scarlet]" : amount < required ? "[accent]" : "[white]";
 
-                                return color + Tools.format(amount, false) + "[light]/[white]" + Tools.format(required, false);
+                                return color + Tools.format(amount) + "[light]/[white]" + Tools.format(required);
                             }
                             ).fontScale(.9f);
                         }).row();

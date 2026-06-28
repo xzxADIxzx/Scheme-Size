@@ -114,7 +114,7 @@ public class CoreInfo extends Table
                     ? "[light]0"
                     : Keybind.display_prod.down()
                         ? Tools.flow(flow[i.id].mean())
-                        : Tools.format(core.get(i), false)
+                        : Tools.format(core.get(i))
                 ).minWidth(80f).padLeft(4f).left();
 
                 if (t.getChildren().size % 8 == 0) t.row();
@@ -180,7 +180,7 @@ public class CoreInfo extends Table
     {
         return new Bar
         (
-            () -> bundle.format("hud.power", graph.getPowerBalance() >= 0f ? "+" : "", Tools.format(graph.getPowerBalance() * 60f, false)),
+            () -> bundle.format("hud.power", graph.getPowerBalance() >= 0f ? "+" : "", Tools.format(graph.getPowerBalance() * 60f)),
             () -> Pal.powerBar,
             () -> graph.getSatisfaction()
         );
@@ -191,7 +191,7 @@ public class CoreInfo extends Table
     {
         return new Bar
         (
-            () -> bundle.format("hud.store", Tools.format(graph.getLastPowerStored(), false), Tools.format(graph.getLastCapacity(), false)),
+            () -> bundle.format("hud.store", Tools.format(graph.getLastPowerStored()), Tools.format(graph.getLastCapacity())),
             () -> Pal.powerBar,
             () -> graph.getLastPowerStored() / graph.getLastCapacity()
         );

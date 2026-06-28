@@ -64,7 +64,7 @@ public class InventoryFragment extends Table
             content.items().each(build.items::has, i -> stack
             (
                 new Table(t -> t.center()       .image(i.uiIcon).size(40f)),
-                new Table(t -> t.bottom().left().label(() -> Tools.format(build.items.get(i), false)))
+                new Table(t -> t.bottom().left().label(() -> Tools.format(build.items.get(i))))
             )
             .with(s -> 
             {
