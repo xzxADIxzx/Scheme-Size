@@ -4,7 +4,9 @@ import arc.func.*;
 import arc.math.*;
 import arc.struct.*;
 import arc.util.*;
+import mindustry.content.*;
 import mindustry.gen.*;
+import mindustry.type.*;
 import mindustry.world.*;
 import mindustry.world.blocks.distribution.ItemBridge.*;
 
@@ -77,4 +79,22 @@ public class Builds
 
     /// Whether the building can be controlled by the local player.
     public boolean controllable(Building build) { return player.unit() != null && build.canControlSelect(player.unit()); }
+
+    /// Drop priority of items.
+    public Item[] dropPriority =
+    {
+        Items.scrap,
+        Items.sand,
+        Items.coal,
+        Items.sporePod,
+        Items.pyratite,
+        Items.blastCompound,
+    };
+
+    /// Returns an item to drop.
+    public Item next2drop(Building build)
+    {
+        for (var item : dropPriority) if (build.items.has(item)) return item;
+        return build.items.first();
+    }
 }
