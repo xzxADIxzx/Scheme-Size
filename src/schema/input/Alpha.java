@@ -34,7 +34,7 @@ public class Alpha
         public void run() { updatePathfinder(); };
     };
     /// Building plan sorting interval in ticks.
-    private Interval sort = new Interval();
+    private Interval sort = new Interval(2);
 
     /// Unit of the player.
     private Unit unit;
@@ -77,8 +77,10 @@ public class Alpha
     /// Resets the system's values.
     public void reset()
     {
+        assist = null;
         lock = null;
         drop = null;
+        plan = null;
         mine = null;
         spin = null;
         time = Time.time;
@@ -94,6 +96,14 @@ public class Alpha
 
         updateMovement(flw);
         updateBuilding(plans);
+
+        if (drop != null && sort.get(1, 15f))
+        {
+            var item = builds.next2drop(drop);
+
+            if (item != null) Call.requestItem(player, drop, item, unit.maxAccepted(item));
+            if (unit.hasItem()) Call.dropItem(drop.angleTo(unit));
+        }
     }
 
     /// Updates the movement logic.
@@ -139,7 +149,7 @@ public class Alpha
             var rect = camera.bounds(Tmp.r1).grow(-64f);
             if (rect.contains(unit.x, unit.y))
             {
-                if (spin == null && Time.time - time > 1200f) spin = new Vec2().rnd(1f).add(unit);
+                if (spin == null && Time.time - time > 3600f) spin = new Vec2().rnd(1f).add(unit);
             }
             else target = Tmp.v1.set
             (
