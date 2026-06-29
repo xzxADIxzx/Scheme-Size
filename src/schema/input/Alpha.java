@@ -74,6 +74,31 @@ public class Alpha
         Events.run(WorldLoadEvent.class, () -> restart.get(1f));
     }
 
+    /// Mimics the assist's action.
+    public void mimic()
+    {
+        if (assist == null || assist.dead()) return;
+
+        if (assist.unit().activelyBuilding())
+        {
+            unit.plans.clear();
+            unit.plans.add(assist.unit().buildPlan());
+        }
+        else unit.plans.clear();
+
+        player.mouseX = assist.mouseX;
+        player.mouseY = assist.mouseY;
+
+        player.shooting = assist.shooting;
+        player.boosting = assist.boosting;
+
+        unit.aim(assist.mouseX, assist.mouseY);
+        unit.controlWeapons(true, assist.shooting);
+
+        if (unit.within(assist, assist.unit().hitSize + unit.hitSize + 24f))
+            unit.lookAt(assist.mouseX, assist.mouseY);
+    }
+
     /// Resets the system's values.
     public void reset()
     {
@@ -121,7 +146,7 @@ public class Alpha
         if (target == null && assist != null)
         {
             target = assist;
-            range = assist.dead() ? 0f : assist.unit().hitSize;
+            range = assist.dead() ? 0f : assist.unit().hitSize + unit.hitSize + 24f;
         }
 
         if (target == null && lock != null)
@@ -186,6 +211,8 @@ public class Alpha
     /// Updates the building logic.
     private void updateBuilding(Seq<BuildPlan> plans)
     {
+        if (assist != null) return;
+
         if (unit.canBuild() && unit.updateBuilding && plans.any()) for (var p : priorities)
         {
             var plan = plans.find(p::pred);

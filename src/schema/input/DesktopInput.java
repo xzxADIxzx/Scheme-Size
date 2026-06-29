@@ -56,7 +56,7 @@ public class DesktopInput extends InputSystem
 
         if (scene.hasKeyboard() || scene.hasDialog())
         {
-            if (units.coreUnit) alpha.update(Vec2.ZERO, plans);
+            if (units.coreUnit && modern) alpha.update(Vec2.ZERO, plans);
             return;
         }
 
@@ -133,6 +133,9 @@ public class DesktopInput extends InputSystem
 
         if (Keybind.pick_cargo.tap()) control.input.tryPickupPayload();
         if (Keybind.drop_cargo.tap()) control.input.tryDropPayload();
+
+        // should be called after modifying the player
+        if (units.coreUnit && modern) alpha.mimic();
     }
 
     protected void updateZoom()
