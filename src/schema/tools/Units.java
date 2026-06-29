@@ -24,10 +24,8 @@ public class Units
     /// Whether the unit was spawned by core.
     public boolean coreUnit;
 
-    /// Item capacity of the unit.
-    public int capacity;
     /// Payload capacity of the unit.
-    public float payload;
+    private float capacity;
     /// Maximum health of the shield.
     private float maxShield;
     /// Current shield or null if absent.
@@ -44,19 +42,16 @@ public class Units
     {
         Events.on(UnitChangeEvent.class, e ->
         {
-            if (e.player != player) return;
+            if (e.player != player || e.unit == null) return;
 
-            var unit = player.unit();
-
-            coreUnit = player.dead() || coreUnits.contains(unit.type);
-            capacity = player.dead() ? -1 : unit.type.itemCapacity;
-            payload  = player.dead() ? -1 : unit.type.payloadCapacity;
+            coreUnit = coreUnits.contains(e.unit.type);
+            capacity = e.unit.type.payloadCapacity;
 
             maxShield = -1f;
             fldShield = null;
             arcShield = null;
 
-            if (unit != null) for (var ability : unit.abilities)
+            for (var ability : e.unit.abilities)
             {
                 if (ability instanceof ForceFieldAbility fld)
                 {
@@ -108,7 +103,7 @@ public class Units
     public float paylodAbs() { return player.dead() ? 0f : player.unit() instanceof Payloadc p && p.payloads().any() ? p.payloadUsed() : 0f; }
 
     /// Returns the relative payload of the unit.
-    public float paylodRel() { return paylodAbs() / payload; }
+    public float paylodRel() { return paylodAbs() / capacity; }
 
     /// Returns the absolute turret rounds count.
     public float roundsAbs() { return player.dead() ? 0f : player.unit() instanceof BlockUnitc b ? b.ammo() : 0f; }
