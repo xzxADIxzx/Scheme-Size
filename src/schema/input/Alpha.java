@@ -13,6 +13,7 @@ import mindustry.game.EventType.*;
 import mindustry.gen.*;
 import mindustry.logic.*;
 import mindustry.type.*;
+import mindustry.world.*;
 import mindustry.world.blocks.defense.*;
 import mindustry.world.blocks.defense.turrets.*;
 import mindustry.world.blocks.defense.turrets.TractorBeamTurret.*;
@@ -40,6 +41,8 @@ public class Alpha
     private Unit unit;
     /// Type of the unit.
     private UnitType type;
+    /// Tile of the mine.
+    private Tile vein;
 
     /// Target player to follow and assist.
     public Player assist;
@@ -102,6 +105,8 @@ public class Alpha
     /// Resets the system's values.
     public void reset()
     {
+        unit.mineTile = null;
+        vein = null;
         assist = null;
         lock = null;
         drop = null;
@@ -128,6 +133,21 @@ public class Alpha
 
             if (item != null) Call.requestItem(player, drop, item, unit.maxAccepted(item));
             if (unit.hasItem()) Call.dropItem(drop.angleTo(unit));
+        }
+        if (mine != null && sort.get(1, 10f))
+        {
+            if (unit.maxAccepted(mine) > 0)
+            {
+                if (vein == null && type.mineFloor) vein = indexer.findClosestOre    (unit, mine);
+                if (vein == null && type.mineWalls) vein = indexer.findClosestWallOre(unit, mine);
+                if (vein != null && unit.within(vein, type.mineRange)) unit.mineTile = vein;
+            }
+            else
+            {
+                var core = unit.closestCore();
+                if (unit.within(core, itemTransferRange)) Call.transferInventory(player, core);
+                vein = null;
+            }
         }
     }
 
@@ -167,7 +187,21 @@ public class Alpha
             range = buildingRange;
         }
 
-        // TODO mine
+        if (target == null && mine != null)
+        {
+            if (unit.maxAccepted(mine) > 0)
+            {
+                target = vein;
+                range = type.mineRange;
+            }
+            else
+            {
+                target = unit.closestCore();
+                range = itemTransferRange;
+            }
+        }
+
+        if (assist == null) range *= .8f;
 
         if (target == null)
         {
