@@ -66,7 +66,7 @@ public abstract class InputSystem
     /// Selected block, the one in your hand.
     public Block block;
     /// Whether the building is ongoing or paused.
-    public boolean building;
+    public boolean building, dropping;
 
     // region general
 
@@ -353,6 +353,30 @@ public abstract class InputSystem
         }
     }
 
+    /// Draws the item that is dropped.
+    protected void drawDropped()
+    {
+        boolean invalid = !clickable();
+
+        var unit = player.unit();
+        if (unit == null) return;
+
+        var build = selectedBuilding();
+        if (build != null && build.team == player.team() && build.acceptStack(unit.item(), unit.stack.amount, unit) > 0 && player.within(build, itemTransferRange))
+        {
+            if (invalid = !build.allowDeposit()) build.block.drawPlaceText(bundle.get("bar.onlycoredeposit"), build.tileX(), build.tileY(), false);
+        }
+
+        Lines.stroke(1f, invalid ? Pal.remove : Pal.accent);
+        overlay.capture(2f);
+
+        Lines.circle(mouse.x, mouse.y, 6f + Mathf.absin(4f, 1f));
+
+        overlay.render();
+        Draw.reset();
+        Draw.rect(unit.item().fullIcon, mouse, 8f, 8f);
+    }
+
     /// Returns the control mode alpha.
     public float fade(Unit unit) { return controlUnit == unit ? controlFade : 0f; }
 
@@ -457,6 +481,12 @@ public abstract class InputSystem
             && build.team == Team.derelict
             && polyblock.unlocked(build.block)
             && Build.validPlace(build.block, player.team(), build.tileX(), build.tileY(), build.rotation);
+    }
+
+    /// Checks the unit's clickability.
+    public boolean clickable()
+    {
+        return !player.dead() && player.unit().hasItem() && player.within(mouse, mobile ? 17f : 11f);
     }
 
     /// Returns a plan under the mouse.
