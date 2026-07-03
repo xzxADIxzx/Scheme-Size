@@ -64,6 +64,7 @@ public class DesktopInput extends InputSystem
         updateZoom();
         updateCommand();
         updateView();
+        updateDrop();
 
         if (player.isBuilder() && !commandMode && !controlMode && !mapfrag.shown) updateBuilding();
     }
@@ -113,7 +114,7 @@ public class DesktopInput extends InputSystem
 
         if (player.dead() || state.isPaused()) return;
 
-        player.shooting = Keybind.shoot.down() && !(any() || commandMode || controlMode || scene.hasMouse() || config.visible);
+        player.shooting = Keybind.shoot.down() && !(any() || commandMode || controlMode || scene.hasMouse() || config.visible || inv.visible || dropping);
         player.boosting = Keybind.boost.down();
 
         if (Keybind.look_at.down()) unit.rotation = Angles.mouseAngle(unit.x, unit.y);
@@ -303,6 +304,18 @@ public class DesktopInput extends InputSystem
         if (Keybind.tgl_block_health.tap()) settings.put("blockhealth", !settings.getBool("blockhealth"));
     }
 
+    protected void updateDrop()
+    {
+        if (Keybind.select.tap() && !scene.hasMouse() && !any() && clickable()) dropping = true;
+        if (Keybind.select.release())
+        {
+            control.input.itemDepositCooldown = 0;
+            control.input.droppingItem = dropping;
+            control.input.tryDropItems(selectedBuilding(), mouse.x, mouse.y);
+            dropping = false;
+        }
+    }
+
     protected void updateBuilding()
     {
         // region hell
@@ -376,7 +389,7 @@ public class DesktopInput extends InputSystem
 
         if (Keybind.replace.tap()) ; // TODO polyplace
 
-        if (Keybind.select.tap() && !scene.hasMouse())
+        if (Keybind.select.tap() && !scene.hasMouse() && !any() && !clickable())
         {
             var build = selectedBuilding();
             if (block == null && build != null && build.team == player.team())
@@ -499,6 +512,8 @@ public class DesktopInput extends InputSystem
         if (commandMode) drawCommand();
         if (controlMode) drawControl();
         else controlFade = 0f;
+
+        if (dropping) drawDropped();
 
         if (rotating)
         {
