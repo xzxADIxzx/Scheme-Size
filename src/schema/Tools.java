@@ -65,4 +65,24 @@ public final class Tools
 
     /// Returns the given number with a fixed amount of decimal places.
     public static CharSequence flow(float num) { return format(num, true).insert(0, num >= .1f ? "[green]+" : num <= -.1f ? "[scarlet]" : "[light]").append("[light]/s"); }
+
+    /// Returns the given number with a fixed amount of decimal places.
+    public static StringBuilder time(float ticks)
+    {
+        int seconds = (int) (ticks / 60);
+        if (seconds < 60)
+            return Strings.fixedBuilder(0f, 0).append(':').append(seconds < 10 ? "0" : "").append(seconds);
+
+        int minutes = seconds / 60;
+            seconds = seconds % 60;
+        if (minutes < 60)
+            return Strings.fixedBuilder(minutes, 0).append(':').append(seconds < 10 ? "0" : "").append(seconds);
+
+        int hours   = minutes / 60;
+            minutes = minutes % 60;
+        if (hours   < 24)
+            return Strings.fixedBuilder(hours, 0).append(':').append(minutes < 10 ? "0" : "").append(minutes) .append(':').append(seconds < 10 ? "0" : "").append(seconds);
+
+        return Strings.fixedBuilder(0f, 0).replace(0, 1, "∞");
+    }
 }
