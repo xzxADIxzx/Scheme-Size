@@ -129,6 +129,7 @@ public class UnitInfo extends Table
                             ).style(Style.outline));
                         });
                         if (player.unit() instanceof Payloadc p) p.contentInfo(pane.table().grow().get(), 16f, 204f - pane.getPrefWidth());
+                        pane.add().height(16f); // the element will not collapse if the table is empty
                     }
                 });
             },
