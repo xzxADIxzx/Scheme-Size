@@ -86,7 +86,7 @@ public class CoreInfo extends Table
                 if (valid(g)) return;
 
                 graphs.remove(g);
-                if (graph == g) graph = new PowerGraph(true);
+                if (graph == g) graph = closest(g);
 
                 rebuild[0] = true;
             });
@@ -171,6 +171,33 @@ public class CoreInfo extends Table
     /// Whether the power graph is valid.
     private boolean valid(PowerGraph graph)
     {
-        return graph.all.size > 1 && graph.all.peek().team == team && Groups.powerGraph.contains(g -> g.graph() == graph);
+        return
+        (
+            graph.all.size > 4
+            &&
+            graph.producers.any() | graph.consumers.any() | graph.batteries.any()
+            &&
+            graph.all.peek().team == team
+            &&
+            Groups.powerGraph.contains(g -> g.graph() == graph)
+        );
+    }
+
+    /// Returns the power graph with the highest number of shared buildings.
+    private PowerGraph closest(PowerGraph graph)
+    {
+        var out = new PowerGraph(true);
+        var num = 0;
+
+        for (var g : graphs)
+        {
+            int shared = g.all.count(graph.all::contains);
+            if (shared > num)
+            {
+                out = g;
+                num = shared;
+            }
+        }
+        return out;
     }
 }
