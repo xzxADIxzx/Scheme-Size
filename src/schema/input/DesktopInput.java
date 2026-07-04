@@ -132,6 +132,9 @@ public class DesktopInput extends InputSystem
         if (Keybind.respawn.tap()) Call.unitClear(player);
         if (Keybind.despawn.tap()) ; // TODO admins/hacky functions
 
+        // payload units access this value while checking clearance
+        Tmp.v1.setZero();
+
         if (Keybind.pick_cargo.tap()) control.input.tryPickupPayload();
         if (Keybind.drop_cargo.tap()) control.input.tryDropPayload();
 
