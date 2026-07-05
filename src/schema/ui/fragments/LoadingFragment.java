@@ -4,6 +4,7 @@ import arc.*;
 import arc.func.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
+import arc.input.*;
 import arc.math.*;
 import arc.math.geom.*;
 import arc.scene.*;
@@ -37,6 +38,9 @@ public class LoadingFragment extends Table
     /// Collection of hexes' positions.
     private Seq<Vec2> hexes = new Seq<>();
 
+    /// Cancel callback.
+    private Runnable cancel;
+
     public LoadingFragment() { super(Styles.black8); }
 
     /// Builds the fragment and overrides the original.
@@ -66,6 +70,11 @@ public class LoadingFragment extends Table
         setFillParent(true);
         hideImmediately();
         label(() -> (int) (progress.get() * 100) + "%").style(Styles.techLabel).color(Pal.accent);
+
+        keyDown(key ->
+        {
+            if (key == KeyCode.escape | key == KeyCode.back && cancel != null) cancel.run();
+        });
     }
 
     // region control
@@ -76,6 +85,7 @@ public class LoadingFragment extends Table
         hexes.shuffle();
         visible = true;
 
+        requestKeyboard();
         toFront();
         actions(Actions.alpha(.0f), Actions.alpha(1f, .2f));
     }
@@ -93,6 +103,7 @@ public class LoadingFragment extends Table
         progress = () -> 0f;
         display = 0f;
         visible = false;
+        cancel = null;
     }
 
     // endregion
@@ -179,7 +190,7 @@ public class LoadingFragment extends Table
         public void setProgress(float p) { progress = () -> p; }
 
         @Override
-        public void setButton(Runnable listener) { } // TODO implement styles, then the button
+        public void setButton(Runnable listener) { cancel = listener; }
 
         @Override
         public void show() { loadfrag.show(); }
