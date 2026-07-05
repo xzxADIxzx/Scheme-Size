@@ -12,6 +12,7 @@ import arc.scene.actions.*;
 import arc.scene.ui.layout.*;
 import arc.struct.*;
 import arc.util.*;
+import arc.util.pooling.*;
 import mindustry.game.EventType.*;
 import mindustry.graphics.*;
 import mindustry.ui.*;
@@ -51,13 +52,15 @@ public class LoadingFragment extends Table
             int w = graphics.getWidth (),
                 h = graphics.getHeight();
 
+            Pools.freeAll(hexes, true);
+
             bloom.resize(w, h);
             bloom.blurPasses = 8;
             hexes.clear();
 
             for (int x = 0; x < w / spacing + 1; x++)
             for (int y = 0; y < h / height  + 0; y++)
-                hexes.add(new Vec2
+                hexes.add(Pools.obtain(Vec2.class, Vec2::new).set
                 (
                     (w - Mathf.round(w, spacing)) / 2f + (x - (y % 2) * .5f) * spacing,
                     (h - Mathf.round(h, height )) / 2f + y * height
